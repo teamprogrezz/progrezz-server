@@ -2,7 +2,9 @@ source 'https://rubygems.org'
 ruby '1.9.3'
 
 gem "sinatra"
+gem "sinatra-jsonp"
 gem "thin"
+gem "geocoder"
 gem 'data_mapper'
 
 group :development do

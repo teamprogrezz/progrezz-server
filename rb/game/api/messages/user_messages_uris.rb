@@ -1,14 +1,42 @@
 require 'sinatra'
+require 'sinatra/jsonp'
 require 'json'
+require 'geocoder'
 
-puts "waaat"
+before '/game/dba/geoloc' do
+  content_type 'application/javascript'
+end
 
 get '/game/dba/geoloc' do
-  params.keys.each do |k|  
-    puts k + " -> " + params[k]
+  #params.keys.each do |k|  
+  #  puts k + " -> " + params[k]
+  #end
+
+  output = []
+
+  u_geo = [params['latitude'], params['longitude']]
+  message_list = Game::Database::MessageGeo.all
+  cont_msg = 0
+  for message in message_list do
+    if cont_msg >= params['n_msg'].to_i
+      break;
+    end
+
+    msg_geo = [message.latitude, message.longitude]
+ 
+    distance = Geocoder::Calculations.distance_between(u_geo, msg_geo, {:units => :km})
+    puts "-> Distancia: " + distance.to_s
+    if distance <= params['radio'].to_f
+      output << message
+      cont_msg += 1
+    end
   end
 
-  return params[:callback] + "(" + { :msg => 'Hola mundiiiiiis' }.to_json + ")"
+  return params[:callback] + "(" + output.to_json() + ")"
+end
+
+before '/game/dba/msg_user_list' do
+  content_type 'application/javascript'
 end
 
 get '/game/dba/msg_user_list' do
@@ -36,7 +64,5 @@ get '/game/dba/msg_user_list' do
     output[:messages][message.id_msg]["fragments"] << message.fragment_index
   end
 
-  puts output
-  return output.to_json()
-  #return params[:callback] + "(" + output.to_json + ")"
+  return params[:callback] + "(" + output.to_json + ")"
 end 

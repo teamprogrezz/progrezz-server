@@ -69,6 +69,7 @@ GEM
     eventmachine (1.0.3)
     eventmachine (1.0.3-x86-mingw32)
     fastercsv (1.5.5)
+    geocoder (1.2.6)
     json (1.8.1)
     json_pure (1.8.1)
     multi_json (1.10.1)
@@ -81,6 +82,9 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    sinatra-jsonp (0.4.3)
+      multi_json (~> 1.8)
+      sinatra (~> 1.0)
     stringex (1.5.1)
     thin (1.6.2)
       daemons (>= 1.0.9)
@@ -98,6 +102,8 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   do_sqlite3
+  geocoder
   pg
   sinatra
+  sinatra-jsonp
   thin
