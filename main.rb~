@@ -5,7 +5,7 @@ require 'data_mapper'
 
 # Clases de la BD
 Dir["./rb/data_mapper/*.rb"].each {|file|
-  puts "Leyendo Objetos de DB: " +  file.split(/\.rb/)[0]
+  puts "Leyendo URIs: " +  file.split(/\.rb/)[0]
   require file.split(/\.rb/)[0]
 }
 
