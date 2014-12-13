@@ -41,23 +41,34 @@ end
 
 get '/game/dba/msg_user_list' do
   output = { :messages => {} }
-  
-  message_list = Game::Database::UserMessages.all(:id_user => params[:id_user])
 
+  # Mensajes ya completados
+  message_list = Game::Database::UserCompletedMessages.all(:id_user => params[:id_user])
+  message_list.each do |message|
+    mf = Game::Database::Messages.get(message.id_msg)
+    output[:messages][message.id_msg] = {
+      :content       => mf.content,
+      :id_user       => mf.id_user,
+      :resource_link => mf.resource_link,
+      :message_full  => mf.message_full,
+      :status        => mf.status
+    }
+  end
+
+  # Mensajes fragmentados
+  message_list = Game::Database::UserMessages.all(:id_user => params[:id_user])
   message_list.each do |message|
     # Identificador
     if output[:messages][message.id_msg] == nil
-      output[:messages][message.id_msg] = {}
-      
-      message_full = Game::Database::Messages.get(message.id_msg)
-      output[:messages][message.id_msg]["content"] = message_full.content
-      #TODO: Comprobar si tiene todos los fragmentos para realizar las operaciones oportunas.
-      #output[:messages][message.id_msg]["status"] = message_full.status
-      output[:messages][message.id_msg]["id_user"] = message_full.id_user
-      output[:messages][message.id_msg]["resource_link"] = message_full.resource_link
-      output[:messages][message.id_msg]["total_fragments"] = message_full.total_fragments
-
-      output[:messages][message.id_msg]["fragments"] = []
+      mf = Game::Database::Messages.get(message.id_msg)
+      output[:messages][message.id_msg] = {
+        :content       => mf.content,
+        :id_user       => mf.id_user,
+        :resource_link => mf.resource_link,
+        :message_full  => mf.message_full,
+        :status        => "incomplete",
+        :fragments     => []
+      }
     end
 
     # Fragmentos
