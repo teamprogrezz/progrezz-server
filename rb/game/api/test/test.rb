@@ -33,10 +33,10 @@ get '/test_message' do
 
   # Mensaje 2
   message2 = Game::Database::Messages.new
-  message2.total_fragments = 2
+  message2.total_fragments = 3
   message2.content = "Pepitooooou"
   message2.resource_link = "http://www.example.com"
-  message2.id_user = 2
+  message2.id_user = 1
   message2.save
 
   message_geo = Game::Database::MessageFragments.new
@@ -50,6 +50,13 @@ get '/test_message' do
   message_geo.id_msg = message2.id_msg
   message_geo.fragment_index = 2
   message_geo.latitude = 35.4489
+  message_geo.longitude = -5.15
+  message_geo.save
+
+  message_geo = Game::Database::MessageFragments.new
+  message_geo.id_msg = message2.id_msg
+  message_geo.fragment_index = 3
+  message_geo.latitude = 36.4489
   message_geo.longitude = -5.15
   message_geo.save
 
