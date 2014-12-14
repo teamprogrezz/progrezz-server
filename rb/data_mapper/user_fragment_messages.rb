@@ -4,7 +4,7 @@ module Game
   module Database
 
     # Mensajes de un usuario (fragmentados)
-    class UserMessages
+    class UserFragmentMessages
       include DataMapper::Resource
       
       # -------------------------

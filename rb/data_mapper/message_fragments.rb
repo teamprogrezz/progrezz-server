@@ -7,7 +7,7 @@ require_relative 'geolocation'
 module Game
   module Database
 
-    class MessageGeo
+    class MessageFragments
       include DataMapper::Resource
       
       # -------------------------
