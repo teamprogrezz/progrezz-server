@@ -9,7 +9,6 @@ Dir["./rb/data_mapper/*.rb"].each {|file|
   require file.split(/\.rb/)[0]
 }
 
-
 # Postgress(heroku) (cambiar ENV['DATABASE_URL']) o sqlite3
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/database.db" )
 
@@ -21,7 +20,7 @@ get '/' do
 end
 
 # Metodos HTTP (GET y POST)
-Dir["./rb/game/api/*?/*.rb"].each {|file|
+Dir["./rb/game/**/*.rb"].each {|file|
   puts "Leyendo URIs: " + file.split(/\.rb/)[0]
   require file.split(/\.rb/)[0]
 }

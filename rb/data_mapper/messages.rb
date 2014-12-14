@@ -13,6 +13,7 @@ module Game
       
       property :total_fragments, Integer
 
+      #property :header,  String
       property :content, String
       property :resource_link, String
 

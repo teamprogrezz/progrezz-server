@@ -50,11 +50,11 @@ get '/game/dba/msg_user_list' do
   message_list.each do |message|
     mf = Game::Database::Messages.get(message.id_msg)
     output[:messages][message.id_msg] = {
-      :content       => mf.content,
-      :id_user       => mf.id_user,
-      :resource_link => mf.resource_link,
-      :message_full  => mf.message_full,
-      :status        => mf.status
+      :content         => mf.content,
+      :id_user         => mf.id_user,
+      :total_fragments => mf.total_fragments,
+      :resource_link   => mf.resource_link,
+      :status          => message.status
     }
   end
 
@@ -65,17 +65,17 @@ get '/game/dba/msg_user_list' do
     if output[:messages][message.id_msg] == nil
       mf = Game::Database::Messages.get(message.id_msg)
       output[:messages][message.id_msg] = {
-        :content       => mf.content,
-        :id_user       => mf.id_user,
-        :resource_link => mf.resource_link,
-        :message_full  => mf.message_full,
-        :status        => "incomplete",
-        :fragments     => []
+        :content         => mf.content,
+        :id_user         => mf.id_user,
+        :total_fragments => mf.total_fragments,
+        :resource_link   => mf.resource_link,
+        :status          => "incomplete",
+        :fragments       => []
       }
     end
 
     # Fragmentos
-    output[:messages][message.id_msg]["fragments"] << message.fragment_index
+    output[:messages][message.id_msg][:fragments] << message.fragment_index
   end
 
   return params[:callback] + "(" + output.to_json + ")"
