@@ -1,19 +1,19 @@
 $LOAD_PATH << File.dirname(__FILE__) + "\n"
 
 require 'sinatra'
-require 'data_mapper'
 
 # Clases de la BD
-Dir["./rb/data_mapper/*.rb"].each {|file|
+Dir["./rb/db/*.rb"].each {|file|
   puts "Leyendo Objetos de DB: " +  file.split(/\.rb/)[0]
   require file.split(/\.rb/)[0]
 }
 
-# Postgress(heroku) (cambiar ENV['DATABASE_URL']) o sqlite3
-DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/database.db" )
+# Acceso a la base de datos
+neo4j_url = ENV['GRAPHENEDB_URL'] || 'http://localhost:7474'
+uri = URI.parse(neo4j_url)
+server_url = "http://#{uri.host}:#{uri.port}"
 
-DataMapper.finalize
-DataMapper.auto_upgrade!
+Neo4j::Session.open(:server_db, server_url, basic_auth: { username: uri.user, password: uri.password})
 
 get '/' do
   erb :index, :locals => {:test => "Prueba" }
@@ -24,6 +24,4 @@ Dir["./rb/game/**/*.rb"].each {|file|
   puts "Leyendo URIs: " + file.split(/\.rb/)[0]
   require file.split(/\.rb/)[0]
 }
-
-#require './rb/juego/mensajes/mensaje_manager'
 

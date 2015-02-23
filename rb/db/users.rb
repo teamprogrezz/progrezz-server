@@ -1,17 +1,17 @@
-require 'data_mapper'
+require 'neo4j'
+
 
 module Game
   module Database
 
-    class Users
-      include DataMapper::Resource
+    class User
+      include Neo4j::ActiveNode
       
       # -------------------------
       #        Atributos
       # -------------------------
-      property :id_user, Serial, :key => true # Identificador de mensaje
-      
-      property :alias, String    # Sin usar.
+      property :user_id # Identificador de usuario
+      property :alias   # Sin usar.
 
       # -------------------------
       #         Métodos
