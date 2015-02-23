@@ -6,6 +6,7 @@ gem "sinatra-jsonp"
 gem "thin"
 gem "geocoder"
 gem 'data_mapper'
+gem "neo4j"
 
 group :development do
   gem 'dm-sqlite-adapter'
