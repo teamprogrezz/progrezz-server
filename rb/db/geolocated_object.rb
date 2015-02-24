@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'neo4j'
 
 module Game

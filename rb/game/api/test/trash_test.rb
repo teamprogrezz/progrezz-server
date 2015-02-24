@@ -1,10 +1,29 @@
+# encoding: UTF-8
+
 require 'sinatra'
 require 'neo4j'
 
-get '/test/t1' do
+  # Pruebas sencillas varias
+
+# Tirar base de datos
+get '/test/drop' do
+  Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
+  redirect to('/test/list')
+end
+
+# Listar datos de prueba
+get '/test/list' do
+  erb :user_list, :views => "views/test/", :locals => {:users => Game::Database::User.all() }
+end
+
+# Añadir datos de prueba
+get '/test/add' do
   begin
-    test_user = Game::Database::User.sign_in('Wikiti', 'wikiti.doghound@gmail.com' )
-    return "Hello, " + test_user.alias + " (" + test_user.user_id + ")";
+    Game::Database::User.sign_in('Wikiti', 'wikiti.doghound@gmail.com' )
+    Game::Database::User.sign_in('Shylpx', 'cristogr.93@gmail.com' )
+
+    redirect to('/test/list')
+
   rescue Exception => e
     return "<pre>" + e.class.name + " -> " + e.message + "</pre>"
   end

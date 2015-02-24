@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'neo4j'
 
 module Game
@@ -23,7 +25,7 @@ module Game
       # uid -> identificador de usuario (correo)
       def self.sign_in(al, uid)
         begin
-          user = create( {alias: al, user_id: uid } );
+          user = create( {alias: al, user_id: uid });
           user.geolocation = Geolocation.create_geolocation();
 
         rescue Exception => e

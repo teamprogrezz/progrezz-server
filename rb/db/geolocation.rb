@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'neo4j'
 
 module Game
@@ -43,7 +45,6 @@ module Game
         self.latitude  = [MIN_LATITUDE,  self.latitude,  MAX_LATITUDE ].sort[1]
         self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
         self.save
-        puts "Clamping: " + self.to_s
         return self
       end
 
@@ -57,7 +58,6 @@ module Game
         if @is_updating == true; return end
         @is_updating = true
 
-        puts "Updated."
         clamp()
 
         @is_updating = false
