@@ -10,7 +10,7 @@ module Game
       # -------------------------
       #      Atributos (DB)
       # -------------------------
-      property :user_id, constraint: :unique  # Identificador de usuario (correo, único)
+      property :user_id, constraint: :unique  # Identificador de usuario (correo, único en la BD)
       property :alias                         # Sin usar.
 
       # -------------------------
@@ -18,13 +18,17 @@ module Game
       # -------------------------
       def self.sign_in(al, uid)
         begin
-          return create( {alias: al, user_id: uid} );
-        rescue
-          raise "DB ERROR: Cannot create user '" + al + "': '" + uid + "' is in use.";
+          return create( {alias: al, user_id: uid, test_attr: ["what", "1"] } );
+        rescue Neo4j::Server::CypherResponse::ResponseError => e
+          raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message;
         end
 
       end
 
+      # -------------------------
+      #        Métodos
+      # -------------------------
+      # ...
     end
   end
 end

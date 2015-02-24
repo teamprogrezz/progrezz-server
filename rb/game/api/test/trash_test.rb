@@ -10,8 +10,6 @@ get '/test/t1' do
     #  result +=  "<br>"
     #end
   rescue Exception => e
-    return e.message
+    return "<pre>" + e.class.name + " -> " + e.message + "</pre>"
   end
-
-  result += "<br>" + test_user.class.name
 end
