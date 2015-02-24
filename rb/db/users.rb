@@ -16,7 +16,7 @@ module Game
       # -------------------------
       #     Relaciones (DB)
       # -------------------------
-      has_one :out, :geolocation, model_class: Geolocation, type: "is_located_at"
+      has_one :out, :geolocation, model_class: Geolocation, type: "is_located_at" # Posición del jugador
 
       # -------------------------
       #    Métodos de clase
@@ -30,7 +30,7 @@ module Game
           user = create( {alias: al, user_id: uid } );
           user.geolocation = Geolocation.create_geolocation();
 
-        rescue Neo4j::Server::CypherResponse::ResponseError => e
+        rescue Exception => e
           raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message;
         end
         
@@ -40,7 +40,11 @@ module Game
       # -------------------------
       #        Métodos
       # -------------------------
-      # ...
+
+      # Stringificar objeto
+      def to_s
+        return "<User: " + self.user_id + ", " + self.alias + ", [" + self.geolocation.to_s + "]>" 
+      end
     end
   end
 end
