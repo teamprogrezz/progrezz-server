@@ -11,3 +11,11 @@ namespace :neo4j do
     sh 'neo4j stop'
   end
 end
+
+namespace :server do
+  desc 'Start the server'
+  task :start do
+    sh 'rackup' # ¿?
+  end
+
+end
