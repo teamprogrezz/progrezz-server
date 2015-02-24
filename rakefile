@@ -18,4 +18,8 @@ namespace :server do
     sh 'rackup' # ¿?
   end
 
+  desc 'Start the server (network test)'
+  task :start_net do
+    sh 'ruby main.rb -o 0.0.0.0'
+  end
 end
