@@ -2,6 +2,8 @@ require 'neo4j'
 
 module Game
   module Database
+
+    # Clase que representa una posición geolocalizada en la base de datos.
     class Geolocation
       include Neo4j::ActiveNode
 
@@ -52,9 +54,7 @@ module Game
 
       # Callback lanzado después de guardar el objeto, para hacer comprobaciones (posición real, etc).
       def after_save_callback()
-        if @is_updating == true
-          return
-        end
+        if @is_updating == true; return end
         @is_updating = true
 
         puts "Updated."

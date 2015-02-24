@@ -3,7 +3,8 @@ require 'neo4j'
 module Game
   module Database
 
-    class User
+    # Clase que representa a un jugador cualquiera en la base de datos.
+    class User < GeolocatedObject
       include Neo4j::ActiveNode
       
       # -------------------------
@@ -12,11 +13,6 @@ module Game
       property :user_id, constraint: :unique  # Identificador de usuario (correo, único en la BD)
       property :alias                         # Alias o nick del usuario.
       property :created_at                    # Timestamp o fecha de creación del usuario.
-
-      # -------------------------
-      #     Relaciones (DB)
-      # -------------------------
-      has_one :out, :geolocation, model_class: Geolocation, type: "is_located_at" # Posición del jugador
 
       # -------------------------
       #    Métodos de clase
@@ -43,7 +39,7 @@ module Game
 
       # Stringificar objeto
       def to_s
-        return "<User: " + self.user_id + ", " + self.alias + ", [" + self.geolocation.to_s + "]>" 
+        return "<User: " + self.user_id + ", " + self.alias + ", " + super.to_s + ">" 
       end
     end
   end
