@@ -7,7 +7,7 @@ require 'neo4j'
 
 # Tirar base de datos
 get '/test/drop' do
-  Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
+  DatabaseManager.drop()
   redirect to('/test/list')
 end
 

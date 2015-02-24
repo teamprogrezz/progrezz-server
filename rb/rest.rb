@@ -1,8 +1,20 @@
 # encoding: UTF-8
 
-# Metodos HTTP (GET y POST) de la API REST
-Dir["./rb/game/**/*.rb"].each {|file|
-  puts "Leyendo URIs: " + file.split(/\.rb/)[0]
-  require file.split(/\.rb/)[0]
-}
+# Clase gestora de la API REST.
+#
+#   Se encarga de realizar tareas sencillas, como inicializar el acceso a los métodos
+# REST HTML (Sinatra).
+class APIRestManager
+
+  # Inicializa la API REST.
+  #
+  #   Principalmente, carga todos los ficheros fuente (.rb) contenidos
+  # en el directorio *game/api/rest*.
+  def self.setup()
+    #-- Metodos HTTP (GET y POST) de la API REST #++
+    require_dir("./rb/game/**/*.rb", "Leyendo URIs: ")
+  end
+
+end
+
 
