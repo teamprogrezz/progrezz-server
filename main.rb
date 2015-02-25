@@ -7,7 +7,7 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 
 #-- Require especial (con expresiones regulares, para directorios). #++
-require './rb/require_dir'
+require './rb/generic_utils'
 
 #-- Cargar datos referente a la base de datos. #++
 require './rb/db'

@@ -7,7 +7,7 @@ require 'neo4j'
 
 # Tirar base de datos
 get '/test/drop' do
-  DatabaseManager.drop()
+  Game::Database::DatabaseManager.drop()
   redirect to('/test/list')
 end
 
