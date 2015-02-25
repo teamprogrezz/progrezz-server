@@ -10,11 +10,6 @@ require "sinatra/reloader" if development?
 #
 # Funciona como contenedor de una aplicación Ruby Sinatra.
 class ProgrezzServer < Sinatra::Base
-  # Método index de prueba.
-  get '/' do
-    erb :index, :locals => {:test => "Prueba" }
-  end
-
 end
 
 #-- Require especial (con expresiones regulares, para directorios). #++

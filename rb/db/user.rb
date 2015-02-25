@@ -6,24 +6,33 @@ module Game
   module Database
 
     # Clase que representa a un jugador cualquiera en la base de datos.
+    #
+    # Se caracteriza por estar enlazado con diversos tipos de nodos, 
+    # adem谩s de tener una serie de propiedades o atributos.
+    #
+    # Se considera un objeto geolocalizado.
     class User < GeolocatedObject
       include Neo4j::ActiveNode
       
-      # -------------------------
-      #      Atributos (DB)
-      # -------------------------
-      property :user_id, constraint: :unique  # Identificador de usuario (correo, 鷑ico en la BD)
+      #-- -------------------------
+      #        Atributos (DB)
+      #   ------------------------- #++
+      property :user_id, constraint: :unique  # Identificador de usuario (correo, 煤nico en la BD)
       property :alias                         # Alias o nick del usuario.
-      property :created_at                    # Timestamp o fecha de creaci髇 del usuario.
+      property :created_at                    # Timestamp o fecha de creaci贸n del usuario.
 
-      # -------------------------
-      #    M閠odos de clase
-      # -------------------------
+      #-- -------------------------
+      #      M茅todos de clase
+      #   ------------------------- #++
 
-      # Creaci髇 de nuevos usuarios
-      # al  -> alias
-      # uid -> identificador de usuario (correo)
-      def self.sign_in(al, uid)
+      # Creaci贸n de nuevos usuarios.
+      #
+      # En caso de error, lanzar谩 una excepci贸n como una String (Exception).
+      #
+      # * *Argumentos* :
+      #   - +al+: Alias o nick del usuario.
+      #   - +uid+: Identificador de usuario (correo electr贸nico).
+      def self.sign_up(al, uid)
         begin
           user = create( {alias: al, user_id: uid });
           user.geolocation = Geolocation.create_geolocation();
@@ -35,11 +44,14 @@ module Game
         return user
       end
 
-      # -------------------------
-      #        M閠odos
-      # -------------------------
+      #-- -------------------------
+      #          M茅todos
+      #   ------------------------- #++
 
-      # Stringificar objeto
+      # Stringificar objeto.
+      #
+      # * *Retorna* :
+      #   - Objeto como string, con el formato "<User +user_id+,+alias+,+geolocation+>".
       def to_s
         return "<User: " + self.user_id + ", " + self.alias + ", " + super.to_s + ">" 
       end
