@@ -1,0 +1,62 @@
+<h1>Lista de usuarios</h1>
+<table border="1" width="100%">
+  <tr>
+    <th>Alias</th>
+    <th>Correo</th>
+  <th>Geolocalización</th>
+  </tr>
+  <% users.each do |user| %>
+  <tr>
+   <td><%= user.alias %></td>
+   <td><%= user.user_id %></td>
+   <td><%= user.geolocation.latitude.to_s + ", " + user.geolocation.longitude.to_s %></td>
+  </tr>
+  <% end %>
+</table>
+
+
+
+<h1>Lista de mensajes por usuario</h1>
+<ol>
+  <% users.each do |user| %>
+  <li>
+    <h3><%= user.alias + " (" + user.user_id + ")" %></h3>
+    <table border="1" width="80%">
+      <tr>
+        <th>Contenido</th>
+        <th>Fragmentos</th>
+        <th>Recurso</th>
+        <th>Autor</th>
+      </tr>
+      <% user.written_messages.each do |msg| %>
+      <tr>
+        <td><%= msg.content %></td>
+        <td><%= msg.total_fragments %></td>
+        <td><%= msg.resource_link != nil ? msg.resource_link : "$NONE$" %></td>
+        <td><%= msg.author != nil ? msg.author.alias : "$NONE$" %></td>
+      </tr>
+      <% end %>
+    </table>
+  </li>
+  <% end %>
+</ol>
+
+
+
+<h1>Lista de mensajes sin autor</h1>
+<table border="1" width="100%">
+  <tr>
+    <th>Contenido</th>
+    <th>Fragmentos</th>
+    <th>Recurso</th>
+  </tr>
+  <% messages.each do |msg| %>
+    <% if msg.author == nil %>
+    <tr>
+      <td><%= msg.content %></td>
+      <td><%= msg.total_fragments %></td>
+      <td><%= msg.resource_link != nil ? msg.resource_link : "$NONE$" %></td>
+    </tr>
+    <% end %>
+  <% end %>
+</table>

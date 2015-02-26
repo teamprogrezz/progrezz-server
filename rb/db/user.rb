@@ -1,10 +1,13 @@
 # encoding: UTF-8
 
-require 'neo4j'
+require_relative 'geolocated_object'
 
 module Game
   module Database
-
+    
+    #-- Forward declarations #++
+    class Message; end
+    
     # Clase que representa a un jugador cualquiera en la base de datos.
     #
     # Se caracteriza por estar enlazado con diversos tipos de nodos, 
@@ -22,6 +25,13 @@ module Game
       property :created_at                    # Timestamp o fecha de creación del usuario.
 
       #-- -------------------------
+      #     Relaciones (DB)
+      #   ------------------------- #++
+      
+      # Relación con mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
+      has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written"
+
+      #-- -------------------------
       #      Métodos de clase
       #   ------------------------- #++
 
@@ -36,7 +46,7 @@ module Game
         begin
           user = create( {alias: al, user_id: uid });
           user.geolocation = Geolocation.create_geolocation();
-
+          
         rescue Exception => e
           raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message;
         end
@@ -47,6 +57,13 @@ module Game
       #-- -------------------------
       #          Métodos
       #   ------------------------- #++
+      
+      # Añadir nuevo mensaje.
+      # * *Argumentos* :
+      #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
+      def add_msg(message)
+        self.written_messages << message
+      end
 
       # Stringificar objeto.
       #

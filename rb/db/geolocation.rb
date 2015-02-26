@@ -1,7 +1,5 @@
 # encoding: UTF-8
 
-require 'neo4j'
-
 module Game
   module Database
 
@@ -35,7 +33,6 @@ module Game
 
       #-- -------------------------
       #      Atributos (DB)
-      # 
       #   ------------------------- #++
       
       # Latitud.
@@ -88,7 +85,7 @@ module Game
         @is_updating = false
       end
       
-      private :after_save_callback, :clamp
+      private :after_save_callback
     end
   end
 end
