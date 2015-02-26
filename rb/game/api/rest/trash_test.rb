@@ -20,16 +20,26 @@ module REST
       
       def db_add()
         begin
-          # Usuarios
-          user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com' )
-          user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
+
+          pre_time = Time.now
+            # Usuarios
+            user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com' )
+            user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
+          puts "Tiempo de creación de usuarios: " + (Time.now - pre_time).to_s
           
-          # Mensajes
-          Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
-          Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
-          Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
+          pre_time = Time.now
+            # Mensajes con autor
+            Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
+            Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
+            Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
+          puts "Tiempo de creación de mensajes con autor: " + (Time.now - pre_time).to_s
           
-          Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+          pre_time = Time.now
+            # Mensajes sin autor
+            Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
+            Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
+            Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+          puts "Tiempo de creación de mensajes sin autor: " + (Time.now - pre_time).to_s
 
           return "<h2>Datos añadidos correctamente.</h2>"
 

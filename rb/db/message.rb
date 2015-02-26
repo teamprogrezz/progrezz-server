@@ -1,4 +1,5 @@
 require_relative 'user'
+require_relative 'message_fragment'
 
 module Game
   module Database
@@ -34,13 +35,19 @@ module Game
       
       # Recurso adicional (imagen, hipervínculo, ...). Totalmente opcional.
       property :resource_link, type: String
+      
+      # Timestamp o fecha de creación del mensaje.
+      property :created_at
 
       #-- -------------------------
       #       Relaciones (DB)
       #   ------------------------- #++
       
       # Relación con un autor. Se puede acceder con el atributo +author+.
-      has_one :in, :author, model_class: Game::Database::User, origin: :written_messages #type: "is_written_by"
+      has_one :in, :author, model_class: Game::Database::User, origin: :written_messages
+      
+      # Relación con los fragmentos del mensaje. Se puede acceder con el atributo +fragments+.
+      has_many :out, :fragments, model_class: Game::Database::MessageFragment, type: "is_fragmented_in" 
 
       #-- -------------------------
       #      Métodos de clase
@@ -56,16 +63,23 @@ module Game
       #
       # * *Retorna* :
       #   - Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil)
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = [0, 0])
         begin
           message = create( {content: cont, total_fragments: n_fragments, resource_link: resource });
           if custom_author != nil
             custom_author.add_msg(message)
-            message.author = custom_author
+          end
+          
+          # Para cada fragmento, se crea un nuevo nodo en la bd
+          for fragment_index in 0..(message.total_fragments) do
+            # TODO: Cableado
+            Game::Database::MessageFragment.create_message_fragment(message, fragment_index, position)
           end
 
         rescue Exception => e
-          raise "DB ERROR: Cannot create message '" + self.to_s() + "': \n\t" + e.message;
+          puts e.message
+          puts e.backtrace
+          raise "DB ERROR: Cannot create message: \n\t" + e.message;
         end
         
         return message
