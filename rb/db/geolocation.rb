@@ -35,10 +35,8 @@ module Game
       #      Atributos (DB)
       #   ------------------------- #++
       
-      # Latitud.
-      property :latitude,  type: Float
-      # Longitud.
-      property :longitude, type: Float
+      property :latitude,  type: Float      # Latitud.
+      property :longitude, type: Float      # Longitud.
 
       #-- -------------------------
       #      Callbacks (DB)

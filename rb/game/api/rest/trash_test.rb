@@ -11,11 +11,47 @@ module REST
 
   # Módulo de la api REST para hacer pruebas.
   module Trash
+    module Helpers
+      def db_drop()
+        Game::Database::DatabaseManager.drop()
+        
+        return "<h2>Database droped.</h2>"
+      end
+      
+      def db_add()
+        begin
+          # Usuarios
+          user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com' )
+          user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
+          
+          # Mensajes
+          Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
+          Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
+          Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
+          
+          Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+
+          return "<h2>Datos añadidos correctamente.</h2>"
+
+        rescue Exception => e
+          return "<pre>" + e.class.name + " -> " + e.message + "</pre>"
+        end
+      end
+      
+      def db_reset()
+        db_drop()
+        return db_add()
+      end
+       
+    end
+    
     def self.registered(app)
+       # Añadir "ayudas".
+      app.helpers Helpers
+      
       # Tirar base de datos
       app.get '/test/drop' do
-        Game::Database::DatabaseManager.drop()
-        return "<h1>Database droped.</h1>"
+        return db_drop()
       end
 
       # Listar datos de prueba
@@ -25,25 +61,16 @@ module REST
 
       # Añadir datos de prueba
       app.get '/test/add' do
-        begin
-          # Usuarios
-          user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com' )
-          user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
-          
-          # Mensajes
-          t = Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
-          Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
-          Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
-          
-          Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
-          
-          puts t.author
-          
-          redirect to('/test/list')
+        return db_add()
+      end
 
-        #rescue Exception => e
-        #  return "<pre>" + e.class.name + " -> " + e.message + "</pre>"
-        end
+      # Reiniciar prueba
+      app.get '/test/reset' do
+        msg = db_reset()
+        
+        if msg != "<h2>Datos añadidos correctamente.</h2>"; return msg end
+        
+        erb :list, :views => "views/test/", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
       end
 
     end

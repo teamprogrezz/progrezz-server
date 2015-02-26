@@ -3,8 +3,21 @@ require_relative 'user'
 module Game
   module Database
     
+    # Clase que representa a un mensaje en la base de datos.
+    #
+    # Se caracteriza por estar enlazado con diversos tipos de nodos, principalmente con
+    # un autor y una serie de fragmentos geolocalizados.
     class Message
       include Neo4j::ActiveNode
+      
+      #-- -------------------------
+      #        Constantes
+      #   ------------------------- #++
+      
+      # Nombre de autor desconocido.
+      NO_AUTHOR = "$NONE$"
+      # Nombre de recurso no especificado.
+      NO_RESOURCE = "$NONE$"
       
       #-- -------------------------
       #        Atributos (DB)
@@ -35,11 +48,14 @@ module Game
 
       # Creación de nuevos mensajes.
       #
-      # * *Argumentos* :
+      # * *Argumentos*:
       #   - +cont+: Contenido del mensaje.
       #   - +n_fragments+: Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
       #   - +resource+: Recurso mediático (opcional).
       #   - +custom_author+: Autor del mensaje (opcional).
+      #
+      # * *Retorna* :
+      #   - Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
       def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil)
         begin
           message = create( {content: cont, total_fragments: n_fragments, resource_link: resource });
@@ -54,18 +70,36 @@ module Game
         
         return message
       end
-    end
     
-    #-- -------------------------
-    #          Métodos
-    #   ------------------------- #++
-    
-    # Stringificar objeto.
-    #
-    # * *Retorna* :
-    #   - Objeto como string, con el formato "<User +user_id+,+alias+,+geolocation+>".
-    def to_s
-      return "<Message: " + self.content + ", " + self.author + ", " + self.total_fragments + ", " + self.resource_link + ">" 
+      #-- -------------------------
+      #          Métodos
+      #   ------------------------- #++
+      
+      # Getter del autor.
+      #
+      # * *Retorna* :
+      #   - Autor del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_AUTHOR
+      def get_author()
+        if(self.author == nil); return NO_AUTHOR end
+        return self.author
+      end
+      
+      # Getter del recurso mediático.
+      #
+      # * *Retorna* :
+      #   - Recurso mediático del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_RESOURCE
+      def get_resource()
+        if(self.resource_link == nil); return NO_RESOURCE end
+        return self.resource_link
+      end
+      
+      # Stringificar objeto.
+      #
+      # * *Retorna* :
+      #   - Objeto como string, con el formato "<Message +content+,+author+,+total_fragments+,+resource_link+>".
+      def to_s()
+        return "<Message: " + self.content + ", " + get_author() + ", " + self.total_fragments.to_s + ", " + get_resource() + ">" 
+      end
     end
   end
 end
