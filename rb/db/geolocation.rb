@@ -52,7 +52,7 @@ module Game
       # * *Retorna* :
       #   - Referencia al objeto creado en la base de datos, de tipo Game::Database::Geolocation.
       def self.create_geolocation(lat = 0.0, long = 0.0)
-        return create( {latitude: lat, longitude: long} ).clamp
+        return create( {latitude: lat, longitude: long} )#.clamp
       end
 
       # Ajustar posición a valores reales.
@@ -83,7 +83,7 @@ module Game
         @is_updating = false
       end
       
-      private :after_save_callback
+      private   :after_save_callback
     end
   end
 end

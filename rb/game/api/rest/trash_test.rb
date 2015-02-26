@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'neo4j'
+require 'cgi'
 
 module Sinatra #:nodoc: all
 
@@ -20,32 +21,50 @@ module REST
       
       def db_add()
         begin
-
-          pre_time = Time.now
-            # Usuarios
+          user_Wikiti = nil
+          user_Shylpx = nil
+          
+          tx = Neo4j::Transaction.new
+          
+          # Usuarios
+          puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
             user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com' )
             user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
-          puts "Tiempo de creación de usuarios: " + (Time.now - pre_time).to_s
+          end).to_s
           
-          pre_time = Time.now
-            # Mensajes con autor
+          # Mensajes con autor
+          puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
             Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
             Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
             Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
-          puts "Tiempo de creación de mensajes con autor: " + (Time.now - pre_time).to_s
+          end).to_s
           
-          pre_time = Time.now
-            # Mensajes sin autor
+          # Mensajes sin autor
+          puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
             Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
             Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
             Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
-          puts "Tiempo de creación de mensajes sin autor: " + (Time.now - pre_time).to_s
-
-          return "<h2>Datos añadidos correctamente.</h2>"
+          end).to_s
+          
+          # Buscar mensajes de Wikiti
+          puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
+            Game::Database::User.all.where( alias: "Wikiti").first.written_messages
+          end).to_s
+          
+          result = "<h2>Datos añadidos correctamente.</h2>"
 
         rescue Exception => e
-          return "<pre>" + e.class.name + " -> " + e.message + "</pre>"
+          tx.failure()
+          
+          puts e.message
+          puts e.backtrace
+          result = e.class.name + " -> " + e.message
+          
+        ensure
+          tx.close()
         end
+        
+        return result
       end
       
       def db_reset()
@@ -71,14 +90,14 @@ module REST
 
       # Añadir datos de prueba
       app.get '/test/add' do
-        return db_add()
+        return CGI.escapeHTML( db_add() )
       end
 
       # Reiniciar prueba
       app.get '/test/reset' do
         msg = db_reset()
         
-        if msg != "<h2>Datos añadidos correctamente.</h2>"; return msg end
+        if msg != "<h2>Datos añadidos correctamente.</h2>"; return ("<pre>" + CGI.escapeHTML( msg ) + "</pre>") end
         
         erb :list, :views => "views/test/", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
       end

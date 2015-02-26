@@ -16,6 +16,18 @@ class GenericUtils
       require file.split(/\.rb/)[0]
     }
   end
+  
+  # Medir el tiempo que tarda en ejecutar un bloque de código.
+  #
+  # * *Devuelve* 
+  #   - Tiempo que ha tardado en ejecutarse el bloque.
+  #
+  def self.timer()
+    pre_time = Time.now
+    yield
+    
+    return Time.now - pre_time
+  end
 
   #-- ...  #++
 end

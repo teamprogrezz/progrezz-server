@@ -16,7 +16,7 @@ module Game
       #   ------------------------- #++
       
       has_one :out, :geolocation, model_class: Game::Database::Geolocation, type: "is_located_at" # Relación con posición geolocalizada. Se puede acceder con el atributo +geolocation+.
-
+      
       #-- -------------------------
       #        Métodos
       #   ------------------------- #++

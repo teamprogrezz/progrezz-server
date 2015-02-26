@@ -23,14 +23,14 @@ module Game
       property :user_id, constraint: :unique  # Identificador de usuario (correo, único en la BD)
       property :alias                         # Alias o nick del usuario.
       property :created_at                    # Timestamp o fecha de creación del usuario.
-
+      
       #-- -------------------------
       #     Relaciones (DB)
       #   ------------------------- #++
       
       # Relación con mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
       has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written"
-
+      
       #-- -------------------------
       #      Métodos de clase
       #   ------------------------- #++
