@@ -1,4 +1,4 @@
-
+task :default => ["server:start"]
 
 namespace :neo4j do
   desc 'Start the Neo4j Server'
@@ -15,11 +15,11 @@ end
 namespace :server do
   desc 'Start the server'
   task :start do
-    sh 'rackup' # ¿?
+    sh 'bundle exec rackup'
   end
 
   desc 'Start the server (network test)'
   task :start_net do
-    sh 'ruby main.rb -o 0.0.0.0'
+    sh 'ruby main.rb -o 0.0.0.0' # ¿?
   end
 end

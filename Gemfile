@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
+ruby '2.2.0'
 
 gem "sinatra"
 gem "sinatra-jsonp"
@@ -9,11 +9,8 @@ gem "neo4j"
 
 group :development do
   gem "sinatra-reloader"
-  gem 'dm-sqlite-adapter'
-  gem 'do_sqlite3'
 end
 
 group :production do
-  gem 'pg'
-  gem 'dm-postgres-adapter' 
+
 end
