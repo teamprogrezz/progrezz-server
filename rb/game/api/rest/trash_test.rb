@@ -75,6 +75,11 @@ module REST
             user_Shylpx.collect_fragment( fragments[1] )
           end).to_s
           
+          # Borrar usuario
+          puts "Tiempo de borrado de Wikiti: " + (GenericUtils.timer do
+            #user_Wikiti.destroy
+          end).to_s
+          
           result = "<h2>Datos añadidos correctamente.</h2>"
 
         rescue Exception => e

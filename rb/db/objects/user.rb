@@ -30,8 +30,12 @@ module Game
       #     Relaciones (DB)
       #   ------------------------- #++
       
-      # Relación de mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
-      has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written"
+      # Relación de mensajes creados por el usuario.
+      #
+      # Si se borra el usuario, se borrarán todos sus mensajes.
+      #
+      # Se puede acceder con el atributo +written_messages+.
+      has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written", dependent: :destroy
       
       # Relación de fragmentos recolectados por el usuario. Se puede acceder con el atributo +collected_fragment_messages+.
       has_many :out, :collected_fragment_messages, rel_class: Game::Database::RelationShips::UserFragmentMessage, model_class: Game::Database::MessageFragment

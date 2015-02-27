@@ -48,7 +48,8 @@ module Game
       has_one :in, :author, model_class: Game::Database::User, origin: :written_messages
       
       # Relación con los fragmentos del mensaje. Se puede acceder con el atributo +fragments+.
-      has_many :out, :fragments, model_class: Game::Database::MessageFragment, type: "is_fragmented_in" 
+      # Si el mensaje se borra, desaparecerán todos los fragmentos.
+      has_many :out, :fragments, model_class: Game::Database::MessageFragment, type: "is_fragmented_in", dependent: :destroy
 
       # Relación con los usuarios que han completado este mensaje. Se puede acceder con el atributo +owners+.
       has_many :in, :owners, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::User
