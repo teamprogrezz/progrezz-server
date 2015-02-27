@@ -44,7 +44,7 @@ module Game
       #   - +uid+: Identificador de usuario (correo electrónico).
       def self.sign_up(al, uid)
         begin
-          user = create( {alias: al, user_id: uid, latitude: 0.0, longitude: 0.0, test_hash: { a: "1" } });
+          user = create( { alias: al, user_id: uid } );
               
         rescue Exception => e
           puts e.message

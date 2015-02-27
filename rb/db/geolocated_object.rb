@@ -35,8 +35,7 @@ module Game
       #      Atributos (DB)
       #   ------------------------- #++
       
-      property :latitude,  type: Float      # Latitud.
-      property :longitude, type: Float      # Longitud.
+      property :geolocated_pos, default: [0.0, 0.0] # Array que contiene la geolocalización, con formato [latitude, longitud].
 
 
       #-- -------------------------
@@ -54,8 +53,8 @@ module Game
       #   - +lat+: Nueva latitud  (usar nil para no modificar).
       #   - +long+: Nueva longitud (usar nil para no modificar).
       def set_geolocation(lat = nil, long = nil)
-        if lat != nil;  self.latitude = lat end
-        if long != nil; self.longitude = long end
+        if lat != nil;  self.geolocated_pos[0] = lat end
+        if long != nil; self.geolocated_pos[1] = long end
 
        self.save
       end
@@ -65,17 +64,27 @@ module Game
       # * *Retorna* :
       #   - Array con la latitud y la longitud, con el formato [latitud, longitud].
       def geolocation()
-        return { latitude: self.latitude, longitude: self.longitude }
+        return { latitude: self.geolocated_pos[0], longitude: self.geolocated_pos[1] }
       end
       
       # Ajustar posición a valores reales.
       # * *Retorna* :
       #   - Referencia al objeto ajustado.
       def clamp()
-        self.latitude  = [MIN_LATITUDE,  self.latitude,  MAX_LATITUDE ].sort[1]
-        self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
+        self.geolocated_pos[0] = [MIN_LATITUDE,  self.geolocated_pos[0], MAX_LATITUDE ].sort[1]
+        self.geolocated_pos[1] = [MIN_LONGITUDE, self.geolocated_pos[1], MAX_LONGITUDE].sort[1]
         self.save
         return self
+      end
+      
+      # Ajustar posición a valores reales (método estático).
+      # * *Retorna* :
+      #   - Referencia al objeto ajustado.
+      def self.clamp(pos)
+        pos[0] = [MIN_LATITUDE,  pos[0], MAX_LATITUDE ].sort[1]
+        pos[1] = [MIN_LONGITUDE, pos[1], MAX_LONGITUDE].sort[1]
+        
+        return pos
       end
       
       # Stringificar objeto.
@@ -83,7 +92,7 @@ module Game
       # * *Retorna* :
       #   - Objeto como string, con el formato "<Geolocation: +latitud+,+longitud+>".
       def to_s()
-        return "<Geolocation: " + self.latitude.to_s + "," + self.longitude.to_s + ">"
+        return "<Geolocation: " + self.geolocated_pos[0].to_s + "," + self.geolocated_pos[1].to_s + ">"
       end
       
       
