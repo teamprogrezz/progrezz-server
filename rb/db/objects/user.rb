@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require_relative 'geolocated_object'
+require_relative '../relations/user-message_fragment'
 
 module Game
   module Database
@@ -30,6 +31,9 @@ module Game
       
       # Relación con mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
       has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written"
+      
+      # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +:collected_fragmented_messages+.
+      has_many :out, :collected_fragmented_messages, rel_class: Game::Database::RelationShips::UserFragmentMessage
       
       #-- -------------------------
       #      Métodos de clase

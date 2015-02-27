@@ -24,6 +24,8 @@ module REST
           user_Wikiti = nil
           user_Shylpx = nil
           
+          msg_n1 = nil
+          
           tx = Neo4j::Transaction.new
           
           # Usuarios
@@ -41,7 +43,7 @@ module REST
           
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-            Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
+            msg_n1 = Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
             Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
             Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
           end).to_s
@@ -49,6 +51,13 @@ module REST
           # Buscar mensajes de Wikiti
           puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
             Game::Database::User.all.where( alias: "Wikiti").first.written_messages
+          end).to_s
+          
+          # Añadir fragmentos a Wikiti
+          puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
+            fragments = msg_n1.fragments
+            Game::Database::RelationShips::UserFragmentMessage.create(from_node: user_Wikiti, to_node: fragments[0] )
+            Game::Database::RelationShips::UserFragmentMessage.create(from_node: user_Wikiti, to_node: fragments[2] )
           end).to_s
           
           result = "<h2>Datos añadidos correctamente.</h2>"

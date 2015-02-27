@@ -1,3 +1,5 @@
+require_relative '../relations/user-message_fragment'
+
 module Game
   module Database
 
@@ -16,6 +18,10 @@ module Game
       
       # Relación con el mensaje padre. Se puede acceder con el atributo +message+.
       has_one :in, :message, model_class: Game::Database::Message, origin: :fragments
+      
+      # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +:collected_fragmented_messages+.
+      has_many :in, :owners, rel_class: Game::Database::RelationShips::UserFragmentMessage
+      
       
       #-- -------------------------
       #      Métodos de clase
