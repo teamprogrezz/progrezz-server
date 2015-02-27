@@ -68,7 +68,7 @@ module Game
       #
       # * *Retorna* :
       #   - Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = [0, 0])
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 })
         begin
           message = create( {content: cont, total_fragments: n_fragments, resource_link: resource });
           if custom_author != nil

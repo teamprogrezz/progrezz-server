@@ -20,6 +20,13 @@ module Game
       include Neo4j::ActiveNode
       
       #-- -------------------------
+      #        Constantes
+      #   ------------------------- #++
+      
+      # Fragmentos en los que se partirán los mensajes de un usuario.
+      USER_MESSAGE_FRAGMENTS = 1 
+      
+      #-- -------------------------
       #        Atributos (DB)
       #   ------------------------- #++
       property :user_id, constraint: :unique  # Identificador de usuario (correo, único en la BD)
@@ -72,10 +79,22 @@ module Game
       #   ------------------------- #++
       
       # Añadir nuevo mensaje.
+      #
       # * *Argumentos* :
       #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
       def add_msg(message)
         self.written_messages << message
+      end
+      
+      # Escribir nuevo mensaje.
+      #
+      # * *Argumentos* :
+      #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
+      #
+      # * *Retorna* :
+      #   - Referencia al nuevo mensaje escrito.
+      def write_msg(content, resource = nil)
+        Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation() )
       end
       
       # Recoger fragmento.
@@ -118,9 +137,7 @@ module Game
           total_fragments_count         = fragment_message.message.total_fragments
           collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
           collected_fragments_rel_count = collected_fragments_rel.count
-          
-          puts collected_fragments_rel_count.to_s + "/" + total_fragments_count.to_s
-          
+
           if collected_fragments_rel_count == total_fragments_count - 1
             # Borrar los fragmentos
             collected_fragments_rel.each do |fragment_relation|

@@ -36,9 +36,9 @@ module REST
           
           # Mensajes con autor
           puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
-            messages << Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
-            messages << Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
-            messages << Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
+            messages << user_Wikiti.write_msg( "Mensaje de prueba de Wikiti." )
+            messages << user_Wikiti.write_msg( "Mensaje de prueba de Shylpx n2 (robado)." )
+            messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
           end).to_s
           
           # Mensajes sin autor
@@ -74,6 +74,9 @@ module REST
             fragments = messages[3].fragments
             user_Shylpx.collect_fragment( fragments[0] )
             user_Shylpx.collect_fragment( fragments[1] )
+            
+            fragments = messages[0].fragments
+            user_Shylpx.collect_fragment( fragments[0] )
           end).to_s
           
           # Borrar usuario
