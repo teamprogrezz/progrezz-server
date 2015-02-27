@@ -106,7 +106,6 @@ module Game
           end
           
           # Si ya tiene el fragmento, no volver a añadirlo
-          fragment_list = self.collected_fragment_messages.where(uuid: fragment_message.uuid)
           if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
             return nil
           end
@@ -116,12 +115,17 @@ module Game
           #   fragmentos del mensaje del fragmento actual es el número total de fragmentos
           #   menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
           #   marcado como completo. TODO: Mensajes de un sólo fragmento. 
-          total_fragments = fragment_message.message.total_fragments
-          collected_fragments = self.collected_fragment_messages.message.where(uuid: fragment_message.message.uuid).count
+          total_fragments_count         = fragment_message.message.total_fragments
+          collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
+          collected_fragments_rel_count = collected_fragments_rel.count
           
-          if collected_fragments == total_fragments - 1
+          puts collected_fragments_rel_count.to_s + "/" + total_fragments_count.to_s
+          
+          if collected_fragments_rel_count == total_fragments_count - 1
             # Borrar los fragmentos
-            fragment_list.each { |rel| puts rel }
+            collected_fragments_rel.each do |fragment_relation|
+              fragment_relation.destroy
+            end
             
             # Y Añadir el mensaje como completado
             Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message )

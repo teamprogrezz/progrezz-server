@@ -62,10 +62,11 @@ module REST
             user_Wikiti.collect_fragment( fragments[1] )
             
             # Añadir mensaje completo
-            fragments = messages[4].fragments
+            fragments = messages[3].fragments
             user_Wikiti.collect_fragment( fragments[0] )
             user_Wikiti.collect_fragment( fragments[1] )
             user_Wikiti.collect_fragment( fragments[2] )
+            user_Wikiti.collect_fragment( fragments[3] )
           end).to_s
           
           # Añadir fragmentos a Shylpx
