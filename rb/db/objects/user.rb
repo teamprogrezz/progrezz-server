@@ -75,21 +75,59 @@ module Game
       end
       
       # Recoger fragmento.
+      #
+      # No se recogerán fragmentos repetidos ni del propio usuario.
+      # En caso de recoger todos los fragmentos, se añadirá el mensaje
+      # a la lista de mensajes completados por el usuario. 
+      #
       # * *Argumentos* :
       #   - +fragment+: Nuevo fragmento a añadir, de tipo +Game::Database::MessageFragment+.
+      #
+      # * *Retorna* :
+      #   - Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido.
+      #   - Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje.
+      #   - En cualquier otro caso, devuelve nil.
       def collect_fragment(fragment_message)
         if fragment_message != nil
           # Comprobar si es necesario añadir la relación
-          if (self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) || # Si ya tiene el mensaje completado, no añadir el fragmento
-             (self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil ) # Si ya tiene el fragmento, no volver a añadirlo
+          
+          # Si el fragmento es suyo, no recogerlo
+          if (fragment_message.message.author != nil && fragment_message.message.author == self)
             return nil
           end
           
-          # TODO: Comprobar si es necesario quitarla, ya que ha completado el mensaje.
-          # ...
+          # Si ya tiene el mensaje completado, no añadir el fragmento
+          if ( self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) 
+             return nil
+          end
           
-          Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
+          # Si ya tiene el fragmento, no volver a añadirlo
+          fragment_list = self.collected_fragment_messages.where(uuid: fragment_message.uuid)
+          if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
+            return nil
+          end
+          
+          # Comprobar si es necesario quitarla, ya que ha completado el mensaje.
+          #   En este punto, se han descartado fragmentos repetidos. Si la cantidad de
+          #   fragmentos del mensaje del fragmento actual es el número total de fragmentos
+          #   menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
+          #   marcado como completo. TODO: Mensajes de un sólo fragmento. 
+          total_fragments = fragment_message.message.total_fragments
+          collected_fragments = self.collected_fragment_messages.message.where(uuid: fragment_message.message.uuid).count
+          
+          if collected_fragments == total_fragments - 1
+            # Borrar los fragmentos
+            fragment_list.each { |rel| puts rel }
+            
+            # Y Añadir el mensaje como completado
+            Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message )
+            
+          else
+            Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
+          end
         end
+        
+        return nil
       end
 
       # Stringificar objeto.
