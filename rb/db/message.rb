@@ -77,8 +77,7 @@ module Game
           end
 
         rescue Exception => e
-          puts e.message
-          puts e.backtrace
+          puts e.to_s
           raise "DB ERROR: Cannot create message: \n\t" + e.message;
         end
         

@@ -9,7 +9,7 @@
   <tr>
    <td><%= user.alias %></td>
    <td><%= user.user_id %></td>
-   <td><%= user.geolocation.latitude.to_s + ", " + user.geolocation.longitude.to_s %></td>
+   <td><%= user.geolocation[:latitude].to_s + ", " + user.geolocation[:longitude].to_s %></td>
   </tr>
   <% end %>
 </table>

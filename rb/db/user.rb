@@ -44,9 +44,8 @@ module Game
       #   - +uid+: Identificador de usuario (correo electrónico).
       def self.sign_up(al, uid)
         begin
-          user = create( {alias: al, user_id: uid });
-          user.geolocation = Geolocation.create_geolocation();
-          
+          user = create( {alias: al, user_id: uid, latitude: 0.0, longitude: 0.0, test_hash: { a: "1" } });
+              
         rescue Exception => e
           puts e.message
           puts e.backtrace

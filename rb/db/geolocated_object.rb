@@ -12,10 +12,37 @@ module Game
       include Neo4j::ActiveNode
 
       #-- -------------------------
-      #     Relaciones (DB)
+      #        Constantes
       #   ------------------------- #++
       
-      has_one :out, :geolocation, model_class: Game::Database::Geolocation, type: "is_located_at" # Relación con posición geolocalizada. Se puede acceder con el atributo +geolocation+.
+      # Mínima latitud posible.
+      MIN_LATITUDE  = -90
+      # Máxima latitud posible.
+      MAX_LATITUDE  =  90
+      # Mínima longitud posible.
+      MIN_LONGITUDE = -180
+      # Máxima longitud posible.
+      MAX_LONGITUDE =  180
+
+      #-- -------------------------
+      #        Atributos
+      #   ------------------------- #++
+      
+      # Variable auxiliar para comprobar si el objeto está siendo actualizado.
+      attr_reader :is_updating
+
+      #-- -------------------------
+      #      Atributos (DB)
+      #   ------------------------- #++
+      
+      property :latitude,  type: Float      # Latitud.
+      property :longitude, type: Float      # Longitud.
+
+
+      #-- -------------------------
+      #      Callbacks (DB)
+      #   ------------------------- #++
+      after_save :after_save_callback # Callback posterior a la modificación de la latitud y longitud.
       
       #-- -------------------------
       #        Métodos
@@ -26,28 +53,51 @@ module Game
       # * *Argumentos* :
       #   - +lat+: Nueva latitud  (usar nil para no modificar).
       #   - +long+: Nueva longitud (usar nil para no modificar).
-      def set_position(lat = nil, long = nil)
-        if lat != nil;  self.geolocation.latitude = lat end
-        if long != nil; self.geolocation.longitude = long end
+      def set_geolocation(lat = nil, long = nil)
+        if lat != nil;  self.latitude = lat end
+        if long != nil; self.longitude = long end
 
-        geolocation.save
+       self.save
       end
 
       # Getter de la posición.
       #
       # * *Retorna* :
       #   - Array con la latitud y la longitud, con el formato [latitud, longitud].
-      def get_position()
-        return [self.geolocation.latitude, self.geolocation.longitude]
+      def geolocation()
+        return { latitude: self.latitude, longitude: self.longitude }
+      end
+      
+      # Ajustar posición a valores reales.
+      # * *Retorna* :
+      #   - Referencia al objeto ajustado.
+      def clamp()
+        self.latitude  = [MIN_LATITUDE,  self.latitude,  MAX_LATITUDE ].sort[1]
+        self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
+        self.save
+        return self
       end
       
       # Stringificar objeto.
       #
       # * *Retorna* :
-      #   - Objeto como string (retorna Geolocation.to_s).
+      #   - Objeto como string, con el formato "<Geolocation: +latitud+,+longitud+>".
       def to_s()
-        return self.geolocation.to_s
+        return "<Geolocation: " + self.latitude.to_s + "," + self.longitude.to_s + ">"
       end
+      
+      
+      # Callback lanzado después de guardar el objeto, para hacer comprobaciones (posición real, etc).
+      def after_save_callback()
+        if @is_updating == true; return end
+        @is_updating = true
+
+        clamp()
+
+        @is_updating = false
+      end
+      
+      private   :after_save_callback
 
     end
   end

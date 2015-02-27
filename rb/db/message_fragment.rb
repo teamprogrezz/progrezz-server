@@ -31,11 +31,10 @@ module Game
       #   - +position+: Posición geolocalizada del fragmento.
       def self.create_message_fragment(msg, f_index, position)
         begin
-          fmsg = create( {message: msg, fragment_index: f_index });
-          fmsg.geolocation = Geolocation.create_geolocation( position[0], position[1] );
+          fmsg = create( {message: msg, fragment_index: f_index, latitude: position[0], longitude: position[1] });
+          #fmsg.geolocation = Geolocation.create_geolocation( position[0], position[1] );
         rescue Exception => e
-          puts e.message
-          puts e.backtrace
+          puts e.to_s
           raise "DB ERROR: Cannot create fragment " + f_index.to_s + " for the message " + message.to_s + ": \n\t" + e.message;
         end
         
