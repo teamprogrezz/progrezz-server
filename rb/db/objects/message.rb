@@ -51,7 +51,7 @@ module Game
       has_many :out, :fragments, model_class: Game::Database::MessageFragment, type: "is_fragmented_in" 
 
       # Relación con los usuarios que han completado este mensaje. Se puede acceder con el atributo +owners+.
-      has_many :in, :owners, rel_class: Game::Database::RelationShips::UserCompletedMessage
+      has_many :in, :owners, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::User
       
       #-- -------------------------
       #      Métodos de clase
@@ -113,7 +113,7 @@ module Game
       # Stringificar objeto.
       #
       # * *Retorna* :
-      #   - Objeto como string, con el formato "<Message +content+,+author+,+total_fragments+,+resource_link+>".
+      #   - Objeto como string, con el formato "<Message: +content+,+author+,+total_fragments+,+resource_link+>".
       def to_s()
         return "<Message: " + self.content + ", " + get_author() + ", " + self.total_fragments.to_s + ", " + get_resource() + ">" 
       end

@@ -57,13 +57,21 @@ module REST
           puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
             fragments = messages[3].fragments
             user_Wikiti.collect_fragment( fragments[0] )
+            user_Wikiti.collect_fragment( fragments[0] ) # Mensaje repetido -> No añadido.
             user_Wikiti.collect_fragment( fragments[1] )
+            
+            # Añadir mensaje completo
+            fragments = messages[4].fragments
+            user_Wikiti.collect_fragment( fragments[0] )
+            user_Wikiti.collect_fragment( fragments[1] )
+            user_Wikiti.collect_fragment( fragments[2] )
           end).to_s
           
-          # Añadir mensajes a Wikiti
-          puts "Tiempo de asosiación de mensajes completados a Wikiti: " + (GenericUtils.timer do
-            Game::Database::RelationShips::UserCompletedMessage.create(from_node: user_Wikiti, to_node: messages[4] )
-            Game::Database::RelationShips::UserCompletedMessage.create(from_node: user_Wikiti, to_node: messages[5] )
+          # Añadir fragmentos a Shylpx
+          puts "Tiempo de asosiación de fragmentos a Shylpx: " + (GenericUtils.timer do
+            fragments = messages[3].fragments
+            user_Shylpx.collect_fragment( fragments[0] )
+            user_Shylpx.collect_fragment( fragments[1] )
           end).to_s
           
           result = "<h2>Datos añadidos correctamente.</h2>"

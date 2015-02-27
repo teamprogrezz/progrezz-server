@@ -8,7 +8,6 @@ module Game
     
     # Contenedor de relaciones especiales de la base de datos.
     module RelationShips
-    
       # Relación para definir los fragmentos recolectados por un usuario.
       class UserFragmentMessage
         include Neo4j::ActiveRel
@@ -22,7 +21,6 @@ module Game
         to_class   Game::Database::MessageFragment
         
         type 'owns_fragmented_message'
-        set_classname
             
         #-- -------------------------
         #        Atributos (DB)
@@ -30,7 +28,9 @@ module Game
         property :created_at # Fecha de creación del nodo (recolección del mensaje).
   
       end
+     
 
     end
   end
 end
+

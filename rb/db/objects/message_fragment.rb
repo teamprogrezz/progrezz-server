@@ -20,7 +20,7 @@ module Game
       has_one :in, :message, model_class: Game::Database::Message, origin: :fragments
       
       # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +owners+.
-      has_many :in, :owners, rel_class: Game::Database::RelationShips::UserFragmentMessage
+      has_many :in, :owners, rel_class: Game::Database::RelationShips::UserFragmentMessage, model_class: Game::Database::User
       
       
       #-- -------------------------
@@ -50,7 +50,13 @@ module Game
       #-- -------------------------
       #           Métodos
       #   ------------------------- #++
-      # ...
+      # Stringificar objeto.
+      #
+      # * *Retorna* :
+      #   - Objeto como string, con el formato "<MessageFragment: +uuid+,+message.uuid+,+fragment_index+,+geolocation+>".
+      def to_s()
+        return "<MessageFragment: " + self.uuid.to_s + ", " + self.message.uuid + ", " + fragment_index.to_s + ", " + super.to_s() + ">" 
+      end
     end
 
   end

@@ -33,11 +33,11 @@ module Game
       # Relación de mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
       has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written"
       
-      # Relación de fragmentos recolectados por el usuario. Se puede acceder con el atributo +collected_fragmented_messages+.
-      has_many :out, :collected_fragmented_messages, rel_class: Game::Database::RelationShips::UserFragmentMessage
+      # Relación de fragmentos recolectados por el usuario. Se puede acceder con el atributo +collected_fragment_messages+.
+      has_many :out, :collected_fragment_messages, rel_class: Game::Database::RelationShips::UserFragmentMessage, model_class: Game::Database::MessageFragment
       
       # Relación de mensajes completados por el usuario. Se puede acceder con el atributo +collected_completed_messages+.
-      has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage
+      has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
       
       #-- -------------------------
       #      Métodos de clase
@@ -78,8 +78,16 @@ module Game
       # * *Argumentos* :
       #   - +fragment+: Nuevo fragmento a añadir, de tipo +Game::Database::MessageFragment+.
       def collect_fragment(fragment_message)
-        # TODO: Cableado.
-        if fragment_message != nil 
+        if fragment_message != nil
+          # Comprobar si es necesario añadir la relación
+          if (self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) || # Si ya tiene el mensaje completado, no añadir el fragmento
+             (self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil ) # Si ya tiene el fragmento, no volver a añadirlo
+            return nil
+          end
+          
+          # TODO: Comprobar si es necesario quitarla, ya que ha completado el mensaje.
+          # ...
+          
           Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
         end
       end
@@ -87,7 +95,7 @@ module Game
       # Stringificar objeto.
       #
       # * *Retorna* :
-      #   - Objeto como string, con el formato "<User +user_id+,+alias+,+geolocation+>".
+      #   - Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
       def to_s
         return "<User: " + self.user_id + ", " + self.alias + ", " + super.to_s + ">" 
       end

@@ -28,8 +28,6 @@ module Game
         to_class   Game::Database::Message
         
         type 'owns_completed_message'
-        set_classname
-
         
         # -------------------------
         #       Atributos (DB)
