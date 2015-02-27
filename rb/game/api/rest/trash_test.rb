@@ -24,7 +24,7 @@ module REST
           user_Wikiti = nil
           user_Shylpx = nil
           
-          msg_n1 = nil
+          messages = []
           
           tx = Neo4j::Transaction.new
           
@@ -36,16 +36,16 @@ module REST
           
           # Mensajes con autor
           puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
-            Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
-            Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
-            Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
+            messages << Game::Database::Message.create_message("Mensaje de prueba de Wikiti.", 1, nil, user_Wikiti)
+            messages << Game::Database::Message.create_message("Mensaje de prueba de Shylpx n1.", 1, nil, user_Shylpx)
+            messages << Game::Database::Message.create_message("Mensaje de prueba de Shylpx n2 (robado).", 1, nil, user_Wikiti)
           end).to_s
           
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-            msg_n1 = Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
-            Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
-            Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+            messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
+            messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
+            messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
           end).to_s
           
           # Buscar mensajes de Wikiti
@@ -55,9 +55,15 @@ module REST
           
           # Añadir fragmentos a Wikiti
           puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
-            fragments = msg_n1.fragments
-            Game::Database::RelationShips::UserFragmentMessage.create(from_node: user_Wikiti, to_node: fragments[0] )
-            Game::Database::RelationShips::UserFragmentMessage.create(from_node: user_Wikiti, to_node: fragments[2] )
+            fragments = messages[3].fragments
+            user_Wikiti.collect_fragment( fragments[0] )
+            user_Wikiti.collect_fragment( fragments[1] )
+          end).to_s
+          
+          # Añadir mensajes a Wikiti
+          puts "Tiempo de asosiación de mensajes completados a Wikiti: " + (GenericUtils.timer do
+            Game::Database::RelationShips::UserCompletedMessage.create(from_node: user_Wikiti, to_node: messages[4] )
+            Game::Database::RelationShips::UserCompletedMessage.create(from_node: user_Wikiti, to_node: messages[5] )
           end).to_s
           
           result = "<h2>Datos añadidos correctamente.</h2>"

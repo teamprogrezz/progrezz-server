@@ -1,5 +1,6 @@
 require_relative 'user'
 require_relative 'message_fragment'
+require_relative '../relations/user-completed_message'
 
 module Game
   module Database
@@ -49,6 +50,9 @@ module Game
       # Relación con los fragmentos del mensaje. Se puede acceder con el atributo +fragments+.
       has_many :out, :fragments, model_class: Game::Database::MessageFragment, type: "is_fragmented_in" 
 
+      # Relación con los usuarios que han completado este mensaje. Se puede acceder con el atributo +owners+.
+      has_many :in, :owners, rel_class: Game::Database::RelationShips::UserCompletedMessage
+      
       #-- -------------------------
       #      Métodos de clase
       #   ------------------------- #++

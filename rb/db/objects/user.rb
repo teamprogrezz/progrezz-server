@@ -2,6 +2,7 @@
 
 require_relative 'geolocated_object'
 require_relative '../relations/user-message_fragment'
+require_relative '../relations/user-completed_message'
 
 module Game
   module Database
@@ -29,11 +30,14 @@ module Game
       #     Relaciones (DB)
       #   ------------------------- #++
       
-      # Relación con mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
+      # Relación de mensajes creados por el usuario. Se puede acceder con el atributo +written_messages+.
       has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written"
       
-      # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +:collected_fragmented_messages+.
+      # Relación de fragmentos recolectados por el usuario. Se puede acceder con el atributo +collected_fragmented_messages+.
       has_many :out, :collected_fragmented_messages, rel_class: Game::Database::RelationShips::UserFragmentMessage
+      
+      # Relación de mensajes completados por el usuario. Se puede acceder con el atributo +collected_completed_messages+.
+      has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage
       
       #-- -------------------------
       #      Métodos de clase
@@ -68,6 +72,16 @@ module Game
       #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
       def add_msg(message)
         self.written_messages << message
+      end
+      
+      # Recoger fragmento.
+      # * *Argumentos* :
+      #   - +fragment+: Nuevo fragmento a añadir, de tipo +Game::Database::MessageFragment+.
+      def collect_fragment(fragment_message)
+        # TODO: Cableado.
+        if fragment_message != nil 
+          Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
+        end
       end
 
       # Stringificar objeto.

@@ -19,7 +19,7 @@ module Game
       # Relación con el mensaje padre. Se puede acceder con el atributo +message+.
       has_one :in, :message, model_class: Game::Database::Message, origin: :fragments
       
-      # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +:collected_fragmented_messages+.
+      # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +owners+.
       has_many :in, :owners, rel_class: Game::Database::RelationShips::UserFragmentMessage
       
       
