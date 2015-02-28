@@ -18,8 +18,11 @@ module Sinatra
       app.helpers Methods
     
       app.before '/dev/api/rest' do
-        # CORS para JSON
-        # ...
+        # CORS para habilitar peticiones JSON entre dominios.
+        headers['Access-Control-Allow-Methods'] = 'GET' # , POST'
+        headers['Access-Control-Allow-Origin'] = '*'
+        headers['Access-Control-Allow-Headers'] = 'accept, authorization, origin, content-type'
+        headers['Access-Control-Allow-Credentials'] = 'true'
       end
       
       # Acceso mediante método GET
