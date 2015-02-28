@@ -25,7 +25,6 @@ class GenericUtils
   def self.timer()
     pre_time = Time.now
     yield
-    
     return Time.now - pre_time
   end
 
