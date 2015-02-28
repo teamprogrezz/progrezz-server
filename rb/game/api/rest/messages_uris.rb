@@ -1,6 +1,38 @@
 require 'json'
 require 'geocoder'
 
+#:nodoc:
+module Sinatra; module API ;module REST
+  # Añadir métodos a la clase de métodos de la API REST. Se añadirá automáticamente en el fichero rest.rb
+  class Methods
+    def self.msg_test( app, response )
+      response[:response][:type]    = "message"
+      response[:response][:message] = "hi there!"
+    end
+    
+    # Recoger un fragmento de mensaje cercano.
+    def self.user_collect_message_fragment( app, response )
+      # ...
+    end
+    
+    # Escribir mensaje de un usuario.
+    def self.user_write_message( app, response )
+      # ...
+    end
+    
+    # Recibir fragmentos de mensajes cercanos.
+    def self.user_get_nearby_message_fragments( app, response )
+      # ...
+    end
+    
+    # Listar mensajes de un usuario.
+    def self.user_get_messages( app, response )
+      # ...
+    end
+  end
+  
+end; end; end
+
 get '/game/dba/geoloc' do
   #params.keys.each do |k|  
   #  puts k + " -> " + params[k]
