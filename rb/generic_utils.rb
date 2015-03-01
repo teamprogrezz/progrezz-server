@@ -22,12 +22,12 @@ class GenericUtils
   # Medir el tiempo que tarda en ejecutar un bloque de código.
   #
   # * *Devuelve* 
-  #   - Tiempo que ha tardado en ejecutarse el bloque.
+  #   - Tiempo que ha tardado en ejecutarse el bloque, en ms.
   #
   def self.timer()
     pre_time = Time.now
     yield
-    return Time.now - pre_time
+    return (Time.now - pre_time) * 1000.0
   end
   
   # Ejecuta un programa o script cualquiera.

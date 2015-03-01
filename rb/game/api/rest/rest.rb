@@ -35,7 +35,7 @@ module Sinatra
           end
             
           response[:response][:data][:type]    = "plain"
-          response[:response][:data][:message] = GenericUtils.run_py('python/echo.py', name)[:stdout]
+          response[:response][:data][:message] = GenericUtils.run_py('python/echo.py', name)[:stdout] 
         rescue Exception => e
           raise "Invalid request: " + e.message
         end
