@@ -33,9 +33,11 @@ module Sinatra
           else
             name = response[:request][:data][:name].to_s
           end
-            
+          
+          input_json = '{"name": "' + name + '"}'
+          
           response[:response][:data][:type]    = "plain"
-          response[:response][:data][:message] = GenericUtils.run_py('python/echo.py', name)[:stdout] 
+          response[:response][:data][:message] = GenericUtils.run_py('scripts/python/echo.py', { "INPUT_JSON" => input_json })[:stdout] 
         rescue Exception => e
           raise "Invalid request: " + e.message
         end
