@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'open3'
+
 # Clase de utilidades genéricas.
 class GenericUtils
 
@@ -26,6 +28,24 @@ class GenericUtils
     pre_time = Time.now
     yield
     return Time.now - pre_time
+  end
+  
+  # Ejecuta un programa python.
+  #
+  # * *Argumentos*:
+  #   - +script_file+: Fichero del script python.
+  #   - +input_str+: Cadena de entrada sustituyendo al flujo STDIN.
+  #
+  # * *Devuelve* 
+  #   - Salida estándar del script del flujo STDOUT.
+  #
+  def self.run_py(script_file, input_str)
+    cmd = 'python ' + script_file
+    
+    return Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+      stdin.puts input_str
+      return { stdout: stdout.read, stderr: stderr.read }
+    end
   end
 
   #-- ...  #++

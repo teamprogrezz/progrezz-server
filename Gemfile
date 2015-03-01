@@ -6,6 +6,7 @@ gem "sinatra-jsonp"
 gem "thin"
 gem "geocoder"
 gem "neo4j"
+gem "popen3"
 
 group :development do
   gem "sinatra-reloader"
