@@ -16,7 +16,7 @@ module Sinatra
           response[:response][:data][:type]    = "plain"
           response[:response][:data][:message] = "Hello, " + response[:request][:data][:name].to_s + "!"
         rescue Exception => e
-          raise "Invalid syntax: " + e.message
+          raise "Invalid request: " + e.message
         end
       end
 

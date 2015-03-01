@@ -76,6 +76,9 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    racksh (1.0.0)
+      rack (>= 1.0)
+      rack-test (>= 0.5)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.5)
@@ -123,6 +126,7 @@ PLATFORMS
 DEPENDENCIES
   geocoder
   neo4j
+  racksh
   sinatra
   sinatra-jsonp
   sinatra-reloader

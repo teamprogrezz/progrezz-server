@@ -9,6 +9,7 @@ gem "neo4j"
 
 group :development do
   gem "sinatra-reloader"
+  gem "racksh"
 end
 
 group :production do

@@ -4,8 +4,15 @@
 $LOAD_PATH << File.dirname(__FILE__) + "\n"
 
 require 'sinatra'
-require "sinatra/reloader" if development?
 require 'neo4j'
+
+if development?
+  require 'sinatra/reloader'
+
+  puts "--------------------------------------"
+  puts "**   Starting in development mode   **"
+  puts "--------------------------------------"
+end
 
 # Aplicación principal (servidor).
 #

@@ -1,4 +1,4 @@
-task :default => ["server:start"]
+task :default => ["development:start"]
 
 namespace :neo4j do
   desc 'Start the Neo4j Server'
@@ -12,10 +12,30 @@ namespace :neo4j do
   end
 end
 
-namespace :server do
+namespace :development do
+  desc 'Quick dev start'
+  task :start do
+    begin
+      sh 'neo4j start'
+    rescue
+    end
+    sh 'rackup'
+  end
+
+  desc 'Start a racksh console for console debuggin.'
+  task :sh do
+    begin
+      sh 'neo4j start'
+    rescue
+    end
+    sh 'racksh'
+  end
+end
+
+namespace :production do
   desc 'Start the server'
   task :start do
-    sh 'bundle exec rackup'
+    sh 'bundle exec rackup -E production'
   end
 
   desc 'Start the server (network test)'
