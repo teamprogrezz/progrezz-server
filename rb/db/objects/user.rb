@@ -217,6 +217,22 @@ module Game
         return output
       end
       
+      # Obtener referencia a un mensaje completado del usuario.
+      #
+      # Se intentará buscar un mensaje completado mediante el uuid, siempre y cuando exista.
+      #
+      # * *Argumentos* :key => "value", 
+      #   - +msg_uuid+: Identificador del mensaje completado.
+      #   - +new_status+: Nuevo estado del mensaje a desbloquear (véase Game::Database::Message).
+      #
+      # * *Retorna* :
+      #   - Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
+      def change_message_status(msg_uuid, new_status) 
+        self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
+          rel.change_message_status(new_status)
+        end
+      end
+      
       # Obtener mensajes fragmentados de un usuario como un hash.
       #
       # Se usará principalmente para la API REST.

@@ -112,6 +112,15 @@ module Game
         return self.author
       end
       
+      # Getter del alias del autor.
+      #
+      # * *Retorna* :
+      #   - Alias del autor del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_AUTHOR
+      def get_author_alias()
+        if(self.author == nil); return NO_AUTHOR end
+        return self.author.alias
+      end
+      
       # Getter del recurso mediático.
       #
       # * *Retorna* :
@@ -129,7 +138,7 @@ module Game
       #   - Hash con los datos referentes al mensaje completado por el usuario.
       def get_user_message(user_rel = nil)
         output = {
-          author:          self.get_author.alias,
+          author:          self.get_author_alias,
           content:         self.content,
           resource:        self.get_resource,
           total_fragments: self.total_fragments,

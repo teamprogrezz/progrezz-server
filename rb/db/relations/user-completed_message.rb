@@ -37,6 +37,18 @@ module Game
         
         # Estado del mensaje para el jugador (leído, no leído, etc).
         property :status, type: String, default: STATUS_LOCKED
+        
+        # Cambiar el estado del mensaje completado.
+        #
+        # * *Argumentos*: 
+        #   - +new_status+: Nuevo estado (STATUS_LOCKED, STATUS_UNREAD, STATUS_READ)
+        #
+        # * *Retorna* :
+        #   - Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
+        def change_message_status(new_status) 
+          self.status = new_status
+          self.save # ¿?
+        end
 
       end
       

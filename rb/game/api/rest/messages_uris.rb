@@ -6,6 +6,18 @@ module Sinatra; module API ;module REST
   # Añadir métodos a la clase de métodos de la API REST. Se añadirá automáticamente en el fichero rest.rb
   class Methods
     
+    # Cambiar el estatus o estado de un mensaje completado.
+    def self.user_change_message_status( app, response, session)
+      user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      if user.change_message_status( response[:request][:request][:data][:msg_uuid], response[:request][:request][:data][:new_status] ) == nil
+        raise "Could not change message status."
+      end
+      
+      response[:response][:data][:type]    = "plain"
+      response[:response][:data][:message] = "Message status changed to '" + response[:request][:request][:data][:new_status] + "'."
+    end
+    
     # Recoger un fragmento de mensaje cercano.
     def self.user_collect_message_fragment( app, response, session )
       user     = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
@@ -14,7 +26,6 @@ module Sinatra; module API ;module REST
       # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
       # ...
       
-      puts fragment
       if user.collect_fragment( fragment ) == nil
         raise "The fragment could not be collected."
       end
@@ -38,6 +49,7 @@ module Sinatra; module API ;module REST
     
     # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
+      # TODO
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
       max_msg = response[:request][:request][:data][:max_msg]
       radio   = response[:request][:request][:data][:radio]
