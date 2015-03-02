@@ -107,6 +107,7 @@ module Game
         user = search_user(user_id)
         
         # TODO: Controlar autenticación.
+        #...
         
         return user
       end
@@ -182,7 +183,7 @@ module Game
           #   En este punto, se han descartado fragmentos repetidos. Si la cantidad de
           #   fragmentos del mensaje del fragmento actual es el número total de fragmentos
           #   menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
-          #   marcado como completo. TODO: Mensajes de un sólo fragmento. 
+          #   marcado como completo.
           total_fragments_count         = fragment_message.message.total_fragments
           collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
           collected_fragments_rel_count = collected_fragments_rel.count

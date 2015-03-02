@@ -87,7 +87,6 @@ module Game
           
           # Para cada fragmento, se crea un nuevo nodo en la bd
           for fragment_index in 0...(message.total_fragments) do
-            # TODO: Cableado
             Game::Database::MessageFragment.create_message_fragment(message, fragment_index, position)
           end
 

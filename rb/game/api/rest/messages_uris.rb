@@ -49,7 +49,7 @@ module Sinatra; module API ;module REST
     
     # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
-      # TODO
+      # TODO Codificar correctamente esta parte
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
       max_msg = response[:request][:request][:data][:max_msg]
       radio   = response[:request][:request][:data][:radio]
