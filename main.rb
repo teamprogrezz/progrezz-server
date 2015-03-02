@@ -12,6 +12,8 @@ if development?
   puts "--------------------------------------"
   puts "**   Starting in development mode   **"
   puts "--------------------------------------"
+  
+  DEV = true
 end
 
 # Aplicación principal (servidor).

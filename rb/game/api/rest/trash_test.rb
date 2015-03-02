@@ -26,7 +26,7 @@ module REST
           
           messages = []
           
-          tx = Neo4j::Transaction.new
+          #tx = Neo4j::Transaction.new
           
           # Usuarios
           puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
@@ -59,7 +59,6 @@ module REST
             
             # Añadir fragmentos
             fragments = messages[4].fragments
-            puts fragments.to_a
             user_Wikiti.collect_fragment( fragments[0] )
             user_Wikiti.collect_fragment( fragments[0] ) # Mensaje repetido -> No añadido.
             user_Wikiti.collect_fragment( fragments[2] )
@@ -90,14 +89,14 @@ module REST
           result = "<h2>Datos añadidos correctamente.</h2>"
 
         rescue Exception => e
-          tx.failure()
+          #tx.failure()
           
           puts e.message
           puts e.backtrace
           result = e.class.name + " -> " + e.message
           
         ensure
-          tx.close()
+          Game::Database::DatabaseManager.force_save() 
         end
         
         return result

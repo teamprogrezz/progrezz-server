@@ -29,7 +29,11 @@ module Sinatra
       # Acceso mediante método GET
       app.get '/dev/api/rest' do
         content_type :json  # Tipo de respuesta: JSON.
-
+        
+        # Activar gestor de transacciones.
+        Game::Database::DatabaseManager.save()
+        
+        # Respuesta al usuario
         metadata      = { timestamp: DateTime.now.strftime('%Q'), process_time: 0 }
         request       = params
         response_data = { status: "ok", type: "json", data: { type: "" } }
@@ -69,6 +73,9 @@ module Sinatra
 
         # Quitar la petición del usuario, ya que no es necesario reenviarla (ya está en el cliente).
         response.delete( :request )
+        
+        # Guardar la base de datos
+        Game::Database::DatabaseManager.save()
 
         # Devolver respuesta como un json
         return response.to_json
