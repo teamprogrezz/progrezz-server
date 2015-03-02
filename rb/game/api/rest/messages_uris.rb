@@ -5,10 +5,6 @@ require 'geocoder'
 module Sinatra; module API ;module REST
   # Añadir métodos a la clase de métodos de la API REST. Se añadirá automáticamente en el fichero rest.rb
   class Methods
-    def self.msg_test( app, response )
-      response[:response][:type]    = "message"
-      response[:response][:message] = "hi there!"
-    end
     
     # Recoger un fragmento de mensaje cercano.
     def self.user_collect_message_fragment( app, response )
@@ -26,8 +22,15 @@ module Sinatra; module API ;module REST
     end
     
     # Listar mensajes de un usuario.
+    # Entrada: Usuario, ... .
+    # Salida:  Array de mensajes completados y sin completar del usuario.
     def self.user_get_messages( app, response )
-      # ...
+      # Identificar que el usuario exista, etc.
+      user = Game::Database::User.find_by( user_id: response[:request][:request][:data][:user_id] )
+      
+      response[:response][:data][:type]                = "json"
+      response[:response][:data][:completed_messages]  = user.get_completed_messages()  # Añadir mensajescompletados.
+      response[:response][:data][:fragmented_messages] = user.get_fragmented_messages() # Y mensajes fragmentados.
     end
   end
   

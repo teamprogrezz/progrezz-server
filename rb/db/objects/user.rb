@@ -154,6 +154,50 @@ module Game
         
         return nil
       end
+      
+      # Obtener mensajes completados por el usuario como un hash (usado para la API REST).
+      #
+      # * *Retorna* :
+      #   - Se retornará una lista con las características de los mensajes completados por el usuario.
+      def get_completed_messages()
+        output = {}
+        
+        self.collected_completed_messages.each_with_rel do |msg, rel|
+          output[msg.uuid] = msg.get_user_message(rel)
+        end
+        
+        return output
+      end
+      
+      # Obtener mensajes fragmentados de un usuario como un hash.
+      #
+      # Se usará principalmente para la API REST.
+      #
+      # El formato de respuesta es el siguiente:
+      #
+      #   { type: "json", completed_messages = { uuid1: { content: "...", author: "...", ... }, uuid2: {...}, ... }, fragmented_messages = { uuid1: { content: "...", author: "...", fragments: n, ... }, ... }  }
+      #
+      # * *Retorna* :
+      #   - Se retornará una lista con las características de los mensajes fragmentados de un usuario.
+      
+      def get_fragmented_messages()
+        output = {}
+        
+        collected_fragment_messages.each_with_rel do |fragment, rel|
+          msg = fragment.message
+          
+          # Añadir mensaje por primeravez
+          if output[msg.uuid] == nil
+            output[msg.uuid] = msg.get_user_message(rel)
+            output[msg.uuid][:fragments] = []
+          end
+        
+          # Fragmentos
+          output[msg.uuid][:fragments] << fragment.fragment_index
+        end
+        
+        return output
+      end
 
       # Stringificar objeto.
       #

@@ -17,9 +17,9 @@ module Game
       #   ------------------------- #++
       
       # Nombre de autor desconocido.
-      NO_AUTHOR = "$NONE$"
+      NO_AUTHOR = "?"
       # Nombre de recurso no especificado.
-      NO_RESOURCE = "$NONE$"
+      NO_RESOURCE = ""
       
       #-- -------------------------
       #        Atributos (DB)
@@ -109,6 +109,29 @@ module Game
       def get_resource()
         if(self.resource_link == nil); return NO_RESOURCE end
         return self.resource_link
+      end
+      
+      # Getter formateado del mensaje conseguido por un usuario.
+      #
+      # Usado para la API REST.
+      #
+      # * *Retorna*:
+      #   - Hash con los datos referentes al mensaje completado por el usuario.
+      def get_user_message(user_rel)
+        output = {
+          author:       self.get_author,
+          content:      self.content,
+          resource:     self.get_resource,
+          fragments:    self.total_fragments,
+          write_date:   self.created_at,
+        }
+        
+        if(user_rel != nil)
+          output[:status]     = user_rel.status     if user_rel.respond_to? :status
+          output[:created_at] = user_rel.created_at if user_rel.respond_to? :created_at
+        end
+        
+        return output
       end
       
       # Stringificar objeto.

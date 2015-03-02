@@ -55,11 +55,14 @@ module REST
           
           # Añadir fragmentos a Wikiti
           puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
-            fragments = messages[3].fragments
             user_Wikiti.collect_fragment( messages[0].fragments[0] ) # Autor -> No añadido.
+            
+            # Añadir fragmentos
+            fragments = messages[4].fragments
+            puts fragments.to_a
             user_Wikiti.collect_fragment( fragments[0] )
             user_Wikiti.collect_fragment( fragments[0] ) # Mensaje repetido -> No añadido.
-            user_Wikiti.collect_fragment( fragments[1] )
+            user_Wikiti.collect_fragment( fragments[2] )
             
             # Añadir mensaje completo
             fragments = messages[3].fragments
