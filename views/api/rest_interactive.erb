@@ -1,18 +1,32 @@
-<form action="demo_form.asp" id="usrform">
-  <h2>REST Petition:</h2><br>
-  <textarea id="form_request_str" width="100" rows="15" name="comment" form="usrform" style="width:100%;"></textarea><br>
-  <input type="button" value="Send request" onclick="send_form();" ><input type="button" value="Reset" onclick="reset_form();">
-</form>
+  <!-- HTML -->
+<div class="left">
+  <h2>REST Request:</h2>
+  <hr>
+  
+  <form action="demo_form.asp" id="usrform">
+    <textarea id="form_request_str" rows="30"  form="usrform" style="width: 90%; resize: none;"></textarea><br>
+    <input type="button" value="Send request" onclick="send_form();" ><input type="button" value="Reset" onclick="reset_form();">
+  </form>
+</div>
 
+<div class="right">
+  <h2>Server response:</h2>
+  <hr>
+  <textarea id="output" rows="30" style="width: 90%; resize: none;" disabled></textarea>
+</div>
+
+  <!-- Javascript -->
+<!-- Cliente de la API REST -->
 <script type="text/javascript" src="/lib/client-api-rest/js/progrezz-api-rest.js" ></script>
 
+<!-- Procesamiento local -->
 <script type="text/javascript">
   RESTResquest.DEFAULT.REQUEST_URL    = "http://localhost:9292/dev/api/rest"
 
   rest_request = new RESTResquest()
   
   rest_request.onComplete = function(json_response) {
-    document.getElementById("output").innerHTML = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '))
+    document.getElementById("output").value = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '))
   }
   rest_request.onError = function(xhr) { document.getElementById("output").innerHTML = "ERROR! " + JSON.stringify(xhr, null, '  ')
   }
@@ -31,7 +45,3 @@
 
   reset_form()
 </script>
-
-<h2>Server response</h2>
-<hr>
-<pre id="output"></pre>
