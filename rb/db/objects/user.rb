@@ -25,6 +25,7 @@ module Game
       
       # Fragmentos en los que se partirán los mensajes de un usuario.
       USER_MESSAGE_FRAGMENTS = 1 
+      # TODO: Añadir límite de mensajes (según el nivel, o algo así).
       
       #-- -------------------------
       #        Atributos (DB)
@@ -105,7 +106,7 @@ module Game
       def self.search_auth_user(user_id, session)
         user = search_user(user_id)
         
-        # ...
+        # TODO: Controlar autenticación.
         
         return user
       end
@@ -193,10 +194,9 @@ module Game
             end
             
             # Y Añadir el mensaje como completado
-            Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message )
-            
+            return Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message )
           else
-            Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
+            return Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
           end
         end
         

@@ -8,7 +8,19 @@ module Sinatra; module API ;module REST
     
     # Recoger un fragmento de mensaje cercano.
     def self.user_collect_message_fragment( app, response, session )
+      user     = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
+      
+      # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
       # ...
+      
+      puts fragment
+      if user.collect_fragment( fragment ) == nil
+        raise "The fragment could not be collected."
+      end
+      
+      response[:response][:data][:type]    = "plain"
+      response[:response][:data][:message] = "Fragment collected."
     end
     
     # Escribir mensaje de un usuario.
