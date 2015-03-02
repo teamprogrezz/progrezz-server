@@ -11,10 +11,10 @@ module Sinatra
       # Método de prueba (saludar al nombre "request.data.name" de la petición realizada).
       def self.echo(app, response)
         begin
-          if response[:request][:data] == nil || response[:request][:data][:name] == nil
+          if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
             name = 'world'
           else
-            name = response[:request][:data][:name].to_s
+            name = response[:request][:request][:data][:name].to_s
           end
           
           response[:response][:data][:type]    = "plain"
@@ -27,10 +27,10 @@ module Sinatra
       # Método de prueba usando python (saludar al nombre "request.data.name" de la petición realizada).
       def self.echo_py(app, response)
         begin
-          if response[:request][:data] == nil || response[:request][:data][:name] == nil
+          if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
             name = 'world'
           else
-            name = response[:request][:data][:name].to_s
+            name = response[:request][:request][:data][:name].to_s
           end
           
           input_json = '{"name": "' + name + '"}'

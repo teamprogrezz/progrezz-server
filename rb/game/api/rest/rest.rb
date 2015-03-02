@@ -44,7 +44,7 @@ module Sinatra
 
         begin
           # Tipo de petición
-          method = request[:type].to_s
+          method = request[:request][:type].to_s
 
           if method == ""
             raise "Invalid request type '" + method + "'"
@@ -79,7 +79,7 @@ module Sinatra
 
       # Peticiones REST interactivas
       app.get "/dev/api/rest/interactive" do
-        erb :rest_interactive, :views => "views/api/"
+        erb :"api/rest_interactive"
       end
     end
   end

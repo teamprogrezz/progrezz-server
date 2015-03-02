@@ -1,0 +1,37 @@
+<form action="demo_form.asp" id="usrform">
+  <h2>REST Petition:</h2><br>
+  <textarea id="form_request_str" width="100" rows="15" name="comment" form="usrform" style="width:100%;"></textarea><br>
+  <input type="button" value="Send request" onclick="send_form();" ><input type="button" value="Reset" onclick="reset_form();">
+</form>
+
+<script type="text/javascript" src="/lib/client-api-rest/js/progrezz-api-rest.js" ></script>
+
+<script type="text/javascript">
+  RESTResquest.DEFAULT.REQUEST_URL    = "http://localhost:9292/dev/api/rest"
+
+  rest_request = new RESTResquest()
+  
+  rest_request.onComplete = function(json_response) {
+    document.getElementById("output").innerHTML = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '))
+  }
+  rest_request.onError = function(xhr) { document.getElementById("output").innerHTML = "ERROR! " + JSON.stringify(xhr, null, '  ')
+  }
+  rest_request.onEnd = function(json_response) {
+    console.log("end!")
+  }
+
+  function reset_form() {
+    // Setup default text
+    document.getElementById('form_request_str').value = JSON.stringify( RESTResquest.getTemplateRequest(), null, '  ' );
+  }
+  
+  function send_form() {
+    rest_request.request( JSON.parse( document.getElementById('form_request_str').value ) )
+  }
+
+  reset_form()
+</script>
+
+<h2>Server response</h2>
+<hr>
+<pre id="output"></pre>
