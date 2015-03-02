@@ -73,6 +73,42 @@ module Game
         
         return user
       end
+      
+      # Buscar un usuario
+      #
+      # * *Argumentos* :
+      #   - +user_id+: Identificador de usuario (correo electrónico).
+      #
+      # * *Retorna*:
+      #   - Si el usuario existe, devuelve una referencia al mismo. Si no, genera una excepción.
+      def self.search_user(user_id)
+        # Identificar que el usuario exista, etc.
+        puts user_id
+        user = Game::Database::User.find_by( user_id: user_id )
+        
+        # Si no existe, error.
+        if user == nil
+          raise "User with user_id '" + user_id + "' does not exist."
+        end
+        
+        return user
+      end
+      
+      # Busca un usuario autenticado en la sesión actual.
+      #
+      # * *Argumentos* :
+      #   - +user_id+: Identificador de usuario (correo electrónico).
+      #   - +session+: Sesión de Ruby Sinatra.
+      #
+      # * *Retorna*:
+      #   - Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
+      def self.search_auth_user(user_id, session)
+        user = search_user(user_id)
+        
+        # ...
+        
+        return user
+      end
 
       #-- -------------------------
       #          Métodos
@@ -84,6 +120,8 @@ module Game
       #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
       def add_msg(message)
         self.written_messages << message
+        
+        return message
       end
       
       # Escribir nuevo mensaje.
@@ -94,7 +132,17 @@ module Game
       # * *Retorna* :
       #   - Referencia al nuevo mensaje escrito.
       def write_msg(content, resource = nil)
-        Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation() )
+        if content.length    < Game::Database::Message::CONTENT_MIN_LENGTH
+          raise "Message too short (" + content.length.to_s + " < " + Game::Database::Message::CONTENT_MIN_LENGTH.to_s + ")."
+        elsif content.length > Game::Database::Message::CONTENT_MAX_LENGTH
+          raise "Message too long (" + content.length.to_s + " > " + Game::Database::Message::CONTENT_MAX_LENGTH.to_s + ")."
+        end
+        
+        if resource.to_s.length > Game::Database::Message::RESOURCE_MAX_LENGTH
+          raise "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")."
+        end
+        
+        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation() )
       end
       
       # Recoger fragmento.

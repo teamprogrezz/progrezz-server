@@ -6,7 +6,7 @@ module Sinatra
   module REST
     class Methods
       # Redireccionar a página interactiva
-      def self.test(app, response)
+      def self.test(app, response, session)
         app.redirect to("/dev/api/rest/interactive")
       end
     end
@@ -49,7 +49,7 @@ module Sinatra
           if method == ""
             raise "Invalid request type '" + method + "'"
           else
-            Methods.send( method, app, response )
+            Methods.send( method, app, response, session )
           end
 
         rescue Exception => e

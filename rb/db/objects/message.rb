@@ -21,6 +21,16 @@ module Game
       # Nombre de recurso no especificado.
       NO_RESOURCE = ""
       
+      # Tamaño mínimo del contenido.
+      CONTENT_MIN_LENGTH = 9
+      
+      # Tamaño máximo del contenido.
+      CONTENT_MAX_LENGTH = 255
+      
+      # Tamaño máximo del recurso.
+      RESOURCE_MAX_LENGTH = 128
+      
+      
       #-- -------------------------
       #        Atributos (DB)
       #   ------------------------- #++
@@ -117,18 +127,18 @@ module Game
       #
       # * *Retorna*:
       #   - Hash con los datos referentes al mensaje completado por el usuario.
-      def get_user_message(user_rel)
+      def get_user_message(user_rel = nil)
         output = {
-          author:       self.get_author,
-          content:      self.content,
-          resource:     self.get_resource,
-          fragments:    self.total_fragments,
-          write_date:   self.created_at,
+          author:          self.get_author.alias,
+          content:         self.content,
+          resource:        self.get_resource,
+          total_fragments: self.total_fragments,
+          write_date:      self.created_at.strftime('%Q'),
         }
         
         if(user_rel != nil)
-          output[:status]     = user_rel.status     if user_rel.respond_to? :status
-          output[:created_at] = user_rel.created_at if user_rel.respond_to? :created_at
+          output[:status]     = user_rel.status                    if user_rel.respond_to? :status
+          output[:created_at] = user_rel.created_at.strftime('%Q') if user_rel.respond_to? :created_at
         end
         
         return output

@@ -9,7 +9,7 @@ module Sinatra
       end
 
       # Método de prueba (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo(app, response)
+      def self.echo(app, response, session)
         begin
           if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
             name = 'world'
@@ -25,7 +25,7 @@ module Sinatra
       end
 
       # Método de prueba usando python (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo_py(app, response)
+      def self.echo_py(app, response, session)
         begin
           if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
             name = 'world'

@@ -7,26 +7,33 @@ module Sinatra; module API ;module REST
   class Methods
     
     # Recoger un fragmento de mensaje cercano.
-    def self.user_collect_message_fragment( app, response )
+    def self.user_collect_message_fragment( app, response, session )
       # ...
     end
     
     # Escribir mensaje de un usuario.
-    def self.user_write_message( app, response )
-      # ...
+    def self.user_write_message( app, response, session )
+      user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      msg_content  = response[:request][:request][:data][:content].to_s
+      msg_resource = response[:request][:request][:data][:resource].to_s
+      
+      msg = user.write_msg( response[:request][:request][:data][:content],  )
+      
+      response[:response][:data][:type]    = "json"
+      response[:response][:data][:message] = msg.get_user_message()
     end
     
     # Recibir fragmentos de mensajes cercanos.
-    def self.user_get_nearby_message_fragments( app, response )
+    def self.user_get_nearby_message_fragments( app, response, session )
       # ...
     end
     
     # Listar mensajes de un usuario.
     # Entrada: Usuario, ... .
     # Salida:  Array de mensajes completados y sin completar del usuario.
-    def self.user_get_messages( app, response )
-      # Identificar que el usuario exista, etc.
-      user = Game::Database::User.find_by( user_id: response[:request][:request][:data][:user_id] )
+    def self.user_get_messages( app, response, session )
+      user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
       
       response[:response][:data][:type]                = "json"
       response[:response][:data][:completed_messages]  = user.get_completed_messages()  # Añadir mensajescompletados.

@@ -18,6 +18,17 @@ end
 #
 # Funciona como contenedor de una aplicación Ruby Sinatra.
 class ProgrezzServer < Sinatra::Base
+
+  # Activar sesiones del servidor web
+  set :sessions, true # TODO: Añadir secreto.
+  
+  # Getter de la sesión de la aplicación.
+  #
+  # * *Retorna:
+  #   - Sesión actual (objeto session).
+  def self.get_session()
+    return self.session
+  end
 end
 
 #-- Require especial (con expresiones regulares, para directorios). #++
