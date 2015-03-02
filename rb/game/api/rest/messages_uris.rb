@@ -36,9 +36,34 @@ module Sinatra; module API ;module REST
       response[:response][:data][:message] = msg.get_user_message()
     end
     
-    # Recibir fragmentos de mensajes cercanos.
+    # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
-      # ...
+      user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      max_msg = response[:request][:request][:data][:max_msg]
+      radio   = response[:request][:request][:data][:radio]
+      output  = {}
+      
+      # Geolocalizaciones (como arrays).
+      user_geo = [ user.geolocation[:latitude], user.geolocation[:longitude] ]
+      frag_geo = nil
+
+      cont_msg = 0
+      Game::Database::MessageFragment.all.each do |fragment|
+        if cont_msg >= max_msg
+          return;
+        end
+    
+        frag_geo = [ fragment.geolocation[:latitude], fragment.geolocation[:longitude] ]
+     
+        distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
+        puts "-> Distancia: " + distance.to_s
+        if distance <= radio
+          output << fragment
+          cont_msg += 1
+        end
+      end
+    
+      # formatear output
     end
     
     # Listar mensajes de un usuario.
@@ -82,86 +107,3 @@ get '/game/dba/geoloc' do
 
   return params[:callback] + "(" + output.to_json() + ")"
 end
-
-
-# Recibir lista de mensajes de un usuario
-before '/game/dba/msg_user_list' do
-  content_type 'application/javascript'
-end
-
-get '/game/dba/msg_user_list' do
-  output = { :messages => {} }
-
-  # Mensajes ya completados
-  message_list = Game::Database::UserCompletedMessages.all(:id_user => params[:id_user])
-  message_list.each do |message|
-    mf = Game::Database::Messages.get(message.id_msg)
-    output[:messages][message.id_msg] = {
-      :content         => mf.content,
-      :id_user         => mf.id_user,
-      :total_fragments => mf.total_fragments,
-      :resource_link   => mf.resource_link,
-      :status          => message.status
-    }
-  end
-
-  # Mensajes fragmentados
-  message_list = Game::Database::UserFragmentMessages.all(:id_user => params[:id_user])
-  message_list.each do |message|
-    # Identificador
-    if output[:messages][message.id_msg] == nil
-      mf = Game::Database::Messages.get(message.id_msg)
-      output[:messages][message.id_msg] = {
-        :content         => mf.content,
-        :id_user         => mf.id_user,
-        :total_fragments => mf.total_fragments,
-        :resource_link   => mf.resource_link,
-        :status          => "incomplete",
-        :fragments       => []
-      }
-    end
-
-    # Fragmentos
-    output[:messages][message.id_msg][:fragments] << message.fragment_index
-  end
-
-  return params[:callback] + "(" + output.to_json + ")"
-end
-
-# Actualizar fragmentos encontrados
-before '/game/dba/msg_user_get_fragment' do
-  content_type 'application/javascript'
-end
-
-get '/game/dba/msg_user_get_fragment' do
-  # Comprobaciones iniciales: comprobar que el mensaje y el usuario existe.
-  # ...
-
-  output = {}
-
-  # Comprobar que el mensaje no esta completado y el fragmento no se ha recogido antes.
-  if Game::Database::UserCompletedMessages.get(params['id_user'], params['id_msg']) != nil || Game::Database::UserFragmentMessages.get(params['id_user'], params['id_msg'], params['fragment_index']) != nil
-    return params[:callback] + "(" + output.to_json + ")"
-  end
-
-  # Añadir el mensaje a la base de datos de la lista de fragmentos de un usuario
-  user_fragment = Game::Database::UserFragmentMessages.new
-  user_fragment.id_user = params['id_user']
-  user_fragment.id_msg  = params['id_msg']
-  user_fragment.fragment_index  = params['fragment_index']
-  user_fragment.save
-  
-  # Actualizar mensajes completados del usuario para un id de mensaje dado
-  number_user_fragments = Game::Database::UserFragmentMessages.count( {:id_msg => params['id_msg'], :id_user => params['id_user'] } )
-  if number_user_fragments == Game::Database::Messages.get( params['id_msg'] ).total_fragments
-    # Añadir nuevo mensaje como "completado" pero como bloqueado (por defecto)
-    completed_message = Game::Database::UserCompletedMessages.new
-    completed_message.id_msg = params['id_msg']
-    completed_message.id_user = params['id_user']
-    #completed_message.status =  por defecto
-    completed_message.save
-
-    Game::Database::UserFragmentMessages.all( {:id_msg => params['id_msg'], :id_user => params['id_user'] } ).destroy
-  end
-end
-
