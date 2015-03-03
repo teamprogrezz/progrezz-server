@@ -53,7 +53,6 @@ module Sinatra; module API ;module REST
       default_radius = 0.600      # in km
       default_method = "progrezz" # progrezz, geocoder o neo4j
       
-      # TODO Codificar correctamente esta parte
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
       radius  = response[:request][:request][:data][:radius]  || default_radius
       method  = response[:request][:request][:data][:method]  || default_method
