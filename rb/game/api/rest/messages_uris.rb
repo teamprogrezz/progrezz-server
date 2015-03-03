@@ -84,13 +84,21 @@ module Sinatra; module API ;module REST
           
           distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
           if distance <= radius
-            output[ fragment.uuid ] = fragment
+            output[ fragment.uuid ] = fragment.to_hash
           end
           #end
         end
         
       when "neo4j"
         # ...
+        puts "neo4j"
+        user_geo = user_geo.values
+        
+        Game::Database::MessageFragment.query_as(:mf).where("mf.latitude > " +
+          (user_geo[0] - 0.1 ).to_s + " and mf.latitude < " +
+          (user_geo[0] + 0.1 ).to_s ).pluck(:mf).each do |fragment|
+            output[ fragment.uuid ] = fragment.to_hash
+        end
         
       end
     
