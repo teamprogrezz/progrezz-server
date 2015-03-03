@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/teamprogrezz/progrezz-geolocation.git
+  revision: 6583c0b42b92c440655806bc69cd31ce487beb37
+  specs:
+    progrezz-geolocation (0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -126,6 +132,7 @@ PLATFORMS
 DEPENDENCIES
   geocoder
   neo4j
+  progrezz-geolocation!
   racksh
   sinatra
   sinatra-jsonp

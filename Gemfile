@@ -6,6 +6,7 @@ gem "sinatra-jsonp"
 gem "thin"
 gem "geocoder"
 gem "neo4j"
+gem 'progrezz-geolocation', :git => 'https://github.com/teamprogrezz/progrezz-geolocation.git'
 
 group :development do
   gem "sinatra-reloader"
