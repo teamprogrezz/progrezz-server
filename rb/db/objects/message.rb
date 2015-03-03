@@ -153,6 +153,21 @@ module Game
         return output
       end
       
+      # Transformar objeto a un hash
+      #
+      # * *Retorna* :
+      #   - Objeto como hash.
+      def to_hash()
+        return {
+          uuid:            self.uuid,
+          author:          self.get_author_alias,
+          content:         self.content,
+          resource:        self.get_resource,
+          total_fragments: self.total_fragments,
+          write_date:      self.created_at.strftime('%Q')
+        }
+      end
+      
       # Stringificar objeto.
       #
       # * *Retorna* :

@@ -34,8 +34,9 @@ module Game
       #-- -------------------------
       #      Atributos (DB)
       #   ------------------------- #++
-      
-      property :geolocated_pos, default: [0.0, 0.0], on: :create # Array que contiene la geolocalización, con formato [latitude, longitud].
+      property :latitude,  type: Float, default: 0.0
+      property :longitude, type: Float, default: 0.0
+      #property :geolocated_pos, default: [0.0, 0.0], on: :create # Array que contiene la geolocalización, con formato [latitude, longitud].
 
 
       #-- -------------------------
@@ -56,8 +57,8 @@ module Game
       def set_geolocation(lat = nil, long = nil, save_after = true)
         geolocated_pos = [] if geolocated_pos == nil
         
-        if lat != nil;  self.geolocated_pos[0] = lat end
-        if long != nil; self.geolocated_pos[1] = long end
+        if lat != nil;  self.latitude  = lat end
+        if long != nil; self.longitude = long end
 
         self.save if save_after
       end
@@ -67,25 +68,27 @@ module Game
       # * *Retorna* :
       #   - Array con la latitud y la longitud, con el formato [latitud, longitud].
       def geolocation()
-        return { latitude: self.geolocated_pos[0], longitude: self.geolocated_pos[1] }
+        return { latitude: self.latitude, longitude: self.longitude }
       end
       
       # Ajustar posición a valores reales.
       # * *Retorna* :
       #   - Referencia al objeto ajustado.
       def clamp()
-        self.geolocated_pos[0] = [MIN_LATITUDE,  self.geolocated_pos[0], MAX_LATITUDE ].sort[1]
-        self.geolocated_pos[1] = [MIN_LONGITUDE, self.geolocated_pos[1], MAX_LONGITUDE].sort[1]
+        self.latitude = [MIN_LATITUDE,  self.latitude, MAX_LATITUDE ].sort[1]
+        self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
         self.save
         return self
       end
       
       # Ajustar posición a valores reales (método estático).
+      # * *Arguments*: 
+      #   - +pos+: Hash con la posición geolocalizada.
       # * *Retorna* :
       #   - Referencia al objeto ajustado.
       def self.clamp(pos)
-        pos[0] = [MIN_LATITUDE,  pos[0], MAX_LATITUDE ].sort[1]
-        pos[1] = [MIN_LONGITUDE, pos[1], MAX_LONGITUDE].sort[1]
+        pos[:latitude]  = [MIN_LATITUDE,  pos[:latitude],  MAX_LATITUDE ].sort[1]
+        pos[:longitude] = [MIN_LONGITUDE, pos[:longitude], MAX_LONGITUDE].sort[1]
         
         return pos
       end
@@ -95,7 +98,7 @@ module Game
       # * *Retorna* :
       #   - Objeto como string, con el formato "<Geolocation: +latitud+,+longitud+>".
       def to_s()
-        return "<Geolocation: " + self.geolocated_pos[0].to_s + "," + self.geolocated_pos[1].to_s + ">"
+        return "<Geolocation: " + self.latitude.to_s + "," + self.longitude.to_s + ">"
       end
       
       

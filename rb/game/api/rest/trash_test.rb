@@ -44,7 +44,7 @@ module REST
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
             messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 1.995, longitude: 0.809})
-            messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
+            messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809} )
             messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
           end).to_s
           
@@ -68,8 +68,7 @@ module REST
             user_Wikiti.collect_fragment( fragments[0] )
             user_Wikiti.collect_fragment( fragments[1] )
             user_Wikiti.collect_fragment( fragments[2] )
-            puts "IN_TIME" + ( GenericUtils.timer { user_Wikiti.collect_fragment( fragments[3] ) } ).to_s
-            
+            user_Wikiti.collect_fragment( fragments[3] )
             
           end).to_s
           

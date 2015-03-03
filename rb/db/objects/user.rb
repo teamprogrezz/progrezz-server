@@ -32,7 +32,7 @@ module Game
       #   ------------------------- #++
       property :user_id, constraint: :unique          # Identificador de usuario (correo, único en la BD)
       property :alias, type: String, default: ""      # Alias o nick del usuario.
-      property :created_at, type: String, default: "" # Timestamp o fecha de creación del usuario.
+      property :created_at                            # Timestamp o fecha de creación del usuario.
       
       #-- -------------------------
       #     Relaciones (DB)

@@ -66,6 +66,17 @@ module Game
       def to_s()
         return "<MessageFragment: " + self.uuid.to_s + ", " + self.message.uuid + ", " + fragment_index.to_s + ", " + super.to_s() + ">" 
       end
+      
+      # Transformar objeto a un hash
+      # * *Retorna* :
+      #   - Objeto como hash.
+      def to_hash()
+        return {
+          geolocation:    self.geolocation,
+          fragment_index: self.fragment_index,
+          message:        self.message.to_hash
+        }
+      end
     end
 
   end

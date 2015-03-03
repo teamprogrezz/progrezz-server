@@ -66,23 +66,27 @@ module Sinatra; module API ;module REST
       case method
       when "progrezz"
         Game::Database::MessageFragment.all.each do |fragment|
+          #if fragment.message.author == nil || fragment.message.author.user_id != user.user_id
           frag_geo = fragment.geolocation
           
           distance = Progrezz::Geolocation.distance(user_geo, frag_geo, :km)
           if distance <= radius
-            output[ fragment.uuid ] = fragment
+            output[ fragment.uuid ] = fragment.to_hash 
           end
+          #end
         end
         
       when "geocoder"
         user_geo = user_geo.values
         Game::Database::MessageFragment.all.each do |fragment|
+          #if fragment.message.author == nil || fragment.message.author.user_id != user.user_id
           frag_geo = fragment.geolocation.values
-
+          
           distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
           if distance <= radius
             output[ fragment.uuid ] = fragment
           end
+          #end
         end
         
       when "neo4j"
