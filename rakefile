@@ -43,3 +43,15 @@ namespace :production do
     sh 'ruby main.rb -o 0.0.0.0' # ¿?
   end
 end
+
+namespace :heroku do
+  desc 'Launch the server to an heroku app.'
+  task :heroku do
+    sh 'git push heroku HEAD:master'
+  end
+
+  desc 'Log heroku data and errors.'
+  task :log do
+    sh 'heroku log'
+  end
+end

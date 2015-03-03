@@ -8,23 +8,15 @@ end
 module Game
 # Módulo que contiene estructuras de datos referentes a la base de datos.
 module Database
+  
+  # Lista de transacciones.
+  @@transactions = []
 
   # Clase gestora de la base de datos.
   #
   # Se encarga de realizar tareas sencillas, como inicializar el acceso a la base
   # de datos neo4j, reiniciar su estado, etc.
   class DatabaseManager
-    
-     # Tiempo necesario para archivar una o varias transaccion (en ms).
-    TRANSACTION_ARCHIVE_TIME = 500
-    
-    # Transacciones en curso de Neo4j
-    @@transactions = nil
-    
-    # Tiempo para medir el transcurso de una transacción.
-    @@transaction_start_time = nil
-    
-
     # Inicializa la base de datos.
     #
     # Si se encuentra la variable de entorno 'GRAPHENEDB_URL' (heroku), se usará dicha dirección como servidor
@@ -56,39 +48,50 @@ module Database
       Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
     end
     
-    
-    # Guardar contenido en la base de datos.
-    #
-    # Se iniciará una transacción. Si ha pasado suficiente tiempo desde la última, se guardará en la base de datos.
-    def self.save( reopen = true )
-      # Si ha pasado suficiente tiempo, finalizar la transacción y empezar una nueva
-      if (Time.now - @@transaction_start_time) * 1000.0 > TRANSACTION_ARCHIVE_TIME
-        @@transactions.close()
-        @@transactions = Neo4j::Transaction.new if reopen
-        @@transaction_start_time = Time.now
-        
-        if defined? DEV
-          puts "--------------------------------------"
-          puts "**           Saving DB              **"
-          puts "--------------------------------------"
-        end
-      end
-    end
-    
     # Guardar de manera forzada el contenido en la base de datos.
     #
     # Se ignorará el tiempo mínimo para guardar datos en la DB.
     def self.force_save()
-      # Ignorar tiempo mínimo para guardar.
-      @@transactions.close()
-      @@transactions = Neo4j::Transaction.new
-      @@transaction_start_time = Time.now
+      # Borrar y cancelar transacciones actuales.
+      for tx in @@transactions do
+        tx.fail()
+        tx.close()
+      end
+      
+      @@transactions = []
       
       if defined? DEV
         puts "--------------------------------------"
         puts "**        Forced saving DB          **"
         puts "--------------------------------------"
       end
+    end
+    
+    # Iniciar una nueva transacción.
+    #
+    # * *Retorna*: 
+    #   - Referencia a la transacción creada.
+    def self.start_transaction()
+      tx = Neo4j::Transaction.new
+      @@transactions << tx
+      return tx
+    end
+    
+    # Termina y guarda una transacción.
+    #
+    # * *Argumentos*: 
+    #   - +tx+: Referencia a la transacción.
+    def self.stop_transaction(tx)
+      @@transactions.delete(tx)
+      tx.close()
+    end
+    
+    # Deshace los cambios de una transacción (rollback).
+    #
+    # * *Argumentos*: 
+    #   - +tx+: Referencia a la transacción.
+    def self.rollback_transaction(tx)
+      tx.fail()
     end
     
   end

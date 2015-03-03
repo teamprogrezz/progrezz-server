@@ -30,9 +30,6 @@ module Sinatra
       app.get '/dev/api/rest' do
         content_type :json  # Tipo de respuesta: JSON.
         
-        # Activar gestor de transacciones.
-        Game::Database::DatabaseManager.save()
-        
         # Respuesta al usuario
         metadata      = { timestamp: DateTime.now.strftime('%Q'), process_time: 0 }
         request       = params
@@ -47,6 +44,9 @@ module Sinatra
         pre_time = Time.now
 
         begin
+          # Activar gestor de transacciones.
+          transaction = Game::Database::DatabaseManager.start_transaction()
+          
           # Tipo de petición
           method = request[:request][:type].to_s
 
@@ -56,7 +56,10 @@ module Sinatra
             Methods.send( method, app, response, session )
           end
 
-        rescue Exception => e
+        rescue Exception => e  
+          # Deshacer transacción.
+          Game::Database::DatabaseManager.rollback_transaction(transaction)
+          
           # Limpiar respuesta
           response_data.clear()
 
@@ -66,6 +69,9 @@ module Sinatra
             error:      e.message,
             backtrace:  e.backtrace
           }
+        ensure
+          # Cerrar la transacción
+          Game::Database::DatabaseManager.stop_transaction(transaction)
         end
 
         # Calcular tiempo de cómputo (en ms)
@@ -73,9 +79,6 @@ module Sinatra
 
         # Quitar la petición del usuario, ya que no es necesario reenviarla (ya está en el cliente).
         response.delete( :request )
-        
-        # Guardar la base de datos
-        Game::Database::DatabaseManager.save()
 
         # Devolver respuesta como un json
         return response.to_json
