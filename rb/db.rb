@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 if development?
-  
+  DEV = true
 end
 
 # Módulo que contiene estructuras referentes al juego (general).
@@ -67,7 +67,7 @@ module Database
         @@transactions = Neo4j::Transaction.new if reopen
         @@transaction_start_time = Time.now
         
-        if DEV
+        if defined? DEV
           puts "--------------------------------------"
           puts "**           Saving DB              **"
           puts "--------------------------------------"
@@ -84,7 +84,7 @@ module Database
       @@transactions = Neo4j::Transaction.new
       @@transaction_start_time = Time.now
       
-      if DEV
+      if defined? DEV
         puts "--------------------------------------"
         puts "**        Forced saving DB          **"
         puts "--------------------------------------"
