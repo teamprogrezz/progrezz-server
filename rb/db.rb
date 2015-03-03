@@ -34,10 +34,7 @@ module Database
       server_url = "http://#{uri.host}:#{uri.port}"
 
       Neo4j::Session.open(:server_db, server_url, basic_auth: { username: uri.user, password: uri.password})
-      
-      # Iniciar transacción inicial
-      @@transactions = Neo4j::Transaction.new
-      @@transaction_start_time = Time.now
+      @@transactions = []
     end
 
     # Destruye todo el contenido de la base de datos.
@@ -54,7 +51,7 @@ module Database
     def self.force_save()
       # Borrar y cancelar transacciones actuales.
       for tx in @@transactions do
-        tx.fail()
+        tx.failure()
         tx.close()
       end
       
@@ -91,14 +88,13 @@ module Database
     # * *Argumentos*: 
     #   - +tx+: Referencia a la transacción.
     def self.rollback_transaction(tx)
-      tx.fail()
+      tx.failure()
     end
     
   end
 
   #-- Lanzar el método setup #++
   DatabaseManager.setup()
-  DatabaseManager.save() # Empezar transacción.
 
 end
 end

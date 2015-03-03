@@ -2,7 +2,14 @@ require_relative '../relations/user-message_fragment'
 
 module Game
   module Database
+    
+    # Forward declaration
+    class Message; end
 
+    # Clase que representa a un fragmento geolocalizado de un juego.
+    #
+    # Los atributos se guardan en el objeto (incluida geolocalización) como un nodo del grafo neo4j.
+    # Las relaciones se harán mediante relaciones directas o codificadas.
     class MessageFragment < GeolocatedObject
       include Neo4j::ActiveNode
       

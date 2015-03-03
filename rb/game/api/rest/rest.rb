@@ -43,6 +43,7 @@ module Sinatra
 
         pre_time = Time.now
 
+        transaction = nil
         begin
           # Activar gestor de transacciones.
           transaction = Game::Database::DatabaseManager.start_transaction()

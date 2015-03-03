@@ -1,5 +1,25 @@
 task :default => ["development:start"]
 
+desc 'Setup everything.'
+task :setup do
+  # Install bundle
+  begin
+    sh 'gem install bundle'
+  rescue
+    puts "Error while installing bundle."
+  end
+
+  # Install gems
+  begin
+    sh 'bundle install'
+  rescue
+    puts "Error while installing gems."
+  end
+
+  puts "Use '$ rake' to start with development!"
+
+end
+
 namespace :neo4j do
   desc 'Start the Neo4j Server'
   task :start do
@@ -45,13 +65,19 @@ namespace :production do
 end
 
 namespace :heroku do
+  desc 'Setup heroku toolbelt.'
+  task :setup do
+    sh "wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh"
+  end
+
   desc 'Launch the server to an heroku app.'
-  task :heroku do
-    sh 'git push heroku HEAD:master'
+  task :start do
+    sh 'git push heroku HEAD:master --force'
   end
 
   desc 'Log heroku data and errors.'
-  task :log do
-    sh 'heroku log'
+  task :logs do
+    sh 'heroku logs'
   end
+
 end
