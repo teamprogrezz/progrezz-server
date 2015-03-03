@@ -35,7 +35,7 @@ module Game
       #      Atributos (DB)
       #   ------------------------- #++
       
-      property :geolocated_pos, default: [0.0, 0.0] # Array que contiene la geolocalización, con formato [latitude, longitud].
+      property :geolocated_pos, default: [0.0, 0.0], on: :create # Array que contiene la geolocalización, con formato [latitude, longitud].
 
 
       #-- -------------------------

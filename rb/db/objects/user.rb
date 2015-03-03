@@ -30,9 +30,9 @@ module Game
       #-- -------------------------
       #        Atributos (DB)
       #   ------------------------- #++
-      property :user_id, constraint: :unique  # Identificador de usuario (correo, único en la BD)
-      property :alias                         # Alias o nick del usuario.
-      property :created_at                    # Timestamp o fecha de creación del usuario.
+      property :user_id, constraint: :unique          # Identificador de usuario (correo, único en la BD)
+      property :alias, type: String, default: ""      # Alias o nick del usuario.
+      property :created_at, type: String, default: "" # Timestamp o fecha de creación del usuario.
       
       #-- -------------------------
       #     Relaciones (DB)
@@ -62,9 +62,12 @@ module Game
       # * *Argumentos* :
       #   - +al+: Alias o nick del usuario.
       #   - +uid+: Identificador de usuario (correo electrónico).
-      def self.sign_up(al, uid)
-        begin
-          user = create( { alias: al, user_id: uid } );
+      def self.sign_up(al, uid, position = {latitude: 0.0, longitude: 0.0} )
+          puts "->" + al.to_s
+          puts "->" + uid.to_s
+        
+        begin          
+          user = create( { alias: al, user_id: uid, geolocated_pos: [ position[:latitude], position[:longitude] ] } );
               
         rescue Exception => e
           puts e.message
@@ -84,7 +87,6 @@ module Game
       #   - Si el usuario existe, devuelve una referencia al mismo. Si no, genera una excepción.
       def self.search_user(user_id)
         # Identificar que el usuario exista, etc.
-        puts user_id
         user = Game::Database::User.find_by( user_id: user_id )
         
         # Si no existe, error.
@@ -228,10 +230,14 @@ module Game
       #
       # * *Retorna* :
       #   - Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
-      def change_message_status(msg_uuid, new_status) 
+      def change_message_status(msg_uuid, new_status)
+        output = nil
+        
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
-          rel.change_message_status(new_status)
+          output = rel.change_message_status(new_status)
         end
+        
+        return output
       end
       
       # Obtener mensajes fragmentados de un usuario como un hash.

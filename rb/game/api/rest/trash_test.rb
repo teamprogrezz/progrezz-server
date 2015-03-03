@@ -122,7 +122,7 @@ module REST
 
       # Listar datos de prueba
       app.get '/test/list' do
-        erb :list, :views => "views/test/", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
+        erb :"test/list", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
       end
 
       # Añadir datos de prueba
@@ -136,7 +136,7 @@ module REST
         
         if msg != "<h2>Datos añadidos correctamente.</h2>"; return ("<pre>" + CGI.escapeHTML( msg ) + "</pre>") end
         
-        erb :list, :views => "views/test/", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
+        erb :"test/list", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
       end
 
     end
