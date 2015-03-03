@@ -60,11 +60,11 @@ module Database
     # Guardar contenido en la base de datos.
     #
     # Se iniciará una transacción. Si ha pasado suficiente tiempo desde la última, se guardará en la base de datos.
-    def self.save()
+    def self.save( reopen = true )
       # Si ha pasado suficiente tiempo, finalizar la transacción y empezar una nueva
       if (Time.now - @@transaction_start_time) * 1000.0 > TRANSACTION_ARCHIVE_TIME
         @@transactions.close()
-        @@transactions = Neo4j::Transaction.new
+        @@transactions = Neo4j::Transaction.new if reopen
         @@transaction_start_time = Time.now
         
         if DEV

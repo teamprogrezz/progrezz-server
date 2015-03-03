@@ -68,7 +68,9 @@ module REST
             user_Wikiti.collect_fragment( fragments[0] )
             user_Wikiti.collect_fragment( fragments[1] )
             user_Wikiti.collect_fragment( fragments[2] )
-            user_Wikiti.collect_fragment( fragments[3] )
+            puts "IN_TIME" + ( GenericUtils.timer { user_Wikiti.collect_fragment( fragments[3] ) } ).to_s
+            
+            
           end).to_s
           
           # Añadir fragmentos a Shylpx

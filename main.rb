@@ -42,3 +42,10 @@ require './rb/db'
 #-- Cargar datos referentes a la api REST. #++
 require './rb/rest'
 
+
+#-- Cosas a ejecutar cuando se cierre la app. #++
+at_exit do
+  Game::Database::DatabaseManager.save(false)
+  puts "Progrezz server ended. Crowd applause."
+end
+
