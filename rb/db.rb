@@ -23,10 +23,10 @@ module Database
     # neo4j. En caso contrario, se usará (por defecto) el servidor loca, con el puerto 7474.
     def self.setup()
       #-- Cargar ficheros de objetos de la BD #++
-      GenericUtils.require_dir("./rb/db/objects/**/*.rb", "Leyendo Objetos de DB: ")
+      GenericUtils.require_dir("./rb/db/objects/**/*.rb",   "Leyendo Objetos de DB:    ")
       
       #-- Cargar ficheros de relaciones de la BD #++
-      GenericUtils.require_dir("./rb/db/relations/**/*.rb", "Leyendo Objetos de DB: ")
+      GenericUtils.require_dir("./rb/db/relations/**/*.rb", "Leyendo Objetos de DB:    ")
       
       #-- Conectar a la base de datos #++
       neo4j_url = ENV['GRAPHENDB_URL'] || 'http://localhost:7474' # En Heroku, o en localhost

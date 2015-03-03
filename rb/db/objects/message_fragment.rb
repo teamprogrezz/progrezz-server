@@ -44,7 +44,9 @@ module Game
       #   - +position+: Posición geolocalizada del fragmento.
       def self.create_message_fragment(msg, f_index, position)
         begin
-          fmsg = create( {message: msg, fragment_index: f_index, geolocated_pos: [ position[:latitude], position[:longitude] ] });
+          fmsg = create( {message: msg, fragment_index: f_index }) do |fragment|
+            fragment.set_geolocation( position[:latitude], position[:longitude], false )
+          end
 
         rescue Exception => e
           puts e.to_s

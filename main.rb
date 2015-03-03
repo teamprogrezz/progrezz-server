@@ -45,7 +45,7 @@ require './rb/rest'
 
 #-- Cosas a ejecutar cuando se cierre la app. #++
 at_exit do
-  Game::Database::DatabaseManager.save(false)
+  Game::Database::DatabaseManager.force_save()
   puts "Progrezz server ended. Crowd applause."
 end
 

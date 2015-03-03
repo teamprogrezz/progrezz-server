@@ -63,12 +63,11 @@ module Game
       #   - +al+: Alias o nick del usuario.
       #   - +uid+: Identificador de usuario (correo electrónico).
       def self.sign_up(al, uid, position = {latitude: 0.0, longitude: 0.0} )
-          puts "->" + al.to_s
-          puts "->" + uid.to_s
-        
         begin          
-          user = create( { alias: al, user_id: uid, geolocated_pos: [ position[:latitude], position[:longitude] ] } );
-              
+          user = create( { alias: al, user_id: uid } ) do |user|
+            user.set_geolocation( position[:latitude], position[:longitude], true )
+          end
+          
         rescue Exception => e
           puts e.message
           puts e.backtrace

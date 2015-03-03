@@ -80,14 +80,15 @@ module Game
       #   - Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
       def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 })
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource });
-          if custom_author != nil
-            custom_author.add_msg(message)
-          end
-          
-          # Para cada fragmento, se crea un nuevo nodo en la bd
-          for fragment_index in 0...(message.total_fragments) do
-            Game::Database::MessageFragment.create_message_fragment(message, fragment_index, position)
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource }) do |msg|
+            if custom_author != nil
+              custom_author.add_msg(msg)
+            end
+            
+            # Para cada fragmento, se crea un nuevo nodo en la bd
+            for fragment_index in 0...(msg.total_fragments) do
+              Game::Database::MessageFragment.create_message_fragment(msg, fragment_index, position)
+            end
           end
 
         rescue Exception => e

@@ -49,33 +49,42 @@ module Sinatra; module API ;module REST
     
     # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
+      default_radius = 0.100      # in km
+      default_method = "progrezz" # progrezz, geocoder o neo4j
+      
       # TODO Codificar correctamente esta parte
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
-      max_msg = response[:request][:request][:data][:max_msg]
-      radio   = response[:request][:request][:data][:radio]
+      radio   = response[:request][:request][:data][:radius]  || default_radius
+      method  = response[:request][:request][:data][:method]  || default_method
       output  = {}
       
       # Geolocalizaciones (como arrays).
-      user_geo = [ user.geolocation[:latitude], user.geolocation[:longitude] ]
+      user_geo = user.geolocation.values
       frag_geo = nil
+      
+      case method
+      when "progrezz"
+        # ...
+        
+      when "geocoder"
+        Game::Database::MessageFragment.all.each do |fragment|
+          frag_geo = fragment.geolocation.values
 
-      cont_msg = 0
-      Game::Database::MessageFragment.all.each do |fragment|
-        if cont_msg >= max_msg
-          return;
+          distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
+          puts "-> Distancia: " + distance.to_s
+          if distance <= radio
+            output[ fragment.uuid ] = fragment
+          end
         end
-    
-        frag_geo = [ fragment.geolocation[:latitude], fragment.geolocation[:longitude] ]
-     
-        distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
-        puts "-> Distancia: " + distance.to_s
-        if distance <= radio
-          output << fragment
-          cont_msg += 1
-        end
+        
+      when "neo4j"
+        # ...
+        
       end
     
       # formatear output
+      response[:response][:data][:type]      = "json"
+      response[:response][:data][:fragments] = output
     end
     
     # Listar mensajes de un usuario.

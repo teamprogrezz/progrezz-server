@@ -30,7 +30,7 @@ module REST
           
           # Usuarios
           puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
-            user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com' )
+            user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 2.0, longitude: 0.81})
             user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
           end).to_s
           
@@ -40,6 +40,8 @@ module REST
             messages << user_Wikiti.write_msg( "Mensaje de prueba de Shylpx n2 (robado)." )
             messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
           end).to_s
+          
+
           
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do

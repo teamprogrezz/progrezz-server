@@ -52,11 +52,14 @@ module Game
       # * *Argumentos* :
       #   - +lat+: Nueva latitud  (usar nil para no modificar).
       #   - +long+: Nueva longitud (usar nil para no modificar).
-      def set_geolocation(lat = nil, long = nil)
+      #   - +save_after+: Guardar el objeto. Por defecto, se guarda (costoso).
+      def set_geolocation(lat = nil, long = nil, save_after = true)
+        geolocated_pos = [] if geolocated_pos == nil
+        
         if lat != nil;  self.geolocated_pos[0] = lat end
         if long != nil; self.geolocated_pos[1] = long end
 
-       self.save
+        self.save if save_after
       end
 
       # Getter de la posición.
