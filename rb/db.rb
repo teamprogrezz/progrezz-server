@@ -37,7 +37,7 @@ module Database
       GenericUtils.require_dir("./rb/db/relations/**/*.rb", "Leyendo Objetos de DB: ")
       
       #-- Conectar a la base de datos #++
-      neo4j_url = ENV['GRAPHENEDB_URL'] || 'http://localhost:7474' # En Heroku, o en localhost
+      neo4j_url = ENV['GRAPHENDB_URL'] || 'http://localhost:7474' # En Heroku, o en localhost
       uri = URI.parse(neo4j_url)
       server_url = "http://#{uri.host}:#{uri.port}"
 
