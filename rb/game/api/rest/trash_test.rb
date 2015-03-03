@@ -41,8 +41,6 @@ module REST
             messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
           end).to_s
           
-
-          
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
             messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 1.995, longitude: 0.809})
@@ -88,6 +86,19 @@ module REST
           # Borrar usuario
           puts "Tiempo de borrado de Wikiti: " + (GenericUtils.timer do
             #user_Wikiti.destroy
+          end).to_s
+          
+          # Tiempos de geocoder
+          puts "Progrezz time: " + (GenericUtils.timer do
+            for i in 0...9999 do
+              distance = Progrezz::Geolocation.distance({latitude: i - 1, longitude: i + 1}, {latitude: i - 2, longitude: i + 2}, :km)
+            end
+          end).to_s
+          
+          puts "Geocoder time: " + (GenericUtils.timer do
+            for i in 0...9999 do
+              Geocoder::Calculations.distance_between([i-1,i+1], [i-2,i+2], {:units => :km})
+            end
           end).to_s
           
           result = "<h2>Datos añadidos correctamente.</h2>"

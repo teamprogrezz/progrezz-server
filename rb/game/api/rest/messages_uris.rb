@@ -1,5 +1,6 @@
 require 'json'
 require 'geocoder'
+require 'progrezz/geolocation'
 
 #:nodoc:
 module Sinatra; module API ;module REST
@@ -59,19 +60,26 @@ module Sinatra; module API ;module REST
       output  = {}
       
       # Geolocalizaciones (como arrays).
-      user_geo = user.geolocation.values
+      user_geo = user.geolocation
       frag_geo = nil
       
       case method
       when "progrezz"
-        # ...
+        Game::Database::MessageFragment.all.each do |fragment|
+          frag_geo = fragment.geolocation
+          
+          distance = Progrezz::Geolocation.distance(user_geo, frag_geo, :km)
+          if distance <= radius
+            output[ fragment.uuid ] = fragment
+          end
+        end
         
       when "geocoder"
+        user_geo = user_geo.values
         Game::Database::MessageFragment.all.each do |fragment|
           frag_geo = fragment.geolocation.values
 
           distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
-          puts "-> Distancia: " + distance.to_s
           if distance <= radius
             output[ fragment.uuid ] = fragment
           end
