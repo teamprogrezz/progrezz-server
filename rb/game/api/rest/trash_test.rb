@@ -45,7 +45,7 @@ module REST
           
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-            messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4)
+            messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 1.995, longitude: 0.809})
             messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
             messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
           end).to_s

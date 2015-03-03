@@ -49,12 +49,12 @@ module Sinatra; module API ;module REST
     
     # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
-      default_radius = 0.100      # in km
+      default_radius = 0.600      # in km
       default_method = "progrezz" # progrezz, geocoder o neo4j
       
       # TODO Codificar correctamente esta parte
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
-      radio   = response[:request][:request][:data][:radius]  || default_radius
+      radius  = response[:request][:request][:data][:radius]  || default_radius
       method  = response[:request][:request][:data][:method]  || default_method
       output  = {}
       
@@ -72,7 +72,7 @@ module Sinatra; module API ;module REST
 
           distance = Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km})
           puts "-> Distancia: " + distance.to_s
-          if distance <= radio
+          if distance <= radius
             output[ fragment.uuid ] = fragment
           end
         end
