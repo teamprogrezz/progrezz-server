@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/teamprogrezz/progrezz-geolocation.git
-  revision: 6583c0b42b92c440655806bc69cd31ce487beb37
+  revision: f39c454e51bc8439b4526bba29c27e664ca2a3c9
   specs:
-    progrezz-geolocation (0.1)
+    progrezz-geolocation (0.4)
 
 GEM
   remote: https://rubygems.org/
