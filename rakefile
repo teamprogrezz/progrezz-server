@@ -20,6 +20,15 @@ task :setup do
 
 end
 
+desc 'Update gems.'
+task :update_gems do
+  begin
+    sh 'bundle update'
+  rescue
+    puts "Error while installing update."
+  end
+end
+
 namespace :neo4j do
   desc 'Start the Neo4j Server'
   task :start do

@@ -94,9 +94,14 @@ module Sinatra; module API ;module REST
         puts "neo4j"
         user_geo = user_geo.values
         
-        Game::Database::MessageFragment.query_as(:mf).where("mf.latitude > " +
-          (user_geo[0] - 0.1 ).to_s + " and mf.latitude < " +
-          (user_geo[0] + 0.1 ).to_s ).pluck(:mf).each do |fragment|
+        lat =  Progrezz::Geolocation.distance_to_latitude(radius, :km)
+        lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+        
+        Game::Database::MessageFragment.query_as(:mf).where(
+           "mf.latitude  > " + (user_geo[0] - lat).to_s + " and " +
+           "mf.latitude  < " + (user_geo[0] + lat).to_s + " and " +
+           "mf.longitude > " + (user_geo[1] - lon).to_s + " and " +
+           "mf.longitude < " + (user_geo[1] + lon).to_s).pluck(:mf).each do |fragment|
             output[ fragment.uuid ] = fragment.to_hash
         end
         
