@@ -38,9 +38,11 @@ class ProgrezzServer < Sinatra::Base
 end
 
 #-- Añadir página '/' y configuación del server. #++
+#:nodoc: all
 module Sinatra ;module Pages
     def self.registered(app)
       app.get '/' do
+        puts session[:alias]
         return "Index page."
       end
     end

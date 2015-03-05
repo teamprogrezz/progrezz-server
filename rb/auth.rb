@@ -44,7 +44,7 @@ end
 # Inicializar.
 Game::AuthManager.setup()
 
-#:nodoc:
+#:nodoc: all
 module Sinatra
   module AuthMethods
     def self.registered(app)
@@ -67,10 +67,11 @@ module Sinatra
       
       # Acceso a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter).
       app.get '/auth/:provider/callback' do
-        session[:auth] = @auth = request.env['omniauth.auth']
-        session[:name] = @auth['info'].name
-        session[:url] = @auth['info'].urls.values[0]
-        session[:email] = @auth['info'].email
+        session[:auth]    = @auth = request.env['omniauth.auth']
+        session[:user_id] = @auth['info'].email              # ID -> correo
+        session[:name]    = @auth['info'].name               # Nombre completo
+        session[:alias]   = @auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
+        session[:url]     = @auth['info'].urls.values[0]     # Url del usuario (opcional).
          
         puts "params = #{params}"
         puts "@auth.class = #{@auth.class}"
@@ -84,14 +85,14 @@ module Sinatra
         # TODO: Si el usuario no está en la base de datos, añadirlo.
         # ...
         
-        puts "------------------"
-        oparams = request.env["omniauth.params"]
-        puts oparams.keys
-        puts oparams["redirect"]
-        
         # Redireccionar al usuario.
+        oparams = request.env["omniauth.params"]
+        origin  = request.env['omniauth.origin']
+
         if (oparams["redirect"] != nil)
           redirect to(oparams["redirect"])
+        elsif origin != nil
+          redirect to(request.env['omniauth.origin'])
         else
           redirect to("/")
         end
@@ -103,7 +104,7 @@ module Sinatra
         oparams = request.env["omniauth.params"]
         
         if (oparams["error_redirect"] != nil)
-          redirect oparams["error_redirect"]
+          redirect to(oparams["error_redirect"])
         else
           return params["error_message"]
         end
