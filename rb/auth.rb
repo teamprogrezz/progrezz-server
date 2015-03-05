@@ -104,6 +104,16 @@ module Sinatra
         end
       end
       
+      app.get '/auth/logout' do
+        session[:user_id] = session[:name] = session[:alias] = session[:url] = nil
+        
+        if (params["redirect"] != nil)
+          redirect to(oparams["redirect"])
+        else
+          redirect back
+        end
+      end
+      
       # Acceso a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter).
       app.get '/auth/:provider/callback' do
         auth = request.env['omniauth.auth']

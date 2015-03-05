@@ -90,7 +90,7 @@ module Sinatra
 
       # Peticiones REST interactivas
       app.get "/dev/api/rest/interactive" do
-        erb :"api/rest_interactive"
+        erb :"api/rest_interactive", :locals => { :social_title => "Interactive REST client", :session => session }
       end
     end
   end
