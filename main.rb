@@ -23,6 +23,7 @@ class ProgrezzServer < Sinatra::Base
 
   # Activar sesiones del servidor web
   set :sessions, true # TODO: Añadir secreto.
+  set :session_secret, ENV['progrezz_secret']
   
   # Añadir multihilos. 
   set :threaded, true # TODO: Probar con Thin y no con rackup.
@@ -48,6 +49,8 @@ require './rb/rest'
 #-- Cargar autenticación de usuarios. #++
 require './rb/auth'
 
+#-- Ejecutar app #++
+ProgrezzServer.run
 
 #-- Cosas a ejecutar cuando se cierre la app. #++
 at_exit do
