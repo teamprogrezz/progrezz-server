@@ -37,6 +37,29 @@ class ProgrezzServer < Sinatra::Base
   end
 end
 
+#-- Añadir página '/' y configuación del server. #++
+module Sinatra ;module Pages
+    def self.registered(app)
+      app.get '/' do
+        return "Index page."
+      end
+    end
+  end
+  
+  register Pages
+end
+
+#-- Registrar. #++
+class ProgrezzServer; register Sinatra::Pages; end
+
+#-- Cosas a ejecutar cuando se cierre la app. #++
+at_exit do
+  Game::Database::DatabaseManager.force_save()
+  puts "Progrezz server ended. Crowd applause."
+end
+
+#-- ---------------------------------------------------------------- #++
+
 #-- Require especial (con expresiones regulares, para directorios). #++
 require './rb/generic_utils'
 
@@ -49,12 +72,7 @@ require './rb/rest'
 #-- Cargar autenticación de usuarios. #++
 require './rb/auth'
 
+#-- ---------------------------------------------------------------- #++
+
 #-- Ejecutar app #++
 ProgrezzServer.run
-
-#-- Cosas a ejecutar cuando se cierre la app. #++
-at_exit do
-  Game::Database::DatabaseManager.force_save()
-  puts "Progrezz server ended. Crowd applause."
-end
-

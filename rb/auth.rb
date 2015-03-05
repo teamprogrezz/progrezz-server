@@ -52,6 +52,7 @@ module Sinatra
       # Métodos OmnitAuth: configuración.
       app.configure do
         app.enable :sessions
+        app.set :session_secret, ENV['progrezz_secret']
         
         app.use OmniAuth::Builder do
           # Configurar Google Auth.
@@ -83,26 +84,31 @@ module Sinatra
         # TODO: Si el usuario no está en la base de datos, añadirlo.
         # ...
         
+        puts "------------------"
+        oparams = request.env["omniauth.params"]
+        puts oparams.keys
+        puts oparams["redirect"]
+        
         # Redireccionar al usuario.
-        if (params[:redirect] != nil)
-          redirect params[:redirect]
+        if (oparams["redirect"] != nil)
+          redirect to(oparams["redirect"])
         else
-          return "/"
+          redirect to("/")
         end
         
       end
              
       app.get '/auth/failure' do
         # TODO: Cambiar callback de función failure.
+        oparams = request.env["omniauth.params"]
         
-        puts params
-        redirect '/'
+        if (oparams["error_redirect"] != nil)
+          redirect oparams["error_redirect"]
+        else
+          return params["error_message"]
+        end
       end
       
-      app.get '/what' do
-        return "WHAT?"
-      end
-
     end
   end
 
