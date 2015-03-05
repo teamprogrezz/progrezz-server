@@ -24,6 +24,9 @@ class ProgrezzServer < Sinatra::Base
   # Activar sesiones del servidor web
   set :sessions, true # TODO: Añadir secreto.
   
+  # Añadir multihilos. 
+  set :threaded, true # TODO: Probar con Thin y no con rackup.
+  
   # Getter de la sesión de la aplicación.
   #
   # * *Retorna:
