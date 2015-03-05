@@ -124,31 +124,3 @@ module Sinatra; module API ;module REST
   end
   
 end; end; end
-
-get '/game/dba/geoloc' do
-  #params.keys.each do |k|  
-  #  puts k + " -> " + params[k]
-  #end
-
-  output = []
-
-  u_geo = [params['latitude'], params['longitude']]
-  message_list = Game::Database::MessageFragments.all
-  cont_msg = 0
-  for message in message_list do
-    if cont_msg >= params['n_msg'].to_i
-      break;
-    end
-
-    msg_geo = [message.latitude, message.longitude]
- 
-    distance = Geocoder::Calculations.distance_between(u_geo, msg_geo, {:units => :km})
-    puts "-> Distancia: " + distance.to_s
-    if distance <= params['radio'].to_f
-      output << message
-      cont_msg += 1
-    end
-  end
-
-  return params[:callback] + "(" + output.to_json() + ")"
-end

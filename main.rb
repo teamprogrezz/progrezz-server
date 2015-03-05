@@ -45,6 +45,9 @@ require './rb/db'
 #-- Cargar datos referentes a la api REST. #++
 require './rb/rest'
 
+#-- Cargar autenticación de usuarios. #++
+require './rb/auth'
+
 
 #-- Cosas a ejecutar cuando se cierre la app. #++
 at_exit do
