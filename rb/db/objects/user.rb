@@ -64,8 +64,8 @@ module Game
       #   - +uid+: Identificador de usuario (correo electrónico).
       def self.sign_up(al, uid, position = {latitude: 0.0, longitude: 0.0} )
         begin          
-          user = create( { alias: al, user_id: uid } ) do |user|
-            user.set_geolocation( position[:latitude], position[:longitude], true )
+          user = create( { alias: al, user_id: uid } ) do |usr|
+            usr.set_geolocation( position[:latitude], position[:longitude], true )
           end
           
         rescue Exception => e
@@ -116,6 +116,25 @@ module Game
       #-- -------------------------
       #          Métodos
       #   ------------------------- #++
+      
+      # Actualizar perfil del usuario.
+      #
+      # Cambiarán los atributos de un usuario (alias, de momento). Se 
+      # guardará en la base de datos siempre y cuando se haya cambiado 
+      # al menos un atributo.
+      #
+      # * *Argumentos*: 
+      #   - +attributes+: Lista de atributos a actualizar, con sus respectivos valores (ej: {alias: => "pepio"}).
+      def update_profile( attributes = {} )
+        changed = false
+        
+        if attributes[:alias] != nil && attributes[:alias] != self.alias
+          self.alias = attributes[:alias]
+          changed = true
+        end
+        
+        if changed == true; self.save; end
+      end
       
       # Añadir nuevo mensaje.
       #

@@ -1,12 +1,17 @@
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
-#require 'omniauth-facebook'
+require 'omniauth-twitter'
+require 'omniauth-github'
 
 module Game
+  # Clase gestora de la autenticación de usuarios.
+  #
+  # Se hace uso de la API OmniAuth para registrar usuarios, y se guardarán
+  # los datos de la sesión en las cookies de las sesiones de Ruby Sinatra.
   class AuthManager
     
     # Servicios disponibles.
-    SERVICES = [:google_oauth2]
+    SERVICES = [:google_oauth2, :twitter, :github]
     
     # Servicios cargados con OmniAuth.
     @@loaded_services
@@ -15,6 +20,7 @@ module Game
     #
     # Los datos referentes a los servicios se cargarán desde las variables de entorno siguientes:
     # - *google*: id: progrezz_google_id, secret: progrezz_google_secret
+    # - *github*: id: progrezz_github_id, secret: progrezz_github_secret
     # - ...
     # 
     # * *Argumentos*: 
@@ -38,11 +44,34 @@ module Game
     def self.get_loaded_services()
       return @@loaded_services
     end
+    
+    # Dar de alta a un usuario.
+    #
+    # Si el usuario no existe, se creará una entrada en la base de datos.
+    # Si el usuario ya existe, no se añadirá nada.
+    #
+    # * *Argumentos*: 
+    #   - +user_id+: Identificador del usuario (correo).
+    #   - +user_alias+: Alias del usuario (nombre).
+    def self.auth_user(user_id, user_alias)
+      begin
+        # Buscar usuario
+        user = Game::Database::User.search_user( user_id )
+        
+        # Actualizar perfil.
+        user.update_profile( { :alias => user_alias } )
+      rescue
+        # Si no existe, añadir a la BD
+        Game::Database::User.sign_up( user_id, user_alias )
+      end
+    end
+    
+    
   end
 end
 
 # Inicializar.
-Game::AuthManager.setup()
+Game::AuthManager.setup( [:twitter] )
 
 #:nodoc: all
 module Sinatra
@@ -61,29 +90,33 @@ module Sinatra
               :scope => "userinfo.email,userinfo.profile", :provider_ignores_state => true
           end
           
+          # Configurar Twitter
+          if Game::AuthManager.get_loaded_services.include? :twitter
+            provider :twitter, ENV['progrezz_twitter_id'], ENV['progrezz_twitter_secret']
+          end
+          
+          # Configurar GitHub
+          if Game::AuthManager.get_loaded_services.include? :github
+            provider :github, ENV['progrezz_github_id'], ENV['progrezz_github_secret'], scope: "user"
+          end
+          
           # ...
         end
       end
       
       # Acceso a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter).
       app.get '/auth/:provider/callback' do
-        session[:auth]    = @auth = request.env['omniauth.auth']
-        session[:user_id] = @auth['info'].email              # ID -> correo
-        session[:name]    = @auth['info'].name               # Nombre completo
-        session[:alias]   = @auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
-        session[:url]     = @auth['info'].urls.values[0]     # Url del usuario (opcional).
-         
-        puts "params = #{params}"
-        puts "@auth.class = #{@auth.class}"
-        puts "@auth info = #{@auth['info']}"
-        puts "@auth info class = #{@auth['info'].class}"
-        puts "@auth info name = #{@auth['info'].name}"
-        puts "@auth info email = #{@auth['info'].email}"
-        puts "-------------@auth----------------------------------"
-        puts "*************@auth.methods*****************"
-             
-        # TODO: Si el usuario no está en la base de datos, añadirlo.
-        # ...
+        auth = request.env['omniauth.auth']
+        
+        session[:user_id] = auth['info'].email              # ID -> correo
+        session[:name]    = auth['info'].name               # Nombre completo
+        session[:alias]   = auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
+        session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
+        
+        puts "Email: " + auth['info'].email
+
+        # Registrar el usuario en la base de datos.
+        Game::AuthManager.auth_user( session[:user_id], session[:alias] )
         
         # Redireccionar al usuario.
         oparams = request.env["omniauth.params"]
