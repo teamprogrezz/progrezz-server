@@ -55,8 +55,6 @@ module Game
       #   - +long+: Nueva longitud (usar nil para no modificar).
       #   - +save_after+: Guardar el objeto. Por defecto, se guarda (costoso).
       def set_geolocation(lat = nil, long = nil, save_after = true)
-        geolocated_pos = [] if geolocated_pos == nil
-        
         if lat != nil;  self.latitude  = lat end
         if long != nil; self.longitude = long end
 
