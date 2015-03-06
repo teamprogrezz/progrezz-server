@@ -76,11 +76,11 @@
 
 <!-- Procesamiento local -->
 <script type="text/javascript">
-  rest_methods_data = []
+  rest_methods_data = [];
   
   <% rest_methods.each do |methods| %>
   <% methods[1].each do |method| %>
-    rest_methods_data.push( <%= method["example"].to_json %> )
+    rest_methods_data.push( <%= method["example"].to_json %> );
   <% end %>
   <% end %>
 
@@ -88,35 +88,43 @@
      document.getElementById('form_request_str').value = JSON.stringify( rest_methods_data[num], null, '  ' );
   }
 
-  rest_request = new RESTResquest()
+  rest_request = new RESTRequest();
   
   rest_request.onComplete = function(json_response) {
-    document.getElementById("output").value = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '))
+    document.getElementById("output").value = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '));
   }
   rest_request.onError = function(xhr) {
-    document.getElementById("output").innerHTML = "ERROR! " + JSON.stringify(xhr, null, '  ')
-    document.getElementById("serverstatus").innerHTML = "Response error: " + xhr.statusText
-    document.getElementById("serverstatus").style.visibility = "visible"
+    document.getElementById("output").value = "ERROR! " + JSON.stringify(xhr, null, '  ');
+    document.getElementById("serverstatus").innerHTML = "Response error: " + xhr.statusText;
+    document.getElementById("serverstatus").style.visibility = "visible";
   }
   rest_request.onEnd = function(json_response) {
-    console.log("end!")
-  }
-
-  function reset_form() {
-    // Setup default text
-    document.getElementById('form_request_str').value = JSON.stringify( RESTResquest.getTemplateRequest(), null, '  ' );
+    console.log("end!");
   }
   
   function send_form() {
    try {
-     rest_request.request( JSON.parse( document.getElementById('form_request_str').value ) )
-     document.getElementById("serverstatus").style.visibility = "hidden"
+     rest_request.request( JSON.parse( document.getElementById('form_request_str').value ) );
+     document.getElementById("serverstatus").style.visibility = "hidden";
    }
    catch(err) {
-     document.getElementById("serverstatus").innerHTML = "Parse error: " + err.message
-     document.getElementById("serverstatus").style.visibility = "visible"
+     document.getElementById("serverstatus").innerHTML = "Parse error: " + err.message;
+     document.getElementById("serverstatus").style.visibility = "visible";
    }
   }
-
-  reset_form()
+  
+  if(typeof(Storage) !== "undefined") {
+    var input = document.getElementById('form_request_str');
+    if (localStorage.last_input)
+      input.value = localStorage.last_input
+    else
+      dump_example(0);
+    
+    $('#form_request_str').bind('input propertychange', function() {
+      localStorage.last_input = input.value
+    });
+  }
+  else {
+    dump_example(0);
+  }
 </script>

@@ -3,15 +3,28 @@
     "Echo", [
       {
         "name": "Native echo",
-        "example":{"_comment": "Use this method to test the server connection.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"echo","data":{"name":"<your name here>"}}}
+        "example": {"_comment": "Use this method to test the server connection.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"echo","data":{"name":"your name here"}}}
       },
       {
         "name": "Python echo",
-        "example":{"_comment": "Use this method to test the server connection, using a python script.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"echo_py","data":{"name":"<your name here>"}}}
+        "example": {"_comment": "Use this method to test the server connection, using a python script.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"echo_py","data":{"name":"your name here"}}}
       }
     ]
   ],
   [
-    "User", [ {"name": "Get user messages", "example": "{}"}, {"name": "...", "example": "{}"} ]
+    "User messages", [
+      {
+        "name": "Change user's message status",
+        "example": {"_comment":"Change a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_change_message_status","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)","new_status":"new message status (read, unread or locked)"}}}
+      },
+      {
+        "name": "Collect message fragment",
+        "example": {"_comment":"Collect a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)"}}}
+      }
+      {
+        "name": "Write a message",
+        "example": {"_comment":"Write a geolocated message from <user_id> position.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_write_message","data":{"user_id":"yourmail@example.com","content":"Message content (eg: Hello world!!!)","resource":"[Optional] Resource link (eg: http://www.w3schools.com/tags/smiley.gif)."}}}
+      }
+    ]
   ]
 ]
