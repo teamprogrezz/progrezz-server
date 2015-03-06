@@ -56,29 +56,16 @@
           <h3>Server Response</h3>
         </div>
         <div class="panel-body">
+          <div class="form-group">
           <textarea id="output" class="form-control" rows="16" style="resize: none;" readonly></textarea>
+          </div>
+          <div id="serverstatus" style="visibility: hidden;" class="alert alert-danger" role="alert">Error!</div>
         </div>
       </div>
     </div>
     
   </div>
 </div>
-
-<!--<div class="left">
-  <h2>REST Request:</h2>
-  <hr>
-  
-  <form action="demo_form.asp" id="usrform">
-    <textarea id="form_request_str" rows="30"  form="usrform" style="width: 90%; resize: none;"></textarea><br>
-    <input type="button" value="Send request" onclick="send_form();" ><input type="button" value="Reset" onclick="reset_form();">
-  </form>
-</div>
-
-<div class="right">
-  <h2>Server response:</h2>
-  <hr>
-  <textarea id="output" rows="30" style="width: 90%; resize: none;" disabled></textarea>
-</div>-->
 
 
   <!-- Javascript -->
@@ -92,7 +79,10 @@
   rest_request.onComplete = function(json_response) {
     document.getElementById("output").value = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '))
   }
-  rest_request.onError = function(xhr) { document.getElementById("output").innerHTML = "ERROR! " + JSON.stringify(xhr, null, '  ')
+  rest_request.onError = function(xhr) {
+    document.getElementById("output").innerHTML = "ERROR! " + JSON.stringify(xhr, null, '  ')
+    document.getElementById("serverstatus").innerHTML = "Response error: " + xhr.statusText
+    document.getElementById("serverstatus").style.visibility = "visible"
   }
   rest_request.onEnd = function(json_response) {
     console.log("end!")
@@ -104,7 +94,14 @@
   }
   
   function send_form() {
-    rest_request.request( JSON.parse( document.getElementById('form_request_str').value ) )
+   try {
+     rest_request.request( JSON.parse( document.getElementById('form_request_str').value ) )
+     document.getElementById("serverstatus").style.visibility = "hidden"
+   }
+   catch(err) {
+     document.getElementById("serverstatus").innerHTML = "Parse error: " + err.message
+     document.getElementById("serverstatus").style.visibility = "visible"
+   }
   }
 
   reset_form()
