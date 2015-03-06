@@ -40,7 +40,7 @@ module Database
 
     # Destruye todo el contenido de la base de datos.
     #
-    # @warning ¡No se pueden revertir los cambios!
+    # @note ¡No se pueden revertir los cambios!
     def self.drop()
       self.force_save()
       Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
@@ -67,8 +67,7 @@ module Database
     
     # Iniciar una nueva transacción.
     #
-    # * *Retorna*: 
-    #   - Referencia a la transacción creada.
+    # @return [Neo4j::Transaction] Referencia a la transacción creada.
     def self.start_transaction()
       tx = Neo4j::Transaction.new
       @@transactions << tx
@@ -77,8 +76,7 @@ module Database
     
     # Termina y guarda una transacción.
     #
-    # * *Argumentos*: 
-    #   - +tx+: Referencia a la transacción.
+    # @param tx [Neo4j::Transaction] Referencia a la transacción.
     def self.stop_transaction(tx)
       @@transactions.delete(tx)
       tx.close()
@@ -86,8 +84,7 @@ module Database
     
     # Deshace los cambios de una transacción (rollback).
     #
-    # * *Argumentos*: 
-    #   - +tx+: Referencia a la transacción.
+    # @param tx [Neo4j::Transaction] Referencia a la transacción.
     def self.rollback_transaction(tx)
       tx.failure()
     end

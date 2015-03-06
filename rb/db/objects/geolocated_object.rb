@@ -32,15 +32,23 @@ module Game
       #-- -------------------------
       #      Atributos (DB)
       #   ------------------------- #++
+      
+      # Latitud del objeto geolocalizado. 
+      # @return [Float] Por defecto toma el valor 0.0
       property :latitude,  type: Float, default: 0.0, index: :exact
+      
+      # Longitud del objeto geolocalizado. 
+      # @return [Float] Por defecto toma el valor 0.0
       property :longitude, type: Float, default: 0.0, index: :exact
-      #property :geolocated_pos, default: [0.0, 0.0], on: :create # Array que contiene la geolocalización, con formato [latitude, longitud].
 
 
       #-- -------------------------
       #      Callbacks (DB)
       #   ------------------------- #++
-      after_save :after_save_callback # Callback posterior a la modificación de la latitud y longitud.
+      
+      # Callback posterior a la modificación de la latitud y longitud.
+      # @return Lista de callbacks a ejecutar después de guardar el objeto en la base de datos.
+      after_save :after_save_callback 
       
       #-- -------------------------
       #        Métodos
@@ -48,10 +56,9 @@ module Game
 
       # Cambiar latitud y longitud.
       #
-      # * *Argumentos* :
-      #   - +lat+: Nueva latitud  (usar nil para no modificar).
-      #   - +long+: Nueva longitud (usar nil para no modificar).
-      #   - +save_after+: Guardar el objeto. Por defecto, se guarda (costoso).
+      # @param lat [Float, nil] Nueva latitud  (usar nil para no modificar).
+      # @param long [Float, nil] Nueva longitud (usar nil para no modificar).
+      # @param save_after [Boolean] Guardar el objeto. Por defecto, se guarda (costoso).
       def set_geolocation(lat = nil, long = nil, save_after = true)
         if lat != nil;  self.latitude  = lat end
         if long != nil; self.longitude = long end
@@ -61,15 +68,13 @@ module Game
 
       # Getter de la posición.
       #
-      # * *Retorna* :
-      #   - Array con la latitud y la longitud, con el formato [latitud, longitud].
+      # @return [Hash<Symbol, Float>] Hash con la latitud y la longitud, con el formato {latitude: +lat+, longitude: +lon+ }.
       def geolocation()
         return { latitude: self.latitude, longitude: self.longitude }
       end
       
-      # Ajustar posición a valores reales.
-      # * *Retorna* :
-      #   - Referencia al objeto ajustado.
+      # Ajustar posición a valores reales (véase las constantes de la clase #Game::Database::GeolocatedObject).
+      # @return [Game::Database::GeolocatedObject] Referencia al objeto ajustado.
       def clamp()
         self.latitude = [MIN_LATITUDE,  self.latitude, MAX_LATITUDE ].sort[1]
         self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
@@ -78,10 +83,8 @@ module Game
       end
       
       # Ajustar posición a valores reales (método estático).
-      # * *Arguments*: 
-      #   - +pos+: Hash con la posición geolocalizada.
-      # * *Retorna* :
-      #   - Referencia al objeto ajustado.
+      # @param pos [Hash<Symbol, Float>] Hash con la posición geolocalizada, con el formato {latitude: +lat+, longitude: +lon+ }.
+      # @return [Hash<Symbol, Float>] Referencia a la posición ajustada.
       def self.clamp(pos)
         pos[:latitude]  = [MIN_LATITUDE,  pos[:latitude],  MAX_LATITUDE ].sort[1]
         pos[:longitude] = [MIN_LONGITUDE, pos[:longitude], MAX_LONGITUDE].sort[1]
@@ -91,8 +94,7 @@ module Game
       
       # Stringificar objeto.
       #
-      # * *Retorna* :
-      #   - Objeto como string, con el formato "<Geolocation: +latitud+,+longitud+>".
+      # @return [String] Objeto como string, con el formato "<Geolocation: +latitud+,+longitud+>".
       def to_s()
         return "<Geolocation: " + self.latitude.to_s + "," + self.longitude.to_s + ">"
       end

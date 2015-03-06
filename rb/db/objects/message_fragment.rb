@@ -3,8 +3,8 @@ require_relative '../relations/user-message_fragment'
 module Game
   module Database
     
-    # Forward declaration
     class Message; end
+    # Forward declaration
 
     # Clase que representa a un fragmento geolocalizado de un juego.
     #
@@ -16,17 +16,27 @@ module Game
       #-- -------------------------
       #         Atributos DB)
       #   ------------------------- #++
-      property :fragment_index, type: Integer #, constraint: :unique  # Índice de fragmento
-      property :created_at                                            # Timestamp o fecha de creación del fragmento.
+      
+      # Índice del fragmento.
+      # @return [Integer] Debe ser mayor o igual que 0, o menor que el total de fragmentos del mensaje.
+      property :fragment_index, type: Integer #, constraint: :unique
+      
+      # Timestamp o fecha de creación del fragmento.
+      # return [Integer] Milisegundos desde el 1/1/1970.
+      property :created_at
       
       #-- -------------------------
       #     Relaciones (DB)
       #   ------------------------- #++
       
-      # Relación con el mensaje padre. Se puede acceder con el atributo +message+.
+      # @!method message
+      # Relación con el mensaje padre (#Game::Database::Message). Se puede acceder con el atributo +message+.
+      # @return [Game::Database::Message] Mensaje que está compuesto por este fragmento.
       has_one :in, :message, model_class: Game::Database::Message, origin: :fragments
       
-      # Relación con fragmentos recolectados por el usuario. Se puede acceder con el atributo +owners+.
+      # @!method owners
+      # Relación con fragmentos recolectados por el usuario (#Game::Database::RelationShips::UserFragmentMessage). Se puede acceder con el atributo +owners+.
+      # @return [Game::Database::User] Propietarios de este fragmento.
       has_many :in, :owners, rel_class: Game::Database::RelationShips::UserFragmentMessage, model_class: Game::Database::User
       
       
@@ -38,10 +48,9 @@ module Game
       #
       # En caso de error, lanzará una excepción como una String (Exception).
       #
-      # * *Argumentos* :
-      #   - +msg+: Referencia al mensaje.
-      #   - +f_index+: Índice del fragmento.
-      #   - +position+: Posición geolocalizada del fragmento.
+      # @param msg [String] Referencia al mensaje.
+      # @param f_index [Integer] Índice del fragmento.
+      # @param position [Hash<Symbol, Float>] Posición geolocalizada del fragmento.
       def self.create_message_fragment(msg, f_index, position)
         begin
           fmsg = create( {message: msg, fragment_index: f_index }) do |fragment|
@@ -59,17 +68,17 @@ module Game
       #-- -------------------------
       #           Métodos
       #   ------------------------- #++
+      
       # Stringificar objeto.
       #
-      # * *Retorna* :
-      #   - Objeto como string, con el formato "<MessageFragment: +uuid+,+message.uuid+,+fragment_index+,+geolocation+>".
+      # @return [String] Objeto como string, con el formato "<MessageFragment: +uuid+,+message.uuid+,+fragment_index+,+geolocation+>".
       def to_s()
         return "<MessageFragment: " + self.uuid.to_s + ", " + self.message.uuid + ", " + fragment_index.to_s + ", " + super.to_s() + ">" 
       end
       
-      # Transformar objeto a un hash
-      # * *Retorna* :
-      #   - Objeto como hash.
+      # Transformar objeto a un hash.
+      #
+      # @return [Hash<Symbol, Object>] Objeto como hash.
       def to_hash()
         return {
           geolocation:    self.geolocation,

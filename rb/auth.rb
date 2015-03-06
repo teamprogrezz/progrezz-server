@@ -4,6 +4,7 @@ require 'omniauth-twitter'
 require 'omniauth-github'
 
 module Game
+  
   # Clase gestora de la autenticación de usuarios.
   #
   # Se hace uso de la API OmniAuth para registrar usuarios, y se guardarán
@@ -19,12 +20,11 @@ module Game
     # Iniciar módulos OmniAuth.
     #
     # Los datos referentes a los servicios se cargarán desde las variables de entorno siguientes:
-    # - *google*: id: progrezz_google_id, secret: progrezz_google_secret
-    # - *github*: id: progrezz_github_id, secret: progrezz_github_secret
-    # - ...
+    # - *google*: id: progrezz_google_id, secreto: progrezz_google_secret
+    # - *github*: id: progrezz_github_id, secreto: progrezz_github_secret
+    # - *twitter*: id: progrezz_twitter_id, secreto: progrezz_twitter_secret
     # 
-    # * *Argumentos*: 
-    #   - +service_exceptions+: Servicios (símbolos ruby) que no serán cargados. Por defecto, se cargarán todos los posibles. La lista de servicios se encuentra en SERVICES.
+    # @param service_exceptions [Array<Symbol>] Servicios (símbolos ruby) que no serán cargados. Por defecto, se cargarán todos los posibles. La lista de servicios se encuentra en SERVICES.
     def self.setup(service_exceptions = [] )
       @@loaded_services = []
       
@@ -39,8 +39,7 @@ module Game
     
     # Getter de los servicios cargados.
     #
-    # * *Retorna*: 
-    #   - Lista o Array de símbolos de los servicios cargados (ej: [:google, :twitter, ...]).
+    # @return [Array<Symbol>] Lista o Array de símbolos de los servicios cargados (ej: [:google, :twitter, ...]).
     def self.get_loaded_services()
       return @@loaded_services
     end
@@ -50,9 +49,8 @@ module Game
     # Si el usuario no existe, se creará una entrada en la base de datos.
     # Si el usuario ya existe, no se añadirá nada.
     #
-    # * *Argumentos*: 
-    #   - +user_id+: Identificador del usuario (correo).
-    #   - +user_alias+: Alias del usuario (nombre).
+    # @param user_id [String] Identificador del usuario (correo).
+    # @param user_alias [String] Alias del usuario (nombre).
     def self.auth_user(user_id, user_alias)
       begin
         # Buscar usuario
@@ -75,12 +73,16 @@ end
 # Inicializar.
 Game::AuthManager.setup( [:twitter] )
 
-#:nodoc: all
 module Sinatra
+  
+  # Métodos http de autenticación.
   module AuthMethods
+    
+    # Registrar páginas web necesarias.
+    # @param app [Sinatra::Application] Aplicación sinatra.
     def self.registered(app)
       
-      # Métodos OmnitAuth: configuración.
+      # Configuración Omniauth.
       app.configure do
         app.enable :sessions
         app.set :session_secret, ENV['progrezz_secret']
@@ -106,6 +108,7 @@ module Sinatra
         end
       end
       
+      # URL para cerrar la sesión.
       app.get '/auth/logout' do
         session[:user_id] = session[:name] = session[:alias] = session[:url] = nil
         
@@ -116,7 +119,8 @@ module Sinatra
         end
       end
       
-      # Acceso a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter).
+      # Callback que será llamado por el servicio.
+      # Se puede acceder a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter o /auth/google_oauth2).
       app.get '/auth/:provider/callback' do
         auth = request.env['omniauth.auth']
         
@@ -124,8 +128,6 @@ module Sinatra
         session[:name]    = auth['info'].name               # Nombre completo
         session[:alias]   = auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
         session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
-        
-        puts "Email: " + auth['info'].email
 
         # Registrar el usuario en la base de datos.
         Game::AuthManager.auth_user( session[:user_id], session[:alias] )
@@ -143,7 +145,8 @@ module Sinatra
         end
         
       end
-             
+      
+      # URL o callback de inicion de sesión fallido.
       app.get '/auth/failure' do
         # TODO: Cambiar callback de función failure.
         oparams = request.env["omniauth.params"]

@@ -13,6 +13,7 @@ if development?
   puts "**   Starting in development mode   **"
   puts "--------------------------------------"
   
+  # Variable de desarrollo.
   DEV = true
 end
 
@@ -22,7 +23,9 @@ end
 class ProgrezzServer < Sinatra::Base
 
   # Activar sesiones del servidor web
-  set :sessions, true # TODO: Añadir secreto.
+  set :sessions, true
+  
+  # Añadir secreto.
   set :session_secret, ENV['progrezz_secret']
   
   # Añadir multihilos. 
@@ -30,46 +33,58 @@ class ProgrezzServer < Sinatra::Base
   
   # Getter de la sesión de la aplicación.
   #
-  # * *Retorna:
-  #   - Sesión actual (objeto session).
+  # @return Sesión actual (objeto session).
   def self.get_session()
     return self.session
   end
 end
 
-#-- Añadir página '/' y configuación del server. #++
-#:nodoc: all
+# Módulo Sinatra (predefinido).
 module Sinatra
+  
+  # Módulo de páginas webs. Usado para definir los métodos get y post
+  # de las distintas páginas webs del servidor.
   module Pages
+    
+    # Helpers o métodos de ayuda para las peticiones http.
     module WebHelpers
+      
       # Comprobar si la página dada es la actual.
+      # @param path [String] Ruta dada para saber si se corresponde con la actual
+      # @return [String, nil] Si es la misma, retorna "current". En otro caso, retorna nil. 
       def current?(path='/')
         (request.path==path || request.path==path+'/') ? "current" : nil
       end
     end
     
-    # Registrar páginas web elementales
+    # Registrar páginas web elementales.
+    # @param app [Sinatra::Application] Aplicación sinatra.
     def self.registered(app)
       app.helpers Pages::WebHelpers
       
-      # Genéricas
+      # Ruta principal del servidor.
       app.get '/' do
         redirect to("/dev")
       end
       
+      # Página no encontrada (error 404).
+      # 
+      # Redirecciona a "/".
       app.not_found do
         redirect to("/")
       end
       
-      # Dev
+      # Página dev principal (home).
       app.get '/dev' do
         erb :"dev/home", :locals => { :session => session }, :layout => :layout_dev
       end
       
+      # Página de información (about).
       app.get '/dev/about' do
         erb :"dev/about", :locals => { :session => session }, :layout => :layout_dev
       end
       
+      # Página de documentación (doc).
       app.get '/dev/doc' do
         erb :"dev/doc", :locals => { :session => session }, :layout => :layout_dev
       end
@@ -82,7 +97,7 @@ end
 #-- Registrar. #++
 class ProgrezzServer; register Sinatra::Pages; end
 
-#-- Cosas a ejecutar cuando se cierre la app. #++
+# Cosas a ejecutar cuando se cierre la app.
 at_exit do
   Game::Database::DatabaseManager.force_save()
   puts "Progrezz server ended. Crowd applause."

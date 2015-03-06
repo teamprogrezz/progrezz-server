@@ -39,29 +39,48 @@ module Game
       #property :id_msg, constraint: :unique
       
       # Número total de fragmentos que tiene el mensaje.
+      #
+      # @return [Integer] Debe ser mayor que cero.
       property :total_fragments, type: Integer
 
       # Contenido del mensaje.
+      #
+      # @return [String].
       property :content, type: String
       
-      # Recurso adicional (imagen, hipervínculo, ...). Totalmente opcional.
+      # Recurso adicional (imagen, hipervínculo, ...).
+      # Totalmente opcional.
+      #
+      # @return [String].
       property :resource_link, type: String
       
       # Timestamp o fecha de creación del mensaje.
+      # return [Integer] Milisegundos desde el 1/1/1970.
       property :created_at
 
       #-- -------------------------
       #       Relaciones (DB)
       #   ------------------------- #++
       
-      # Relación con un autor. Se puede acceder con el atributo +author+.
+      # @!method author
+      # Relación con un autor (#Game::Database::User). Se puede acceder con el atributo +author+.
+      # @return [Game::Database::User]
       has_one :in, :author, model_class: Game::Database::User, origin: :written_messages
       
-      # Relación con los fragmentos del mensaje. Se puede acceder con el atributo +fragments+.
+      # @!method fragments
+      #
+      # Relación con los fragmentos del mensaje (#Game::Database::MessageFragment).
+      # Se puede acceder con el atributo #fragments. El enlace tiene nombre +is_fragmented_in+.
       # Si el mensaje se borra, desaparecerán todos los fragmentos.
+      #
+      # @return [Game::Database::MessageFragment] Fragmentos.
       has_many :out, :fragments, model_class: Game::Database::MessageFragment, type: "is_fragmented_in", dependent: :destroy
 
-      # Relación con los usuarios que han completado este mensaje. Se puede acceder con el atributo +owners+.
+      # @!method owners
+      # Relación con los usuarios que han completado este mensaje.
+      # Se puede acceder con el atributo #owners.
+      #
+      # @return [Game::Database::RelationShips::UserCompletedMessage]
       has_many :in, :owners, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::User
       
       #-- -------------------------
@@ -70,14 +89,12 @@ module Game
 
       # Creación de nuevos mensajes.
       #
-      # * *Argumentos*:
-      #   - +cont+: Contenido del mensaje.
-      #   - +n_fragments+: Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
-      #   - +resource+: Recurso mediático (opcional).
-      #   - +custom_author+: Autor del mensaje (opcional).
+      # @param cont [String] Contenido del mensaje.
+      # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
+      # @param resource [String] Recurso mediático (opcional).
+      # @param custom_author [Game::Database::User] Autor del mensaje (opcional).
       #
-      # * *Retorna* :
-      #   - Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
+      # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
       def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 })
         begin
           message = create( {content: cont, total_fragments: n_fragments, resource_link: resource }) do |msg|
@@ -105,8 +122,7 @@ module Game
       
       # Getter del autor.
       #
-      # * *Retorna* :
-      #   - Autor del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_AUTHOR
+      # @return [Game::Database::Author] Autor del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_AUTHOR
       def get_author()
         if(self.author == nil); return NO_AUTHOR end
         return self.author
@@ -114,8 +130,7 @@ module Game
       
       # Getter del alias del autor.
       #
-      # * *Retorna* :
-      #   - Alias del autor del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_AUTHOR
+      # @return [String] Alias del autor del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_AUTHOR
       def get_author_alias()
         if(self.author == nil); return NO_AUTHOR end
         return self.author.alias
@@ -123,8 +138,7 @@ module Game
       
       # Getter del recurso mediático.
       #
-      # * *Retorna* :
-      #   - Recurso mediático del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_RESOURCE
+      # @return [String] Recurso mediático del mensaje. En caso de que no exista devolverá Game::Database::Message.NO_RESOURCE
       def get_resource()
         if(self.resource_link == nil); return NO_RESOURCE end
         return self.resource_link
@@ -134,8 +148,7 @@ module Game
       #
       # Usado para la API REST.
       #
-      # * *Retorna*:
-      #   - Hash con los datos referentes al mensaje completado por el usuario.
+      # @return [Hash<Symbol, Object>] Hash con los datos referentes al mensaje completado por el usuario.
       def get_user_message(user_rel = nil)
         output = {
           author:          self.get_author_alias,
@@ -155,8 +168,7 @@ module Game
       
       # Transformar objeto a un hash
       #
-      # * *Retorna* :
-      #   - Objeto como hash.
+      # @return [Hash<Symbol, Object>] Objeto como hash.
       def to_hash()
         return {
           uuid:            self.uuid,
@@ -170,8 +182,7 @@ module Game
       
       # Stringificar objeto.
       #
-      # * *Retorna* :
-      #   - Objeto como string, con el formato "<Message: +content+,+author+,+total_fragments+,+resource_link+>".
+      # @return [String] Objeto como string, con el formato "<Message: +content+,+author+,+total_fragments+,+resource_link+>".
       def to_s()
         return "<Message: " + self.content + ", " + get_author() + ", " + self.total_fragments.to_s + ", " + get_resource() + ">" 
       end

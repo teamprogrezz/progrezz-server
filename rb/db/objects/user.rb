@@ -7,8 +7,8 @@ require_relative '../relations/user-completed_message'
 module Game
   module Database
     
-    #-- Forward declarations #++
     class Message; end
+    # Forward declaration
     
     # Clase que representa a un jugador cualquiera en la base de datos.
     #
@@ -25,30 +25,50 @@ module Game
       
       # Fragmentos en los que se partirán los mensajes de un usuario.
       USER_MESSAGE_FRAGMENTS = 1 
+      
       # TODO: Añadir límite de mensajes (según el nivel, o algo así).
       
       #-- -------------------------
       #        Atributos (DB)
       #   ------------------------- #++
-      property :user_id, constraint: :unique          # Identificador de usuario (correo, único en la BD)
-      property :alias, type: String, default: ""      # Alias o nick del usuario.
-      property :created_at                            # Timestamp o fecha de creación del usuario.
+      
+      # Identificador del usuario.
+      #
+      # @return [String] Debe ser único, como el correo electrónico.
+      property :user_id, constraint: :unique
+      
+      # Alias o nick del usuario.
+      # No tiene por qué ser único.
+      # @return [String] 
+      property :alias, type: String, default: ""
+      
+      # Timestamp o fecha de creación del mensaje.
+      # return [Integer] Milisegundos desde el 1/1/1970.
+      property :created_at
       
       #-- -------------------------
       #     Relaciones (DB)
       #   ------------------------- #++
       
+      # @!method written_messages
+      #
       # Relación de mensajes creados por el usuario.
       #
       # Si se borra el usuario, se borrarán todos sus mensajes.
+      # Se puede acceder con el atributo #written_messages. Tiene como tipo +has_written+.
       #
-      # Se puede acceder con el atributo +written_messages+.
+      # @return [Game::Database::Message]
       has_many :out, :written_messages, model_class: Game::Database::Message, type: "has_written", dependent: :destroy
       
-      # Relación de fragmentos recolectados por el usuario. Se puede acceder con el atributo +collected_fragment_messages+.
+      # @!method collected_fragment_messages
+      # Relación de fragmentos recolectados por el usuario. Se puede acceder con el atributo #collected_fragment_messages.
+      # @return [Game::Database::RelationShips::UserFragmentMessage] 
       has_many :out, :collected_fragment_messages, rel_class: Game::Database::RelationShips::UserFragmentMessage, model_class: Game::Database::MessageFragment
       
-      # Relación de mensajes completados por el usuario. Se puede acceder con el atributo +collected_completed_messages+.
+      # @!method collected_completed_messages
+      # Relación de mensajes completados por el usuario.
+      # Se puede acceder con el atributo +collected_completed_messages+.
+      # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
       
       #-- -------------------------
@@ -59,9 +79,8 @@ module Game
       #
       # En caso de error, lanzará una excepción como una String (Exception).
       #
-      # * *Argumentos* :
-      #   - +al+: Alias o nick del usuario.
-      #   - +uid+: Identificador de usuario (correo electrónico).
+      # @param al [String] Alias o nick del usuario.
+      # @param uid [String] Identificador de usuario (correo electrónico).
       def self.sign_up(al, uid, position = {latitude: 0.0, longitude: 0.0} )
         begin          
           user = create( { alias: al, user_id: uid } ) do |usr|
@@ -79,11 +98,9 @@ module Game
       
       # Buscar un usuario
       #
-      # * *Argumentos* :
-      #   - +user_id+: Identificador de usuario (correo electrónico).
+      # @param user_id [String] Identificador de usuario (correo electrónico).
       #
-      # * *Retorna*:
-      #   - Si el usuario existe, devuelve una referencia al mismo. Si no, genera una excepción.
+      # @return [Game::Database::User] Si el usuario existe, devuelve una referencia al mismo. Si no, genera una excepción.
       def self.search_user(user_id)
         # Identificar que el usuario exista, etc.
         user = Game::Database::User.find_by( user_id: user_id )
@@ -98,12 +115,10 @@ module Game
       
       # Busca un usuario autenticado en la sesión actual.
       #
-      # * *Argumentos* :
-      #   - +user_id+: Identificador de usuario (correo electrónico).
-      #   - +session+: Sesión de Ruby Sinatra.
+      # @param user_id [String] Identificador de usuario (correo electrónico).
+      # @param session [Hash] Sesión de Ruby Sinatra.
       #
-      # * *Retorna*:
-      #   - Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
+      # @return [Game::Database::User] Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
       def self.search_auth_user(user_id, session)
         user = search_user(user_id)
         
@@ -134,8 +149,7 @@ module Game
       # guardará en la base de datos siempre y cuando se haya cambiado 
       # al menos un atributo.
       #
-      # * *Argumentos*: 
-      #   - +attributes+: Lista de atributos a actualizar, con sus respectivos valores (ej: {alias: => "pepio"}).
+      # @param attributes [Hash<Symbol, Object>] Lista de atributos a actualizar, con sus respectivos valores (ej: { alias: => "pepio" }).
       def update_profile( attributes = {} )
         changed = false
         
@@ -149,8 +163,7 @@ module Game
       
       # Añadir nuevo mensaje.
       #
-      # * *Argumentos* :
-      #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
+      # @param message [Game::Database::Message] Nuevo mensaje a añadir.
       def add_msg(message)
         self.written_messages << message
         
@@ -159,11 +172,10 @@ module Game
       
       # Escribir nuevo mensaje.
       #
-      # * *Argumentos* :
-      #   - +message+: Nuevo mensaje a añadir, de tipo +Game::Database::Message+.
+      # @param content [String] Contenido del nuevo mensaje a escribir.
+      # @param resource [String, nil] Recurso del mensaje (por defecto es nil).
       #
-      # * *Retorna* :
-      #   - Referencia al nuevo mensaje escrito.
+      # @return [Game::Database::Message] Referencia al nuevo mensaje escrito.
       def write_msg(content, resource = nil)
         if content.length    < Game::Database::Message::CONTENT_MIN_LENGTH
           raise "Message too short (" + content.length.to_s + " < " + Game::Database::Message::CONTENT_MIN_LENGTH.to_s + ")."
@@ -184,13 +196,9 @@ module Game
       # En caso de recoger todos los fragmentos, se añadirá el mensaje
       # a la lista de mensajes completados por el usuario. 
       #
-      # * *Argumentos* :
-      #   - +fragment+: Nuevo fragmento a añadir, de tipo +Game::Database::MessageFragment+.
+      # @param fragment_message [Game::Database::FragmentMessage] Nuevo fragmento a añadir.
       #
-      # * *Retorna* :
-      #   - Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido.
-      #   - Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje.
-      #   - En cualquier otro caso, devuelve nil.
+      # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, devuelve nil.
       def collect_fragment(fragment_message)
         if fragment_message != nil
           # Comprobar si es necesario añadir la relación
@@ -237,8 +245,7 @@ module Game
       
       # Obtener mensajes completados por el usuario como un hash (usado para la API REST).
       #
-      # * *Retorna* :
-      #   - Se retornará una lista con las características de los mensajes completados por el usuario.
+      # @return [Hash<String, Object>] Se retornará una lista con las características de los mensajes completados por el usuario.
       def get_completed_messages()
         output = {}
         
@@ -253,12 +260,10 @@ module Game
       #
       # Se intentará buscar un mensaje completado mediante el uuid, siempre y cuando exista.
       #
-      # * *Argumentos* :key => "value", 
-      #   - +msg_uuid+: Identificador del mensaje completado.
-      #   - +new_status+: Nuevo estado del mensaje a desbloquear (véase Game::Database::Message).
+      # @param msg_uuid [String] Identificador del mensaje completado.
+      # @param new_status [String] Nuevo estado del mensaje a desbloquear (véase Game::Database::Message).
       #
-      # * *Retorna* :
-      #   - Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
+      # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
       def change_message_status(msg_uuid, new_status)
         output = nil
         
@@ -277,8 +282,7 @@ module Game
       #
       #   { type: "json", completed_messages = { uuid1: { content: "...", author: "...", ... }, uuid2: {...}, ... }, fragmented_messages = { uuid1: { content: "...", author: "...", fragments: n, ... }, ... }  }
       #
-      # * *Retorna* :
-      #   - Se retornará una lista con las características de los mensajes fragmentados de un usuario.
+      # @return [Hash<Symbol, Object>] Se retornará una lista con las características de los mensajes fragmentados de un usuario.
       
       def get_fragmented_messages()
         output = {}
@@ -301,8 +305,7 @@ module Game
 
       # Stringificar objeto.
       #
-      # * *Retorna* :
-      #   - Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
+      # @return [String] Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
       def to_s
         return "<User: " + self.user_id + ", " + self.alias + ", " + super.to_s + ">" 
       end
