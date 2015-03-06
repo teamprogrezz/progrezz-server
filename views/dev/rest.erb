@@ -9,6 +9,7 @@
   <div class="row">
     <!-- Menú -->
     <% if defined? rest_methods %>
+    <% count = 0 %>
     <div class="col-md-2">
       <div class="panel panel-default">
         <div class="panel-heading" style="padding-top: 1px;">
@@ -23,7 +24,8 @@
               </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
                 <% methods[1].each do |method| %>
-                <li><a href="#"> <%= method["name"] %> </a></li>
+                <li><a onclick= <%= "dump_example(" + count.to_s + ");" %> > <%= method["name"] %> </a></li>
+                <% count += 1 %>
                 <% end %>
               </ul>
             </div>
@@ -74,6 +76,18 @@
 
 <!-- Procesamiento local -->
 <script type="text/javascript">
+  rest_methods_data = []
+  
+  <% rest_methods.each do |methods| %>
+  <% methods[1].each do |method| %>
+    rest_methods_data.push( <%= method["example"].to_json %> )
+  <% end %>
+  <% end %>
+
+  function dump_example(num) {
+     document.getElementById('form_request_str').value = JSON.stringify( rest_methods_data[num], null, '  ' );
+  }
+
   rest_request = new RESTResquest()
   
   rest_request.onComplete = function(json_response) {

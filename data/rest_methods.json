@@ -1,8 +1,17 @@
 [
   [
-    "Echo", [ {"name": "Native echo"}, {"name": "Python echo"} ]
+    "Echo", [
+      {
+        "name": "Native echo",
+        "example":{"_comment": "Use this method to test the server connection.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"echo","data":{"name":"<your name here>"}}}
+      },
+      {
+        "name": "Python echo",
+        "example":{"_comment": "Use this method to test the server connection, using a python script.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"echo_py","data":{"name":"<your name here>"}}}
+      }
+    ]
   ],
   [
-    "User", [ {"name": "Get user messages"}, {"name": "..."} ]
+    "User", [ {"name": "Get user messages", "example": "{}"}, {"name": "...", "example": "{}"} ]
   ]
 ]
