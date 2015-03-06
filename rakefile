@@ -1,31 +1,39 @@
 task :default => ["development:start"]
 
-desc 'Setup everything.'
-task :setup do
-  # Install bundle
-  begin
-    sh 'gem install bundle'
-  rescue
-    puts "Error while installing bundle."
+namespace :setup do
+  desc 'Setup everything.'
+  task :bundle do
+    # Install bundle
+    begin
+      sh 'gem install bundle'
+    rescue
+      puts "Error while installing bundle."
+    end
+
+    # Install gems
+    begin
+      sh 'bundle install'
+    rescue
+      puts "Error while installing gems."
+    end
+
+    puts "Use '$ rake' to start with development!"
   end
 
-  # Install gems
-  begin
-    sh 'bundle install'
-  rescue
-    puts "Error while installing gems."
+  desc 'Update gems.'
+  task :update do
+    begin
+      sh 'bundle update'
+    rescue
+      puts "Error while installing update."
+    end
   end
-
-  puts "Use '$ rake' to start with development!"
-
 end
 
-desc 'Update gems.'
-task :update_gems do
-  begin
-    sh 'bundle update'
-  rescue
-    puts "Error while installing update."
+namespace :doc do
+  desc 'Generate documentation.'
+  task :generate do
+    sh 'rdoc rb'
   end
 end
 

@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 if development?
+  # Variable global de depuración.
   DEV = true
 end
 

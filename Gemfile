@@ -15,6 +15,8 @@ gem 'omniauth-twitter'
 
 gem 'progrezz-geolocation', :git => 'https://github.com/teamprogrezz/progrezz-geolocation.git'
 
+gem 'rdoc'
+
 group :development do
   gem 'sinatra-reloader'
   gem 'racksh'

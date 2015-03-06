@@ -5,8 +5,6 @@ require 'neo4j'
 module Game
   module Database
 
-    class Geolocation; end #-- "forward declaration" #++
-
     # Clase abstracta que representa un objeto geolocalizado.
     class GeolocatedObject
       include Neo4j::ActiveNode

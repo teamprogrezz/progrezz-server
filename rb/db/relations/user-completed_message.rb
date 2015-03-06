@@ -15,9 +15,15 @@ module Game
         #-- -------------------------
         #       Constantes
         #   ------------------------- #++
-        STATUS_LOCKED = "locked" # Estado de mensaje "bloqueado".
-        STATUS_UNREAD = "unread" # Estado de mensaje "sin leer".
-        STATUS_READ   = "unread" # Estado de mensaje "leído".
+        
+         # Estado de mensaje "bloqueado".
+        STATUS_LOCKED = "locked"
+        
+        # Estado de mensaje "sin leer".
+        STATUS_UNREAD = "unread"
+        
+        # Estado de mensaje "leído".
+        STATUS_READ   = "read"
         
         #-- -------------------------
         #       Relaciones (DB)
