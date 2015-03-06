@@ -140,4 +140,4 @@ namespace :heroku do
 end
 
 desc 'Default heroku task'
-task :heroku do Rake::Task['hheroku:start'].execute end
+task :heroku do Rake::Task['heroku:start'].execute end
