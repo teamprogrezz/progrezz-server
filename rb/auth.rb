@@ -56,13 +56,15 @@ module Game
     def self.auth_user(user_id, user_alias)
       begin
         # Buscar usuario
+        puts user_id, user_alias
         user = Game::Database::User.search_user( user_id )
+        puts "not-rescued"
         
         # Actualizar perfil.
         user.update_profile( { :alias => user_alias } )
       rescue
         # Si no existe, añadir a la BD
-        Game::Database::User.sign_up( user_id, user_alias )
+        Game::Database::User.sign_up( user_alias, user_id )
       end
     end
     

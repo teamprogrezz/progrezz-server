@@ -1,0 +1,124 @@
+<!-- HTML -->
+<div class="container-fluid">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="padding-top: 1px;">
+      <h3>Interactive REST client</h3>
+    </div>
+  </div>
+    
+  <div class="row">
+    <!-- Menú -->
+    <div class="col-md-2">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Methods</h3>
+        </div>
+        <div class="panel-body">
+          <div class="btn-group-vertical" style="width: 100%;" role="group" aria-label="Vertical button group">
+            <div class="btn-group" role="group">
+              <button id="btnGroupVerticalDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Test <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                <li><a href="#">Native echo</a></li>
+                <li><a href="#">Python echo</a></li>
+              </ul>
+            </div>
+            <div class="btn-group" role="group">
+              <button id="btnGroupVerticalDrop2" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                User <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                <li><a href="#">Get messages</a></li>
+                <li><a href="#">Get near fragments</a></li>
+                <li><a href="#">...</a></li>
+              </ul>
+            </div>
+            <div class="btn-group" role="group">
+              <button id="btnGroupVerticalDrop3" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Messages <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                <li><a href="#">...</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Request -->
+    <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>REST Request</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+          <textarea id="form_request_str" class="form-control" rows="16" style="resize: none;"></textarea>
+          </div>
+          <button type="button" onclick="send_form();" class="btn btn-success">Send REST request</button>
+        </div>
+      </div>
+    </div>
+      
+    <!-- Response -->
+    <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Server Response</h3>
+        </div>
+        <div class="panel-body">
+          <textarea id="output" class="form-control" rows="16" style="resize: none;" readonly></textarea>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!--<div class="left">
+  <h2>REST Request:</h2>
+  <hr>
+  
+  <form action="demo_form.asp" id="usrform">
+    <textarea id="form_request_str" rows="30"  form="usrform" style="width: 90%; resize: none;"></textarea><br>
+    <input type="button" value="Send request" onclick="send_form();" ><input type="button" value="Reset" onclick="reset_form();">
+  </form>
+</div>
+
+<div class="right">
+  <h2>Server response:</h2>
+  <hr>
+  <textarea id="output" rows="30" style="width: 90%; resize: none;" disabled></textarea>
+</div>-->
+
+
+  <!-- Javascript -->
+<!-- Cliente de la API REST -->
+<script type="text/javascript" src="/lib/client-api-rest/js/progrezz-api-rest.js" ></script>
+
+<!-- Procesamiento local -->
+<script type="text/javascript">
+  rest_request = new RESTResquest()
+  
+  rest_request.onComplete = function(json_response) {
+    document.getElementById("output").value = GenericUtils.html.escape (JSON.stringify(json_response, null, '  '))
+  }
+  rest_request.onError = function(xhr) { document.getElementById("output").innerHTML = "ERROR! " + JSON.stringify(xhr, null, '  ')
+  }
+  rest_request.onEnd = function(json_response) {
+    console.log("end!")
+  }
+
+  function reset_form() {
+    // Setup default text
+    document.getElementById('form_request_str').value = JSON.stringify( RESTResquest.getTemplateRequest(), null, '  ' );
+  }
+  
+  function send_form() {
+    rest_request.request( JSON.parse( document.getElementById('form_request_str').value ) )
+  }
+
+  reset_form()
+</script>

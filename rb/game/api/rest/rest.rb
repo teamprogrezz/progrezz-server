@@ -7,7 +7,7 @@ module Sinatra
     class Methods
       # Redireccionar a página interactiva
       def self.test(app, response, session)
-        app.redirect to("/dev/api/rest/interactive")
+        app.redirect to("/dev/rest")
       end
     end
 
@@ -89,8 +89,8 @@ module Sinatra
       # post '/dev/api/rest/user' { }
 
       # Peticiones REST interactivas
-      app.get "/dev/api/rest/interactive" do
-        erb :"api/rest_interactive", :locals => { :social_title => "Interactive REST client", :session => session }
+      app.get "/dev/rest" do
+        erb :"dev/rest", :locals => { :session => session }, :layout => :layout_dev
       end
     end
   end

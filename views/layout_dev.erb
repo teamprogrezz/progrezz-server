@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Progrezz Developers Pages</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/jpg" href="/img/favicon.png" />
+    
+    <!-- CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-custom.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- JS -->
+    <script src="/js/jquery-1.11.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Cabecera -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img style='width: 20px; height: 20px;' alt="Progrezz Icon" src="/img/favicon.png"></a>
+          <a class="navbar-brand" href="#">Progrezz Developers Page</a>
+        </div>
+
+        <!-- Resto -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <!-- Menú -->
+          <ul class="nav navbar-nav">
+            <li <%= current?("/dev") ? 'class="active"' : "" %> ><a href="#">Home</a></li>
+            <li <%= current?("/dev/about") ? 'class="active"' : "" %> ><a href="#">About</a></li>
+            <li <%= current?("/dev/rest") ? 'class="active"' : "" %> ><a href="#">REST API</a></li>
+          </ul>
+          
+          <!-- Login -->
+          <% if (defined? session) && (session[:alias] == nil) %>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Not authenticated</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Log in<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/auth/google_oauth2"><i class="fa fa-google-plus"></i> Google+</a></li>
+                <li><a href="/auth/github"><i class="fa fa-github"></i> GitHub</a></li>
+              </ul>
+            </li>
+          </ul>
+          <% elsif (defined? session) && (session[:alias] != nil) %>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Welcome, <em><%= session[:alias] %></em></a></li>
+            <li><a href="/auth/logout" >Log out</a></li>
+          </ul>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Yield por aquí -->
+    <%= yield %>
+    <!-- Fin yield -->
+    
+  </body>
+</html>
+

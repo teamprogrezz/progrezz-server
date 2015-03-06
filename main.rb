@@ -39,8 +39,18 @@ end
 
 #-- Añadir página '/' y configuación del server. #++
 #:nodoc: all
-module Sinatra ;module Pages
+module Sinatra
+  module Pages
+    module WebHelpers
+      # Comprobar si la página dada es la actual.
+      def current?(path='/')
+        (request.path==path || request.path==path+'/') ? "current" : nil
+      end
+    end
+    
     def self.registered(app)
+      app.helpers Pages::WebHelpers
+      
       app.get '/' do
         puts session[:alias]
         return "Index page."
