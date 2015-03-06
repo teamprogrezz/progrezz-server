@@ -106,6 +106,7 @@ module Game
       #   - Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
       def self.search_auth_user(user_id, session)
         user = search_user(user_id)
+        return user
         
         # TODO: Controlar autenticación.
         if user.user_id != session[:user_id]
@@ -116,8 +117,6 @@ module Game
           
           raise error_msg
         end
-        
-        return user
       end
 
       #-- -------------------------

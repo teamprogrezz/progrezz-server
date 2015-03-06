@@ -20,7 +20,7 @@
       {
         "name": "Collect message fragment",
         "example": {"_comment":"Collect a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)"}}}
-      }
+      },
       {
         "name": "Write a message",
         "example": {"_comment":"Write a geolocated message from <user_id> position.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_write_message","data":{"user_id":"yourmail@example.com","content":"Message content (eg: Hello world!!!)","resource":"[Optional] Resource link (eg: http://www.w3schools.com/tags/smiley.gif)."}}}
