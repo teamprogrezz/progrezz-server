@@ -42,7 +42,7 @@ task :setup do Rake::Task['setup:bundle'].execute end
 namespace :doc do
   YARD::Rake::YardocTask.new(:generate) do |t|
     t.files   = [ 'rb/**/*.rb', 'main.rb' ]
-    t.options = ['-o public/pages/doc', '--no-stats']
+    t.options = ['-opublic/pages/doc', '--no-stats']
     
     t.after = Proc.new {
       Rake::Task['doc:stats'].execute

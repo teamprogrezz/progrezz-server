@@ -84,7 +84,18 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Métodos de ayuda del módulo de pruebas.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -116,7 +127,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Añadir contenido de prueba de la base de datos.</p>
+</div></span>
   
 </li>
 
@@ -138,7 +151,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Eliminar contenido de la base de datos.</p>
+</div></span>
   
 </li>
 
@@ -160,7 +175,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Reiniciar contenido de la base de datos.</p>
+</div></span>
   
 </li>
 
@@ -183,17 +200,23 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Añadir contenido de prueba de la base de datos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-21
-22
-23
-24
-25
 26
 27
 28
@@ -284,10 +307,15 @@
 113
 114
 115
-116</pre>
+116
+117
+118
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db_add'>db_add</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -399,20 +427,31 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Eliminar contenido de la base de datos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-15
-16
-17
-18
-19</pre>
+19
+20
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db_drop'>db_drop</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_drop'>drop</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -433,19 +472,30 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reiniciar contenido de la base de datos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-118
-119
-120
-121</pre>
+124
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 124</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db_reset'>db_reset</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db_drop'>db_drop</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -461,7 +511,7 @@
 </div>
 
     <div id="footer">
-  Generated on Fri Mar  6 20:31:31 2015 by
+  Generated on Fri Mar  6 21:03:37 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
