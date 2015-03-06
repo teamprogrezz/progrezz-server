@@ -1,0 +1,1550 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Game::Database::Message
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Game/Database/Message.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (M)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Database.html" title="Game::Database (module)">Database</a></span></span>
+     &raquo; 
+    <span class="title">Message</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Game::Database::Message
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Game::Database::Message</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">Neo4j::ActiveNode</dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">rb/db/objects/message.rb<span class="defines">,<br />
+  rb/db/objects/user.rb,<br /> rb/db/objects/message_fragment.rb,<br /> rb/db/relations/user-completed_message.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase que representa a un mensaje en la base de datos.</p>
+
+<p>Se caracteriza por estar enlazado con diversos tipos de nodos,
+principalmente con un autor y una serie de fragmentos geolocalizados.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="NO_AUTHOR-constant" class="">NO_AUTHOR =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Nombre de autor desconocido.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="NO_RESOURCE-constant" class="">NO_RESOURCE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Nombre de recurso no especificado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="CONTENT_MIN_LENGTH-constant" class="">CONTENT_MIN_LENGTH =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Tamaño mínimo del contenido.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>9</span></pre></dd>
+      
+        <dt id="CONTENT_MAX_LENGTH-constant" class="">CONTENT_MAX_LENGTH =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Tamaño máximo del contenido.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>255</span></pre></dd>
+      
+        <dt id="RESOURCE_MAX_LENGTH-constant" class="">RESOURCE_MAX_LENGTH =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Tamaño máximo del recurso.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>128</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_message-class_method" title="create_message (class method)">+ (Game::Database::Message) <strong>create_message</strong>(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Creación de nuevos mensajes.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#author-instance_method" title="#author (instance method)">- (Game::Database::User) <strong>author</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con un autor (#Game::Database::User).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#content-instance_method" title="#content (instance method)">- (String) <strong>content</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Contenido del mensaje.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#created_at-instance_method" title="#created_at (instance method)">- (Integer) <strong>created_at</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Timestamp o fecha de creación del mensaje.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#fragments-instance_method" title="#fragments (instance method)">- (Game::Database::MessageFragment) <strong>fragments</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con los fragmentos del mensaje (#Game::Database::MessageFragment).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_author-instance_method" title="#get_author (instance method)">- (Game::Database::Author) <strong>get_author</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter del autor.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_author_alias-instance_method" title="#get_author_alias (instance method)">- (String) <strong>get_author_alias</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter del alias del autor.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_resource-instance_method" title="#get_resource (instance method)">- (String) <strong>get_resource</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter del recurso mediático.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_user_message-instance_method" title="#get_user_message (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>get_user_message</strong>(user_rel = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter formateado del mensaje conseguido por un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#owners-instance_method" title="#owners (instance method)">- (Game::Database::RelationShips::UserCompletedMessage) <strong>owners</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con los usuarios que han completado este mensaje.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#resource_link-instance_method" title="#resource_link (instance method)">- (String) <strong>resource_link</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recurso adicional (imagen, hipervínculo, …).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Transformar objeto a un hash.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_s-instance_method" title="#to_s (instance method)">- (String) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Stringificar objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#total_fragments-instance_method" title="#total_fragments (instance method)">- (Integer) <strong>total_fragments</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Número total de fragmentos que tiene el mensaje.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="create_message-class_method">
+  
+    + (<tt><span class='object_link'><a href="" title="Game::Database::Message (class)">Game::Database::Message</a></span></tt>) <strong>create_message</strong>(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creación de nuevos mensajes.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>cont</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Contenido del mensaje.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>n_fragments</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>resource</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Recurso mediático (opcional).</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>custom_author</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Autor del mensaje (opcional).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Game::Database::Message (class)">Game::Database::Message</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Referencia al objeto creado en la base de datos, de tipo
+Game::Database::Message.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 98</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_message'>create_message</span><span class='lparen'>(</span><span class='id identifier rubyid_cont'>cont</span><span class='comma'>,</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span> <span class='op'>=</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_custom_author'>custom_author</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span><span class='int'>0</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='label'>content:</span> <span class='id identifier rubyid_cont'>cont</span><span class='comma'>,</span> <span class='label'>total_fragments:</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span><span class='comma'>,</span> <span class='label'>resource_link:</span> <span class='id identifier rubyid_resource'>resource</span> <span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_msg'>msg</span><span class='op'>|</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_custom_author'>custom_author</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+        <span class='id identifier rubyid_custom_author'>custom_author</span><span class='period'>.</span><span class='id identifier rubyid_add_msg'>add_msg</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+      
+      <span class='comment'># Para cada fragmento, se crea un nuevo nodo en la bd
+</span>      <span class='kw'>for</span> <span class='id identifier rubyid_fragment_index'>fragment_index</span> <span class='kw'>in</span> <span class='int'>0</span><span class='op'>...</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='rparen'>)</span> <span class='kw'>do</span>
+        <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_create_message_fragment'>create_message_fragment</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='comma'>,</span> <span class='id identifier rubyid_fragment_index'>fragment_index</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='semicolon'>;</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_message'>message</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="author-instance_method">
+  
+    - (<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>) <strong>author</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con un autor (#Game::Database::User). Se puede acceder con el
+atributo <code>author</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 68</span>
+
+<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:author</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='comma'>,</span> <span class='label'>origin:</span> <span class='symbol'>:written_messages</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="content-instance_method">
+  
+    - (<tt>String</tt>) <strong>content</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Contenido del mensaje.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 49</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:content</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="created_at-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>created_at</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Timestamp o fecha de creación del mensaje.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Milisegundos desde el 1/1/1970.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+59</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 59</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:created_at</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="fragments-instance_method">
+  
+    - (<tt><span class='object_link'><a href="MessageFragment.html" title="Game::Database::MessageFragment (class)">Game::Database::MessageFragment</a></span></tt>) <strong>fragments</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con los fragmentos del mensaje (#Game::Database::MessageFragment).
+Se puede acceder con el atributo #fragments. El enlace tiene nombre
+<code>is_fragmented_in</code>. Si el mensaje se borra, desaparecerán todos
+los fragmentos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="MessageFragment.html" title="Game::Database::MessageFragment (class)">Game::Database::MessageFragment</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Fragmentos.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+77</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 77</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:fragments</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>is_fragmented_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_author-instance_method">
+  
+    - (<tt>Game::Database::Author</tt>) <strong>get_author</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter del autor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Game::Database::Author</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Autor del mensaje. En caso de que no exista devolverá
+Game::Database::Message.NO_AUTHOR</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+126
+127
+128
+129</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 126</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_author'>get_author</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_AUTHOR</span> <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_author_alias-instance_method">
+  
+    - (<tt>String</tt>) <strong>get_author_alias</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter del alias del autor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Alias del autor del mensaje. En caso de que no exista devolverá
+Game::Database::Message.NO_AUTHOR</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+134
+135
+136
+137</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 134</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_AUTHOR</span> <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span><span class='period'>.</span><span class='id identifier rubyid_alias'>alias</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_resource-instance_method">
+  
+    - (<tt>String</tt>) <strong>get_resource</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter del recurso mediático.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Recurso mediático del mensaje. En caso de que no exista devolverá
+Game::Database::Message.NO_RESOURCE</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+142
+143
+144
+145</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 142</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_link'>resource_link</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_RESOURCE</span> <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_link'>resource_link</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_user_message-instance_method">
+  
+    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>get_user_message</strong>(user_rel = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter formateado del mensaje conseguido por un usuario.</p>
+
+<p>Usado para la API REST.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash con los datos referentes al mensaje completado por el usuario.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 152</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_user_message'>get_user_message</span><span class='lparen'>(</span><span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>author:</span>          <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='comma'>,</span>
+    <span class='label'>content:</span>         <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span><span class='comma'>,</span>
+    <span class='label'>resource:</span>        <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_resource'>get_resource</span><span class='comma'>,</span>
+    <span class='label'>total_fragments:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='comma'>,</span>
+    <span class='label'>write_date:</span>      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+  <span class='rbrace'>}</span>
+  
+  <span class='kw'>if</span><span class='lparen'>(</span><span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>!=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>                    <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:status</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:created_at</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:created_at</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="owners-instance_method">
+  
+    - (<tt><span class='object_link'><a href="RelationShips/UserCompletedMessage.html" title="Game::Database::RelationShips::UserCompletedMessage (class)">Game::Database::RelationShips::UserCompletedMessage</a></span></tt>) <strong>owners</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con los usuarios que han completado este mensaje. Se puede acceder
+con el atributo #owners.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="RelationShips/UserCompletedMessage.html" title="Game::Database::RelationShips::UserCompletedMessage (class)">Game::Database::RelationShips::UserCompletedMessage</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+84</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 84</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:owners</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCompletedMessage</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="resource_link-instance_method">
+  
+    - (<tt>String</tt>) <strong>resource_link</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Recurso adicional (imagen, hipervínculo, …). Totalmente opcional.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 55</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:resource_link</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_hash-instance_method">
+  
+    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Transformar objeto a un hash</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Objeto como hash.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 172</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='lbrace'>{</span>
+    <span class='label'>uuid:</span>            <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span>
+    <span class='label'>author:</span>          <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='comma'>,</span>
+    <span class='label'>content:</span>         <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span><span class='comma'>,</span>
+    <span class='label'>resource:</span>        <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_resource'>get_resource</span><span class='comma'>,</span>
+    <span class='label'>total_fragments:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='comma'>,</span>
+    <span class='label'>write_date:</span>      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_s-instance_method">
+  
+    - (<tt>String</tt>) <strong>to_s</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Stringificar objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Objeto como string, con el formato “&lt;Message:
+<code>content</code>,<code>author</code>,<code>total_fragments</code>,<code>resource_link</code>&gt;”.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+186
+187
+188</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 186</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;Message: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_author'>get_author</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="total_fragments-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>total_fragments</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Número total de fragmentos que tiene el mensaje.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Debe ser mayor que cero.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 44</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:total_fragments</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Fri Mar  6 20:31:31 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

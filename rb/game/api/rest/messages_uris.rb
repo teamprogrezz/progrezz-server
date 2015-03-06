@@ -2,7 +2,6 @@ require 'json'
 require 'geocoder'
 require 'progrezz/geolocation'
 
-#:nodoc:
 module Sinatra; module API ;module REST
   # Añadir métodos a la clase de métodos de la API REST. Se añadirá automáticamente en el fichero rest.rb
   class Methods

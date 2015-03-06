@@ -56,7 +56,6 @@ module Game
         # Buscar usuario
         puts user_id, user_alias
         user = Game::Database::User.search_user( user_id )
-        puts "not-rescued"
         
         # Actualizar perfil.
         user.update_profile( { :alias => user_alias } )
@@ -83,6 +82,7 @@ module Sinatra
     def self.registered(app)
       
       # Configuración Omniauth.
+      # @return [Object]
       app.configure do
         app.enable :sessions
         app.set :session_secret, ENV['progrezz_secret']
@@ -108,7 +108,15 @@ module Sinatra
         end
       end
       
+      ##
+      # @method get_js
       # URL para cerrar la sesión.
+      # @return [Object]
+      
+      # @!method foo(opts = {})
+      # The foo method!
+      # @!scope AuthManager
+      # @!visibility public
       app.get '/auth/logout' do
         session[:user_id] = session[:name] = session[:alias] = session[:url] = nil
         
@@ -148,7 +156,6 @@ module Sinatra
       
       # URL o callback de inicion de sesión fallido.
       app.get '/auth/failure' do
-        # TODO: Cambiar callback de función failure.
         oparams = request.env["omniauth.params"]
         
         if (oparams["error_redirect"] != nil)
@@ -165,7 +172,7 @@ module Sinatra
   register AuthMethods
 end
 
-#-- Cargar en el servidor #++
-class ProgrezzServer
+class Sinatra::ProgrezzServer
   register Sinatra::AuthMethods
 end
+#-- Cargar en el servidor #++

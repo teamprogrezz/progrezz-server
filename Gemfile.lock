@@ -128,7 +128,6 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
-    rdoc (4.2.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -154,6 +153,9 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    yard (0.8.7.6)
+    yard-sinatra (1.0.0)
+      yard (~> 0.7)
     zip (2.0.2)
 
 PLATFORMS
@@ -168,8 +170,9 @@ DEPENDENCIES
   omniauth-twitter
   progrezz-geolocation!
   racksh
-  rdoc
   sinatra
   sinatra-jsonp
   sinatra-reloader
   thin
+  yard
+  yard-sinatra

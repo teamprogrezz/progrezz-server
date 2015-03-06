@@ -17,30 +17,30 @@ if development?
   DEV = true
 end
 
-# Aplicación principal (servidor).
-#
-# Funciona como contenedor de una aplicación Ruby Sinatra.
-class ProgrezzServer < Sinatra::Base
-
-  # Activar sesiones del servidor web
-  set :sessions, true
-  
-  # Añadir secreto.
-  set :session_secret, ENV['progrezz_secret']
-  
-  # Añadir multihilos. 
-  set :threaded, true # TODO: Probar con Thin y no con rackup.
-  
-  # Getter de la sesión de la aplicación.
-  #
-  # @return Sesión actual (objeto session).
-  def self.get_session()
-    return self.session
-  end
-end
-
 # Módulo Sinatra (predefinido).
 module Sinatra
+  
+  # Aplicación principal (servidor).
+  #
+  # Funciona como contenedor de una aplicación Ruby Sinatra.
+  class ProgrezzServer < Sinatra::Base
+  
+    # Activar sesiones del servidor web
+    set :sessions, true
+    
+    # Añadir secreto.
+    set :session_secret, ENV['progrezz_secret']
+    
+    # Añadir multihilos. 
+    set :threaded, true # TODO: Probar con Thin y no con rackup.
+    
+    # Getter de la sesión de la aplicación.
+    #
+    # @return Sesión actual (objeto session).
+    def self.get_session()
+      return self.session
+    end
+  end
   
   # Módulo de páginas webs. Usado para definir los métodos get y post
   # de las distintas páginas webs del servidor.
@@ -94,8 +94,8 @@ module Sinatra
   register Pages
 end
 
+class Sinatra::ProgrezzServer; register Sinatra::Pages; end
 #-- Registrar. #++
-class ProgrezzServer; register Sinatra::Pages; end
 
 # Cosas a ejecutar cuando se cierre la app.
 at_exit do
@@ -119,5 +119,5 @@ require './rb/auth'
 
 #-- ---------------------------------------------------------------- #++
 
+Sinatra::ProgrezzServer.run
 #-- Ejecutar app #++
-ProgrezzServer.run

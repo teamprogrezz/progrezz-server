@@ -1,7 +1,8 @@
-gem 'rdoc'
-require 'rdoc/task'
+require 'yard'
 
 task :default => ["development:start"]
+
+# --------------------------------------------------------------
 
 namespace :setup do
   desc 'Setup everything.'
@@ -33,24 +34,33 @@ namespace :setup do
   end
 end
 
+desc 'Default setup task'
+task :setup do Rake::Task['setup:bundle'].execute end
+
+# --------------------------------------------------------------
+
 namespace :doc do
-  desc 'Generate documentation.'
-  task :generate do
-    RDoc::Task.new do |rdoc|
-      sh 'rm -rf public/pages/doc/'
-      version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  YARD::Rake::YardocTask.new(:generate) do |t|
+    t.files   = [ 'rb/**/*.rb', 'main.rb' ]
+    t.options = ['-o public/pages/doc', '--no-stats']
     
-      rdoc.generator = 'bootstrap'
-      rdoc.main = 'README.rdoc'
-      rdoc.rdoc_dir = 'rdoc'
-      rdoc.title = "RDBI #{version} Documentation"
-      rdoc.rdoc_files.include('README*')
-      rdoc.rdoc_files.include('lib/   *.rb')
-    end
-    
-    sh 'rdoc rb -o public/pages/doc/'
+    t.after = Proc.new {
+      Rake::Task['doc:stats'].execute
+    }
+  end
+  
+  desc "Shows stats for YARD Documentation including listing undocumented modules, classes, constants, and methods"
+  task :stats do
+    stats = YARD::CLI::Stats.new
+    stats.files   = [ 'rb/**/*.rb', 'main.rb' ]
+    stats.run('main.rb', 'rb/**/*.rb', '--list-undoc')
   end
 end
+
+desc 'Default doc task'
+task :doc do Rake::Task['doc:generate'].execute end
+
+# --------------------------------------------------------------
 
 namespace :neo4j do
   desc 'Start the Neo4j Server'
@@ -63,6 +73,11 @@ namespace :neo4j do
     sh 'neo4j stop'
   end
 end
+
+desc 'Default neo4j task'
+task :neo4j do Rake::Task['neo4j:start'].execute end
+
+# --------------------------------------------------------------
 
 namespace :development do
   desc 'Quick dev start'
@@ -84,6 +99,11 @@ namespace :development do
   end
 end
 
+desc 'Default development task'
+task :development do Rake::Task['development:start'].execute end
+
+# --------------------------------------------------------------
+
 namespace :production do
   desc 'Start the server'
   task :start do
@@ -95,6 +115,11 @@ namespace :production do
     sh 'ruby main.rb -o 0.0.0.0' # ¿?
   end
 end
+
+desc 'Default production task'
+task :production do Rake::Task['production:start'].execute end
+
+# --------------------------------------------------------------
 
 namespace :heroku do
   desc 'Setup heroku toolbelt.'
@@ -113,3 +138,6 @@ namespace :heroku do
   end
 
 end
+
+desc 'Default heroku task'
+task :heroku do Rake::Task['hheroku:start'].execute end

@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Game::AuthManager
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!Game/AuthManager.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (A)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Game.html" title="Game (module)">Game</a></span></span>
+     &raquo; 
+    <span class="title">AuthManager</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Game::AuthManager
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Game::AuthManager</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rb/auth.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase gestora de la autenticación de usuarios.</p>
+
+<p>Se hace uso de la API OmniAuth para registrar usuarios, y se guardarán los
+datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="SERVICES-constant" class="">SERVICES =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Servicios disponibles.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:google_oauth2</span><span class='comma'>,</span> <span class='symbol'>:twitter</span><span class='comma'>,</span> <span class='symbol'>:github</span><span class='rbracket'>]</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#auth_user-class_method" title="auth_user (class method)">+ (Object) <strong>auth_user</strong>(user_id, user_alias) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Dar de alta a un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_loaded_services-class_method" title="get_loaded_services (class method)">+ (Array&lt;Symbol&gt;) <strong>get_loaded_services</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de los servicios cargados.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#setup-class_method" title="setup (class method)">+ (Object) <strong>setup</strong>(service_exceptions = []) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Iniciar módulos OmniAuth.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="auth_user-class_method">
+  
+    + (<tt>Object</tt>) <strong>auth_user</strong>(user_id, user_alias) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Dar de alta a un usuario.</p>
+
+<p>Si el usuario no existe, se creará una entrada en la base de datos. Si el
+usuario ya existe, no se añadirá nada.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Identificador del usuario (correo).</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_alias</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Alias del usuario (nombre).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/auth.rb', line 54</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_auth_user'>auth_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_user_alias'>user_alias</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='comment'># Buscar usuario
+</span>    <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_user_alias'>user_alias</span>
+    <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
+    
+    <span class='comment'># Actualizar perfil.
+</span>    <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_update_profile'>update_profile</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='symbol'>:alias</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_user_alias'>user_alias</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  <span class='kw'>rescue</span>
+    <span class='comment'># Si no existe, añadir a la BD
+</span>    <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_sign_up'>sign_up</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_alias'>user_alias</span><span class='comma'>,</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_loaded_services-class_method">
+  
+    + (<tt>Array&lt;Symbol&gt;</tt>) <strong>get_loaded_services</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de los servicios cargados.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Lista o Array de símbolos de los servicios cargados (ej: [:google,
+:twitter, …]).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/auth.rb', line 43</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_loaded_services'>get_loaded_services</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='cvar'>@@loaded_services</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="setup-class_method">
+  
+    + (<tt>Object</tt>) <strong>setup</strong>(service_exceptions = []) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Iniciar módulos OmniAuth.</p>
+
+<p>Los datos referentes a los servicios se cargarán desde las variables de
+entorno siguientes:</p>
+<ul><li>
+<p><strong>google</strong>: id: progrezz_google_id, secreto:
+progrezz_google_secret</p>
+</li><li>
+<p><strong>github</strong>: id: progrezz_github_id, secreto:
+progrezz_github_secret</p>
+</li><li>
+<p><strong>twitter</strong>: id: progrezz_twitter_id, secreto:
+progrezz_twitter_secret</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>service_exceptions</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Servicios (símbolos ruby) que no serán cargados. Por defecto, se cargarán
+todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/auth.rb', line 28</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_service_exceptions'>service_exceptions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='cvar'>@@loaded_services</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  
+  <span class='comment'># Incluir o excluir google.
+</span>  <span class='kw'>for</span> <span class='id identifier rubyid_service'>service</span> <span class='kw'>in</span> <span class='const'>SERVICES</span>
+    <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_service_exceptions'>service_exceptions</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_service'>service</span>
+      <span class='cvar'>@@loaded_services</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_service'>service</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Fri Mar  6 20:55:11 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

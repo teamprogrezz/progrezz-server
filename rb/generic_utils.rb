@@ -32,10 +32,10 @@ class GenericUtils
   #
   # @param executable [String] Ejecutable o intérprete a lanzar (ejemplo: python, ruby, ls, executable_cpp, ...).
   # @param arguments  [String] Argumentos a pasar al ejecutable (ejemplo: file.py, main.rb, -la, ...).
-  # @param env_vars   [Hash<Symbol, String>] Hash de variables de entorno a pasar al programa (ejemplo: {name: "wikiti", pass: "****"}, ...).
+  # @param env_vars   [Hash<Symbol, String>] Hash de variables de entorno a pasar al programa (ejemplo: { name: "wikiti", pass: "****" }, ...).
   # @param input_str  [String] Cadena de entrada sustituyendo al flujo STDIN.
   #
-  # @return [Hash<Symbol, String>] STDOUT y STDERR del script, como un hash, tal que {stdout: STDOUT, stderr: STDERR}.
+  # @return [Hash<Symbol, String>] STDOUT y STDERR del script, como un hash, tal que { stdout: STDOUT, stderr: STDERR}.
   #
   def self.run_script(executable, arguments, env_vars = {}, input_str = "")
     cmd = executable + " " + arguments
@@ -48,13 +48,13 @@ class GenericUtils
   
   # Ejecuta un programa python.
   #
-  # Es un acceso directo al método GenericUtils.run_script con el intérprete de python.
+  # Es un acceso directo al método #GenericUtils.run_script con el intérprete de python.
   #
   # @param script_file [String] Fichero del script python.
-  # @param env_vars [Hash<Symbol, String>] Hash de variables de entorno (strings) a pasar al programa (ejemplo: {"name" => "wikiti", "pass" => "****"}, ...). Se accedencon python mediante ENV['variable'].
+  # @param env_vars [Hash<Symbol, String>] Hash de variables de entorno (strings) a pasar al programa (ejemplo: { "name" => "wikiti", "pass" => "****" }, ...). Se accede con python mediante ENV ['variable'].
   # @param input_str [String]  Cadena de entrada sustituyendo al flujo STDIN.
   #
-  # @return [Hash<Symbol, String>] STDOUT y STDERR del script, como un hash, tal que {stdout: STDOUT, stderr: STDERR}.
+  # @return [Hash<Symbol, String>] STDOUT y STDERR del script, como un hash, tal que { stdout: STDOUT, stderr: STDERR }.
   #
   def self.run_py(script_file, env_vars = {}, input_str = "")
     return GenericUtils.run_script('python', script_file, env_vars, input_str)

@@ -1,0 +1,983 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Game::Database::GeolocatedObject
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Game/Database/GeolocatedObject.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (G)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Database.html" title="Game::Database (module)">Database</a></span></span>
+     &raquo; 
+    <span class="title">GeolocatedObject</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Game::Database::GeolocatedObject
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Game::Database::GeolocatedObject</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">Neo4j::ActiveNode</dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">rb/db/objects/geolocated_object.rb<span class="defines">,<br />
+  rb/db/relations/user-message_fragment.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase abstracta que representa un objeto geolocalizado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="MessageFragment.html" title="Game::Database::MessageFragment (class)">MessageFragment</a></span>, <span class='object_link'><a href="User.html" title="Game::Database::User (class)">User</a></span></p>
+</div>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="MIN_LATITUDE-constant" class="">MIN_LATITUDE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Mínima latitud posible.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='op'>-</span><span class='int'>90</span></pre></dd>
+      
+        <dt id="MAX_LATITUDE-constant" class="">MAX_LATITUDE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Máxima latitud posible.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>90</span></pre></dd>
+      
+        <dt id="MIN_LONGITUDE-constant" class="">MIN_LONGITUDE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Mínima longitud posible.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='op'>-</span><span class='int'>180</span></pre></dd>
+      
+        <dt id="MAX_LONGITUDE-constant" class="">MAX_LONGITUDE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Máxima longitud posible.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>180</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#is_updating-instance_method" title="#is_updating (instance method)">- (Object) <strong>is_updating</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Variable auxiliar para comprobar si el objeto está siendo actualizado.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#clamp-class_method" title="clamp (class method)">+ (Hash&lt;Symbol, Float&gt;) <strong>clamp</strong>(pos) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Ajustar posición a valores reales (método estático).</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#clamp-instance_method" title="#clamp (instance method)">- (Game::Database::GeolocatedObject) <strong>clamp</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Ajustar posición a valores reales (véase las constantes de la clase
+#Game::Database::GeolocatedObject).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#geolocation-instance_method" title="#geolocation (instance method)">- (Hash&lt;Symbol, Float&gt;) <strong>geolocation</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de la posición.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#latitude-instance_method" title="#latitude (instance method)">- (Float) <strong>latitude</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Latitud del objeto geolocalizado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#longitude-instance_method" title="#longitude (instance method)">- (Float) <strong>longitude</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Longitud del objeto geolocalizado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#set_geolocation-instance_method" title="#set_geolocation (instance method)">- (Object) <strong>set_geolocation</strong>(lat = nil, long = nil, save_after = true) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Cambiar latitud y longitud.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_s-instance_method" title="#to_s (instance method)">- (String) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Stringificar objeto.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="is_updating-instance_method">
+  
+    - (<tt>Object</tt>) <strong>is_updating</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Variable auxiliar para comprobar si el objeto está siendo actualizado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 30</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_is_updating'>is_updating</span>
+  <span class='ivar'>@is_updating</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="clamp-class_method">
+  
+    + (<tt>Hash&lt;Symbol, Float&gt;</tt>) <strong>clamp</strong>(pos) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Ajustar posición a valores reales (método estático).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>pos</span>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash con la posición geolocalizada, con el formato {latitude:
+<code>lat</code>, longitude: <code>lon</code> }.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Referencia a la posición ajustada.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+88
+89
+90
+91
+92
+93</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 88</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clamp'>clamp</span><span class='lparen'>(</span><span class='id identifier rubyid_pos'>pos</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_pos'>pos</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span>  <span class='op'>=</span> <span class='lbracket'>[</span><span class='const'>MIN_LATITUDE</span><span class='comma'>,</span>  <span class='id identifier rubyid_pos'>pos</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='const'>MAX_LATITUDE</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_pos'>pos</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='const'>MIN_LONGITUDE</span><span class='comma'>,</span> <span class='id identifier rubyid_pos'>pos</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'>MAX_LONGITUDE</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_pos'>pos</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="clamp-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Game::Database::GeolocatedObject (class)">Game::Database::GeolocatedObject</a></span></tt>) <strong>clamp</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Ajustar posición a valores reales (véase las constantes de la clase
+#Game::Database::GeolocatedObject).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Game::Database::GeolocatedObject (class)">Game::Database::GeolocatedObject</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Referencia al objeto ajustado.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+78
+79
+80
+81
+82
+83</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 78</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_clamp'>clamp</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='const'>MIN_LATITUDE</span><span class='comma'>,</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='const'>MAX_LATITUDE</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='const'>MIN_LONGITUDE</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span><span class='comma'>,</span> <span class='const'>MAX_LONGITUDE</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span>
+  <span class='kw'>return</span> <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="geolocation-instance_method">
+  
+    - (<tt>Hash&lt;Symbol, Float&gt;</tt>) <strong>geolocation</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de la posición.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash con la latitud y la longitud, con el formato {latitude:
+<code>lat</code>, longitude: <code>lon</code> }.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+72
+73
+74</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 72</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='lbrace'>{</span> <span class='label'>latitude:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="latitude-instance_method">
+  
+    - (<tt>Float</tt>) <strong>latitude</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Latitud del objeto geolocalizado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Por defecto toma el valor 0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 38</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:latitude</span><span class='comma'>,</span>  <span class='label'>type:</span> <span class='const'>Float</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='float'>0.0</span><span class='comma'>,</span> <span class='label'>index:</span> <span class='symbol'>:exact</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="longitude-instance_method">
+  
+    - (<tt>Float</tt>) <strong>longitude</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Longitud del objeto geolocalizado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Por defecto toma el valor 0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 42</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:longitude</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Float</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='float'>0.0</span><span class='comma'>,</span> <span class='label'>index:</span> <span class='symbol'>:exact</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="set_geolocation-instance_method">
+  
+    - (<tt>Object</tt>) <strong>set_geolocation</strong>(lat = nil, long = nil, save_after = true) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Cambiar latitud y longitud.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>lat</span>
+      
+      
+        <span class='type'>(<tt>Float</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Nueva latitud  (usar nil para no modificar).</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>long</span>
+      
+      
+        <span class='type'>(<tt>Float</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Nueva longitud (usar nil para no modificar).</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>save_after</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Guardar el objeto. Por defecto, se guarda (costoso).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 62</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_set_geolocation'>set_geolocation</span><span class='lparen'>(</span><span class='id identifier rubyid_lat'>lat</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_long'>long</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_save_after'>save_after</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_lat'>lat</span> <span class='op'>!=</span> <span class='kw'>nil</span><span class='semicolon'>;</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span>  <span class='op'>=</span> <span class='id identifier rubyid_lat'>lat</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_long'>long</span> <span class='op'>!=</span> <span class='kw'>nil</span><span class='semicolon'>;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span> <span class='op'>=</span> <span class='id identifier rubyid_long'>long</span> <span class='kw'>end</span>
+
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span> <span class='kw'>if</span> <span class='id identifier rubyid_save_after'>save_after</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_s-instance_method">
+  
+    - (<tt>String</tt>) <strong>to_s</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Stringificar objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Objeto como string, con el formato “&lt;Geolocation:
+<code>latitud</code>,<code>longitud</code>&gt;”.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+98
+99
+100</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/geolocated_object.rb', line 98</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;Geolocation: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>,</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Fri Mar  6 20:55:12 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

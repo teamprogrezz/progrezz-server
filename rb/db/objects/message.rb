@@ -55,7 +55,7 @@ module Game
       property :resource_link, type: String
       
       # Timestamp o fecha de creación del mensaje.
-      # return [Integer] Milisegundos desde el 1/1/1970.
+      # @return [Integer] Milisegundos desde el 1/1/1970.
       property :created_at
 
       #-- -------------------------

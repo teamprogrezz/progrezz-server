@@ -43,7 +43,7 @@ module Game
       property :alias, type: String, default: ""
       
       # Timestamp o fecha de creación del mensaje.
-      # return [Integer] Milisegundos desde el 1/1/1970.
+      # @return [Integer] Milisegundos desde el 1/1/1970.
       property :created_at
       
       #-- -------------------------
@@ -121,8 +121,7 @@ module Game
       # @return [Game::Database::User] Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
       def self.search_auth_user(user_id, session)
         user = search_user(user_id)
-        
-        # TODO: Reactivar autenticación.
+
         if ENV['users_auth_disabled'] == "true"
           puts "Warning!! Users auth disabled!"
         else
@@ -234,7 +233,12 @@ module Game
             end
             
             # Y Añadir el mensaje como completado
-            return Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message )
+            message_status = Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
+            if total_fragments_count == 1
+              message_status = Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD
+            end
+            
+            return Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message, status: message_status )
           else
             return Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
           end
