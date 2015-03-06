@@ -51,7 +51,7 @@
           </ul>
           <% elsif (defined? session) && (session[:alias] != nil) %>
           <ul class="nav navbar-nav navbar-right">
-            <li><a>Welcome, <em><%= session[:alias] %></em></a></li>
+            <li><a>Welcome, <strong><em><%= session[:alias] %></em></strong></a></li>
             <li><a href="/auth/logout" >Log out</a></li>
           </ul>
           <% end %>
