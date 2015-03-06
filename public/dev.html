@@ -1,0 +1,138 @@
+﻿<!DOCTYPE HTML>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Progrezz Server Dev</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/jpg" href="img/favicon.png" />
+    
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-custom.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- JS -->
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Cabecera -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img style='width: 20px; height: 20px;' alt="Progrezz Icon" src="img/favicon.png"></a>
+          <a class="navbar-brand" href="#">Progrezz Developers Page</a>
+        </div>
+
+        <!-- Resto -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <!-- Menú -->
+          <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li class="active"><a href="#">REST API</a></li>
+          </ul>
+          
+          <!-- Login -->
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Not authenticated</a></li>
+            <li></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Log in<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#"><i class="fa fa-google-plus"></i> Google+</a></li>
+                <li><a href="#"><i class="fa fa-github"></i> GitHub</a></li>
+              </ul>
+            </li>
+            <li><a href="#" >Log out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Yield por aquí -->
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Interactive REST client</h3>
+        </div>
+      </div>
+        
+      <div class="row">
+        <!-- Menú -->
+        <div class="col-md-2">
+          <div class="panel panel-default">
+            <div class="panel-heading" style="padding-top: 1px;">
+              <h3>Methods</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group-vertical" style="width: 100%;" role="group" aria-label="Vertical button group">
+                <div class="btn-group" role="group">
+                  <button id="btnGroupVerticalDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Test <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                    <li><a href="#">Native echo</a></li>
+                    <li><a href="#">Python echo</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group" role="group">
+                  <button id="btnGroupVerticalDrop2" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    User <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                    <li><a href="#">Get messages</a></li>
+                    <li><a href="#">Get near fragments</a></li>
+                    <li><a href="#">...</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group" role="group">
+                  <button id="btnGroupVerticalDrop3" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Messages <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                    <li><a href="#">...</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Request -->
+        <div class="col-md-5">
+          <div class="panel panel-default">
+            <div class="panel-heading" style="padding-top: 1px;">
+              <h3>REST Request</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+              <textarea class="form-control" rows="16" style="resize: none;"></textarea>
+              </div>
+              <button type="button" class="btn btn-success">Send REST request</button>
+            </div>
+          </div>
+        </div>
+          
+        <!-- Response -->
+        <div class="col-md-5">
+          <div class="panel panel-default">
+            <div class="panel-heading" style="padding-top: 1px;">
+              <h3>Server Response</h3>
+            </div>
+            <div class="panel-body">
+              <textarea class="form-control" rows="16" style="resize: none;" readonly></textarea>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- Fin yield -->
+  </body>
+</html>
+
