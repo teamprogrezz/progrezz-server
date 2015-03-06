@@ -1,3 +1,6 @@
+gem 'rdoc'
+require 'rdoc/task'
+
 task :default => ["development:start"]
 
 namespace :setup do
@@ -33,7 +36,19 @@ end
 namespace :doc do
   desc 'Generate documentation.'
   task :generate do
-    sh 'rdoc rb'
+    RDoc::Task.new do |rdoc|
+      sh 'rm -rf public/pages/doc/'
+      version = File.exist?('VERSION') ? File.read('VERSION') : ""
+    
+      rdoc.generator = 'bootstrap'
+      rdoc.main = 'README.rdoc'
+      rdoc.rdoc_dir = 'rdoc'
+      rdoc.title = "RDBI #{version} Documentation"
+      rdoc.rdoc_files.include('README*')
+      rdoc.rdoc_files.include('lib/   *.rb')
+    end
+    
+    sh 'rdoc rb -o public/pages/doc/'
   end
 end
 

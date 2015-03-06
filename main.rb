@@ -69,6 +69,10 @@ module Sinatra
       app.get '/dev/about' do
         erb :"dev/about", :locals => { :session => session }, :layout => :layout_dev
       end
+      
+      app.get '/dev/doc' do
+        erb :"dev/doc", :locals => { :session => session }, :layout => :layout_dev
+      end
     end
   end
   
