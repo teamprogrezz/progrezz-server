@@ -63,7 +63,7 @@
         </div>
         <div class="panel-body">
           <div class="form-group">
-          <textarea id="output" class="form-control" rows="14" style="resize: none;" readonly></textarea>
+          <textarea id="output" class="form-control" rows="14" style="resize: none;"></textarea>
           </div>
           <div id="serverstatus" style="visibility: hidden;" class="alert alert-danger" role="alert">Error!</div>
         </div>
@@ -81,7 +81,7 @@
 <!-- Procesamiento local -->
 <script type="text/javascript">
   // Cambiar editor  
-  var propertiers = {
+  var editor_input  = CodeMirror.fromTextArea(document.getElementById("form_request_str"), {
     matchBrackets: true,
     autoCloseBrackets: true,
     mode: "application/ld+json",
@@ -89,10 +89,17 @@
     lineNumbers: true,
     smartIndent: true,
     tabSize: 2
-  }
-  
-  var editor_input  = CodeMirror.fromTextArea(document.getElementById("form_request_str"), propertiers);
-  var editor_output = CodeMirror.fromTextArea(document.getElementById("output"), propertiers);
+  });
+  var editor_output = CodeMirror.fromTextArea(document.getElementById("output"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    readOnly: true,
+    tabSize: 2
+  });
   
   rest_methods_data = [];
   
