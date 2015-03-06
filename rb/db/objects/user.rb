@@ -108,14 +108,18 @@ module Game
         user = search_user(user_id)
         
         # TODO: Reactivar autenticación.
-        #if user.user_id != session[:user_id]
-        #  error_msg = "You are NOT authenticated as '" + user.user_id + "'."
-        #  if session[:user_id] != nil
-        #    error_msg += " You are authenticated as '" + session[:user_id] + "'."
-        #  end
-        #  
-        #  raise error_msg
-        #end
+        if ENV['users_auth_disabled'] == "true"
+          puts "Warning!! Users auth disabled!"
+        else
+          if user.user_id != session[:user_id]
+            error_msg = "You are NOT authenticated as '" + user.user_id + "'."
+            if session[:user_id] != nil
+              error_msg += " You are authenticated as '" + session[:user_id] + "'."
+            end
+            
+            raise error_msg
+          end
+        end
         
         return user
       end
