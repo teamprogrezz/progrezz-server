@@ -107,15 +107,17 @@ module Game
       def self.search_auth_user(user_id, session)
         user = search_user(user_id)
         
-        # TODO: Controlar autenticación.
-        if user.user_id != session[:user_id]
-          error_msg = "You are NOT authenticated as '" + user.user_id + "'."
-          if session[:user_id] != nil
-            error_msg += " You are authenticated as '" + session[:user_id] + "'."
-          end
-          
-          raise error_msg
-        end
+        # TODO: Reactivar autenticación.
+        #if user.user_id != session[:user_id]
+        #  error_msg = "You are NOT authenticated as '" + user.user_id + "'."
+        #  if session[:user_id] != nil
+        #    error_msg += " You are authenticated as '" + session[:user_id] + "'."
+        #  end
+        #  
+        #  raise error_msg
+        #end
+        
+        return user
       end
 
       #-- -------------------------
