@@ -48,12 +48,26 @@ module Sinatra
       end
     end
     
+    # Registrar páginas web elementales
     def self.registered(app)
       app.helpers Pages::WebHelpers
       
+      # Genéricas
       app.get '/' do
-        puts session[:alias]
-        return "Index page."
+        redirect to("/dev")
+      end
+      
+      app.not_found do
+        redirect to("/")
+      end
+      
+      # Dev
+      app.get '/dev' do
+        erb :"dev/home", :locals => { :session => session }, :layout => :layout_dev
+      end
+      
+      app.get '/dev/about' do
+        erb :"dev/about", :locals => { :session => session }, :layout => :layout_dev
       end
     end
   end

@@ -90,7 +90,19 @@ module Sinatra
 
       # Peticiones REST interactivas
       app.get "/dev/rest" do
-        erb :"dev/rest", :locals => { :session => session }, :layout => :layout_dev
+        # Parsear métodos REST
+        class << app
+          attr_accessor :rest_methods
+        end
+        
+        if app.rest_methods == nil
+          app.rest_methods = JSON.parse( File.read('data/rest_methods.json') )
+        end
+        
+        erb :"dev/rest", :locals => {
+          :session => session,
+          :rest_methods => app.rest_methods
+        }, :layout => :layout_dev
       end
     end
   end
