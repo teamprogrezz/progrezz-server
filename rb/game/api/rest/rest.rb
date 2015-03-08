@@ -53,6 +53,9 @@ module Sinatra
       app.get '/dev/api/rest' do
         content_type :json  # Tipo de respuesta: JSON.
         
+        # Simbolizar claves de los parámetros
+        GenericUtils.symbolize_keys_deep!(params)
+        
         # Respuesta al usuario
         metadata      = { timestamp: DateTime.now.strftime('%Q'), process_time: 0 }
         request       = params

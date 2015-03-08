@@ -59,4 +59,18 @@ class GenericUtils
   def self.run_py(script_file, env_vars = {}, input_str = "")
     return GenericUtils.run_script('python', script_file, env_vars, input_str)
   end
+  
+  # Convertir las claves de un Hash a claves.
+  #
+  # @param h [Hash] Hash a modificar.
+  # @return [Hash] Hash convertido.
+  def self.symbolize_keys_deep!(h)
+    h.keys.each do |k|
+      ks    = k.respond_to?(:to_sym) ? k.to_sym : k
+      h[ks] = h.delete k # Preserve order even when k == ks
+      symbolize_keys_deep! h[ks] if h[ks].kind_of? Hash
+    end
+
+    return h
+  end
 end

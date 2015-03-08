@@ -122,5 +122,5 @@ require './rb/game/admin/admin'
 
 #-- ---------------------------------------------------------------- #++
 
-Sinatra::ProgrezzServer.run
+#Sinatra::ProgrezzServer.run
 #-- Ejecutar app #++

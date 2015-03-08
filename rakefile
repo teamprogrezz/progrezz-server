@@ -1,4 +1,5 @@
 require 'yard'
+require 'rake/testtask'
 
 task :default => ["development:start"]
 
@@ -36,6 +37,19 @@ end
 
 desc 'Default setup task'
 task :setup do Rake::Task['setup:bundle'].execute end
+
+# --------------------------------------------------------------
+
+namespace :test do
+  Rake::TestTask.new(:unit) do |t|
+    t.libs << "test"
+    t.test_files = FileList['test/unit/all.rb']
+    t.verbose = true
+  end
+end
+
+desc 'Default test task'
+task :test do Rake::Task['test:unit'].execute end
 
 # --------------------------------------------------------------
 
