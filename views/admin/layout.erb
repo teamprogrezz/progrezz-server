@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Progrezz Administration</title>
+  
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/jpg" href="/img/favicon.png" />
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/global.css">
+  </head>
+  <body>
+    <ul class="navbar">
+      <li><a href="/admin/home">Home </a></li>
+      <li><a href="/admin/messages">Messages </a></li>
+      <li><a href="/admin/users">Users </a></li>
+    </ul>
+
+    <div class="admin_content">
+      <%= yield %>
+    </div>
+    
+  </body>
+</html>
+

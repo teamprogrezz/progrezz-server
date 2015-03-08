@@ -76,17 +76,17 @@ module Sinatra
       
       # Página dev principal (home).
       app.get '/dev' do
-        erb :"dev/home", :locals => { :session => session }, :layout => :layout_dev
+        erb :"dev/home", :locals => { :session => session }, :layout => :"dev/layout"
       end
       
       # Página de información (about).
       app.get '/dev/about' do
-        erb :"dev/about", :locals => { :session => session }, :layout => :layout_dev
+        erb :"dev/about", :locals => { :session => session }, :layout => :"dev/layout"
       end
       
       # Página de documentación (doc).
       app.get '/dev/doc' do
-        erb :"dev/doc", :locals => { :session => session }, :layout => :layout_dev
+        erb :"dev/doc", :locals => { :session => session }, :layout => :"dev/layout"
       end
     end
   end
@@ -116,6 +116,9 @@ require './rb/rest'
 
 #-- Cargar autenticación de usuarios. #++
 require './rb/auth'
+
+#-- Cargar autenticación de administradores. #++
+require './rb/game/admin/admin'
 
 #-- ---------------------------------------------------------------- #++
 

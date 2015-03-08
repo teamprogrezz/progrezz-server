@@ -34,6 +34,10 @@ div.content {
   padding: 5px;
 }
 
+div.admin_content {
+  margin: 15px;
+}
+
 /** Menu stuff */
 div.menu {
   padding: 0;
@@ -65,4 +69,36 @@ div.menu ul li img {
   width:  50px;
   height: 50px;
   margin-right:  2px;
+}
+
+/* Navbar */
+ul.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    
+    background-color: #4E79F1;
+    
+    width: 100%;
+}
+
+ul.navbar li {
+    float: left;
+}
+
+ul.navbar li a:link, ul.navbar li a:visited {
+    display: block;
+    width: 120px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #4E79F1;
+    text-align: center;
+    padding: 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+ul.navbar li a:hover, ul.navbar li a:active {
+    background-color: #314C95;
 }

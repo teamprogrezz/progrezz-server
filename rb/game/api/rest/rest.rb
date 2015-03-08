@@ -125,7 +125,7 @@ module Sinatra
         erb :"dev/rest", :locals => {
           :session => session,
           :rest_methods => app.rest_methods
-        }, :layout => :layout_dev
+        }, :layout => :"dev/layout"
       end
     end
   end
