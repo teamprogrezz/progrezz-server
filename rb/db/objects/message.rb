@@ -151,7 +151,9 @@ module Game
       # @return [Hash<Symbol, Object>] Hash con los datos referentes al mensaje completado por el usuario.
       def get_user_message(user_rel = nil)
         output = {
+          id:              self.neo_id,
           author:          self.get_author_alias,
+          author_id:       self.author != nil ? self.author.user_id : "",
           content:         self.content,
           resource:        self.get_resource,
           total_fragments: self.total_fragments,
@@ -172,7 +174,9 @@ module Game
       def to_hash()
         return {
           uuid:            self.uuid,
+          id:              self.neo_id,
           author:          self.get_author_alias,
+          author_id:       self.author != nil ? self.author.user_id : "",
           content:         self.content,
           resource:        self.get_resource,
           total_fragments: self.total_fragments,

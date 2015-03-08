@@ -105,9 +105,17 @@ module Sinatra; module API ;module REST
         
       end
     
+      # eliminar mensajes cuyo autor sea el que realizó la petición
+      output.each do |key, fragment|
+        if fragment[:message][:author_id] == response[:request][:request][:data][:user_id]
+          output.delete(key)
+        end
+      end
+    
       # formatear output
       response[:response][:data][:type]      = "json"
       response[:response][:data][:fragments] = output
+      
     end
     
     # Listar mensajes de un usuario.
