@@ -59,12 +59,11 @@ module REST
           
           # Añadir fragmentos a Wikiti
           puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
-            user_Wikiti.collect_fragment( messages[0].fragments[0] ) # Autor -> No añadido.
-            
+            begin; user_Wikiti.collect_fragment( messages[0].fragments[0] ); rescue; end# Autor -> No añadido.
             # Añadir fragmentos
             fragments = messages[4].fragments
             user_Wikiti.collect_fragment( fragments[0] )
-            user_Wikiti.collect_fragment( fragments[0] ) # Mensaje repetido -> No añadido.
+            begin; user_Wikiti.collect_fragment( fragments[0] ); rescue; end # Mensaje repetido -> No añadido.
             user_Wikiti.collect_fragment( fragments[2] )
             
             # Añadir mensaje completo
@@ -111,7 +110,7 @@ module REST
           
           puts e.message
           puts e.backtrace
-          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace
+          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
           
         ensure
           Game::Database::DatabaseManager.force_save() 

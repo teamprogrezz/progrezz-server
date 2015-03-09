@@ -1,8 +1,13 @@
+# encoding: UTF-8
+
 ENV['RACK_ENV'] = 'test'
 
 require './main'
 require 'test/unit'
 require 'rack/test'
+
+# def puts(value); raise 'you found a puts'; end
+
 
 # Pruebas unitarias de la API REST.
 class RESTTest < Test::Unit::TestCase
@@ -49,11 +54,13 @@ class RESTTest < Test::Unit::TestCase
     @users[0].write_msg( "Hola mundo!!!" )
     
     @messages << Game::Database::Message.create_message( "Hello, universe", 2, nil, nil, {latitude: 3.0, longitude: 2.0} )
-    @messages << Game::Database::Message.create_message( "Hello, universe (2)", 2, nil, nil, {latitude: 3.2, longitude: 2.0} )
+    @messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, nil, nil, {latitude: 3.2, longitude: 2.0} )
     
     @users[0].collect_fragment(@messages[0].fragments[0])
     @users[0].collect_fragment(@messages[0].fragments[1])
+    
     @users[0].collect_fragment(@messages[1].fragments[0])
+    @users[0].collect_fragment(@messages[1].fragments[2])
   end
   
   # Undo db
@@ -200,7 +207,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:fragments].count, 4
+    assert_equal @response[:response][:data][:fragments].count, 5
   end
   
   # Probar "user_get_messages"
@@ -214,6 +221,19 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:completed_messages].count, 1
     assert_equal @response[:response][:data][:fragmented_messages].count, 1
+  end
+  
+  # Probar "user_get_messages"
+  def test_user_get_collected_message_fragments
+    authenticate()
+    
+    @request[:request][:type] = "user_get_collected_message_fragments"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[1].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:fragments].values[0].count, 2
+    
   end
   
 end

@@ -77,14 +77,17 @@ module Game
       end
       
       # Transformar objeto a un hash.
-      #
+      # @param exclusion_list [Array<Symbol>] Lista de propiedades a ignorar.
       # @return [Hash<Symbol, Object>] Objeto como hash.
-      def to_hash()
-        return {
-          geolocation:    self.geolocation,
-          fragment_index: self.fragment_index,
-          message:        self.message.to_hash
-        }
+      def to_hash(exclusion_list = [])
+        output = {}
+
+        if !exclusion_list.include? :uuid;           output[:uuid]           = self.uuid end
+        if !exclusion_list.include? :geolocation;    output[:geolocation]    = self.geolocation end
+        if !exclusion_list.include? :fragment_index; output[:fragment_index] = self.fragment_index end
+        if !exclusion_list.include? :message;        output[:message]        = self.message.to_hash() end
+        
+        return output
       end
     end
 

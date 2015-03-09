@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'json'
 require 'geocoder'
 require 'progrezz/geolocation'
@@ -129,6 +131,21 @@ module Sinatra; module API ;module REST
       response[:response][:data][:type]                = "json"
       response[:response][:data][:completed_messages]  = user.get_completed_messages()  # Añadir mensajescompletados.
       response[:response][:data][:fragmented_messages] = user.get_fragmented_messages() # Y mensajes fragmentados.
+    end
+    
+    # Listar fragmentos recolectados de un mensaje determinado.
+    def self.user_get_collected_message_fragments( app, response, session )
+      user     = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      message  = Game::Database::Message.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
+      
+      if message == nil
+        raise "Unkown message."
+      end
+      
+      fragment_list = user.get_collected_message_fragments(message)
+
+      response[:response][:data][:type]      = "json"
+      response[:response][:data][:fragments] = fragment_list
     end
   end
   

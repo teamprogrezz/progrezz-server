@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative 'user'
 require_relative 'message_fragment'
 require_relative '../relations/user-completed_message'

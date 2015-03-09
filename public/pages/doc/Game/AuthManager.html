@@ -308,8 +308,7 @@ usuario ya existe, no se añadirá nada.</p>
 62
 63
 64
-65
-66</pre>
+65</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/auth.rb', line 54</span>
@@ -317,8 +316,7 @@ usuario ya existe, no se añadirá nada.</p>
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_auth_user'>auth_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_user_alias'>user_alias</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
     <span class='comment'># Buscar usuario
-</span>    <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_user_alias'>user_alias</span>
-    <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
+</span>    <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
     
     <span class='comment'># Actualizar perfil.
 </span>    <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_update_profile'>update_profile</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='symbol'>:alias</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_user_alias'>user_alias</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
@@ -490,7 +488,7 @@ todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar  6 21:03:37 2015 by
+  Generated on Mon Mar  9 12:16:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

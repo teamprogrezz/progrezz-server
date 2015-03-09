@@ -32,6 +32,10 @@
       {
         "name": "Get user messages",
         "example": {"_comment":"Use this method to retrieve the list of completed and umcompleted messages of <user_id> user. Incompleted messages will be sent too.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_messages","data":{"user_id":"yourmail@example.com"}}}
+      },
+      {
+        "name": "Get user collected message fragments",
+        "example": {"_comment":"Get collected fragments from a given message and user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_collected_message_fragments","data":{"user_id":"yourmail@example.com","msg_uuid":"Message uuid (e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)"}}}
       }
     ]
   ]

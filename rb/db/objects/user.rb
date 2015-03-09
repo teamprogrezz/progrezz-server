@@ -260,6 +260,26 @@ module Game
         return output
       end
       
+      # Listar fragmentos recolectados de un mensaje.
+      # @param message [Game::Database::Message] Mensaje cuyos fragmentos serán buscados.
+      # @return [Hash] Lista de fragmentos recolectados por un usuario.
+      def get_collected_message_fragments(message)
+        output = {}
+        msg_uuid = message.uuid
+        
+        self.collected_fragment_messages.each do |fragment|
+          if fragment.message.uuid == msg_uuid
+            if output[msg_uuid] == nil
+              output[msg_uuid] = []
+            end
+            
+            output[msg_uuid] << fragment.to_hash( [:message] )
+          end
+        end
+        
+        return output
+      end
+      
       # Obtener referencia a un mensaje completado del usuario.
       #
       # Se intentará buscar un mensaje completado mediante el uuid, siempre y cuando exista.

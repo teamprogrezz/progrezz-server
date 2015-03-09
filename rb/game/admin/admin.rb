@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Game
   
   # Clase gestora de la administración del juego.
@@ -16,6 +18,8 @@ module Game
       password = ENV['progrezz_admin_user'] || "admin"
     end
     
+    # Credenciales del administrador
+    # @return [Array<String, String>] Array con la forma [usuario, contraseña].
     def self.credentials()
       return [ admin_user, admin_password ]
     end
