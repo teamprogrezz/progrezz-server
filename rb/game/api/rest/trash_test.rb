@@ -111,7 +111,7 @@ module REST
           
           puts e.message
           puts e.backtrace
-          result = e.class.name + " -> " + e.message
+          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace
           
         ensure
           Game::Database::DatabaseManager.force_save() 

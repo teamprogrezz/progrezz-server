@@ -135,7 +135,7 @@ module Sinatra
         session[:user_id] = auth['info'].email              # ID -> correo
         session[:name]    = auth['info'].name               # Nombre completo
         session[:alias]   = auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
-        session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
+        #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
 
         # Registrar el usuario en la base de datos.
         Game::AuthManager.auth_user( session[:user_id], session[:alias] )
