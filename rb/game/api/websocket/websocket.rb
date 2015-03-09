@@ -83,7 +83,7 @@ module Sinatra
         
         erb :"dev/websocket", :locals => {
           :session => session,
-          :ebsocket_methods => app.rest_methods
+          :websocket_methods => app.websocket_methods
         }, :layout => :"dev/layout"
       end
     end

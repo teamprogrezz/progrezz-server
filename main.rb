@@ -114,6 +114,9 @@ require './rb/db'
 #-- Cargar datos referentes a la api REST. #++
 require './rb/rest'
 
+#-- Cargar datos referentes a la api WebSocket. #++
+require './rb/websocket'
+
 #-- Cargar autenticación de usuarios. #++
 require './rb/auth'
 

@@ -141,59 +141,15 @@
     // Change callback
     editor_input.on("change", function() {
       if(typeof(Storage) !== "undefined")
-        localStorage.last_input = editor_input.getDoc().getValue()
+        localStorage.last_rest_input = editor_input.getDoc().getValue()
     });
   
-    if (localStorage.last_input)
-      editor_input.getDoc().setValue(localStorage.last_input);
+    if (localStorage.last_rest_input)
+      editor_input.getDoc().setValue(localStorage.last_rest_input);
     else
       dump_example(0);
   }
   else {
     dump_example(0);
   }
-    
-  function dump_example(num) {
-     editor_input.getDoc().setValue(JSON.stringify( rest_methods_data[num], null, '  ' ));
-  }
-
-  rest_request = new RESTRequest();
-  
-  rest_request.onComplete = function(json_response) {
-    editor_output.getDoc().setValue( GenericUtils.html.escape (JSON.stringify(json_response, null, '  ')) );
-  }
-  rest_request.onError = function(xhr) {
-    editor_output.getDoc().setValue( "ERROR! " + JSON.stringify(xhr, null, '  ') );
-    document.getElementById("serverstatus").innerHTML = "Response error: " + xhr.statusText;
-    document.getElementById("serverstatus").style.visibility = "visible";
-  }
-  rest_request.onEnd = function(json_response) {
-    console.log("end!");
-  }
-  
-  function send_form() {
-   try {
-     rest_request.request( JSON.parse( editor_input.getDoc().getValue() ) );
-     document.getElementById("serverstatus").style.visibility = "hidden";
-   }
-   catch(err) {
-     document.getElementById("serverstatus").innerHTML = "Parse error: " + err.message;
-     document.getElementById("serverstatus").style.visibility = "visible";
-   }
-  }
-  
-  if(typeof(Storage) !== "undefined") {
-    if (localStorage.last_input)
-      editor_input.getDoc().setValue(localStorage.last_input);
-    else
-      dump_example(0);
-    
-    $('#form_request_str').bind('input propertychange', function() {
-      localStorage.last_input = editor_input.getDoc().getValue()
-    });
-  }
-  else {
-    dump_example(0);
-  }
-    
 </script>
