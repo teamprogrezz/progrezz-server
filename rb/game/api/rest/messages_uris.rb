@@ -26,8 +26,10 @@ module Sinatra; module API ;module REST
       # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
       # ...
       
-      if user.collect_fragment( fragment ) == nil
-        raise "The fragment could not be collected."
+      begin
+        user.collect_fragment( fragment )
+      rescue Exception => e
+        raise "The fragment could not be collected: " + e.message
       end
       
       response[:response][:data][:type]    = "plain"
@@ -44,7 +46,7 @@ module Sinatra; module API ;module REST
       msg = user.write_msg( msg_content, msg_resource )
       
       response[:response][:data][:type]    = "json"
-      response[:response][:data][:message] = msg.get_user_message()
+      response[:response][:data][:written_message] = msg.get_user_message()
     end
     
     # Recibir fragmentos de mensajes cercanos al usuario.
@@ -53,8 +55,8 @@ module Sinatra; module API ;module REST
       default_method = "progrezz" # progrezz, geocoder o neo4j
       
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
-      radius  = response[:request][:request][:data][:radius]  || default_radius
-      method  = response[:request][:request][:data][:method]  || default_method
+      radius  = response[:request][:request][:data][:radius].to_f  || default_radius
+      method  = response[:request][:request][:data][:method]       || default_method
       output  = {}
       
       # Geolocalizaciones (como arrays).

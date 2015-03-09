@@ -197,24 +197,24 @@ module Game
       #
       # @param fragment_message [Game::Database::FragmentMessage] Nuevo fragmento a añadir.
       #
-      # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, devuelve nil.
+      # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, generará excepciones.
       def collect_fragment(fragment_message)
         if fragment_message != nil
           # Comprobar si es necesario añadir la relación
           
           # Si el fragmento es suyo, no recogerlo
           if (fragment_message.message.author != nil && fragment_message.message.author == self)
-            return nil
+            raise "User fragment."
           end
           
           # Si ya tiene el mensaje completado, no añadir el fragmento
           if ( self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) 
-             return nil
+             raise "Message already completed."
           end
           
           # Si ya tiene el fragmento, no volver a añadirlo
           if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
-            return nil
+            raise "Fragment already collected."
           end
           
           # Comprobar si es necesario quitarla, ya que ha completado el mensaje.
@@ -242,9 +242,9 @@ module Game
           else
             return Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
           end
+        else     
+          raise "Nul fragment."
         end
-        
-        return nil
       end
       
       # Obtener mensajes completados por el usuario como un hash (usado para la API REST).

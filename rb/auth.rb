@@ -54,7 +54,6 @@ module Game
     def self.auth_user(user_id, user_alias)
       begin
         # Buscar usuario
-        puts user_id, user_alias
         user = Game::Database::User.search_user( user_id )
         
         # Actualizar perfil.
