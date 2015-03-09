@@ -15,7 +15,7 @@ module Game
     # Getter de la contraseña del admin.
     # @return [String] Contraseña del administrador
     def self.admin_password()
-      password = ENV['progrezz_admin_user'] || "admin"
+      password = ENV['progrezz_admin_password'] || "admin"
     end
     
     # Credenciales del administrador
