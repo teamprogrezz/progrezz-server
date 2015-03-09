@@ -1,0 +1,199 @@
+<!-- Externo -->
+<script src="/lib/codemirror/js/codemirror.js"></script>
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+
+<!-- HTML -->
+<div class="container-fluid">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="padding-top: 1px;">
+      <h3>Interactive REST client</h3>
+    </div>
+  </div>
+    
+  <div class="row">
+    <!-- Menú -->
+    <% if defined? rest_methods %>
+    <% count = 0 %>
+    <div class="col-md-2">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Methods</h3>
+        </div>
+        <div class="panel-body">
+          <div class="btn-group-vertical" style="width: 100%;" role="group" aria-label="Vertical button group">
+            <% rest_methods.each do |methods| %>
+            <div class="btn-group" role="group">
+              <button id="btnGroupVerticalDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <%= methods[0] %> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                <% methods[1].each do |method| %>
+                <li><a onclick= <%= "dump_example(" + count.to_s + ");" %> > <%= method["name"] %> </a></li>
+                <% count += 1 %>
+                <% end %>
+              </ul>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    
+    <!-- Request -->
+    <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>REST Request</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+          <textarea id="form_request_str" class="form-control" rows="14" style="resize: none;"></textarea>
+          </div>
+          <button type="button" onclick="send_form();" class="btn btn-success">Send REST request</button>
+        </div>
+      </div>
+    </div>
+      
+    <!-- Response -->
+    <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Server Response</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+          <textarea id="output" class="form-control" rows="14" style="resize: none;"></textarea>
+          </div>
+          <div id="serverstatus" style="visibility: hidden;" class="alert alert-danger" role="alert">Error!</div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+  <!-- Javascript -->
+<!-- Cliente de la API REST -->
+<script type="text/javascript" src="/lib/client-api-rest/js/progrezz-api-rest.js" ></script>
+
+<!-- Procesamiento local -->
+<script type="text/javascript">
+  // Cambiar editor  
+  var editor_input  = CodeMirror.fromTextArea(document.getElementById("form_request_str"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    tabSize: 2
+  });
+  var editor_output = CodeMirror.fromTextArea(document.getElementById("output"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    readOnly: true,
+    tabSize: 2
+  });
+  
+  rest_methods_data = [];
+  
+<% rest_methods.each do |methods| %>
+<% methods[1].each do |method| %>  rest_methods_data.push( <%= method["example"].to_json %> );
+<% end %>
+<% end %>
+
+  function dump_example(num) {
+     editor_input.getDoc().setValue(JSON.stringify( rest_methods_data[num], null, '  ' ));
+  }
+
+  rest_request = new RESTRequest();
+  
+  rest_request.onComplete = function(json_response) {
+    editor_output.getDoc().setValue( GenericUtils.html.escape (JSON.stringify(json_response, null, '  ')) );
+  }
+  rest_request.onError = function(xhr) {
+    editor_output.getDoc().setValue( "ERROR! " + JSON.stringify(xhr, null, '  ') );
+    document.getElementById("serverstatus").innerHTML = "Response error: " + xhr.statusText;
+    document.getElementById("serverstatus").style.visibility = "visible";
+  }
+  rest_request.onEnd = function(json_response) {
+    console.log("end!");
+  }
+  
+  function send_form() {
+   try {
+     rest_request.request( JSON.parse( editor_input.getDoc().getValue() ) );
+     document.getElementById("serverstatus").style.visibility = "hidden";
+   }
+   catch(err) {
+     document.getElementById("serverstatus").innerHTML = "Parse error: " + err.message;
+     document.getElementById("serverstatus").style.visibility = "visible";
+   }
+  }
+  
+  if(typeof(Storage) !== "undefined") {
+    // Change callback
+    editor_input.on("change", function() {
+      if(typeof(Storage) !== "undefined")
+        localStorage.last_input = editor_input.getDoc().getValue()
+    });
+  
+    if (localStorage.last_input)
+      editor_input.getDoc().setValue(localStorage.last_input);
+    else
+      dump_example(0);
+  }
+  else {
+    dump_example(0);
+  }
+    
+  function dump_example(num) {
+     editor_input.getDoc().setValue(JSON.stringify( rest_methods_data[num], null, '  ' ));
+  }
+
+  rest_request = new RESTRequest();
+  
+  rest_request.onComplete = function(json_response) {
+    editor_output.getDoc().setValue( GenericUtils.html.escape (JSON.stringify(json_response, null, '  ')) );
+  }
+  rest_request.onError = function(xhr) {
+    editor_output.getDoc().setValue( "ERROR! " + JSON.stringify(xhr, null, '  ') );
+    document.getElementById("serverstatus").innerHTML = "Response error: " + xhr.statusText;
+    document.getElementById("serverstatus").style.visibility = "visible";
+  }
+  rest_request.onEnd = function(json_response) {
+    console.log("end!");
+  }
+  
+  function send_form() {
+   try {
+     rest_request.request( JSON.parse( editor_input.getDoc().getValue() ) );
+     document.getElementById("serverstatus").style.visibility = "hidden";
+   }
+   catch(err) {
+     document.getElementById("serverstatus").innerHTML = "Parse error: " + err.message;
+     document.getElementById("serverstatus").style.visibility = "visible";
+   }
+  }
+  
+  if(typeof(Storage) !== "undefined") {
+    if (localStorage.last_input)
+      editor_input.getDoc().setValue(localStorage.last_input);
+    else
+      dump_example(0);
+    
+    $('#form_request_str').bind('input propertychange', function() {
+      localStorage.last_input = editor_input.getDoc().getValue()
+    });
+  }
+  else {
+    dump_example(0);
+  }
+    
+</script>
