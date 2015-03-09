@@ -69,11 +69,9 @@ module Sinatra
 
         pre_time = Time.now
 
-        transaction = nil
-        begin
-          # Activar gestor de transacciones.
-          transaction = Game::Database::DatabaseManager.start_transaction()
-          
+        # Activar gestor de transacciones.
+        transaction = Game::Database::DatabaseManager.start_transaction()
+        begin  
           # Tipo de petición
           method = request[:request][:type].to_s
 
