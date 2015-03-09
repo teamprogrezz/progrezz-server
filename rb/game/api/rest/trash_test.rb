@@ -5,20 +5,24 @@ require 'sinatra/base'
 require 'neo4j'
 require 'cgi'
 
-module Sinatra #:nodoc: all
-
+module Sinatra
 module API
 module REST
 
   # Módulo de la api REST para hacer pruebas.
   module Trash
+    
+    # Métodos de ayuda del módulo de pruebas.
     module Helpers
+      
+      # Eliminar contenido de la base de datos.
       def db_drop()
         Game::Database::DatabaseManager.drop()
         
         return "<h2>Database droped.</h2>"
       end
       
+      # Añadir contenido de prueba de la base de datos.
       def db_add()
         begin
           user_Wikiti = nil
@@ -107,7 +111,7 @@ module REST
           
           puts e.message
           puts e.backtrace
-          result = e.class.name + " -> " + e.message
+          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace
           
         ensure
           Game::Database::DatabaseManager.force_save() 
@@ -116,6 +120,7 @@ module REST
         return result
       end
       
+      # Reiniciar contenido de la base de datos.
       def db_reset()
         db_drop()
         return db_add()
@@ -123,6 +128,9 @@ module REST
        
     end
     
+    # Registrar métodos de prueba.
+    #
+    # @param app [Sinatra::Application] Aplicación sinatra.
     def self.registered(app)
        # Añadir "ayudas".
       app.helpers Helpers
@@ -160,7 +168,7 @@ end; end
 register API::REST::Trash
 end
 
-#-- Cargar en el servidor #++
-class ProgrezzServer
+class Sinatra::ProgrezzServer
   register Sinatra::API::REST::Trash
 end
+#-- Cargar en el servidor #++

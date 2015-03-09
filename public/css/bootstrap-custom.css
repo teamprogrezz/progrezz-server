@@ -1,0 +1,22 @@
+
+
+/* Social networks */
+a.social.github {
+  background-color: #000000;
+  color:            #ffffff;
+}
+
+a.social.github:hover {
+  background-color: #4b4b4b !important;
+  color:            #ffffff !important;
+}
+
+a.social.google {
+  background-color: #ad423e;
+  color:            #ffffff;
+}
+
+a.social.google:hover {
+  background-color: #ff0000 !important;
+  color:            #ffffff !important;
+}

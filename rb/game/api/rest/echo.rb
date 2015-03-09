@@ -1,4 +1,3 @@
-#:nodoc:
 module Sinatra
   module API
   module REST

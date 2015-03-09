@@ -2,7 +2,6 @@ require 'json'
 require 'geocoder'
 require 'progrezz/geolocation'
 
-#:nodoc:
 module Sinatra; module API ;module REST
   # Añadir métodos a la clase de métodos de la API REST. Se añadirá automáticamente en el fichero rest.rb
   class Methods
@@ -22,13 +21,15 @@ module Sinatra; module API ;module REST
     # Recoger un fragmento de mensaje cercano.
     def self.user_collect_message_fragment( app, response, session )
       user     = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
-      fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
+      fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:frag_uuid] )
       
       # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
       # ...
       
-      if user.collect_fragment( fragment ) == nil
-        raise "The fragment could not be collected."
+      begin
+        user.collect_fragment( fragment )
+      rescue Exception => e
+        raise "The fragment could not be collected: " + e.message
       end
       
       response[:response][:data][:type]    = "plain"
@@ -42,10 +43,10 @@ module Sinatra; module API ;module REST
       msg_content  = response[:request][:request][:data][:content].to_s
       msg_resource = response[:request][:request][:data][:resource].to_s
       
-      msg = user.write_msg( response[:request][:request][:data][:content],  )
+      msg = user.write_msg( msg_content, msg_resource )
       
       response[:response][:data][:type]    = "json"
-      response[:response][:data][:message] = msg.get_user_message()
+      response[:response][:data][:written_message] = msg.get_user_message()
     end
     
     # Recibir fragmentos de mensajes cercanos al usuario.
@@ -54,8 +55,8 @@ module Sinatra; module API ;module REST
       default_method = "progrezz" # progrezz, geocoder o neo4j
       
       user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
-      radius  = response[:request][:request][:data][:radius]  || default_radius
-      method  = response[:request][:request][:data][:method]  || default_method
+      radius  = response[:request][:request][:data][:radius].to_f  || default_radius
+      method  = response[:request][:request][:data][:method]       || default_method
       output  = {}
       
       # Geolocalizaciones (como arrays).
@@ -106,9 +107,17 @@ module Sinatra; module API ;module REST
         
       end
     
+      # eliminar mensajes cuyo autor sea el que realizó la petición
+      output.each do |key, fragment|
+        if fragment[:message][:author_id] == response[:request][:request][:data][:user_id]
+          output.delete(key)
+        end
+      end
+    
       # formatear output
       response[:response][:data][:type]      = "json"
       response[:response][:data][:fragments] = output
+      
     end
     
     # Listar mensajes de un usuario.
@@ -124,31 +133,3 @@ module Sinatra; module API ;module REST
   end
   
 end; end; end
-
-get '/game/dba/geoloc' do
-  #params.keys.each do |k|  
-  #  puts k + " -> " + params[k]
-  #end
-
-  output = []
-
-  u_geo = [params['latitude'], params['longitude']]
-  message_list = Game::Database::MessageFragments.all
-  cont_msg = 0
-  for message in message_list do
-    if cont_msg >= params['n_msg'].to_i
-      break;
-    end
-
-    msg_geo = [message.latitude, message.longitude]
- 
-    distance = Geocoder::Calculations.distance_between(u_geo, msg_geo, {:units => :km})
-    puts "-> Distancia: " + distance.to_s
-    if distance <= params['radio'].to_f
-      output << message
-      cont_msg += 1
-    end
-  end
-
-  return params[:callback] + "(" + output.to_json() + ")"
-end
