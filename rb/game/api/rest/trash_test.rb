@@ -47,7 +47,7 @@ module REST
           
           # Mensajes sin autor
           puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-            messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 1.995, longitude: 0.809})
+            messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92})
             messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809} )
             messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
           end).to_s
@@ -79,11 +79,16 @@ module REST
           puts "Tiempo de asosiación de fragmentos a Shylpx: " + (GenericUtils.timer do
             fragments = messages[3].fragments
             
-            fragments[1].latitude += -0.02
+            fragments[1].latitude += -0.0252
+            fragments[1].longitude += -0.02
             fragments[1].save
+            
             fragments[2].latitude +=  0.061
+            fragments[2].longitude +=  -0.04
             fragments[2].save
-            fragments[3].longitude +=  0.01
+            
+            fragments[3].latitude +=  -0.08
+            fragments[3].longitude +=  0.001
             fragments[3].save
             
             user_Shylpx.collect_fragment( fragments[0] )
