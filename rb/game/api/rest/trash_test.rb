@@ -33,8 +33,6 @@ module REST
           
           messages = []
           
-          #tx = Neo4j::Transaction.new
-          
           # Usuarios
           puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
             user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 2.0, longitude: 0.81})
@@ -82,17 +80,21 @@ module REST
           puts "Tiempo de asosiación de fragmentos a Shylpx: " + (GenericUtils.timer do
             fragments = messages[3].fragments
             
-            fragments[1].latitude += -0.0252
-            fragments[1].longitude += -0.02
+            fragments[1][:latitude] += -0.0252
+            fragments[1][:longitude] += -0.02
             fragments[1].save
             
             fragments[2].latitude +=  0.061
             fragments[2].longitude +=  -0.04
-            fragments[2].save
+            fragments[2].save!
             
             fragments[3].latitude +=  -0.08
             fragments[3].longitude +=  0.001
-            fragments[3].save
+            fragments[3].save!
+            
+            puts fragments[0].latitude.methods
+            puts "------------"
+            puts fragments[0].methods
             
             user_Shylpx.collect_fragment( fragments[0] )
             user_Shylpx.collect_fragment( fragments[1] )
