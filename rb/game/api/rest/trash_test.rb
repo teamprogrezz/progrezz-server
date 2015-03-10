@@ -78,8 +78,17 @@ module REST
           # Añadir fragmentos a Shylpx
           puts "Tiempo de asosiación de fragmentos a Shylpx: " + (GenericUtils.timer do
             fragments = messages[3].fragments
+            
+            fragments[1].latitude += -0.02
+            fragments[1].save
+            fragments[2].latitude +=  0.061
+            fragments[2].save
+            fragments[3].longitude +=  0.01
+            fragments[3].save
+            
             user_Shylpx.collect_fragment( fragments[0] )
             user_Shylpx.collect_fragment( fragments[1] )
+            user_Shylpx.collect_fragment( fragments[2] )
             
             fragments = messages[0].fragments
             user_Shylpx.collect_fragment( fragments[0] )
