@@ -1,4 +1,5 @@
 require 'date'
+require 'sinatra-websocket'
 
 module Sinatra
 
@@ -15,6 +16,24 @@ module Sinatra
     # @see http://progrezz-server.heroku.com/dev/websocket
     class Methods
     end
+    
+    # Generar un error de respuesta.
+    #
+    # @param response [Hash] Hash de respuesta al usuario.
+    # @param reason [String] Razón del error en sí (e.j. 'Me caes mal').
+    def self.error_request(response, reason)
+      response[:response][:status]  = "error"
+      response[:response][:message] = reason
+    end
+    
+    # Generar una respuesta.
+    #
+    # @param response [Hash] Hash de respuesta al usuario.
+    # @param data [Hash] Estructura de datos a enviar al usuario.
+    def self.ok_request(response, data)
+      response[:response][:status]  = "ok"
+      response[:response][:data]    = data
+    end
 
     # Registrar yconfigurar la API WebSocket.
     #
@@ -26,11 +45,6 @@ module Sinatra
       # Clase contenedora de métodos
       methods = Sinatra::API::WebSocket::Methods.new()
       
-      # Configurar websockets
-      app.configure do
-        app.set :sockets, []
-      end
-
       # Acceso mediante método GET
       app.get '/dev/api/websocket' do
         content_type :json  # Tipo de respuesta: JSON.
@@ -38,29 +52,47 @@ module Sinatra
         output = {
           metadata: { },
           response: {
-            status: "ok",
-            message: ""
+            status: "ok"
+            # 'message: ""' o 'data: {}'
           }
         }
         
+        ws_manager = Game::API::WebSocket::WebSocketManager
+        
         # Si la petición no es de un websocket, rechazar
         if !request.websocket?
-          output[:response][:status]  = "error"
-          output[:response][:message] = "Invalid request: Not a websocket request."
+          error_request(output, "Invalid request: Not a websocket request.")
           
           return output
         else
           request.websocket do |ws|
+            # Petición de apertura.
             ws.onopen do
-              ws.send("Hello World!")
-              settings.sockets << ws
+              # Si no está autenticado, rechazar.
+              if ws_manager.auth?(session) == true
+                ok_request( output, {type: "plain", message: "Connection established."} )
+                
+                ws_manager.add_socket(ws)
+                ws_manager.send(ws, output)
+              else
+                error_request(output, "Invalid request: Not a websocket request.")
+                
+                ws.send("You are not authenticated.")
+                ws.close_websocket()
+              end
             end
+            
+            # Petición de mensaje.
             ws.onmessage do |msg|
-              #EM.next_tick { settings.sockets.each{|s| s.send(msg) } }
+              # Procesar respuesta
+              # ...
+              
+              ws_manager.send(ws, response)
             end
+            
+            # Petición de cierre.
             ws.onclose do
-              warn("websocket closed")
-              settings.sockets.delete(ws)
+              ws_manager.remove_socket(ws)
             end
           end
         end

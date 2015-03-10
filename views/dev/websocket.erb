@@ -74,8 +74,8 @@
 
 
   <!-- Javascript -->
-<!-- Cliente de la API REST -->
-<script type="text/javascript" src="/lib/client-api-rest/js/progrezz-api-rest.js" ></script>
+<!-- Cliente de la API Websocket -->
+<script type="text/javascript" src="/lib/client-api-websocket/js/progrezz-api-websocket.js" ></script>
 
 <!-- Procesamiento local -->
 <script type="text/javascript">
@@ -110,17 +110,58 @@
 <% end %>
 <% end %>
 
+  // Métodos de ayuda
   function dump_example(num) {
      editor_input.getDoc().setValue(JSON.stringify( websocket_methods_data[num], null, '  ' ));
   }
-
   
-  function send_form() {
-    editor_output.getDoc().setValue( "\nhi" + editor_output.getDoc().getValue() )
+  var response_count = 0;
+  
+  function add_response(msg) {
+    response_count++;
+    editor_output.getDoc().setValue( "\n" + msg + editor_output.getDoc().getValue() )
   }
   
+  // Crear websocket
+  ProgrezzWS.DEFAULT.URL = "ws://<%= request.host_with_port %>/" + ProgrezzWS.DEFAULT.URL;
+  console.log( ProgrezzWS.DEFAULT.URL );
+  var ws = new ProgrezzWS;
+  
+  // Asignar callbacks
+  ws.onOpen = function() {
+    add_response("WebSocket opened.")
+  }
+  
+  ws.onClose = function() {
+    add_response("WebSocket closed.")
+  }
+  
+  ws.onError = function(error) {
+    add_response( ProgrezzWS.StringifyError(error) );
+  }
+  
+  ws.onMessage = function(json_msg) {
+    // Suponemos que json_msg es un json.
+    add_response( "Response: " + JSON.stringify(json_msg) );
+  }
+
+  // Abrir y cerrar socket al abrir y cerrar la ventana:
+  window.onload = function() {
+    ws.open( ProgrezzWS.DEFAULT.URL );
+  }
+  
+  window.onbeforeunload = function(){
+    ws.close();
+  }
+  
+  // Enviar formulario
+  function send_form() {
+    ws.send( editor_input.getDoc().getValue() );
+  }
+  
+  // Local storage para guardar el contenido de envío de mensajes.
   if(typeof(Storage) !== "undefined") {
-    // Change callback
+    // Cambiar callback
     editor_input.on("change", function() {
       if(typeof(Storage) !== "undefined")
         localStorage.last_ws_input = editor_input.getDoc().getValue()

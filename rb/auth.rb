@@ -64,6 +64,17 @@ module Game
       end
     end
     
+    # Comprobar si el usuario actual está autenticado.
+    #
+    # @return [Boolean] true si es posible, false en caso contrario.
+    def self.auth?(session)
+      if session['user_id'] == nil
+        return false
+      end
+      
+      return true
+    end
+    
     
   end
 end
