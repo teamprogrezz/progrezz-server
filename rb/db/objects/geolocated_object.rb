@@ -81,16 +81,14 @@ module Game
       # Ajustar posición a valores reales (véase las constantes de la clase #Game::Database::GeolocatedObject).
       # @return [Game::Database::GeolocatedObject] Referencia al objeto ajustado.
       def clamp()
-        self.latitude = [MIN_LATITUDE,  self.latitude, MAX_LATITUDE ].sort[1]
-        self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
-        self.save
+        self.update( User.clamp!(geolocation) )
         return self
       end
       
       # Ajustar posición a valores reales (método estático).
       # @param pos [Hash<Symbol, Float>] Hash con la posición geolocalizada, con el formato {latitude: +lat+, longitude: +lon+ }.
       # @return [Hash<Symbol, Float>] Referencia a la posición ajustada.
-      def self.clamp(pos)
+      def self.clamp!(pos)
         pos[:latitude]  = clamp_latitude(pos[:latitude])
         pos[:longitude] = clamp_longitude(pos[:longitude])
         

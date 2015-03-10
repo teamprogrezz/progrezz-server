@@ -81,11 +81,11 @@ module REST
             
             # Actualizar posición de fragmentos
             puts "Tiempo de actualización de fragmentos: " + (GenericUtils.timer do
-              Game::Database::DatabaseManager.run_nested_transaction do |tx2|
-                fragments[1].update( { latitude: fragments[1].latitude + 0.0252, longitude: fragments[1].longitude - 0.02 } )
-                fragments[2].update( { latitude: fragments[2].latitude + 0.061, longitude: fragments[2].longitude - 0.04 } )
-                fragments[3].update( { latitude: fragments[3].latitude - 0.08, longitude: fragments[3].longitude + 0.001} )
-              end
+              #Game::Database::DatabaseManager.run_nested_transaction do |tx2|
+              fragments[1].update( { latitude: fragments[1].latitude + 0.0252, longitude: fragments[1].longitude - 0.02 } )
+              fragments[2].update( { latitude: fragments[2].latitude + 0.061, longitude: fragments[2].longitude - 0.04 } )
+              fragments[3].update( { latitude: fragments[3].latitude - 0.08, longitude: fragments[3].longitude + 0.001} )
+              #end
             end).to_s
             
             # Añadir fragmentos a Shylpx
