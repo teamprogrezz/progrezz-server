@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require './rb/game/api/json_response'
+
 module Game
   module API
     # Módulo que contiene estructuras de datos referentes a la API de web sockets.

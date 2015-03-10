@@ -16,24 +16,6 @@ module Sinatra
     # @see http://progrezz-server.heroku.com/dev/websocket
     class Methods
     end
-    
-    # Generar un error de respuesta.
-    #
-    # @param response [Hash] Hash de respuesta al usuario.
-    # @param reason [String] Razón del error en sí (e.j. 'Me caes mal').
-    def self.error_request(response, reason)
-      response[:response][:status]  = "error"
-      response[:response][:message] = reason
-    end
-    
-    # Generar una respuesta.
-    #
-    # @param response [Hash] Hash de respuesta al usuario.
-    # @param data [Hash] Estructura de datos a enviar al usuario.
-    def self.ok_request(response, data)
-      response[:response][:status]  = "ok"
-      response[:response][:data]    = data
-    end
 
     # Registrar yconfigurar la API WebSocket.
     #
@@ -49,45 +31,47 @@ module Sinatra
       app.get '/dev/api/websocket' do
         content_type :json  # Tipo de respuesta: JSON.
         
-        output = {
-          metadata: { },
-          response: {
-            status: "ok"
-            # 'message: ""' o 'data: {}'
-          }
-        }
-        
-        ws_manager = Game::API::WebSocket::WebSocketManager
-        
+        ws_manager    = Game::API::WebSocket::WebSocketManager
+
         # Si la petición no es de un websocket, rechazar
         if !request.websocket?
-          error_request(output, "Invalid request: Not a websocket request.")
+          output = Game::API::JSONResponse.get_template()
+          Game::API::JSONResponse.error_response!(output, "Invalid request: Not a websocket request.")
           
           return output
         else
           request.websocket do |ws|
             # Petición de apertura.
             ws.onopen do
+              output = Game::API::JSONResponse.get_template()
+              
               # Si no está autenticado, rechazar.
               if ws_manager.auth?(session) == true
-                ok_request( output, {type: "plain", message: "Connection established."} )
+                Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
                 
                 ws_manager.add_socket(ws)
                 ws_manager.send(ws, output)
               else
-                error_request(output, "Invalid request: Not a websocket request.")
+                Game::API::JSONResponse.error_response!(output, "Invalid request: You are not authenticated.")
                 
-                ws.send("You are not authenticated.")
+                ws_manager.send(ws, output)
                 ws.close_websocket()
               end
             end
             
             # Petición de mensaje.
             ws.onmessage do |msg|
+              # Generar plantilla de respuesta
+              output = Game::API::JSONResponse.get_template()
+              
+              # Si deja de estar autenticado, cerrar socket.
+              # ...
+              
               # Procesar respuesta
               # ...
               
-              ws_manager.send(ws, response)
+              # Y Enviar mensaje
+              ws_manager.send(ws, output)
             end
             
             # Petición de cierre.
