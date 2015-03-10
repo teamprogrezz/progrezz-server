@@ -70,6 +70,8 @@ module Database
     end
     
     # Ejecutar transacciones anidadas.
+    #
+    # La base de datos se encargará de gestionar la finalización de las transacciones anidadas.
     # 
     # Por ejemplo, basta con realizar un bloque de la siguiente manera:
     #   DatabaseManager.run_nested_transaction do |tx1|
@@ -87,12 +89,11 @@ module Database
       begin
         tx = Neo4j::Transaction.new # Crear transacción
         output = yield tx           # Ejecutar bloque
-        tx.success                  # Cerrarla
       rescue Exception
-        tx.failure unless tx.nil?
+        tx.failure unless tx.nil?   # Rollback
         raise
       ensure
-        tx.finish unless tx.nil?
+        tx.close unless tx.nil?     # Cerrar transacción
       end
       
       return output
