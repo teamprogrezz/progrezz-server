@@ -16,9 +16,12 @@ module Sinatra
             name = response[:request][:request][:data][:name].to_s
           end
           
-          response[:response][:data][:type]    = "plain"
-          response[:response][:data][:message] = "Hello, " + name + "!"
+          Game::API::JSONResponse.ok_response!( response, {
+            type: "plain",
+            message: "Hello, " + name + "!"
+          })
         rescue Exception => e
+          puts e.backtrace
           raise "Invalid request: " + e.message
         end
       end
