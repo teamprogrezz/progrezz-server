@@ -41,34 +41,26 @@ module Sinatra
           return output
         else
           request.websocket do |ws|
+            
             # Petición de apertura.
             ws.onopen do
-              output = Game::API::JSONResponse.get_template()
-              
               # Si no está autenticado, rechazar.
-              if ws_manager.auth?(session) == true
-                Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
-                
-                ws_manager.add_socket(ws)
-                ws_manager.send(ws, output)
-              else
-                Game::API::JSONResponse.error_response!(output, "Invalid request: You are not authenticated.")
-                
-                ws_manager.send(ws, output)
-                ws.close_websocket()
-              end
+              ws_manager.auth_user(session, ws)
             end
             
             # Petición de mensaje.
             ws.onmessage do |msg|
+              # Si deja de estar autenticado, cerrar socket.
+              if !ws_manager.force_close_if_no_auth(session, ws)
+                return
+              end
+              
               # Generar plantilla de respuesta
               output = Game::API::JSONResponse.get_template()
-              
-              # Si deja de estar autenticado, cerrar socket.
-              # ...
-              
+
               # Procesar respuesta
               # ...
+              Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Response OK."} )
               
               # Y Enviar mensaje
               ws_manager.send(ws, output)

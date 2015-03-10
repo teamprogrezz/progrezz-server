@@ -26,6 +26,31 @@ module Game
           return nil
         end
         
+        # Forzar el cierre de un websocket si el usuario ya no está autenticado.
+        # @param session [Hash] Sesión Ruby-sinatra actual.
+        # @param ws [Object] Socket a cerrar.
+        # @return [Boolean] True si la sesión sigue activa. False si se ha cerrado.
+        def self.force_close_if_no_auth(session, ws)
+          if auth?(session) == false
+            force_close(ws, "Invalid request: You are no longer authenticated.")
+            return false
+          else
+            return true
+          end
+        end
+        
+        # Forzar el cierre de un websocket.
+        # @param ws [Object] Socket a cerrar.
+        # @param reason [String] Razón del cierre.
+        def self.force_close(ws, reason)
+          output = Game::API::JSONResponse.get_template()
+          Game::API::JSONResponse.error_response!(output, reason)
+          
+          send(ws, output)
+          ws.close_websocket()
+          remove_socket(ws)
+        end
+        
         # Enviar un mensaje global.
         # Se enviará a los usuarios conectados vía websocket.
         # @param response [Hash] Respuesta o mensaje a enviar a los usuarios.
@@ -60,6 +85,30 @@ module Game
         # @return [Boolean] true si es posible, false en caso contrario.
         def self.auth?(session)
           return (Game::AuthManager.auth?(session) == true)
+        end
+        
+        # Autorizar al usuario el acceso.
+        #
+        # Si está autenticado, se permitirá el acceso, y se añadirá a la lista de sockets actuales.
+        # Si no, se enviará un mensaje de error.
+        #
+        # @param session [Hash] Sesión Ruby-sinatra actual.
+        # @param ws [Object] Socket del usuario.
+        def self.auth_user(session, ws)
+          output = Game::API::JSONResponse.get_template()
+          
+          if auth?(session) == true
+            Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
+            
+            add_socket(ws)
+            send(ws, output)
+          else
+            Game::API::JSONResponse.error_response!(output, "Invalid request: You are not authenticated.")
+            
+            send(ws, output)
+            ws.close_websocket()
+          end
+          
         end
 
       end
