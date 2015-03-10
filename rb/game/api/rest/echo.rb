@@ -21,7 +21,6 @@ module Sinatra
             message: "Hello, " + name + "!"
           })
         rescue Exception => e
-          puts e.backtrace
           raise "Invalid request: " + e.message
         end
       end
@@ -37,8 +36,11 @@ module Sinatra
           
           input_json = '{"name": "' + name + '"}'
           
-          response[:response][:data][:type]    = "plain"
-          response[:response][:data][:message] = GenericUtils.run_py('scripts/python/echo.py', { "INPUT_JSON" => input_json })[:stdout] 
+          Game::API::JSONResponse.ok_response!( response, {
+            type: "plain",
+            message: GenericUtils.run_py('scripts/python/echo.py', { "INPUT_JSON" => input_json })[:stdout] 
+          })
+
         rescue Exception => e
           raise "Invalid request: " + e.message
         end

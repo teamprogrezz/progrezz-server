@@ -16,8 +16,10 @@ module Sinatra; module API ;module REST
         raise "Could not change message status."
       end
       
-      response[:response][:data][:type]    = "plain"
-      response[:response][:data][:message] = "Message status changed to '" + response[:request][:request][:data][:new_status] + "'."
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Message status changed to '" + response[:request][:request][:data][:new_status] + "'."
+      })
     end
     
     # Recoger un fragmento de mensaje cercano.
@@ -34,8 +36,10 @@ module Sinatra; module API ;module REST
         raise "The fragment could not be collected: " + e.message
       end
       
-      response[:response][:data][:type]    = "plain"
-      response[:response][:data][:message] = "Fragment collected."
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Fragment collected."
+      })
     end
     
     # Escribir mensaje de un usuario.
@@ -47,8 +51,10 @@ module Sinatra; module API ;module REST
       
       msg = user.write_msg( msg_content, msg_resource )
       
-      response[:response][:data][:type]    = "json"
-      response[:response][:data][:written_message] = msg.get_user_message()
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        written_message: msg.get_user_message()
+      })
     end
     
     # Recibir fragmentos de mensajes cercanos al usuario.
@@ -115,10 +121,12 @@ module Sinatra; module API ;module REST
           output.delete(key)
         end
       end
-    
+      
       # formatear output
-      response[:response][:data][:type]      = "json"
-      response[:response][:data][:fragments] = output
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        fragments: output
+      })
       
     end
     
@@ -128,9 +136,11 @@ module Sinatra; module API ;module REST
     def self.user_get_messages( app, response, session )
       user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
       
-      response[:response][:data][:type]                = "json"
-      response[:response][:data][:completed_messages]  = user.get_completed_messages()  # Añadir mensajescompletados.
-      response[:response][:data][:fragmented_messages] = user.get_fragmented_messages() # Y mensajes fragmentados.
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        completed_messages:  user.get_completed_messages(),  # Añadir mensajescompletados.
+        fragmented_messages: user.get_fragmented_messages()  # Y mensajes fragmentados.
+      })
     end
     
     # Listar fragmentos recolectados de un mensaje determinado.
@@ -141,11 +151,11 @@ module Sinatra; module API ;module REST
       if message == nil
         raise "Unkown message."
       end
-      
-      fragment_list = user.get_collected_message_fragments(message)
 
-      response[:response][:data][:type]      = "json"
-      response[:response][:data][:fragments] = fragment_list
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        fragments: user.get_collected_message_fragments(message)
+      })
     end
   end
   
