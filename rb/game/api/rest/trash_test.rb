@@ -24,6 +24,9 @@ module REST
       
       # Añadir contenido de prueba de la base de datos.
       def db_add()
+                  
+        tx = Game::Database::DatabaseManager.start_transaction()
+        
         begin
           user_Wikiti = nil
           user_Shylpx = nil
@@ -120,13 +123,14 @@ module REST
           result = "<h2>Datos añadidos correctamente.</h2>"
 
         rescue Exception => e
-          #tx.failure()
+          Game::Database::DatabaseManager.rollback_transaction(tx)
           
           puts e.message
           puts e.backtrace
           result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
           
         ensure
+          Game::Database::DatabaseManager.stop_transaction(tx)
           Game::Database::DatabaseManager.force_save() 
         end
         
