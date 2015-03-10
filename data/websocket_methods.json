@@ -1,3 +1,15 @@
 [
-
+  [
+    "Echo", [
+      {
+        "name": "Native echo",
+        "example": {"_comment": "Use this method to test the websocket connection.", "type": "json", "request": {"type":"echo","data":{"name":"your name here"} }}
+      }
+    ]
+  ],
+  [
+    "Players", [
+    
+    ]
+  ]
 ]
