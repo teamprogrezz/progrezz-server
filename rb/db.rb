@@ -82,21 +82,13 @@ module Database
     #   end
     #
     # @return [Object] Resultado o retorno del último bloque de código ejecutado.
-    def self.run_nested_transaction()
+    def self.run_nested_transaction(&block)
       # Si no hay bloque, devolver error.
       raise ArgumentError.new("Expected a block to run in DatabaseManager.run_transaction_anidated") unless block_given?
       
-      begin
-        tx = Neo4j::Transaction.new # Crear transacción
-        output = yield tx           # Ejecutar bloque
-      rescue Exception
-        tx.failure unless tx.nil?   # Rollback
-        raise
-      ensure
-        tx.close unless tx.nil?     # Cerrar transacción
+      Neo4j::Transaction.run do |tx|
+        block.call(tx)
       end
-      
-      return output
     end
     
     # Iniciar una nueva transacción.
