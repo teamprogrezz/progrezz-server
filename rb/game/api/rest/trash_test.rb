@@ -97,6 +97,8 @@ module REST
               
               fragments = messages[0].fragments
               user_Shylpx.collect_fragment( fragments[0] )
+              user_Shylpx.change_message_status( messages[0].uuid, "locked" )
+              
             end).to_s
             
             # Borrar usuario
