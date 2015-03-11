@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'progrezz/geolocation'
+
 require_relative 'geolocated_object'
 require_relative '../relations/user-message_fragment'
 require_relative '../relations/user-completed_message'
@@ -312,7 +314,6 @@ module Game
       #   { type: "json", completed_messages = { uuid1: { content: "...", author: "...", ... }, uuid2: {...}, ... }, fragmented_messages = { uuid1: { content: "...", author: "...", fragments: n, ... }, ... }  }
       #
       # @return [Hash<Symbol, Object>] Se retornará una lista con las características de los mensajes fragmentados de un usuario.
-      
       def get_fragmented_messages()
         output = {}
         
@@ -327,6 +328,66 @@ module Game
         
           # Fragmentos
           output[msg.uuid][:fragments] << fragment.fragment_index
+        end
+        
+        return output
+      end
+      
+      # Ignorar los fragmentos escritos por el usuario.
+      # @param method [String] Método para realizar la búsqueda (progrezz, geocoder o neo4j).
+      # @param radius [Float] Radio de búsqueda. Si es null, se usará en función de la experiencia.
+      # @param ignore_user_written_messages [Boolean] Flag para ignorar los mensajes escritor por el usuario.
+      # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
+      def get_nearby_fragments( method, radius = nil, ignore_user_written_messages = true )
+        # TODO: El radio (km) se calculará de manera automática con respecto a su nivel.
+        radius = 0.5 unless radius != nil
+        # ...
+        
+        user_geo = geolocation
+
+        # Resultado
+        output = { }
+        
+        # Ejecutar de una manera o de otra en función del método.
+        case method
+        when "progrezz"
+          Game::Database::MessageFragment.all.each do |fragment|
+            frag_geo = fragment.geolocation
+            
+            if Progrezz::Geolocation.distance(user_geo, frag_geo, :km) <= radius
+              output[ fragment.uuid ] = fragment.to_hash 
+            end
+          end
+          
+        when "geocoder"
+          user_geo = user_geo.values
+          
+          Game::Database::MessageFragment.all.each do |fragment|
+            frag_geo = fragment.geolocation.values
+
+            if Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km}) <= radius
+              output[ fragment.uuid ] = fragment.to_hash
+            end
+          end
+          
+        when "neo4j"
+          user_geo = user_geo.values
+          
+          lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+          lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+          
+          Game::Database::MessageFragment.query_as(:mf).where(
+             "mf.latitude  > {l1} and mf.latitude  < {l2} and " +
+             "mf.longitude > {l3} and mf.longitude < {l4}")
+          .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), 
+             l3: (user_geo[1] - lon), l4: (user_geo[1] + lon))
+          .pluck(:mf).each { |fragment| output[ fragment.uuid ] = fragment.to_hash }
+          
+        end
+      
+        # Eliminar mensajes cuyo autor sea el que realizó la petición
+        if ignore_user_written_messages == true
+          output.delete_if { |key, fragment| fragment[:message][:author_id] == self.user_id }
         end
         
         return output

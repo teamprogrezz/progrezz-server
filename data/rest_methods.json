@@ -27,7 +27,7 @@
       },
       {
         "name": "Get nearby messages",
-        "example": {"_comment":"Use this method to search the nearby message fragments for user <user_id>. It will return fragments that the user have already collected, and fragments written by the user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_nearby_message_fragments","data":{"user_id":"yourmail@example.com","radius":"[Optional, default=0.6] floating point number (not a string, so use something like 'radius': 0.5) defining the search radius, specified in km.","method":"[Optional, default='progrezz'] Search method for the server ('progrezz', 'geolocated' and 'neo4j'). Note that they 'neo4j' will search in a square, and not in a circle."}}}
+        "example": {"_comment":"Use this method to search the nearby message fragments for user <user_id>. It will return fragments that the user have already collected, and fragments written by the user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_nearby_message_fragments","data":{"user_id":"yourmail@example.com","radius":"[Optional, default=0.6] floating point number (not a string, so use something like 'radius': 0.5) defining the search radius, specified in km.","method":"[Optional, default='progrezz'] Search method for the server ('progrezz', 'geolocated' and 'neo4j'). Note that they 'neo4j' will search in a square, and not in a circle.","ignore_user_written_messages":"[Optional, default=true] Ignore user's written messages "}}}
       },
       {
         "name": "Get user messages",
