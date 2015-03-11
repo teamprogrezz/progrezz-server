@@ -115,11 +115,16 @@ module REST
             result = "<h2>Datos añadidos correctamente.</h2>"
           end
           
+        # Banearme 5 minutos ( D': )
+        Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
+          
         rescue Exception => e
           #puts e.message
           #puts e.backtrace
           result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
         end
+        
+        puts user_Wikiti.banned_until.class.name
 
         return result
       end

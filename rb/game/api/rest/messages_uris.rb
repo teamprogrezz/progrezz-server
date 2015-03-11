@@ -10,7 +10,7 @@ module Sinatra; module API ;module REST
     
     # Cambiar el estatus o estado de un mensaje completado.
     def self.user_change_message_status( app, response, session)
-      user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
       if user.change_message_status( response[:request][:request][:data][:msg_uuid], response[:request][:request][:data][:new_status] ) == nil
         raise "Could not change message status."
@@ -24,7 +24,7 @@ module Sinatra; module API ;module REST
     
     # Recoger un fragmento de mensaje cercano.
     def self.user_collect_message_fragment( app, response, session )
-      user     = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:frag_uuid] )
       
       # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
@@ -44,7 +44,7 @@ module Sinatra; module API ;module REST
     
     # Escribir mensaje de un usuario.
     def self.user_write_message( app, response, session )
-      user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
       msg_content  = response[:request][:request][:data][:content].to_s
       msg_resource = response[:request][:request][:data][:resource].to_s
@@ -63,7 +63,7 @@ module Sinatra; module API ;module REST
       default_method = "progrezz" # progrezz, geocoder o neo4j
       default_ignore = true
       
-      user    = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      user    = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       radius  = (response[:request][:request][:data][:radius] || default_radius).to_f
       method  = (response[:request][:request][:data][:method] || default_method).to_s
       ignore  = (response[:request][:request][:data][:ignore_user_written_messages] || default_ignore) == "true"
@@ -83,7 +83,7 @@ module Sinatra; module API ;module REST
     # Entrada: Usuario, ... .
     # Salida:  Array de mensajes completados y sin completar del usuario.
     def self.user_get_messages( app, response, session )
-      user = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
       Game::API::JSONResponse.ok_response!( response, {
         type: "json",
@@ -94,7 +94,7 @@ module Sinatra; module API ;module REST
     
     # Listar fragmentos recolectados de un mensaje determinado.
     def self.user_get_collected_message_fragments( app, response, session )
-      user     = Game::Database::User.search_auth_user( response[:request][:request][:data][:user_id], session )
+      user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       message  = Game::Database::Message.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
       
       if message == nil

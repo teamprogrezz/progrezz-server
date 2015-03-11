@@ -3,6 +3,8 @@ require 'omniauth-google-oauth2'
 require 'omniauth-twitter'
 require 'omniauth-github'
 
+require 'date'
+
 module Game
   
   # Clase gestora de la autenticación de usuarios.
@@ -44,6 +46,46 @@ module Game
       return @@loaded_services
     end
     
+    # Comprobar si un usuario está baneado.
+    # @param user [Game::Database::User] Usuario a comprobar.
+    # @return [Boolean] True si está baneado. False en caso contrario.
+    def self.banned?(user)
+      if user.banned_until != nil && DateTime.now < user.banned_until
+        return true
+      end
+      
+      return false
+    end
+    
+    # Busca un usuario autenticado en la sesión actual.
+    #
+    # @param user_id [String] Identificador de usuario (correo electrónico).
+    # @param session [Hash] Sesión de Ruby Sinatra.
+    #
+    # @return [Game::Database::User] Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
+    def self.search_auth_user(user_id, session)
+      user = Game::Database::User.search_user(user_id)
+      
+      if banned?(user)
+        raise "Current '" + user_id + "' is banned until " + user.banned_until.to_s
+      end
+
+      if ENV['users_auth_disabled'] == "true"
+        puts "Warning!! Users auth disabled!"
+      else
+        if user.user_id != session[:user_id]
+          error_msg = "You are NOT authenticated as '" + user.user_id + "'."
+          if session[:user_id] != nil
+            error_msg += " You are authenticated as '" + session[:user_id] + "'."
+          end
+          
+          raise error_msg
+        end
+      end
+      
+      return user
+    end
+    
     # Dar de alta a un usuario.
     #
     # Si el usuario no existe, se creará una entrada en la base de datos.
@@ -51,7 +93,7 @@ module Game
     #
     # @param user_id [String] Identificador del usuario (correo).
     # @param user_alias [String] Alias del usuario (nombre).
-    def self.auth_user(user_id, user_alias)
+    def self.login(user_id, user_alias)
       begin
         # Buscar usuario
         user = Game::Database::User.search_user( user_id )
@@ -60,7 +102,23 @@ module Game
         user.update_profile( { :alias => user_alias } )
       rescue
         # Si no existe, añadir a la BD
-        Game::Database::User.sign_up( user_alias, user_id )
+        user = Game::Database::User.sign_up( user_alias, user_id )
+      end
+      
+       if banned?(user)
+        raise "Current '" + user_id + "' is banned until " + user.banned_until.to_s
+      end
+    end
+    
+    # Banear a un usuario.
+    # @param user_id [String] Identificador del usuario.
+    # @param ban_time_seconds [DateTime] Cantidad de segundos para banear al usuario.
+    def self.ban_user(user_id, ban_time_seconds)
+      user = Game::Database::User.search_user( user_id )
+      
+      if(ban_time_seconds > 0)
+        ban = DateTime.strptime((DateTime.now.to_time.to_i + ban_time_seconds).to_s,'%s')
+        user.update( banned_until: ban )
       end
     end
     
@@ -148,7 +206,12 @@ module Sinatra
         #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
 
         # Registrar el usuario en la base de datos.
-        Game::AuthManager.auth_user( session[:user_id], session[:alias] )
+        begin
+          Game::AuthManager.login( session[:user_id], session[:alias] )
+        rescue Exception => e
+          session[:auth_error] = "Cannot login: " + e.message
+          redirect to("/auth/failure")
+        end
         
         # Redireccionar al usuario.
         oparams = request.env["omniauth.params"]
@@ -165,11 +228,16 @@ module Sinatra
       end
       
       # URL o callback de inicion de sesión fallido.
-      app.get '/auth/failure' do
-        oparams = request.env["omniauth.params"]
+      app.get '/auth/failure' do        
+        oparams = request.env["omniauth.params"] || { }
+        
+        if session[:auth_error] != nil
+          params["error_message"] = session[:auth_error]
+          session[:auth_error] = nil
+        end
         
         if (oparams["error_redirect"] != nil)
-          redirect to(oparams["error_redirect"])
+          redirect to(oparams["error_redirect"] + "?error=" + params["error_message"])
         else
           return params["error_message"]
         end

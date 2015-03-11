@@ -45,8 +45,12 @@ module Game
       property :alias, type: String, default: ""
       
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Milisegundos desde el 1/1/1970.
+      # @return [Integer] Segundos desde el 1/1/1970.
       property :created_at
+      
+      # Fecha hasta la que ha sido baneado el usuario.
+      # @return [Date] Segundos desde el 1/1/1970
+      property :banned_until, type: DateTime, default: DateTime.new(1997, 1, 1)
       
       #-- -------------------------
       #     Relaciones (DB)
@@ -109,37 +113,12 @@ module Game
         
         # Si no existe, error.
         if user == nil
-          raise "User with user_id '" + user_id + "' does not exist."
+          raise "User with user_id " + user_id + " does not exist."
         end
         
         return user
       end
       
-      # Busca un usuario autenticado en la sesión actual.
-      #
-      # @param user_id [String] Identificador de usuario (correo electrónico).
-      # @param session [Hash] Sesión de Ruby Sinatra.
-      #
-      # @return [Game::Database::User] Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
-      def self.search_auth_user(user_id, session)
-        user = search_user(user_id)
-
-        if ENV['users_auth_disabled'] == "true"
-          puts "Warning!! Users auth disabled!"
-        else
-          if user.user_id != session[:user_id]
-            error_msg = "You are NOT authenticated as '" + user.user_id + "'."
-            if session[:user_id] != nil
-              error_msg += " You are authenticated as '" + session[:user_id] + "'."
-            end
-            
-            raise error_msg
-          end
-        end
-        
-        return user
-      end
-
       #-- -------------------------
       #          Métodos
       #   ------------------------- #++
