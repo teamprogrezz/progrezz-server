@@ -59,8 +59,13 @@ module REST
             end).to_s
             
             # Buscar mensajes de Wikiti
+            puts "Tiempo de búsqueda de mensajes sin autor: " + (GenericUtils.timer do
+              Game::Database::Message.unauthored_messages()
+            end).to_s
+            
+            # Buscar mensajes de Wikiti
             puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
-              Game::Database::User.all.where( alias: "Wikiti").first.written_messages
+              Game::Database::User.find_by( alias: "Wikiti").written_messages
             end).to_s
             
             # Añadir fragmentos a Wikiti
@@ -78,7 +83,7 @@ module REST
               user_Wikiti.collect_fragment( fragments.where(fragment_index: 3).first )
               
             end).to_s
-
+            
             fragments = messages[3].fragments
             
             # Añadir fragmentos a Shylpx

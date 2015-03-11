@@ -117,6 +117,30 @@ module Game
         
         return message
       end
+      
+      # Getter de los mensajes sin autor.
+      # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
+      def self.unauthored_messages()
+        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg)
+      end
+      
+      # Getter de los mensajes de un determinado autor.
+      # @param author_id [String] identificador del usuario (correo).
+      # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
+      def self.author_messages(author_id)
+        auth = Game::Database::User.search(author_id)
+        if auth == nil
+          raise "User does not exist."
+        end
+        
+        return auth.written_messages
+      end
+      
+      # Getter de los mensajes con autor.
+      # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
+      def self.authored_messages()
+        return self.query_as(:msg).where("()-[:has_written]->msg").return(:msg)
+      end
     
       #-- -------------------------
       #          Métodos
