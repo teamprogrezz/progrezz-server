@@ -126,6 +126,11 @@ module Game
     #
     # @return [Boolean] true si es posible, false en caso contrario.
     def self.auth?(session)
+      if ENV['users_auth_disabled'] == "true"
+        puts "Warning!! Users auth disabled!"
+        return true
+      else
+      
       if session['user_id'] == nil
         return false
       end
