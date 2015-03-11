@@ -84,7 +84,7 @@ module Game
       def self.sign_up(al, uid, position = {latitude: 0.0, longitude: 0.0} )
         begin          
           user = create( { alias: al, user_id: uid } ) do |usr|
-            usr.set_geolocation( position[:latitude], position[:longitude], true )
+            usr.set_geolocation( position[:latitude], position[:longitude] )
           end
           
         rescue Exception => e
@@ -152,12 +152,14 @@ module Game
       def update_profile( attributes = {} )
         changed = false
         
-        if attributes[:alias] != nil && attributes[:alias] != self.alias
-          self.alias = attributes[:alias]
-          changed = true
-        end
+        attributes.delete( :user_id )
+        self.update( attributes )
         
-        if changed == true; self.save; end
+        #if attributes[:alias] != nil && attributes[:alias] != self.alias
+        #  self.alias = attributes[:alias]
+        #  changed = true
+        #end
+        #if changed == true; self.save; end
       end
       
       # Añadir nuevo mensaje.

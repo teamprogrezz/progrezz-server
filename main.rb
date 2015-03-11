@@ -24,15 +24,7 @@ module Sinatra
   #
   # Funciona como contenedor de una aplicación Ruby Sinatra.
   class ProgrezzServer < Sinatra::Base
-  
-    # Activar sesiones del servidor web
-    set :sessions, true
-    
-    # Añadir secreto.
-    set :session_secret, ENV['progrezz_secret']
-    
-    # Añadir multihilos. 
-    set :threaded, true # TODO: Probar con Thin y no con rackup.
+
     
     # Getter de la sesión de la aplicación.
     #
@@ -61,6 +53,21 @@ module Sinatra
     # @param app [Sinatra::Application] Aplicación sinatra.
     def self.registered(app)
       app.helpers Pages::WebHelpers
+      
+      # Configuación 
+      app.configure do
+        # Asignar servidor
+        app.set :server, 'thin'
+              
+        # Activar sesiones del servidor web
+        app.set :sessions, true
+        
+        # Añadir secreto.
+        app.set :session_secret, ENV['progrezz_secret']
+        
+        # Añadir multihilos. 
+        app.set :threaded, true # TODO: Probar con Thin y no con rackup.
+      end
       
       # Ruta principal del servidor.
       app.get '/' do
@@ -113,6 +120,9 @@ require './rb/db'
 
 #-- Cargar datos referentes a la api REST. #++
 require './rb/rest'
+
+#-- Cargar datos referentes a la api WebSocket. #++
+require './rb/websocket'
 
 #-- Cargar autenticación de usuarios. #++
 require './rb/auth'

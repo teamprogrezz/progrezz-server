@@ -66,23 +66,96 @@
 
 <h2 id="label-1.+Introducci-C3-B3n">1. Introducción</h2>
 
-<p>…</p>
+<p>El servidor de Progrezz permite centralizar y procesar todos los datos
+referentes a los usuarios o jugadores del mismo.</p>
+
+<p>Para evitar sobrecarga en los dispositivos y erradicar comportamientos no
+deseados en los jugadores (trampas, lenguaje ofensivo, …), se ha tomado la
+decisión de gestionar el mayor número de tareas posible, permitiendo al
+usuario realizar tareas tan sencillas como dibujar en pantalla el contenido
+solicitado al servidor.</p>
+
+<p>Para una mayor modularidad, se utilizará Ruby Sinatra sobre el servidor
+Thin, usando una base de datos neo4j.</p>
 
 <h2 id="label-2.+Acceso+al+servidor">2. Acceso al servidor</h2>
 
-<p>…</p>
+<p>Actualmente, el servidor está hosteado en los siguientes servidores o
+servicios:</p>
+<ul><li>
+<p>Heroku: <a
+href="http://progrezz-server.herokuapp.com">progrezz-server.herokuapp.com</a>/</p>
+</li></ul>
 
 <h2 id="label-3.+Dependencias">3. Dependencias</h2>
 
-<p>…</p>
+<h4 id="label-Ruby">Ruby</h4>
 
-<h2 id="label-4.+Contacto">4. Contacto</h2>
+<p>Las dependecias de ruby se pueden encontrar en el Gemfile del repositorio.
+Pueden ser instaladas cómodamente con <code>bundle</code>, tal como se
+muestra en el punto <strong>6. Uso</strong>.</p>
 
-<p>…</p>
+<h4 id="label-Base+de+datos">Base de datos</h4>
+
+<p>Será necesario un servidor funcional <a href="http://neo4j.com">neo4j</a>,
+junto son su dirección de acceso en una de las siguientes variables de
+entorno:</p>
+<ul><li>
+<p>PROGREZZ_NEO4J_URL</p>
+</li><li>
+<p>GRAPHENDB_URL</p>
+</li></ul>
+
+<p>Deben tener el siguiente formato URI:</p>
+
+<pre class="code ruby"><code class="ruby">&lt;usuario&gt;:&lt;password&gt;@&lt;dominio-servidor&gt;:&lt;puerto&gt;/db/data/</code></pre>
+
+<p>También se intentará buscar como último remedio en el host <em><a
+href="http:localhost:7474">localhost:7474</a></em> (sin credenciales de
+acceso).</p>
+
+<h2 id="label-6.+Uso">6. Uso</h2>
+
+<h4 id="label-Instalaci-C3-B3n">Instalación</h4>
+
+<p>Una vez instalada e iniciada la base de datos, se puede preparar el
+servidor con el siguiente comando, desde la carpeta raíz del proyecto:</p>
+
+<pre class="code ruby"><code class="ruby">$ rake setup</code></pre>
+
+<h4 id="label-Ejecuci-C3-B3n">Ejecución</h4>
+
+<p>El servidor puede ser iniciado en modo prueba con</p>
+
+<pre class="code ruby"><code class="ruby">$ rake development</code></pre>
+
+<p>Para iniciar en modo producción, use <code> $ rake production </code></p>
+
+<p>Para subir el proyecto a heroku, teniendo definida el repositorio remoto
+<code>heroku</code>, utilice</p>
+
+<pre class="code ruby"><code class="ruby">$ rake heroku</code></pre>
+
+<h4 id="label-Otros">Otros</h4>
+
+<p>Para generar la documentación, use</p>
+
+<pre class="code ruby"><code class="ruby">$ rake doc</code></pre>
+
+<p>Para más información, mire el contenido del fichero <code>rakefile</code>.</p>
+
+<h2 id="label-5.+Contacto">5. Contacto</h2>
+
+<p>Envíe cualquier duda, comentario u opinión a cualquier correo de la
+siguiente lista:</p>
+<ul><li>
+<p>Proyecto progrezz: <a
+href="mailto:proyecto.progrezz@gmail.com">proyecto.progrezz@gmail.com</a></p>
+</li></ul>
 </div></div>
 
     <div id="footer">
-  Generated on Mon Mar  9 12:16:22 2015 by
+  Generated on Tue Mar 10 14:16:30 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

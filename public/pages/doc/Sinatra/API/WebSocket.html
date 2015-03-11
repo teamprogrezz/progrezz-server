@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: Sinatra::API::WebSocket
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Sinatra/API/WebSocket.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (W)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Sinatra.html" title="Sinatra (module)">Sinatra</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../API.html" title="Sinatra::API (module)">API</a></span></span>
+     &raquo; 
+    <span class="title">WebSocket</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: Sinatra::API::WebSocket
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">rb/game/api/websocket/websocket.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Módulo de la API WebSocket para hacer peticiones al servidor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="WebSocket/Methods.html" title="Sinatra::API::WebSocket::Methods (class)">Methods</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#registered-class_method" title="registered (class method)">+ (Object) <strong>registered</strong>(app) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Registrar yconfigurar la API WebSocket.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="registered-class_method">
+  
+    + (<tt>Object</tt>) <strong>registered</strong>(app) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Registrar yconfigurar la API WebSocket.</p>
+
+<p>Se registrarán todos los métodos incluídos en el módulo
+Sinatra::API::WebSocket::Methods.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>app</span>
+      
+      
+        <span class='type'>(<tt>Sinatra::Application</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Aplicación sinatra.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/websocket/websocket.rb', line 26</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_registered'>registered</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='rparen'>)</span>
+  <span class='comment'># Clase contenedora de métodos
+</span>  <span class='id identifier rubyid_methods'>methods</span> <span class='op'>=</span> <span class='const'>Sinatra</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>WebSocket</span><span class='op'>::</span><span class='const'>Methods</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  
+  <span class='comment'># Acceso mediante método GET
+</span>  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/dev/api/websocket</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>  <span class='comment'># Tipo de respuesta: JSON.
+</span>    
+    <span class='id identifier rubyid_ws_manager'>ws_manager</span>    <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>WebSocket</span><span class='op'>::</span><span class='const'>WebSocketManager</span>
+
+    <span class='comment'># Si la petición no es de un websocket, rechazar
+</span>    <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_websocket?'>websocket?</span>
+      <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_get_template'>get_template</span><span class='lparen'>(</span><span class='rparen'>)</span>
+      <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_error_response!'>error_response!</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid request: Not a websocket request.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+      
+      <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_websocket'>websocket</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ws'>ws</span><span class='op'>|</span>
+        
+        <span class='comment'># Petición de apertura.
+</span>        <span class='id identifier rubyid_ws'>ws</span><span class='period'>.</span><span class='id identifier rubyid_onopen'>onopen</span> <span class='kw'>do</span>
+          <span class='comment'># Si no está autenticado, rechazar.
+</span>          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_auth_user'>auth_user</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='comma'>,</span> <span class='id identifier rubyid_ws'>ws</span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
+        
+        <span class='comment'># Petición de mensaje.
+</span>        <span class='id identifier rubyid_ws'>ws</span><span class='period'>.</span><span class='id identifier rubyid_onmessage'>onmessage</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_msg'>msg</span><span class='op'>|</span>
+          <span class='comment'># Si deja de estar autenticado, cerrar socket.
+</span>          <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_force_close_if_no_auth'>force_close_if_no_auth</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='comma'>,</span> <span class='id identifier rubyid_ws'>ws</span><span class='rparen'>)</span>
+            <span class='kw'>return</span>
+          <span class='kw'>end</span>
+          
+          <span class='comment'># Generar plantilla de respuesta
+</span>          <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_get_template'>get_template</span><span class='lparen'>(</span><span class='rparen'>)</span>
+
+          <span class='comment'># Procesar respuesta
+</span>          <span class='comment'># ...
+</span>          <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Response OK.</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span> <span class='rparen'>)</span>
+          
+          <span class='comment'># Y Enviar mensaje
+</span>          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_ws'>ws</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
+        
+        <span class='comment'># Petición de cierre.
+</span>        <span class='id identifier rubyid_ws'>ws</span><span class='period'>.</span><span class='id identifier rubyid_onclose'>onclose</span> <span class='kw'>do</span>
+          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_remove_socket'>remove_socket</span><span class='lparen'>(</span><span class='id identifier rubyid_ws'>ws</span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Método POST (no activado)
+</span>  <span class='comment'># post &#39;/dev/api/rest/user&#39; { }
+</span>
+  <span class='comment'># Peticiones REST interactivas
+</span>  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/dev/websocket</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='comment'># Parsear métodos REST
+</span>    <span class='kw'>class</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_app'>app</span>
+      <span class='id identifier rubyid_attr_accessor'>attr_accessor</span> <span class='symbol'>:websocket_methods</span>
+    <span class='kw'>end</span>
+    
+    <span class='kw'>if</span> <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_websocket_methods'>websocket_methods</span> <span class='op'>==</span> <span class='kw'>nil</span>
+      <span class='comment'># TODO: ...
+</span>      <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_websocket_methods'>websocket_methods</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>data/websocket_methods.json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='rparen'>)</span>
+    <span class='kw'>end</span>
+    
+    <span class='id identifier rubyid_erb'>erb</span> <span class='symbol'>:dev/websocket</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:locals</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+      <span class='symbol'>:session</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_session'>session</span><span class='comma'>,</span>
+      <span class='symbol'>:websocket_methods</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_websocket_methods'>websocket_methods</span>
+    <span class='rbrace'>}</span><span class='comma'>,</span> <span class='symbol'>:layout</span> <span class='op'>=&gt;</span> <span class='symbol'>:dev/layout</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Tue Mar 10 14:16:31 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

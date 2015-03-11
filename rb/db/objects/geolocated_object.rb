@@ -58,12 +58,17 @@ module Game
       #
       # @param lat [Float, nil] Nueva latitud  (usar nil para no modificar).
       # @param long [Float, nil] Nueva longitud (usar nil para no modificar).
-      # @param save_after [Boolean] Guardar el objeto. Por defecto, se guarda (costoso).
-      def set_geolocation(lat = nil, long = nil, save_after = true)
-        if lat != nil;  self.latitude  = lat end
-        if long != nil; self.longitude = long end
-
-        self.save if save_after
+      def set_geolocation(lat = nil, long = nil)
+        lat = User.clamp_latitude(lat)
+        long = User.clamp_longitude(long)
+        
+        if lat != nil && long != nil
+          self.update( { latitude: lat, longitude: long } )
+        elsif lat == nil && long != nil
+          self.update( { longitude: long } )
+        elsif lat != nil && long == nil
+          self.update( { latitude: lat } )
+        end
       end
 
       # Getter de la posición.
@@ -76,20 +81,40 @@ module Game
       # Ajustar posición a valores reales (véase las constantes de la clase #Game::Database::GeolocatedObject).
       # @return [Game::Database::GeolocatedObject] Referencia al objeto ajustado.
       def clamp()
-        self.latitude = [MIN_LATITUDE,  self.latitude, MAX_LATITUDE ].sort[1]
-        self.longitude = [MIN_LONGITUDE, self.longitude, MAX_LONGITUDE].sort[1]
-        self.save
+        self.update( User.clamp!(geolocation) )
         return self
       end
       
       # Ajustar posición a valores reales (método estático).
       # @param pos [Hash<Symbol, Float>] Hash con la posición geolocalizada, con el formato {latitude: +lat+, longitude: +lon+ }.
       # @return [Hash<Symbol, Float>] Referencia a la posición ajustada.
-      def self.clamp(pos)
-        pos[:latitude]  = [MIN_LATITUDE,  pos[:latitude],  MAX_LATITUDE ].sort[1]
-        pos[:longitude] = [MIN_LONGITUDE, pos[:longitude], MAX_LONGITUDE].sort[1]
+      def self.clamp!(pos)
+        pos[:latitude]  = clamp_latitude(pos[:latitude])
+        pos[:longitude] = clamp_longitude(pos[:longitude])
         
         return pos
+      end
+      
+      # Ajustar latitud.
+      # @param lat [Float] Latitud a acotar.
+      # @return [Float] Latitud acotada.
+      def self.clamp_latitude(lat)
+        if(lat == nil)
+          return nil
+        else
+          return [MIN_LATITUDE, lat,  MAX_LATITUDE ].sort[1]
+        end
+      end
+      
+      # Ajustar longitud.
+      # @param long [Float] Longitud a acotar.
+      # @return [Float] Longitud acotada.
+      def self.clamp_longitude(long)
+        if(long == nil)
+          return nil
+        else
+          return [MIN_LONGITUDE, long,  MAX_LONGITUDE ].sort[1]
+        end
       end
       
       # Stringificar objeto.

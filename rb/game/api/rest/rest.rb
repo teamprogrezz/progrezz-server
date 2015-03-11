@@ -57,17 +57,9 @@ module Sinatra
         GenericUtils.symbolize_keys_deep!(params)
         
         # Respuesta al usuario
-        metadata      = { timestamp: DateTime.now.strftime('%Q'), process_time: 0 }
-        request       = params
-        response_data = { status: "ok", type: "json", data: { type: "" } }
-
-        response = {
-          metadata: metadata,
-          request:  request,
-          response: response_data
-        }
-
-        pre_time = Time.now
+        response = Game::API::JSONResponse.get_template()
+        request = params
+        response[:request] = request
 
         # Activar gestor de transacciones.
         transaction = Game::Database::DatabaseManager.start_transaction()
@@ -85,22 +77,19 @@ module Sinatra
           # Deshacer transacción.
           Game::Database::DatabaseManager.rollback_transaction(transaction)
           
-          # Limpiar respuesta
-          response_data.clear()
+          # Generar error
+          Game::API::JSONResponse.error_response!( response, e.message )
+          
+          # Añadir parámetros adicionales
+          response[:response][:backtrace] = e.backtrace
 
-          # Y formatear error.
-          response_data[:status]  = "error"
-          response_data[:data]    = {
-            error:      e.message,
-            backtrace:  e.backtrace
-          }
         ensure
           # Cerrar la transacción
           Game::Database::DatabaseManager.stop_transaction(transaction)
         end
 
         # Calcular tiempo de cómputo (en ms)
-        metadata[:process_time] = (Time.now - pre_time) * 1000.0
+        Game::API::JSONResponse.stop_timer!(response)
 
         # Quitar la petición del usuario, ya que no es necesario reenviarla (ya está en el cliente).
         response.delete( :request )

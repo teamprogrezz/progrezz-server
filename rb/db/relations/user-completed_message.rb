@@ -68,9 +68,10 @@ module Game
         # @param new_status [String] Nuevo estado (STATUS_LOCKED, STATUS_UNREAD, STATUS_READ)
         #
         # @return [Game::Database::RelationShips::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
-        def change_message_status(new_status) 
-          self.status = new_status
-          self.save # ¿?
+        def change_message_status(new_status)
+          self.update( status: new_status )
+          #self.status = new_status
+          #self.save # ¿?
         end
 
       end

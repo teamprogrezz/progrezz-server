@@ -26,6 +26,12 @@
       <div class="container-fluid">
         <!-- Cabecera -->
         <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
           <a class="navbar-brand" href="#"><img style='width: 20px; height: 20px;' alt="Progrezz Icon" src="/img/favicon.png"></a>
           <a class="navbar-brand" href="#">Progrezz Developers Page</a>
         </div>
@@ -38,6 +44,7 @@
             <li <%= current?("/dev/about") ? 'class="active"' : "" %> ><a href="/dev/about">About</a></li>
             <li <%= current?("/dev/doc") ? 'class="active"' : "" %> ><a href="/dev/doc">Documentation</a></li>
             <li <%= current?("/dev/rest") ? 'class="active"' : "" %> ><a href="/dev/rest">REST API</a></li>
+            <li <%= current?("/dev/websocket") ? 'class="active"' : "" %> ><a href="/dev/websocket">WebSocket API</a></li>
           </ul>
           
           <!-- Login -->

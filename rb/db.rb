@@ -69,6 +69,28 @@ module Database
       end
     end
     
+    # Ejecutar transacciones anidadas.
+    #
+    # La base de datos se encargará de gestionar la finalización de las transacciones anidadas.
+    # 
+    # Por ejemplo, basta con realizar un bloque de la siguiente manera:
+    #   DatabaseManager.run_nested_transaction do |tx1|
+    #     DatabaseManager.run_nested_transaction do |tx2|
+    #       modificacion1()
+    #     end
+    #     modificacion2()
+    #   end
+    #
+    # @return [Object] Resultado o retorno del último bloque de código ejecutado.
+    def self.run_nested_transaction(&block)
+      # Si no hay bloque, devolver error.
+      raise ArgumentError.new("Expected a block to run in DatabaseManager.run_transaction_anidated") unless block_given?
+      
+      Neo4j::Transaction.run do |tx|
+        block.call(tx)
+      end
+    end
+    
     # Iniciar una nueva transacción.
     #
     # @return [Neo4j::Transaction] Referencia a la transacción creada.

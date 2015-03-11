@@ -3,6 +3,7 @@ ruby '2.2.0'
 
 gem 'sinatra'
 gem 'sinatra-jsonp'
+gem 'sinatra-websocket'
 
 gem 'thin'
 gem 'geocoder'

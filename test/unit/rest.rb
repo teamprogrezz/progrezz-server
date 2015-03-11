@@ -148,7 +148,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:data][:error], "Could not change message status."
+    assert_equal @response[:response][:message], "Could not change message status."
   end
   
   # Probar "user_write_message"
@@ -159,7 +159,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:data][:error], "You are NOT authenticated as 'test'."
+    assert_equal @response[:response][:message], "You are NOT authenticated as 'test'."
     
     authenticate()
     
