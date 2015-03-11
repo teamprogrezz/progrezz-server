@@ -95,19 +95,19 @@ module Game
       # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
       # @param resource [String] Recurso mediático (opcional).
       # @param custom_author [Game::Database::User] Autor del mensaje (opcional).
+      # @param position [Hash<Symbol, Float>] Posición del mensaje, con la forma { latitude: n, longitude: m }
+      # @param deltas [Hash<Symbol, Float>] Offsets para la geolocalización aleatoria, con la forma { latitude: n, longitude: m }
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 })
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 })
         begin
           message = create( {content: cont, total_fragments: n_fragments, resource_link: resource }) do |msg|
             if custom_author != nil
               custom_author.add_msg(msg)
             end
             
-            # Para cada fragmento, se crea un nuevo nodo en la bd
-            for fragment_index in 0...(msg.total_fragments) do
-              Game::Database::MessageFragment.create_message_fragment(msg, fragment_index, position)
-            end
+            # Generar fragmentos iniciales.
+            messsage.generate_random_fragments(position, deltas)
           end
 
         rescue Exception => e
@@ -146,9 +146,27 @@ module Game
         return self.resource_link
       end
       
+      # Generar un nuevo fragmento para el mensaje.
+      # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
+      # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
+      def generate_random_fragments( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+        # Generar aleatoriamente la posición de cada fragmento
+        random = Random.new
+        
+        location = {}
+        for i in 0...(self.total_fragments)
+          location[:latitude]  = new_location[:latitude] + random.rand( (-deltas[:latitude])..(deltas[:longitude]) )
+          location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
+          
+          MessageFragment.create_message_fragment(self, i, location)
+        end
+      end
+      
       # Getter formateado del mensaje conseguido por un usuario.
       #
       # Usado para la API REST.
+      #
+      # @param user_rel [Game::Database::Relations::UserCompletedMessage] Relación entre un usuario y un mensaje completado.
       #
       # @return [Hash<Symbol, Object>] Hash con los datos referentes al mensaje completado por el usuario.
       def get_user_message(user_rel = nil)
