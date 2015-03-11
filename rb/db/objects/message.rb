@@ -107,7 +107,7 @@ module Game
             end
             
             # Generar fragmentos iniciales.
-            messsage.generate_random_fragments(position, deltas)
+            msg.generate_random_fragments(position, deltas)
           end
 
         rescue Exception => e
@@ -208,7 +208,7 @@ module Game
       #
       # @return [String] Objeto como string, con el formato "<Message: +content+,+author+,+total_fragments+,+resource_link+>".
       def to_s()
-        return "<Message: " + self.content + ", " + get_author() + ", " + self.total_fragments.to_s + ", " + get_resource() + ">" 
+        return "<Message: " + self.content + ", " + get_author_alias() + ", " + self.total_fragments.to_s + ", " + get_resource() + ">" 
       end
     end
   end
