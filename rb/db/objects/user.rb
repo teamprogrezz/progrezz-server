@@ -210,20 +210,23 @@ module Game
           end
           
           # Si ya tiene el mensaje completado, no añadir el fragmento
-          if ( self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) 
+          #if ( self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) 
+          if ( self.collected_completed_messages.include?(fragment_message.message) ) 
              raise "Message already completed."
           end
           
           # Si ya tiene el fragmento, no volver a añadirlo
-          if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
+          #if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
+          query = self.collected_fragment_messages.where(fragment_index: fragment_message.fragment_index).message.where( uuid: fragment_message.message.uuid )
+          if ( query.first != nil )
             raise "Fragment already collected."
           end
           
           # Comprobar si es necesario quitarla, ya que ha completado el mensaje.
-          #   En este punto, se han descartado fragmentos repetidos. Si la cantidad de
-          #   fragmentos del mensaje del fragmento actual es el número total de fragmentos
-          #   menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
-          #   marcado como completo.
+          # En este punto, se han descartado fragmentos repetidos. Si la cantidad de
+          # fragmentos del mensaje del fragmento actual es el número total de fragmentos
+          # menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
+          # marcado como completo.
           total_fragments_count         = fragment_message.message.total_fragments
           collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
           collected_fragments_rel_count = collected_fragments_rel.count
