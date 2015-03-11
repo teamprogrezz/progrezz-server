@@ -4,7 +4,6 @@ require 'open3'
 
 # Clase de utilidades genéricas.
 class GenericUtils
-
   # Requerir un directorio de ficheros fuente.
   #
   # Se buscarán e incluirán ficheros según se indiquen en los parámetros.

@@ -56,11 +56,11 @@ class RESTTest < Test::Unit::TestCase
     @messages << Game::Database::Message.create_message( "Hello, universe", 2, nil, nil, {latitude: 3.0, longitude: 2.0} )
     @messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, nil, nil, {latitude: 3.2, longitude: 2.0} )
     
-    @users[0].collect_fragment(@messages[0].fragments[0])
-    @users[0].collect_fragment(@messages[0].fragments[1])
+    @users[0].collect_fragment(@messages[0].fragments.where(fragment_index: 0).first)
+    @users[0].collect_fragment(@messages[0].fragments.where(fragment_index: 1).first)
     
-    @users[0].collect_fragment(@messages[1].fragments[0])
-    @users[0].collect_fragment(@messages[1].fragments[2])
+    @users[0].collect_fragment(@messages[1].fragments.where(fragment_index: 0).first)
+    @users[0].collect_fragment(@messages[1].fragments.where(fragment_index: 2).first)
   end
   
   # Undo db
@@ -179,10 +179,26 @@ class RESTTest < Test::Unit::TestCase
     
     # Mensaje no completado
     assert_equal @users[0].collected_completed_messages.count, 1
-     
-    # Mensaje completado
+    
+    # No permitir recoger un fragment ya recogido
     @request[:request][:type] = "user_collect_message_fragment"
-    @request[:request][:data] = { user_id: @users[0].user_id, frag_uuid: @messages[1].fragments[1].uuid }
+    @request[:request][:data] = { user_id: @users[0].user_id, frag_uuid: @messages[1].fragments.where(fragment_index: 0).first.uuid }
+    rest_request()
+    
+    assert_equal @response[:response][:status], "error"
+    assert_equal @response[:response][:message], "The fragment could not be collected: Fragment already collected."
+
+    # Ni recoger fragmentos de mensajes ya completados.
+    @request[:request][:type] = "user_collect_message_fragment"
+    @request[:request][:data] = { user_id: @users[0].user_id, frag_uuid: @messages[0].fragments.where(fragment_index: 0).first.uuid }
+    rest_request()
+    
+    assert_equal @response[:response][:status], "error"
+    assert_equal @response[:response][:message], "The fragment could not be collected: Message already completed."
+     
+    # Completar mensaje correctamente.
+    @request[:request][:type] = "user_collect_message_fragment"
+    @request[:request][:data] = { user_id: @users[0].user_id, frag_uuid: @messages[1].fragments.where(fragment_index: 1).first.uuid }
     rest_request()
     
     assert_equal @response[:response][:status], "ok"

@@ -49,61 +49,54 @@ module REST
             
             # Mensajes sin autor
             puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-              messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92})
-              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809} )
+              messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 })
+              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 } )
               messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+              
+              # Crear copia de un mensaje
+              messages[3].generate_random_fragments( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
+              
+            end).to_s
+            
+            # Buscar mensajes de Wikiti
+            puts "Tiempo de búsqueda de mensajes sin autor: " + (GenericUtils.timer do
+              Game::Database::Message.unauthored_messages()
             end).to_s
             
             # Buscar mensajes de Wikiti
             puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
-              Game::Database::User.all.where( alias: "Wikiti").first.written_messages
+              Game::Database::User.find_by( alias: "Wikiti").written_messages
             end).to_s
             
             # Añadir fragmentos a Wikiti
-            puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
-              begin; user_Wikiti.collect_fragment( messages[0].fragments[0] ); rescue; end# Autor -> No añadido.
+            puts "Tiempo de asociación de fragmentos a Wikiti: " + (GenericUtils.timer do
               # Añadir fragmentos
               fragments = messages[4].fragments
-              user_Wikiti.collect_fragment( fragments[0] )
-              begin; user_Wikiti.collect_fragment( fragments[0] ); rescue; end # Mensaje repetido -> No añadido.
-              user_Wikiti.collect_fragment( fragments[2] )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 2).first )
               
               # Añadir mensaje completo
               fragments = messages[3].fragments
-              user_Wikiti.collect_fragment( fragments[0] )
-              user_Wikiti.collect_fragment( fragments[1] )
-              user_Wikiti.collect_fragment( fragments[2] )
-              user_Wikiti.collect_fragment( fragments[3] )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 1).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 2).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 3).first )
               
             end).to_s
-
+            
             fragments = messages[3].fragments
             
-            # Actualizar posición de fragmentos
-            puts "Tiempo de actualización de fragmentos: " + (GenericUtils.timer do
-              #Game::Database::DatabaseManager.run_nested_transaction do |tx2|
-              fragments[1].update( { latitude: fragments[1].latitude + 0.0252, longitude: fragments[1].longitude - 0.02 } )
-              fragments[2].update( { latitude: fragments[2].latitude + 0.061, longitude: fragments[2].longitude - 0.04 } )
-              fragments[3].update( { latitude: fragments[3].latitude - 0.08, longitude: fragments[3].longitude + 0.001} )
-              #end
-            end).to_s
-            
             # Añadir fragmentos a Shylpx
-            puts "Tiempo de asosiación de fragmentos a Shylpx: " + (GenericUtils.timer do
+            puts "Tiempo de asociación de fragmentos a Shylpx: " + (GenericUtils.timer do
 
-              user_Shylpx.collect_fragment( fragments[0] )
-              user_Shylpx.collect_fragment( fragments[1] )
-              user_Shylpx.collect_fragment( fragments[2] )
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 1).first )
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 2).first )
               
               fragments = messages[0].fragments
-              user_Shylpx.collect_fragment( fragments[0] )
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 0).first )
               user_Shylpx.change_message_status( messages[0].uuid, "locked" )
               
-            end).to_s
-            
-            # Borrar usuario
-            puts "Tiempo de borrado de Wikiti: " + (GenericUtils.timer do
-              #user_Wikiti.destroy
             end).to_s
             
             # Tiempos de geocoder
@@ -123,8 +116,8 @@ module REST
           end
           
         rescue Exception => e
-          puts e.message
-          puts e.backtrace
+          #puts e.message
+          #puts e.backtrace
           result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
         end
 
