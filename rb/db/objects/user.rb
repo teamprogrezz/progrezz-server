@@ -56,7 +56,11 @@ module Game
       
       # Fecha hasta la que ha sido baneado el usuario.
       # @return [Date] Segundos desde el 1/1/1970
-      property :banned_until, type: DateTime, default: DateTime.new(1997, 1, 1)
+      property :banned_until, type: DateTime, default: 0
+      
+      # Flag para saber si un usuario está conectado o no (mediante websockets).
+      # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
+      property :online, type: Boolean, default: false
       
       #-- -------------------------
       #     Relaciones (DB)
@@ -98,14 +102,18 @@ module Game
           user = create( { alias: al, user_id: uid } ) do |usr|
             usr.set_geolocation( position[:latitude], position[:longitude] )
           end
-          
+
         rescue Exception => e
           puts e.message
           puts e.backtrace
           raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message;
         end
-        
+
         return user
+      end
+      
+      def self.online_users()
+        return Game::Database::User.where( online: true )
       end
       
       # Buscar un usuario
@@ -141,12 +149,6 @@ module Game
         
         attributes.delete( :user_id )
         self.update( attributes )
-        
-        #if attributes[:alias] != nil && attributes[:alias] != self.alias
-        #  self.alias = attributes[:alias]
-        #  changed = true
-        #end
-        #if changed == true; self.save; end
       end
       
       # Añadir nuevo mensaje.
