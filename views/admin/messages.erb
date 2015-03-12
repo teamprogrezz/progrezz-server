@@ -7,11 +7,20 @@
 <p>...</p>
 
 <h2>Progrezz's messages locations map</h2>
+<form>
+  <label for="msg_uuid">Message uuid: </label>
+  <input type="text" id="msg_uuid"><br>
+  <input type="button" onclick="query();" value="Submit">
+</form>
+
 <div id="osm_map"></div>
 <br><br>
 
+
+<script src="/lib/client-api-rest/js/progrezz-api-rest.js"></script>
 <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 <script>
+
     // Crear mapa
   map = new OpenLayers.Map("osm_map");
   map.addLayer(new OpenLayers.Layer.OSM());
@@ -20,7 +29,7 @@
     new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
   );
  
-  var zoom = 6;
+  var zoom = 4;
   map.setCenter (lonLat, zoom);
   
     // Crear marcadores
@@ -36,8 +45,6 @@
     for (j in marker_colors)
       marker_url_repo.push(marker_url + marker_colors[j] + "_Marker" + marker_alphabet[i] + ".png");
   
-  console.log( marker_url_repo );
-  
   // Capa
   var markers = new OpenLayers.Layer.Markers( "Markers" );
   map.addLayer(markers);
@@ -47,19 +54,43 @@
   var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
   var icon = null;
   
-  <% Game::Database::Message.unauthored_messages().each do |msg| %>
-    if(marker_per_msg['<%= msg.uuid %>'] == null) {
-      marker_per_msg['<%= msg.uuid %>'] = marker_url_repo[marker_url_repo_count++];
-      
-      <% msg.fragments.each do |frag| %>
-        icon   = new OpenLayers.Icon(marker_per_msg['<%= msg.uuid %>'], size, offset);
-        lonLat = new OpenLayers.LonLat( <%= frag.longitude %>, <%= frag.latitude %> ).transform(
-          new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
-          new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
-        );
-        
-        markers.addMarker(new OpenLayers.Marker(lonLat, icon));
-      <% end %>
+  
+  
+    // Petición REST
+  request = new RESTRequest();
+  request.onComplete = render_map;
+  
+  json_request = RESTRequest.getTemplateRequest();
+  json_request.request.type = "message_get"
+  json_request.request.data = { type: "json", msg_uuid: "" }
+
+  function query() {
+    json_request.request.data.msg_uuid = document.getElementById("msg_uuid").value;
+    request.request( json_request );
+  }
+  
+  function render_map(json) {
+    console.log(json);
+    
+    if(json.response.status == "error") {
+      alert("Error: " + json.response.message);
     }
-  <% end %>
+    
+    var msg_uuid = json.response.data.info.message.uuid;
+    
+    if(marker_per_msg[msg_uuid] == null) 
+      marker_per_msg[msg_uuid] = marker_url_repo[marker_url_repo_count++];
+    
+    
+    $.each( json.response.data.info.fragments, function (i, v) {
+      lonLat = new OpenLayers.LonLat( v.geolocation.longitude, v.geolocation.latitude ).transform(
+        new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+        new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+      );
+      
+      icon   = new OpenLayers.Icon(marker_per_msg[msg_uuid], size, offset);
+      markers.addMarker(new OpenLayers.Marker(lonLat, icon));
+    });
+  }
+  
 </script>

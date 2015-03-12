@@ -264,6 +264,8 @@ module Game
             output[:fragments] << frag.to_hash([:message])
           end
         end
+        
+        return output
       end
       
       # Stringificar objeto.

@@ -49,7 +49,11 @@ class RESTTest < Test::Unit::TestCase
     @messages = []
     
     @transaction = Game::Database::DatabaseManager.start_transaction()
-
+    
+    # Borrar contenido actual
+    Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
+    
+    # Añadir cositas
     @users << Game::Database::User.sign_up( "test", 'test', {latitude: 3.0, longitude: 2.0} )
     @users[0].write_msg( "Hola mundo!!!" )
     
@@ -242,7 +246,39 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:fragments].values[0].count, 2
-    
+  end
+  
+  # ---------------------------
+  #         Messages
+  # ---------------------------
+  # Probar "message_get"
+  def test_message_get
+    @request[:request][:type] = "message_get"
+    @request[:request][:data] = { msg_uuid: @messages[1].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:info][:message][:uuid], @messages[1].uuid 
+  end
+  
+  # Probar "message_get_unauthored"
+  def test_message_get_unauthored
+    @request[:request][:type] = "message_get_unauthored"
+    @request[:request][:data] = { msg_uuid: @messages[1].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:messages].count, @messages.count
+  end
+  
+  # Probar "message_get_from_fragment"
+  def test_message_get_from_fragment
+    @request[:request][:type] = "message_get_from_fragment"
+    @request[:request][:data] = { frag_uuid: @messages[0].fragments.find_by(fragment_index: 0).uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message][:message][:uuid], @messages[0].uuid
   end
   
 end

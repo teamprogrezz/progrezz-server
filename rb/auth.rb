@@ -67,7 +67,7 @@ module Game
       user = Game::Database::User.search_user(user_id)
       
       if banned?(user)
-        raise "Current '" + user_id + "' is banned until " + user.banned_until.to_s
+        raise "Current user '" + user_id + "' is banned until " + user.banned_until.to_s
       end
 
       if ENV['users_auth_disabled'] == "true"
