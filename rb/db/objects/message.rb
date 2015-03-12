@@ -58,7 +58,7 @@ module Game
       
       # Mensaje replicable o no (crear más fragmentos).
       # @return [Boolean] True si es replicable. False en caso contrario.
-      property :replicable, type: Boolean, default: true
+      property :replicable, type: Boolean, default: false
       
       # Timestamp o fecha de creación del mensaje.
       # @return [Integer] Segundos desde el 1/1/1970.
@@ -126,13 +126,13 @@ module Game
       # Getter de los mensajes sin autor.
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
-        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg)
+        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
       end
       
       # Getter de los mensajes sin autor que pueden ser replicables.
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_replicable_messages()
-        return self.query_as(:msg).where("msg.replicable = true AND NOT ()-[:has_written]->msg").return(:msg)
+        return self.query_as(:msg).where("msg.replicable = true AND NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
       end
       
       # Getter de los mensajes de un determinado autor.

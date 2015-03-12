@@ -38,7 +38,7 @@ module REST
             
             # Usuarios
             puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
-              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 2.0, longitude: 0.81})
+              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 37.3855213, longitude: -5.9692002})
               user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
             end).to_s
             
@@ -56,7 +56,7 @@ module REST
               messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
               
               # Crear copia de un mensaje replicable
-              messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
+              # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
               
             end).to_s
             

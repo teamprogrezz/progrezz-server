@@ -6,5 +6,60 @@
 <h2>Remove a system message</h2>
 <p>...</p>
 
-<h2>Progrezz's messages</h2>
-<p>...</p>
+<h2>Progrezz's messages locations map</h2>
+<div id="osm_map"></div>
+<br><br>
+
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+<script>
+    // Crear mapa
+  map = new OpenLayers.Map("osm_map");
+  map.addLayer(new OpenLayers.Layer.OSM());
+  var lonLat         = new OpenLayers.LonLat( -4.3043423, 39.984898 ).transform(
+    new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+    new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+  );
+ 
+  var zoom = 6;
+  map.setCenter (lonLat, zoom);
+  
+    // Crear marcadores
+  var marker_url = "/img/api/markers/";
+  var marker_colors   = ["blue", "brown", "darkgreen", "green", "orange", "paleblue", "pink", "purple", "red", "yellow" ]
+  var marker_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  var marker_url_repo = [];
+  var marker_url_repo_count = 0;
+  var marker_per_msg = {};
+  
+  // Contruir repositorio
+  for (i in marker_alphabet)
+    for (j in marker_colors)
+      marker_url_repo.push(marker_url + marker_colors[j] + "_Marker" + marker_alphabet[i] + ".png");
+  
+  console.log( marker_url_repo );
+  
+  // Capa
+  var markers = new OpenLayers.Layer.Markers( "Markers" );
+  map.addLayer(markers);
+  
+  // Propiedades de marcadores
+  var size = new OpenLayers.Size(20, 34);
+  var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+  var icon = null;
+  
+  <% Game::Database::Message.unauthored_messages().each do |msg| %>
+    if(marker_per_msg['<%= msg.uuid %>'] == null) {
+      marker_per_msg['<%= msg.uuid %>'] = marker_url_repo[marker_url_repo_count++];
+      
+      <% msg.fragments.each do |frag| %>
+        icon   = new OpenLayers.Icon(marker_per_msg['<%= msg.uuid %>'], size, offset);
+        lonLat = new OpenLayers.LonLat( <%= frag.longitude %>, <%= frag.latitude %> ).transform(
+          new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+          new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+        );
+        
+        markers.addMarker(new OpenLayers.Marker(lonLat, icon));
+      <% end %>
+    }
+  <% end %>
+</script>

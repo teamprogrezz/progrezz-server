@@ -10,7 +10,7 @@ module Game
     # Clase gestora de las mecánicas de juego referente a los mensajes y sus fragmentos.
     class MessageManagemet
       # Cantidad de fragmentos a generar por kilómetro
-      FRAGMENT_REPLICATION_PER_RADIUS = 6
+      FRAGMENT_REPLICATION_PER_RADIUS_KM = 8
       
       # Generar fragmentos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.
@@ -21,7 +21,7 @@ module Game
         # El radio se obtiene directamente del usuario
         radius = user.get_current_search_radius(:fragments)
         
-        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS).round
+        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
         fragment_count = fragments.length
         
         # Salir si ya hay suficientes fragmentos generados.
@@ -30,7 +30,7 @@ module Game
         end
         
         random_generator = Random.new
-        random_list = Game::Database::Message.unauthored_replicable_messages().pluck(:msg)
+        random_list = Game::Database::Message.unauthored_replicable_messages()
         num_of_msg = random_list.count
         
         if num_of_msg == 0
