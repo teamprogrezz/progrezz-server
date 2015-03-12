@@ -15,11 +15,11 @@
     "User messages", [
       {
         "name": "Change user's message status",
-        "example": {"_comment":"Change a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_change_message_status","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)","new_status":"new message status (read, unread or locked)"}}}
+        "example": {"_comment":"Change a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_change_message_status","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)","new_status":"new message status (read, unread or locked)"}}}
       },
       {
         "name": "Collect message fragment",
-        "example": {"_comment":"Collect a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)"}}}
+        "example": {"_comment":"Collect a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       },
       {
         "name": "Write a message",
@@ -35,7 +35,23 @@
       },
       {
         "name": "Get user collected message fragments",
-        "example": {"_comment":"Get collected fragments from a given message and user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_collected_message_fragments","data":{"user_id":"yourmail@example.com","msg_uuid":"Message uuid (e.g. 3aaef670-5e25-4fb8-8895-088d3a69312f)"}}}
+        "example": {"_comment":"Get collected fragments from a given message and user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_collected_message_fragments","data":{"user_id":"yourmail@example.com","msg_uuid":"Message uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+      }
+    ]
+  ],
+  [
+    "Messages", [
+      {
+        "name": "Get message info.",
+        "example": {"_comment":"Get some information about a message.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get","data":{"msg_uuid":"Message uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+      },
+      {
+        "name": "Get unauthored messages.",
+        "example": {"_comment":"Get all unauthored messages. No input required.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get_unauthored","data":{}}}
+      },
+      {
+        "name": "Get fragment's message.",
+        "example": {"_comment":"Get the message of a given fragment.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get_from_fragment","data":{"frag_uuid":"Fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       }
     ]
   ]

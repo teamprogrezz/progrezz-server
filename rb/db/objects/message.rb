@@ -234,19 +234,36 @@ module Game
       end
       
       # Transformar objeto a un hash
-      #
+      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (:message, :author, :fragments). Por defecto, se ignoran los fragmentos.
       # @return [Hash<Symbol, Object>] Objeto como hash.
-      def to_hash()
-        return {
-          uuid:            self.uuid,
-          id:              self.neo_id,
-          author:          self.get_author_alias,
-          author_id:       self.author != nil ? self.author.user_id : "",
-          content:         self.content,
-          resource:        self.get_resource,
-          total_fragments: self.total_fragments,
-          write_date:      self.created_at.strftime('%Q')
-        }
+      def to_hash(exclusion_list = [:fragments] )
+        output = {}
+        
+        if !exclusion_list.include?(:message)
+          output[:message] = {
+            uuid:            self.uuid,
+            id:              self.neo_id,
+            content:         self.content,
+            resource:        self.get_resource,
+            total_fragments: self.total_fragments,
+            write_date:      self.created_at.strftime('%Q')
+          }
+        end
+        
+        if !exclusion_list.include?(:author)
+          output[:author] = {
+            author_alias:    self.get_author_alias,
+            author_id:       self.author != nil ? self.author.user_id : ""
+          }
+        end
+        
+        if !exclusion_list.include?(:fragments)
+          output[:fragments] = []
+
+          self.fragments.each do |frag|
+            output[:fragments] << frag.to_hash([:message])
+          end
+        end
       end
       
       # Stringificar objeto.
