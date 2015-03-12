@@ -59,17 +59,20 @@ module Sinatra; module API ;module REST
     
     # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
-      default_radius = 0.600      # in km
-      default_method = "progrezz" # progrezz, geocoder o neo4j
-      default_ignore = true
+      default_method = "neo4j" # progrezz, geocoder o neo4j
+      default_ignore = "true"
       
       user    = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
-      radius  = (response[:request][:request][:data][:radius] || default_radius).to_f
-      method  = (response[:request][:request][:data][:method] || default_method).to_s
+      radius  = user.get_current_search_radius(:fragments)
       ignore  = (response[:request][:request][:data][:ignore_user_written_messages] || default_ignore) == "true"
 
       # Geolocalizaciones (como arrays).
-      output = user.get_nearby_fragments(method, radius, ignore)
+      output = user.get_nearby_fragments(default_method, radius, ignore)
+      
+      # Comprobar si es necesario añadir nuevos fragmentos
+      if ignore == true
+        Game::Mechanics::MessageManagemet.generate_nearby_fragments(user, output)
+      end 
       
       # formatear output
       Game::API::JSONResponse.ok_response!( response, {

@@ -28,6 +28,12 @@ module Game
       # Fragmentos en los que se partirán los mensajes de un usuario.
       USER_MESSAGE_FRAGMENTS = 1 
       
+      # Método de búsqueda de mensajes por defecto.
+      DEFAULT_SEARCH_METHOD = "neo4j"
+      
+      # Radio de búsqueda de mensajes por defecto.
+      DEFAULT_SEARCH_RADIUS = 0.8
+      
       # TODO: Añadir límite de mensajes (según el nivel, o algo así).
       
       #-- -------------------------
@@ -284,6 +290,18 @@ module Game
         return output
       end
       
+      # Getter del radio de búsqueda de un determinado objeto
+      # @param element [Symbol] Radio del tipo de elemento deseado (:fragments, ...).
+      # @return [Float] Radio de búsqueda, en km.
+      def get_current_search_radius( element = :fragments)
+        # TODO: El radio (km) se calculará de manera automática con respecto a su nivel.
+        if element == :fragments
+          return DEFAULT_SEARCH_RADIUS
+        end
+
+        return nil
+      end
+      
       # Obtener mensajes fragmentados de un usuario como un hash.
       #
       # Se usará principalmente para la API REST.
@@ -317,9 +335,9 @@ module Game
       # @param radius [Float] Radio de búsqueda. Si es null, se usará en función de la experiencia.
       # @param ignore_user_written_messages [Boolean] Flag para ignorar los mensajes escritor por el usuario.
       # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
-      def get_nearby_fragments( method, radius = nil, ignore_user_written_messages = true )
-        # TODO: El radio (km) se calculará de manera automática con respecto a su nivel.
-        radius = 0.5 unless radius != nil
+      def get_nearby_fragments( method = nil, radius = nil, ignore_user_written_messages = true )
+        method = method || DEFAULT_SEARCH_METHOD
+        radius = radius || get_search_radius(:fragments)
         # ...
         
         user_geo = geolocation

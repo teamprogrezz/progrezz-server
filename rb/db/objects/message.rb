@@ -184,11 +184,14 @@ module Game
       # Generar un nuevo fragmento para el mensaje.
       # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
       # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
+      # @return [Hash<Game::Database::MessageFragment>] Retorna un array con las referencias a los fragmentos añadidos.
       def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
         # Comprobar replicación
         if self.replicable == false && self.fragments.count > 0
           raise "Trying to generate more fragments of a irreplicable message."
         end
+        
+        output = []
         
         # Generar aleatoriamente la posición de cada fragmento
         random = Random.new
@@ -198,8 +201,10 @@ module Game
           location[:latitude]  = new_location[:latitude] + random.rand( (-deltas[:latitude])..(deltas[:longitude]) )
           location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
           
-          MessageFragment.create_message_fragment(self, i, location)
+          output << MessageFragment.create_message_fragment(self, i, location)
         end
+        
+        return output
       end
       
       # Getter formateado del mensaje conseguido por un usuario.

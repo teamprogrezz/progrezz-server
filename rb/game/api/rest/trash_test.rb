@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-if development?
+#if development?
 
 require 'sinatra'
 require 'sinatra/base'
@@ -118,7 +118,7 @@ module REST
           end
           
         # Banearme 5 minutos ( D': )
-        Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
+        #Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
           
         rescue Exception => e
           #puts e.message
@@ -182,4 +182,4 @@ class Sinatra::ProgrezzServer
 end
 #-- Cargar en el servidor #++
 
-end
+#end

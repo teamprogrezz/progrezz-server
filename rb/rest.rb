@@ -19,7 +19,7 @@ module Game
         # en el directorio *game/api/rest*.
         def self.setup()
           #-- Metodos HTTP (GET y POST) de la API REST #++
-          GenericUtils.require_dir("./rb/game/api/rest/**/*.rb", "Leyendo URIs de API REST: ")
+          GenericUtils.require_dir("./rb/game/api/rest/**/*.rb", "Leyendo URIs de API REST:  ")
         end
 
       end

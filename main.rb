@@ -118,6 +118,9 @@ require './rb/generic_utils'
 #-- Cargar datos referente a la base de datos. #++
 require './rb/db'
 
+#-- Cargar datos referente a las mecánicas de juego. #++
+require './rb/game/mechanics'
+
 #-- Cargar datos referentes a la api REST. #++
 require './rb/rest'
 

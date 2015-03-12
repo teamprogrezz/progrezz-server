@@ -27,7 +27,7 @@ module Game
       # @param data [Hash] Valores a ajustar.
       def self.auto_metadata!( response, data = {} )
         response[:metadata] = {
-          timestamp: DateTime.now.strftime('%Q'),
+          timestamp: DateTime.now.strftime('%Q').to_i,
           process_time: 0
         }
       end
