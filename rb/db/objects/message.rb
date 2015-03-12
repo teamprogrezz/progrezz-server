@@ -56,6 +56,10 @@ module Game
       # @return [String].
       property :resource_link, type: String
       
+      # Mensaje replicable o no (crear más fragmentos).
+      # @return [Boolean] True si es replicable. False en caso contrario.
+      property :replicable, type: Boolean, default: true
+      
       # Timestamp o fecha de creación del mensaje.
       # @return [Integer] Segundos desde el 1/1/1970.
       property :created_at
@@ -97,17 +101,18 @@ module Game
       # @param custom_author [Game::Database::User] Autor del mensaje (opcional).
       # @param position [Hash<Symbol, Float>] Posición del mensaje, con la forma { latitude: n, longitude: m }
       # @param deltas [Hash<Symbol, Float>] Offsets para la geolocalización aleatoria, con la forma { latitude: n, longitude: m }
+      # @param replic [Boolean] Mensaje replicable (o no).
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 })
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true)
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource }) do |msg|
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic }) do |msg|
             if custom_author != nil
               custom_author.add_msg(msg)
             end
             
             # Generar fragmentos iniciales.
-            msg.generate_random_fragments(position, deltas)
+            msg.replicate(position, deltas)
           end
 
         rescue Exception => e
@@ -122,6 +127,12 @@ module Game
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
         return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg)
+      end
+      
+      # Getter de los mensajes sin autor que pueden ser replicables.
+      # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
+      def self.unauthored_replicable_messages()
+        return self.query_as(:msg).where("msg.replicable = true AND NOT ()-[:has_written]->msg").return(:msg)
       end
       
       # Getter de los mensajes de un determinado autor.
@@ -173,7 +184,12 @@ module Game
       # Generar un nuevo fragmento para el mensaje.
       # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
       # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
-      def generate_random_fragments( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+      def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+        # Comprobar replicación
+        if self.replicable == false && self.fragments.count > 0
+          raise "Trying to generate more fragments of a irreplicable message."
+        end
+        
         # Generar aleatoriamente la posición de cada fragmento
         random = Random.new
         

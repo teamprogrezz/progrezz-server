@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+if development?
+
 require 'sinatra'
 require 'sinatra/base'
 require 'neo4j'
@@ -50,11 +52,11 @@ module REST
             # Mensajes sin autor
             puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
               messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 })
-              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 } )
+              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 })
               messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
               
-              # Crear copia de un mensaje
-              messages[3].generate_random_fragments( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
+              # Crear copia de un mensaje replicable
+              messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
               
             end).to_s
             
@@ -124,8 +126,6 @@ module REST
           result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
         end
         
-        puts user_Wikiti.banned_until.class.name
-
         return result
       end
       
@@ -181,3 +181,5 @@ class Sinatra::ProgrezzServer
   register Sinatra::API::REST::Trash
 end
 #-- Cargar en el servidor #++
+
+end

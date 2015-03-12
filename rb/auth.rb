@@ -129,9 +129,7 @@ module Game
       if ENV['users_auth_disabled'] == "true"
         puts "Warning!! Users auth disabled!"
         return true
-      else
-      
-      if session['user_id'] == nil
+      elsif session['user_id'] == nil
         return false
       end
       
