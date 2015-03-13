@@ -173,8 +173,8 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:written_message][:author], "test"
-    assert_equal @response[:response][:data][:written_message][:content], "Holaaaa!!"
+    assert_equal @response[:response][:data][:written_message][:author][:author_alias], "test"
+    assert_equal @response[:response][:data][:written_message][:message][:content], "Holaaaa!!"
   end
   
   # Probar "user_collect_message_fragment"

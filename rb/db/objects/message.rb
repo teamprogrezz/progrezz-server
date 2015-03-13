@@ -205,7 +205,7 @@ module Game
           location[:latitude]  = new_location[:latitude] + random.rand( (-deltas[:latitude])..(deltas[:longitude]) )
           location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
           
-          if self.snap_to_road
+          if self.snap_to_roads
             # Ajustar cada geolocalización a todas las carreteras
           end
           
@@ -223,19 +223,12 @@ module Game
       #
       # @return [Hash<Symbol, Object>] Hash con los datos referentes al mensaje completado por el usuario.
       def get_user_message(user_rel = nil)
-        output = {
-          id:              self.neo_id,
-          author:          self.get_author_alias,
-          author_id:       self.author != nil ? self.author.user_id : "",
-          content:         self.content,
-          resource:        self.get_resource,
-          total_fragments: self.total_fragments,
-          write_date:      self.created_at.strftime('%Q'),
-        }
+        output = self.to_hash([:fragments])
         
         if(user_rel != nil)
-          output[:status]     = user_rel.status                    if user_rel.respond_to? :status
-          output[:created_at] = user_rel.created_at.strftime('%Q') if user_rel.respond_to? :created_at
+          output[:status] = { }
+          output[:status][:status]     = user_rel.status                    if user_rel.respond_to? :status
+          output[:status][:created_at] = user_rel.created_at.strftime('%Q') if user_rel.respond_to? :created_at
         end
         
         return output
