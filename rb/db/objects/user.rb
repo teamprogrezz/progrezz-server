@@ -112,6 +112,8 @@ module Game
         return user
       end
       
+      # Retornar lista de usuarios online.
+      # @return [Object] Query de neo4j.
       def self.online_users()
         return Game::Database::User.where( online: true )
       end
@@ -217,7 +219,7 @@ module Game
           # menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
           # marcado como completo.
           total_fragments_count         = fragment_message.message.total_fragments
-          collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
+          collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(neo_id: fragment_message.message.neo_id).pluck(:rel)
           
           collected_fragments_rel_count = collected_fragments_rel.count
 
@@ -263,7 +265,7 @@ module Game
         msg_uuid = message.uuid
         
         self.collected_fragment_messages.each do |fragment|
-          if fragment.message.uuid == msg_uuid
+          if fragment.message.neo_id == message.neo_id
             if output[msg_uuid] == nil
               output[msg_uuid] = []
             end
@@ -392,6 +394,13 @@ module Game
         end
         
         return output
+      end
+      
+      # Buscar usuarios cercanos.
+      # @param radius [Float] Radio de búsqueda.
+      # @return [Array<Game::Database::User>] Usuarios cercanos.
+      def get_online_nearby_users(radius = nil)
+        # TODO: Implementar
       end
 
       # Stringificar objeto.

@@ -100,6 +100,9 @@ module Game
           if auth?(session) == true
             Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
             
+            user = Game::Database::User.find_by( user_id: session['user_id'] )
+            user.online(true)
+            
             add_socket(ws)
             send(ws, output)
           else

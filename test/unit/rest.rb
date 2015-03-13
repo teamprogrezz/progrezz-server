@@ -276,13 +276,11 @@ class RESTTest < Test::Unit::TestCase
   # Probar "message_get_from_fragment"
   def test_message_get_from_fragment
     @request[:request][:type] = "message_get_from_fragment"
-    @request[:request][:data] = { frag_uuid: @messages[0].fragments.find_by(fragment_index: 0).uuid  }
+    @request[:request][:data] = { frag_uuid: @messages[0].fragments.where(fragment_index: 0).first.uuid  }
     rest_request()
-
-    puts @messages[0].uuid
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:message][:message][:uuid].force_encoding("utf-8"), @messages[0].uuid
+    assert_equal @messages[0].uuid, @response[:response][:data][:message][:message][:uuid]
   end
   
 end
