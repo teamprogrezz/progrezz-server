@@ -41,7 +41,7 @@ module Game
       # Finalizar contador de cómputo (en ms).
       # param response [Hash] Respuesta a ajustar.
       def self.stop_timer!(response)
-        response[:metadata][:process_time] = (Time.now - response[:metadata][:process_time]) * 1000.0
+        response[:metadata][:process_time] = ((Time.now - response[:metadata][:process_time]) * 1000.0).to_f
       end
       
       # Generar un error de respuesta.

@@ -118,7 +118,7 @@ module REST
           end
           
         # Banearme 5 minutos ( D': )
-        Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
+        #Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
           
         rescue Exception => e
           #puts e.message

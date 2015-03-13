@@ -8,12 +8,13 @@ require 'neo4j'
 
 if development?
   require 'sinatra/reloader'
+  require 'ruby-prof'
 
   puts "--------------------------------------"
   puts "**   Starting in development mode   **"
   puts "--------------------------------------"
   
-  # Variable de desarrollo.
+  # Variable de desarrollo
   DEV = true
 end
 

@@ -10,8 +10,14 @@ module Game
     # Clase gestora de las mecánicas de juego referente a los mensajes y sus fragmentos.
     class MessageManagemet
       # Cantidad de fragmentos a generar por kilómetro
-      FRAGMENT_REPLICATION_PER_RADIUS_KM = 8
-      
+      FRAGMENT_REPLICATION_PER_RADIUS_KM = 6
+
+      # Espacio para generar fragmentos
+      FRAGMENT_REPLICATION_RADIUS = 4
+
+      # Número mínimo de fragmentos en la zona para empezar a generar más fragmentos.
+      FRAGMENT_MIN_COUNT = 2
+
       # Generar fragmentos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.
       # @param fragments [Hash<Symbol, Object>] Fragmentos cercanos a +user+.
@@ -21,11 +27,16 @@ module Game
         # El radio se obtiene directamente del usuario
         radius = user.get_current_search_radius(:fragments)
         
-        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
+        # Fragmentos cercanos al usuario
         fragment_count = fragments.length
         
+        # Fragmentos a generar
+        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
+        
+        puts "" + fragment_count.to_s + "/" + FRAGMENT_MIN_COUNT.to_s + "? -> " + max_fragments.to_s
+        
         # Salir si ya hay suficientes fragmentos generados.
-        if fragment_count >= max_fragments
+        if fragment_count >= FRAGMENT_MIN_COUNT
           return
         end
         

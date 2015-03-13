@@ -9,6 +9,9 @@ gem 'thin'
 gem 'geocoder'
 gem 'neo4j'
 
+gem 'oj'
+gem 'oj_mimic_json'
+
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-github'
@@ -22,6 +25,7 @@ gem 'yard-sinatra'
 group :development do
   gem 'sinatra-reloader'
   gem 'racksh'
+  gem 'ruby-prof'
 end
 
 group :production do

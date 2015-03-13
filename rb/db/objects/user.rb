@@ -218,6 +218,7 @@ module Game
           # marcado como completo.
           total_fragments_count         = fragment_message.message.total_fragments
           collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
+          
           collected_fragments_rel_count = collected_fragments_rel.count
 
           if collected_fragments_rel_count == total_fragments_count - 1
@@ -350,7 +351,7 @@ module Game
         # Ejecutar de una manera o de otra en función del método.
         case method
         when "progrezz"
-          Game::Database::MessageFragment.all.each do |fragment|
+          Game::Database::MessageFragment.each do |fragment|
             frag_geo = fragment.geolocation
             
             if Progrezz::Geolocation.distance(user_geo, frag_geo, :km) <= radius
@@ -361,7 +362,7 @@ module Game
         when "geocoder"
           user_geo = user_geo.values
           
-          Game::Database::MessageFragment.all.each do |fragment|
+          Game::Database::MessageFragment.each do |fragment|
             frag_geo = fragment.geolocation.values
 
             if Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km}) <= radius
@@ -375,18 +376,19 @@ module Game
           lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
           lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
           
-          Game::Database::MessageFragment.query_as(:mf).where(
-             "mf.latitude  > {l1} and mf.latitude  < {l2} and " +
-             "mf.longitude > {l3} and mf.longitude < {l4}")
-          .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), 
-             l3: (user_geo[1] - lon), l4: (user_geo[1] + lon))
-          .pluck(:mf).each { |fragment| output[ fragment.uuid ] = fragment.to_hash }
+          fragments = Game::Database::MessageFragment.query_as(:mf)
+            .where("mf.latitude  > {l1} and mf.latitude  < {l2} and mf.longitude > {l3} and mf.longitude < {l4}")
+            .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:mf)
+             
+          fragments.each do |fragment|
+            output[ fragment.uuid ] = fragment.to_hash
+          end
           
         end
       
         # Eliminar mensajes cuyo autor sea el que realizó la petición
         if ignore_user_written_messages == true
-          output.delete_if { |key, fragment| fragment[:message][:author_id] == self.user_id }
+          output.delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
         end
         
         return output

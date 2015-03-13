@@ -68,11 +68,11 @@ module Sinatra; module API ;module REST
 
       # Geolocalizaciones (como arrays).
       output = user.get_nearby_fragments(default_method, radius, ignore)
-      
+
       # Comprobar si es necesario añadir nuevos fragmentos
       if ignore == true
         Game::Mechanics::MessageManagemet.generate_nearby_fragments(user, output)
-      end 
+      end
       
       # formatear output
       Game::API::JSONResponse.ok_response!( response, {
