@@ -61,7 +61,8 @@ module Sinatra
               output = Game::API::JSONResponse.get_template()
 
               # Procesar respuesta
-              # ...
+              # TODO: Implementar (como en REST).
+              #   Cabe la posibilidad de compatibilizar los métodos REST en este apartado.
               Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Response OK."} )
               
               # Y Enviar mensaje
@@ -70,7 +71,7 @@ module Sinatra
             
             # Petición de cierre.
             ws.onclose do
-              ws_manager.remove_socket(ws)
+              ws_manager.close(session, ws)
             end
           end
         end

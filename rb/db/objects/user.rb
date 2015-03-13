@@ -32,7 +32,7 @@ module Game
       DEFAULT_SEARCH_METHOD = "neo4j"
       
       # Radio de búsqueda de mensajes por defecto.
-      DEFAULT_SEARCH_RADIUS = 0.8
+      DEFAULT_SEARCH_RADIUS = 1
       
       # TODO: Añadir límite de mensajes (según el nivel, o algo así).
       

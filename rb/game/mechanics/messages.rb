@@ -8,12 +8,9 @@ module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente a los mensajes y sus fragmentos.
-    class MessageManagemet
+    class MessageManagement
       # Cantidad de fragmentos a generar por kilómetro
-      FRAGMENT_REPLICATION_PER_RADIUS_KM = 6
-
-      # Espacio para generar fragmentos
-      FRAGMENT_REPLICATION_RADIUS = 4
+      FRAGMENT_REPLICATION_PER_RADIUS_KM = 4
 
       # Número mínimo de fragmentos en la zona para empezar a generar más fragmentos.
       FRAGMENT_MIN_COUNT = 2
@@ -33,7 +30,7 @@ module Game
         # Fragmentos a generar
         max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
         
-        puts "" + fragment_count.to_s + "/" + FRAGMENT_MIN_COUNT.to_s + "? -> " + max_fragments.to_s
+        #puts "" + fragment_count.to_s + "/" + FRAGMENT_MIN_COUNT.to_s + "? -> " + max_fragments.to_s
         
         # Salir si ya hay suficientes fragmentos generados.
         if fragment_count >= FRAGMENT_MIN_COUNT
@@ -69,10 +66,9 @@ module Game
         
         return fragment_count
       end
-      
-      
+
     end
-    
+
 
   end
 end

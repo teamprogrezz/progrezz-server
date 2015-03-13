@@ -68,3 +68,6 @@ Para más información, mire el contenido del fichero ```rakefile```.
 Envíe cualquier duda, comentario u opinión a cualquier correo de la siguiente lista:
 
 - Proyecto progrezz: [proyecto.progrezz@gmail.com](mailto:proyecto.progrezz@gmail.com)
+
+## 6. Agradecimientos / Referencias ##
+- <p>Directions Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>

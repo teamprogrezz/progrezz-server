@@ -71,7 +71,7 @@ module Sinatra; module API ;module REST
 
       # Comprobar si es necesario añadir nuevos fragmentos
       if ignore == true
-        Game::Mechanics::MessageManagemet.generate_nearby_fragments(user, output)
+        Game::Mechanics::MessageManagement.generate_nearby_fragments(user, output)
       end
       
       # formatear output

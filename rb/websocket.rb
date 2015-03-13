@@ -32,7 +32,7 @@ module Game
         # @return [Boolean] True si la sesión sigue activa. False si se ha cerrado.
         def self.force_close_if_no_auth(session, ws)
           if auth?(session) == false
-            force_close(ws, "Invalid request: You are no longer authenticated.")
+            force_close(session, ws, "Invalid request: You are no longer authenticated.")
             return false
           else
             return true
@@ -42,13 +42,18 @@ module Game
         # Forzar el cierre de un websocket.
         # @param ws [Object] Socket a cerrar.
         # @param reason [String] Razón del cierre.
-        def self.force_close(ws, reason)
+        def self.force_close(session, ws, reason)
           output = Game::API::JSONResponse.get_template()
           Game::API::JSONResponse.error_response!(output, reason)
           
           send(ws, output)
           ws.close_websocket()
-          remove_socket(ws)
+          close(session, ws)
+        end
+        
+        def self.close(session, ws)
+          Game::Database::User.find_by( user_id: session['user_id'] ).online(false)
+          self.remove_socket(ws)
         end
         
         # Enviar un mensaje global.
@@ -100,8 +105,7 @@ module Game
           if auth?(session) == true
             Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
             
-            user = Game::Database::User.find_by( user_id: session['user_id'] )
-            user.online(true)
+            Game::Database::User.find_by( user_id: session['user_id'] ).online(true)
             
             add_socket(ws)
             send(ws, output)

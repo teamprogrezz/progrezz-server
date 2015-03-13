@@ -60,6 +60,10 @@ module Game
       # @return [Boolean] True si es replicable. False en caso contrario.
       property :replicable, type: Boolean, default: false
       
+      # Ajustar fragmentos de mensajes a carreteras cercanas.
+      # @return [Boolean] True si es ajustable. False en caso contrario.
+      property :snap_to_roads, type: Boolean, default: false
+      
       # Timestamp o fecha de creación del mensaje.
       # @return [Integer] Segundos desde el 1/1/1970.
       property :created_at
@@ -104,9 +108,9 @@ module Game
       # @param replic [Boolean] Mensaje replicable (o no).
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true)
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = false)
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic }) do |msg|
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic, snap_to_roads: snap_to_roads}) do |msg|
             if custom_author != nil
               custom_author.add_msg(msg)
             end
@@ -200,6 +204,10 @@ module Game
         for i in 0...(self.total_fragments)
           location[:latitude]  = new_location[:latitude] + random.rand( (-deltas[:latitude])..(deltas[:longitude]) )
           location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
+          
+          if self.snap_to_road
+            # Ajustar cada geolocalización a todas las carreteras
+          end
           
           output << MessageFragment.create_message_fragment(self, i, location)
         end
