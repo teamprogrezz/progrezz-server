@@ -42,15 +42,15 @@
   [
     "Messages", [
       {
-        "name": "Get message info.",
+        "name": "Get message info",
         "example": {"_comment":"Get some information about a message.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get","data":{"msg_uuid":"Message uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       },
       {
-        "name": "Get unauthored messages.",
+        "name": "Get unauthored messages",
         "example": {"_comment":"Get all unauthored messages. No input required.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get_unauthored","data":{}}}
       },
       {
-        "name": "Get fragment's message.",
+        "name": "Get fragment's message",
         "example": {"_comment":"Get the message of a given fragment.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get_from_fragment","data":{"frag_uuid":"Fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       }
     ]

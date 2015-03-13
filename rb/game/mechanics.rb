@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Game
   
   # Módulo de mecánicas de juego

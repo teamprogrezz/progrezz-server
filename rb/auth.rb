@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 require 'omniauth-twitter'

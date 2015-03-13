@@ -215,6 +215,8 @@ class RESTTest < Test::Unit::TestCase
   def test_user_get_nearby_message_fragments
     authenticate()
     
+    @users[0].set_geolocation(40, 30)
+    
     @request[:request][:type] = "user_get_nearby_message_fragments"
     @request[:request][:data] = { user_id: @users[0].user_id }
     rest_request()
@@ -277,8 +279,10 @@ class RESTTest < Test::Unit::TestCase
     @request[:request][:data] = { frag_uuid: @messages[0].fragments.find_by(fragment_index: 0).uuid  }
     rest_request()
 
+    puts @messages[0].uuid
+    
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:message][:message][:uuid], @messages[0].uuid
+    assert_equal @response[:response][:data][:message][:message][:uuid].force_encoding("utf-8"), @messages[0].uuid
   end
   
 end

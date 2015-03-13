@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../relations/user-message_fragment'
 
 module Game
