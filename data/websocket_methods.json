@@ -2,7 +2,7 @@
   [
     "Echo", [
       {
-        "name": "Native echo",
+        "name": "<span style='color: red;'>Native echo</span>",
         "example": {"_comment": "Use this method to test the websocket connection.", "type": "json", "request": {"type":"echo","data":{"name":"your name here"} }}
       }
     ]
@@ -14,7 +14,7 @@
         "example": {"_comment": "Use this method to update your geolocation position.", "type": "json", "request": {"type":"user_update_geolocation","data":{ "user_id":"yourmail@example.com", "latitude": "new_lat", "longitude": "new_long" } }}
       },
       {
-        "name": "Get nearby players",
+        "name": "<span style='color: red;'>Get nearby players</span>",
         "example": {"_comment": "Use this method to get players that are close to you.", "type": "json", "request": {"type":"user_get_nearby_users","data":{ "user_id":"yourmail@example.com" } }}
       }     
     ]

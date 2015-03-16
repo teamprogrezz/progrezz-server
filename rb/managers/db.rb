@@ -1,9 +1,5 @@
 # encoding: UTF-8
 
-# Mejorar funcionamiento
-require 'oj'
-require 'oj_mimic_json'
-
 if development?
   # Variable global de depuración.
   DEV = true

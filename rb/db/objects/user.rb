@@ -60,7 +60,7 @@ module Game
       
       # Flag para saber si un usuario está conectado o no (mediante websockets).
       # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
-      property :online, type: Boolean, default: false
+      property :is_online, type: Boolean, default: false
       
       #-- -------------------------
       #     Relaciones (DB)
@@ -115,7 +115,7 @@ module Game
       # Retornar lista de usuarios online.
       # @return [Object] Query de neo4j.
       def self.online_users()
-        return Game::Database::User.where( online: true )
+        return Game::Database::User.where( is_online: true )
       end
       
       # Buscar un usuario
@@ -151,6 +151,12 @@ module Game
         
         attributes.delete( :user_id )
         self.update( attributes )
+      end
+      
+      # Actualizar estado "online" del jugador.
+      # @param new_status [Boolean] Nuevo estado. True si es online, False si es offline.
+      def online(new_status = true) 
+        self.update( {is_online: new_status} )
       end
       
       # Añadir nuevo mensaje.

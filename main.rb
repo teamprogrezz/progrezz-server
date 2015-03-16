@@ -3,6 +3,10 @@
 #-- Cargar ruta actual en la ruta de carga de fuentes. #++
 $LOAD_PATH << File.dirname(__FILE__) + "\n"
 
+# Mejorar funcionamiento
+require 'oj'
+require 'oj_mimic_json'
+
 require 'sinatra'
 require 'neo4j'
 

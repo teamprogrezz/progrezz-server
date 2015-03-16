@@ -43,7 +43,6 @@ module Sinatra
           return output
         else
           request.websocket do |ws|
-            
             # Petición de apertura.
             ws.onopen do
               # Si no está autenticado, rechazar.
@@ -57,16 +56,50 @@ module Sinatra
                 return
               end
               
-              # Generar plantilla de respuesta
-              output = Game::API::JSONResponse.get_template()
+              # Respuesta al usuario
+              response = Game::API::JSONResponse.get_template()
+              
+              # Preparar petición JSON
+              request = JSON.parse(msg)
+              GenericUtils.symbolize_keys_deep!( request )
+              response[:request] = request
+              
+              # Métodos WS
+              methods = Methods.new()
 
-              # Procesar respuesta
-              # TODO: Implementar (como en REST).
-              #   Cabe la posibilidad de compatibilizar los métodos REST en este apartado.
-              Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Response OK."} )
+              Game::Database::DatabaseManager.run_nested_transaction do |tx|
+                # Tipo de petición
+                begin
+                  method = request[:request][:type].to_s
+        
+                  if method == ""
+                    raise "Invalid ws request type '" + method + "'"
+                  else
+                    Methods.send( method, app, response, session )
+                  end
+                  
+                  # TODO: Implementar (como en REST). Cabe la posibilidad de compatibilizar los métodos REST en este apartado.
+                  
+                rescue Exception => e  
+                  # Deshacer transacción.
+                  tx.failure()
+                  
+                  # Generar error
+                  Game::API::JSONResponse.error_response!( response, e.message )
+                  
+                  # Añadir parámetros adicionales
+                  response[:response][:backtrace] = e.backtrace
+                end
+              end
+              
+              # Parar temporizador
+              Game::API::JSONResponse.stop_timer!( response )
+              
+              # Eliminar "request" de la respuesta.
+              response.delete(:request)
               
               # Y Enviar mensaje
-              ws_manager.send(ws, output)
+              ws_manager.send(ws, response)
             end
             
             # Petición de cierre.
