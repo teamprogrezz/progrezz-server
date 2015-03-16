@@ -10,6 +10,8 @@ require 'oj_mimic_json'
 require 'sinatra'
 require 'neo4j'
 
+require 'thread'
+
 if development?
   require 'sinatra/reloader'
   require 'ruby-prof'
@@ -118,6 +120,10 @@ GenericUtils.require_dir("./rb/managers/**/*.rb", "Leyendo Manager del server:  
 
 # Cosas a ejecutar cuando se cierre la app.
 at_exit do
+  Thread.list.each do |thread|
+    thread.exit unless thread == Thread.current
+  end
+  
   Game::Database::DatabaseManager.force_save()
   puts "Progrezz server ended. Crowd applause."
 end

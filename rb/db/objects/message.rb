@@ -1,5 +1,8 @@
 # encoding: UTF-8
 
+require 'thread'
+require 'thwait'
+
 require_relative 'user'
 require_relative 'message_fragment'
 require_relative '../relations/user-completed_message'
@@ -199,18 +202,32 @@ module Game
         
         # Generar aleatoriamente la posición de cada fragmento
         random = Random.new
+
+        task_threads = []
+        locations    = Array.new(self.total_fragments) 
         
-        location = {}
+        #puts "------- START -------"
+        
+        locations.each_index do |i|
+          task_threads << Thread.new {
+            locations[i] = {
+              latitude:  new_location[:latitude]  + random.rand( (-deltas[:latitude])..(deltas[:longitude]) ),
+              longitude: new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
+            }
+            
+            if self.snap_to_roads
+              Game::Mechanics::GeolocationManagement.snap_geolocation!(locations[i])
+            end
+          }
+        end
+        
+        task_threads.each(&:join)
+        
+        #puts "post: " + locations.to_s
+        #puts "------- END -------"
+        
         for i in 0...(self.total_fragments)
-          location[:latitude]  = new_location[:latitude] + random.rand( (-deltas[:latitude])..(deltas[:longitude]) )
-          location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
-          
-          if self.snap_to_roads
-            Game::Mechanics::GeolocationManagement.snap_geolocation!(location)
-            # Ajustar cada geolocalización a todas las carreteras
-          end
-          
-          output << MessageFragment.create_message_fragment(self, i, location)
+          output << MessageFragment.create_message_fragment( self, i, locations[i] )
         end
         
         return output
