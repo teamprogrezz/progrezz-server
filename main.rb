@@ -104,35 +104,19 @@ end
 
 class Sinatra::ProgrezzServer; register Sinatra::Pages; end
 #-- Registrar. #++
+#-- ---------------------------------------------------------------- #++
+
+#-- Require especial (con expresiones regulares, para directorios). #++
+require './rb/generic_utils'
+
+#-- Cargar Gestores del servidor. #++
+GenericUtils.require_dir("./rb/managers/**/*.rb", "Leyendo Manager del server:      ")
 
 # Cosas a ejecutar cuando se cierre la app.
 at_exit do
   Game::Database::DatabaseManager.force_save()
   puts "Progrezz server ended. Crowd applause."
 end
-
-#-- ---------------------------------------------------------------- #++
-
-#-- Require especial (con expresiones regulares, para directorios). #++
-require './rb/generic_utils'
-
-#-- Cargar datos referente a la base de datos. #++
-require './rb/db'
-
-#-- Cargar datos referente a las mecánicas de juego. #++
-require './rb/game/mechanics'
-
-#-- Cargar datos referentes a la api REST. #++
-require './rb/rest'
-
-#-- Cargar datos referentes a la api WebSocket. #++
-require './rb/websocket'
-
-#-- Cargar autenticación de usuarios. #++
-require './rb/auth'
-
-#-- Cargar autenticación de administradores. #++
-require './rb/game/admin/admin'
 
 #-- ---------------------------------------------------------------- #++
 
