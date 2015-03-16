@@ -17,15 +17,15 @@ module Game
 
       # Generar fragmentos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.
-      # @param fragments [Hash<Symbol, Object>] Fragmentos cercanos a +user+.
+      # @param system_fragments [Hash<Symbol, Object>] Fragmentos cercanos a +user+.
       # @param radius [Float] Radio de generación (depende del usuario).
       # @return [Integer] Número de mensajes cercanos actuales.
-      def self.generate_nearby_fragments(user, fragments) 
+      def self.generate_nearby_fragments(user, system_fragments) 
         # El radio se obtiene directamente del usuario
         radius = user.get_current_search_radius(:fragments)
         
         # Fragmentos cercanos al usuario
-        fragment_count = fragments.length
+        fragment_count = system_fragments.length
         
         # Fragmentos a generar
         max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
@@ -57,7 +57,7 @@ module Game
           # Replicar mensaje
           new_fragments = random_msg.replicate( user.geolocation, offsets )
           new_fragments.each do |fragment|
-            fragments[fragment.uuid] = fragment.to_hash
+            system_fragments[fragment.uuid] = fragment.to_hash
           end
           
           # Incrementar número de fragmentos

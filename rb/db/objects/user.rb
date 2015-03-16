@@ -348,7 +348,10 @@ module Game
         user_geo = geolocation
 
         # Resultado
-        output = { }
+        output = {
+          user_fragments:   {},
+          system_fragments: {}
+        }
         
         # Ejecutar de una manera o de otra en función del método.
         case method
@@ -357,7 +360,10 @@ module Game
             frag_geo = fragment.geolocation
             
             if Progrezz::Geolocation.distance(user_geo, frag_geo, :km) <= radius
-              output[ fragment.uuid ] = fragment.to_hash 
+              sym = :system_fragments
+              sym = :user_fragments if fragment.message.author != nil
+              
+              output[sym][ fragment.uuid ] = fragment.to_hash
             end
           end
           
@@ -368,7 +374,10 @@ module Game
             frag_geo = fragment.geolocation.values
 
             if Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km}) <= radius
-              output[ fragment.uuid ] = fragment.to_hash
+              sym = :system_fragments
+              sym = :user_fragments if fragment.message.author != nil
+              
+              output[sym][ fragment.uuid ] = fragment.to_hash
             end
           end
           
@@ -383,14 +392,18 @@ module Game
             .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:mf)
              
           fragments.each do |fragment|
-            output[ fragment.uuid ] = fragment.to_hash
+            sym = :system_fragments
+            sym = :user_fragments if fragment.message.author != nil
+              
+            output[sym][ fragment.uuid ] = fragment.to_hash
           end
           
         end
       
         # Eliminar mensajes cuyo autor sea el que realizó la petición
         if ignore_user_written_messages == true
-          output.delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
+          output[:system_fragments].delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
+          output[:user_fragments].delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
         end
         
         return output

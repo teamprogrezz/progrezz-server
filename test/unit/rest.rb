@@ -222,7 +222,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert @response[:response][:data][:fragments].count > 3
+    assert @response[:response][:data][:fragments][:system_fragments].count > 3
   end
   
   # Probar "user_get_messages"
