@@ -129,7 +129,7 @@ module Game
         
         # Si no existe, error.
         if user == nil
-          raise "User with user_id " + user_id + " does not exist."
+          raise "User with user_id " + user_id.to_s + " does not exist."
         end
         
         return user

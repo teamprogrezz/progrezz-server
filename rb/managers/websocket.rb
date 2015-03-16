@@ -40,6 +40,7 @@ module Game
         end
         
         # Forzar el cierre de un websocket.
+        # @param session [Object] Sessión sinatra.
         # @param ws [Object] Socket a cerrar.
         # @param reason [String] Razón del cierre.
         def self.force_close(session, ws, reason)
@@ -51,8 +52,14 @@ module Game
           close(session, ws)
         end
         
+        # Cerrar socket.
+        # @param session [Object] Sessión sinatra.
+        # @param ws [Object] Websocket.
         def self.close(session, ws)
-          Game::Database::User.find_by( user_id: session['user_id'] ).online(false)
+          begin
+            Game::Database::User.search_user(session['user_id']).online(false)
+          rescue
+          end
           self.remove_socket(ws)
         end
         
@@ -104,15 +111,20 @@ module Game
           
           if auth?(session) == true
             Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
-            
-            Game::Database::User.find_by( user_id: session['user_id'] ).online(true)
+
+            if !(ENV['users_auth_disabled'] == "true")
+              puts "Warning! User auth disabled."
+              Game::Database::User.search_user(session['user_id']).online(true)
+            end
             
             add_socket(ws)
             send(ws, output)
           else
             Game::API::JSONResponse.error_response!(output, "Invalid request: You are not authenticated.")
-            
+
+            add_socket(ws)
             send(ws, output)
+            remove_socket(ws)
             ws.close_websocket()
           end
           

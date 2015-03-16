@@ -64,6 +64,11 @@ module Sinatra
               GenericUtils.symbolize_keys_deep!( request )
               response[:request] = request
               
+              if ENV['users_auth_disabled'] == "true"
+                puts "Warning!! Users auth disabled!"
+                session['user_id'] = request[:user_id]
+              end
+              
               # Métodos WS
               methods = Methods.new()
 
@@ -80,7 +85,7 @@ module Sinatra
                   
                   # TODO: Implementar (como en REST). Cabe la posibilidad de compatibilizar los métodos REST en este apartado.
                   
-                rescue Exception => e  
+                rescue Exception => e
                   # Deshacer transacción.
                   tx.failure()
                   
