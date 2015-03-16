@@ -7,6 +7,12 @@ require 'sinatra/base'
 require 'neo4j'
 require 'cgi'
 
+# Prueba
+location = {latitude: 28.26807, longitude: -16.43555}
+puts location
+Game::Mechanics::GeolocationManagement.snap_geolocation!(location)
+puts location
+
 module Sinatra
 module API
 module REST

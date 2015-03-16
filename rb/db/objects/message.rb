@@ -108,7 +108,7 @@ module Game
       # @param replic [Boolean] Mensaje replicable (o no).
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = false)
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = true)
         begin
           message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic, snap_to_roads: snap_to_roads}) do |msg|
             if custom_author != nil
@@ -121,7 +121,7 @@ module Game
 
         rescue Exception => e
           puts e.to_s
-          raise "DB ERROR: Cannot create message: \n\t" + e.message;
+          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
         end
         
         return message
@@ -206,6 +206,7 @@ module Game
           location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
           
           if self.snap_to_roads
+            Game::Mechanics::GeolocationManagement.snap_geolocation!(location)
             # Ajustar cada geolocalización a todas las carreteras
           end
           
