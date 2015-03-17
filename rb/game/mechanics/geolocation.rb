@@ -25,10 +25,11 @@ module Game
             # Usar servidor OSRM
             if ENV['progrezz_matching_osrm'] != nil
               url      = ENV['progrezz_matching_osrm']
-              request_uri = url + "/nearest?loc=" + geolocation[:latitude].to_s + ", " + geolocation[:longitude].to_s
-              result = RestClient.get(request_uri)
+              request_uri = url + "/nearest?loc=" + geolocation[:latitude].to_s + "," + geolocation[:longitude].to_s
               
-              new_loc = {latitude: result["mapped_coordinate"][0], longitude: result["mapped_coordinate"][1]}
+              result = RestClient.get(request_uri)
+              new_loc = JSON[result]["mapped_coordinate"]
+              new_loc = {latitude: new_loc[0], longitude: new_loc[1]}
             
             
             # User servicio de mapquest
@@ -51,7 +52,7 @@ module Game
             geolocation[:latitude]  = new_loc[:latitude]
             geolocation[:longitude] = new_loc[:longitude]
           end
-        rescue
+        rescue Exception => e
           puts "WARNING! Couldn't snap " + geolocation[:latitude].to_s + ", " + geolocation[:longitude].to_s + " to nearest road."
         end
       
