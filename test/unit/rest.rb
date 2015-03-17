@@ -54,11 +54,11 @@ class RESTTest < Test::Unit::TestCase
     Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
     
     # Añadir cositas
-    @users << Game::Database::User.sign_up( "test", 'test', {latitude: 3.0, longitude: 2.0} )
+    @users << Game::Database::User.sign_up( "test", 'test', {latitude: 28.4694, longitude: -16.2738} )
     @users[0].write_msg( "Hola mundo!!!" )
     
-    @messages << Game::Database::Message.create_message( "Hello, universe", 2, nil, nil, {latitude: 3.0, longitude: 2.0} )
-    @messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, nil, nil, {latitude: 3.2, longitude: 2.0} )
+    @messages << Game::Database::Message.create_message( "Hello, universe", 2, nil, nil, {latitude: 28.4694, longitude: -16.2738} )
+    @messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, nil, nil, {latitude: 28.2694, longitude: -16.7346} )
     
     @users[0].collect_fragment(@messages[0].fragments.where(fragment_index: 0).first)
     @users[0].collect_fragment(@messages[0].fragments.where(fragment_index: 1).first)

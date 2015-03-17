@@ -7,11 +7,11 @@ require 'sinatra/base'
 require 'neo4j'
 require 'cgi'
 
-# Prueba
-location = {latitude: 28.26807, longitude: -16.43555}
-puts location
-Game::Mechanics::GeolocationManagement.snap_geolocation!(location)
-puts location
+# Prueba de ajuste geolocalizado
+#location = {latitude: 28.26807, longitude: -16.43555}
+#puts location
+#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationManagement.snap_geolocation!(location) }).to_s
+#puts location
 
 module Sinatra
 module API

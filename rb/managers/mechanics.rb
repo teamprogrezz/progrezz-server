@@ -11,7 +11,7 @@ module Game
       # Inicializar (carga de ficheros).
       def self.setup()
         # Requerir ficheros de mecánicas de juego
-        GenericUtils.require_dir("./rb/game/mechanics/**/*.rb", "Leyendo mecánicas:         ")
+        GenericUtils.require_dir("./rb/game/mechanics/**/*.rb", "Leyendo mecánicas:          ")
       end
       
     end

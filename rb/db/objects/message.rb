@@ -215,6 +215,7 @@ module Game
               longitude: new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
             }
             
+            # Ajustar a carretera
             if self.snap_to_roads
               Game::Mechanics::GeolocationManagement.snap_geolocation!(locations[i])
             end
@@ -226,6 +227,7 @@ module Game
         #puts "post: " + locations.to_s
         #puts "------- END -------"
         
+        # Añadir fragmentos.
         for i in 0...(self.total_fragments)
           output << MessageFragment.create_message_fragment( self, i, locations[i] )
         end

@@ -27,6 +27,15 @@ Deben tener el siguiente formato URI:
 
 También se intentará buscar como último remedio en el host *http:localhost:7474* (sin credenciales de acceso).
 
+#### Servicio de rutas ####
+Por defecto, el servidor usará un servidor [OSRM](https://github.com/Project-OSRM/osrm-backend) para realizar las peticiones (por ejemplo, a ```http://localhost:5000/nearest?loc=26.08,-16.5```). Para utilizar está función, se debe definir la dirección del servidor en la variable de entorno ```progrezz_matching_osrm``` con la url del servidor (para el caso de anterior, ```http://localhost:5000```).
+
+**Nota:** Se recomienda encarecidamente usar un servidor propio OSRM para resolver este tipo de peticiones.
+
+En caso de no encontrar un servidor OSRM, se utilizará la [API de MapQuest Directions](http://developer.mapquest.com/web/products/dev-services/directions-ws) para ajustar geolocalizaciones a la carretera más próxima. Para ello, se debe definir la variable de entorno ```progrezz_mapquest_key``` con la APPKey de MapQuest.
+
+También se puede deshabilitar el servicio de rutas usando la variable de entorno ```progrezz_disable_routing``` a ```true```.
+
 ## 6.  Uso ##
 #### Instalación ####
 Una vez instalada e iniciada la base de datos, se puede preparar el servidor con el siguiente comando, desde la carpeta raíz del proyecto:

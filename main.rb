@@ -116,7 +116,8 @@ class Sinatra::ProgrezzServer; register Sinatra::Pages; end
 require './rb/generic_utils'
 
 #-- Cargar Gestores del servidor. #++
-GenericUtils.require_dir("./rb/managers/**/*.rb", "Leyendo Manager del server:      ")
+GenericUtils.require_dir("./rb/managers/**/*.rb", "----------------------------------\n    Mánager:                ")
+puts "----------------------------------"
 
 # Cosas a ejecutar cuando se cierre la app.
 at_exit do

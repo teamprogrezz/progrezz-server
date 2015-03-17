@@ -89,7 +89,7 @@ module Game
         # en el directorio *game/api/websocket*.
         def self.setup()
           @@sockets = []
-          GenericUtils.require_dir("./rb/game/api/websocket/**/*.rb", "Leyendo URIs de WebSocket: ")
+          GenericUtils.require_dir("./rb/game/api/websocket/**/*.rb", "Leyendo URIs de WebSocket:  ")
         end
         
         # Comprobar si un usuario está autenticado para usar la API WebSocket.
