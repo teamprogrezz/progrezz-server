@@ -47,6 +47,11 @@ module Game
       #
       # @return [Integer] Debe ser mayor que cero.
       property :total_fragments, type: Integer
+      
+      # Cantidad de replicaciones del mensaje.
+      #
+      # @return [Integer] Se incrementará cada vez que se replique un mensaje.
+      property :replications, type: Integer, default: 0
 
       # Contenido del mensaje.
       #
@@ -229,8 +234,11 @@ module Game
         
         # Añadir fragmentos.
         for i in 0...(self.total_fragments)
-          output << MessageFragment.create_message_fragment( self, i, locations[i] )
+          output << MessageFragment.create_message_fragment( self, i, locations[i], self.replications )
         end
+        
+        # Aumentar canitdad de mensajes
+        self.update( { replications: self.replications + 1 } )
         
         return output
       end
