@@ -4,3 +4,6 @@
 [submodule "public/lib/client-api-websocket"]
 	path = public/lib/client-api-websocket
 	url = https://github.com/teamprogrezz/progrezz-client-api-websocket.git
+[submodule "public/game"]
+	path = public/game
+	url = http://github.com/teamprogrezz/progrezz-client-server.git
