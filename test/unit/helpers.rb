@@ -32,6 +32,10 @@ def init_db()
   @users << Game::Database::User.sign_up( "test", 'test', {latitude: 28.4694, longitude: -16.2738} )
   @users[0].write_msg( "Hola mundo!!!" )
   
+  # Usuarios de prueba
+  @users << Game::Database::User.sign_up( "test11", 'test11', {latitude: 28.46673, longitude: -16.27357} )
+  @users << Game::Database::User.sign_up( "test22", 'test22', {latitude: 28.3396, longitude: -16.8373} )
+  
   @messages << Game::Database::Message.create_message( "Hello, universe", 2, nil, nil, {latitude: 28.4694, longitude: -16.2738} )
   @messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, nil, nil, {latitude: 28.2694, longitude: -16.7346} )
   
@@ -40,6 +44,8 @@ def init_db()
   
   @users[0].collect_fragment(@messages[1].fragments.where(fragment_index: 0).first)
   @users[0].collect_fragment(@messages[1].fragments.where(fragment_index: 2).first)
+  
+  @users.each { |u| u.online(true) }
 end
 
 # Undo db

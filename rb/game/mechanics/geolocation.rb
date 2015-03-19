@@ -9,13 +9,18 @@ module Game
     # Clase gestora de las mecánicas de juego referente a posiciones geolocalizadas.
     class GeolocationManagement
       
+      # Distancia o ruio a añadir a los puntos ajustados, en km
       NOISE_KM        = 0.001
+      
+      # Ruido en latitud de NOISE_KM
       NOISE_LATITUDE  = Progrezz::Geolocation.distance_to_latitude( NOISE_KM, :km )
+      
+      # Ruido en longitud de NOISE_KM
       NOISE_LONGITUDE = Progrezz::Geolocation.distance_to_longitude( NOISE_KM, :km )
 
       # Ajustar geolocalización.
       # @param geolocation [Hash<Symbol, Float>] Hash de la forma { latitude: +lat+, longitude: +lon+ }
-      # @param [Hash<Symbol, Float>] Entrada ajustada.
+      # @return [Hash<Symbol, Float>] Entrada ajustada.
       def self.snap_geolocation!(geolocation = {latitude: 0.0, longitude: 0.0} )
         begin
           if ENV['progrezz_disable_routing'] != "true"

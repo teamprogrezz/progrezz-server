@@ -416,17 +416,44 @@ module Game
       end
       
       # Buscar usuarios cercanos.
-      # @param radius [Float] Radio de búsqueda.
+      # @param radius [Float] Radio de búsqueda (km).
       # @return [Array<Game::Database::User>] Usuarios cercanos.
-      def get_online_nearby_users(radius = nil)
-        # TODO: Implementar
+      def get_online_nearby_users(radius)
+        user_geo = geolocation.values
+        lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+        lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+        
+        users = User.query_as(:u)
+          .where("u.user_id <> {user_id} and u.is_online = true and u.latitude > {l1} and u.latitude < {l2} and u.longitude > {l3} and u.longitude < {l4}")
+          .params(user_id: self.user_id, l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:u)
+        
+        output = []
+        
+        users.each do |u|
+          output << u.to_hash
+        end
+        
+        return output
       end
 
       # Stringificar objeto.
       #
       # @return [String] Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
       def to_s
-        return "<User: " + self.user_id + ", " + self.alias + ", " + super.to_s + ">" 
+        return "<User: " + self.user_id + ", " + self.alias + ", " + self.is_online.to_s + ", " + super.to_s + ">" 
+      end
+      
+      # Retornar objeto como hash.
+      # @param exclusion_list [Array<Symbol>] Lista de elementos a excluir.
+      # @return [Hash<Symbol, Object>] Objeto como hash.
+      def to_hash(exclusion_list = [:user_id])
+        output = {}
+        
+        if !exclusion_list.include? :user_id;     output[:user_id]     = self.user_id end
+        if !exclusion_list.include? :alias;       output[:alias]       = self.alias end
+        if !exclusion_list.include? :geolocation; output[:geolocation] = self.geolocation end
+        
+        return output
       end
     end
   end

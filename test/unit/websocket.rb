@@ -53,6 +53,22 @@ class WebSocketTest < Test::Unit::TestCase
   end
   
   # ---------------------------
+  #            Echo
+  # ---------------------------
+  
+  # Probar "echo"
+  def test_echo
+    @request[:request][:type] = "echo"
+    @request[:request][:data] = { name: "wikiti" }
+    ws_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Hello, wikiti!"
+  end
+  
+  
+  
+  # ---------------------------
   #            User
   # ---------------------------
   
@@ -66,6 +82,27 @@ class WebSocketTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:message], "User geolocation changed to 23.0, -16.0"
+  end
+  
+  # Probar "user_get_nearby_users"
+  def test_user_get_nearby_users
+    authenticate()
+    
+    @users[1].online(false)
+    @request[:request][:type] = "user_get_nearby_users"
+    @request[:request][:data] = { user_id: "test" }
+    ws_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:users], []
+    
+    @users[1].online(true)
+    @request[:request][:type] = "user_get_nearby_users"
+    @request[:request][:data] = { user_id: "test" }
+    ws_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:users], [ @users[1].to_hash ]
   end
   
   

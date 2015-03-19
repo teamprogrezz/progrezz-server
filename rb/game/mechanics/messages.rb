@@ -18,7 +18,6 @@ module Game
       # Generar fragmentos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.
       # @param system_fragments [Hash<Symbol, Object>] Fragmentos cercanos a +user+.
-      # @param radius [Float] Radio de generación (depende del usuario).
       # @return [Integer] Número de mensajes cercanos actuales.
       def self.generate_nearby_fragments(user, system_fragments) 
         # El radio se obtiene directamente del usuario

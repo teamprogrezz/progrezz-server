@@ -47,7 +47,7 @@ module Sinatra
         # CORS para habilitar peticiones JSON entre dominios.
         headers['Access-Control-Allow-Methods']     = 'GET' # , POST'
         headers['Access-Control-Allow-Origin']      = '*'
-        headers['Access-Control-Allow-Headers']     = 'accept, authorization, origin, content-type'
+        headers['Access-Control-Allow-Headers']     = 'X-Requested-With, accept, authorization, origin, content-type'
         headers['Access-Control-Allow-Credentials'] = 'true'
       end
 
@@ -77,6 +77,8 @@ module Sinatra
               Methods.send( method, app, response, session )
             end
             
+            response[:metadata][:type] = "response"
+            
           rescue Exception => e  
             # Deshacer transacción.
             tx.failure()
@@ -91,7 +93,6 @@ module Sinatra
         end
         
         Game::API::JSONResponse.stop_timer!(response)
-        response[:metadata][:type] = "system"
 
         #profile = RubyProf.stop
         #printer = RubyProf::GraphHtmlPrinter.new(profile)

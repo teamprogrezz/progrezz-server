@@ -601,7 +601,7 @@ REST).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#get_online_nearby_users-instance_method" title="#get_online_nearby_users (instance method)">- (Array&lt;Game::Database::User&gt;) <strong>get_online_nearby_users</strong>(radius = nil) </a>
+      <a href="#get_online_nearby_users-instance_method" title="#get_online_nearby_users (instance method)">- (Array&lt;Game::Database::User&gt;) <strong>get_online_nearby_users</strong>(radius) </a>
     
 
     
@@ -665,6 +665,30 @@ REST).</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Actualizar estado “online” del jugador.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = [:user_id]) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Retornar objeto como hash.</p>
 </div></span>
   
 </li>
@@ -2310,7 +2334,7 @@ de un usuario.</p>
       <div class="method_details ">
   <h3 class="signature " id="get_online_nearby_users-instance_method">
   
-    - (<tt>Array&lt;<span class='object_link'><a href="" title="Game::Database::User (class)">Game::Database::User</a></span>&gt;</tt>) <strong>get_online_nearby_users</strong>(radius = nil) 
+    - (<tt>Array&lt;<span class='object_link'><a href="" title="Game::Database::User (class)">Game::Database::User</a></span>&gt;</tt>) <strong>get_online_nearby_users</strong>(radius) 
   
 
   
@@ -2336,12 +2360,10 @@ de un usuario.</p>
         <span class='type'>(<tt>Float</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
-<p>Radio de búsqueda.</p>
+<p>Radio de búsqueda (km).</p>
 </div>
       
     </li>
@@ -2375,14 +2397,42 @@ de un usuario.</p>
 
 421
 422
-423</pre>
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 421</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_get_online_nearby_users'>get_online_nearby_users</span><span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='comment'># TODO: Implementar
-</span><span class='kw'>end</span></pre>
+<span class='kw'>def</span> <span class='id identifier rubyid_get_online_nearby_users'>get_online_nearby_users</span><span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_geo'>user_geo</span> <span class='op'>=</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span>
+  <span class='id identifier rubyid_lat'>lat</span> <span class='op'>=</span> <span class='const'>Progrezz</span><span class='op'>::</span><span class='const'>Geolocation</span><span class='period'>.</span><span class='id identifier rubyid_distance_to_latitude'>distance_to_latitude</span><span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span><span class='comma'>,</span> <span class='symbol'>:km</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_lon'>lon</span> <span class='op'>=</span> <span class='const'>Progrezz</span><span class='op'>::</span><span class='const'>Geolocation</span><span class='period'>.</span><span class='id identifier rubyid_distance_to_longitude'>distance_to_longitude</span><span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span><span class='comma'>,</span> <span class='symbol'>:km</span><span class='rparen'>)</span>
+  
+  <span class='id identifier rubyid_users'>users</span> <span class='op'>=</span> <span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:u</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>u.user_id &lt;&gt; {user_id} and u.is_online = true and u.latitude &gt; {l1} and u.latitude &lt; {l2} and u.longitude &gt; {l3} and u.longitude &lt; {l4}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='label'>user_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='label'>l1:</span> <span class='lparen'>(</span><span class='id identifier rubyid_user_geo'>user_geo</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_lat'>lat</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>l2:</span> <span class='lparen'>(</span><span class='id identifier rubyid_user_geo'>user_geo</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_lat'>lat</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>l3:</span> <span class='lparen'>(</span><span class='id identifier rubyid_user_geo'>user_geo</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_lon'>lon</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>l4:</span> <span class='lparen'>(</span><span class='id identifier rubyid_user_geo'>user_geo</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_lon'>lon</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:u</span><span class='rparen'>)</span>
+  
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  
+  <span class='id identifier rubyid_users'>users</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_u'>u</span><span class='op'>|</span>
+    <span class='id identifier rubyid_output'>output</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2507,6 +2557,99 @@ de un usuario.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="to_hash-instance_method">
+  
+    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = [:user_id]) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Retornar objeto como hash.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>exclusion_list</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[:user_id]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Lista de elementos a excluir.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Objeto como hash.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+449
+450
+451
+452
+453
+454
+455
+456
+457</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 449</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:user_id</span><span class='semicolon'>;</span>     <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:alias</span><span class='semicolon'>;</span>       <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:alias</span><span class='rbracket'>]</span>       <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_alias'>alias</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:geolocation</span><span class='semicolon'>;</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span> <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="to_s-instance_method">
   
     - (<tt>String</tt>) <strong>to_s</strong> 
@@ -2551,15 +2694,15 @@ de un usuario.</p>
       <pre class="lines">
 
 
-428
-429
-430</pre>
+442
+443
+444</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 428</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 442</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span>
-  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;User: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_alias'>alias</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;User: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_alias'>alias</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_is_online'>is_online</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2870,7 +3013,7 @@ con el atributo #written_messages. Tiene como tipo
 </div>
 
     <div id="footer">
-  Generated on Tue Mar 17 19:17:54 2015 by
+  Generated on Thu Mar 19 11:13:49 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
