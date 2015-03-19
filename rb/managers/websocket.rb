@@ -111,7 +111,8 @@ module Game
           
           if auth?(session) == true
             Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Connection established."} )
-
+            output[:metadata][:type] = "system"
+            
             if !(ENV['users_auth_disabled'] == "true")
               puts "Warning! User auth disabled."
               Game::Database::User.search_user(session['user_id']).online(true)
@@ -121,7 +122,8 @@ module Game
             send(ws, output)
           else
             Game::API::JSONResponse.error_response!(output, "Invalid request: You are not authenticated.")
-
+            output[:metadata][:type] = "system"
+            
             add_socket(ws)
             send(ws, output)
             remove_socket(ws)

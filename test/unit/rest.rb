@@ -36,11 +36,13 @@ class RESTTest < Test::Unit::TestCase
     
     # Setup other things.
     @request = {
-      metada: {},
+      metada: { },
       request: { }
     }
     
-    @response = { }
+    @response = {
+      metadata: { }
+    }
   end
   
   # Cerrar antes de cada prueba

@@ -4,26 +4,26 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>
-  Class: Game::API::REST::RESTManager
+  Class: Game::Mechanics::MechanicsManager
   
     &mdash; Documentation by YARD 0.8.7.6
   
 </title>
 
-  <link rel="stylesheet" href="../../../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../../../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   hasFrames = window.top.frames.main ? true : false;
-  relpath = '../../../';
-  framesUrl = "../../../frames.html#!Game/API/REST/RESTManager.html";
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Game/Mechanics/MechanicsManager.html";
 </script>
 
 
-  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
 
-  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
 
 
   </head>
@@ -31,10 +31,10 @@
     <div id="header">
       <div id="menu">
   
-    <a href="../../../_index.html">Index (R)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../API.html" title="Game::API (module)">API</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../REST.html" title="Game::API::REST (module)">REST</a></span></span>
+    <a href="../../_index.html">Index (M)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Mechanics.html" title="Game::Mechanics (module)">Mechanics</a></span></span>
      &raquo; 
-    <span class="title">RESTManager</span>
+    <span class="title">MechanicsManager</span>
   
 
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -43,17 +43,17 @@
       <div id="search">
   
     <a class="full_list_link" id="class_list_link"
-        href="../../../class_list.html">
+        href="../../class_list.html">
       Class List
     </a>
   
     <a class="full_list_link" id="method_list_link"
-        href="../../../method_list.html">
+        href="../../method_list.html">
       Method List
     </a>
   
     <a class="full_list_link" id="file_list_link"
-        href="../../../file_list.html">
+        href="../../file_list.html">
       File List
     </a>
   
@@ -63,7 +63,7 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><h1>Class: Game::API::REST::RESTManager
+    <div id="content"><h1>Class: Game::Mechanics::MechanicsManager
   
   
   
@@ -78,7 +78,7 @@
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next">Game::API::REST::RESTManager</li>
+            <li class="next">Game::Mechanics::MechanicsManager</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -94,7 +94,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">rb/managers/rest.rb</dd>
+    <dd class="r2 last">rb/managers/mechanics.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -102,10 +102,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Clase gestora de la API REST.</p>
-
-<p>Se encarga de realizar tareas sencillas, como inicializar el acceso a los
-métodos REST HTML (Sinatra).</p>
+<p>Clase gestora de las mecánicas de juego (simplona).</p>
 
 
   </div>
@@ -146,7 +143,7 @@ métodos REST HTML (Sinatra).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Inicializa la API REST.</p>
+<p>Inicializar (carga de ficheros).</p>
 </div></span>
   
 </li>
@@ -173,10 +170,7 @@ métodos REST HTML (Sinatra).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Inicializa la API REST.</p>
-
-<p>Principalmente, carga todos los ficheros fuente (.rb) contenidos en el
-directorio <strong>game/api/rest</strong>.</p>
+<p>Inicializar (carga de ficheros).</p>
 
 
   </div>
@@ -190,17 +184,17 @@ directorio <strong>game/api/rest</strong>.</p>
       <pre class="lines">
 
 
-20
-21
-22
-23</pre>
+12
+13
+14
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/rest.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/mechanics.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='comment'>#-- Metodos HTTP (GET y POST) de la API REST #++
-</span>  <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_require_dir'>require_dir</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>./rb/game/api/rest/**/*.rb</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Leyendo URIs de API REST:   </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='comment'># Requerir ficheros de mecánicas de juego
+</span>  <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_require_dir'>require_dir</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>./rb/game/mechanics/**/*.rb</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Leyendo mecánicas:          </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -212,7 +206,7 @@ directorio <strong>game/api/rest</strong>.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Mar 17 19:17:53 2015 by
+  Generated on Tue Mar 17 19:17:54 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

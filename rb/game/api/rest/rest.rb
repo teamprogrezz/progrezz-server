@@ -91,6 +91,7 @@ module Sinatra
         end
         
         Game::API::JSONResponse.stop_timer!(response)
+        response[:metadata][:type] = "system"
 
         #profile = RubyProf.stop
         #printer = RubyProf::GraphHtmlPrinter.new(profile)

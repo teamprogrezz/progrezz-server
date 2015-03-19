@@ -29,7 +29,8 @@ module Game
       def self.auto_metadata!( response, data = {} )
         response[:metadata] = {
           timestamp: DateTime.now.strftime('%Q').to_i,
-          process_time: 0
+          process_time: 0,
+          type: "response"
         }
       end
       
@@ -50,6 +51,8 @@ module Game
       # @param response [Hash] Hash de respuesta al usuario.
       # @param reason [String] Razón del error en sí (e.j. 'Me caes mal').
       def self.error_response!(response, reason)
+        response[:type] = "system"
+        
         response[:response].clear()
         response[:response][:status]  = "error"
         response[:response][:message] = reason
@@ -60,6 +63,8 @@ module Game
       # @param response [Hash] Hash de respuesta al usuario.
       # @param data [Hash] Estructura de datos a enviar al usuario.
       def self.ok_response!(response, data)
+        response[:type] = "response"
+        
         response[:response][:status]  = "ok"
         response[:response][:data]    = data
       end

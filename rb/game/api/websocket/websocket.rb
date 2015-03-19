@@ -39,6 +39,7 @@ module Sinatra
         if !request.websocket?
           output = Game::API::JSONResponse.get_template()
           Game::API::JSONResponse.error_response!(output, "Invalid request: Not a websocket request.")
+          output[:metadata][:type] = "system"
           
           return output
         else

@@ -79,7 +79,9 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">rb/game/api/websocket/websocket.rb</dd>
+    <dd class="r1 last">rb/game/api/websocket/websocket.rb<span class="defines">,<br />
+  rb/game/api/websocket/user_ws.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -202,8 +204,6 @@ Sinatra::API::WebSocket::Methods.</p>
       <pre class="lines">
 
 
-26
-27
 28
 29
 30
@@ -273,10 +273,51 @@ Sinatra::API::WebSocket::Methods.</p>
 94
 95
 96
-97</pre>
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/websocket/websocket.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/websocket/websocket.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_registered'>registered</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='rparen'>)</span>
   <span class='comment'># Clase contenedora de métodos
@@ -296,7 +337,6 @@ Sinatra::API::WebSocket::Methods.</p>
       <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
     <span class='kw'>else</span>
       <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_websocket'>websocket</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ws'>ws</span><span class='op'>|</span>
-        
         <span class='comment'># Petición de apertura.
 </span>        <span class='id identifier rubyid_ws'>ws</span><span class='period'>.</span><span class='id identifier rubyid_onopen'>onopen</span> <span class='kw'>do</span>
           <span class='comment'># Si no está autenticado, rechazar.
@@ -310,20 +350,60 @@ Sinatra::API::WebSocket::Methods.</p>
             <span class='kw'>return</span>
           <span class='kw'>end</span>
           
-          <span class='comment'># Generar plantilla de respuesta
-</span>          <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_get_template'>get_template</span><span class='lparen'>(</span><span class='rparen'>)</span>
+          <span class='comment'># Respuesta al usuario
+</span>          <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_get_template'>get_template</span><span class='lparen'>(</span><span class='rparen'>)</span>
+          
+          <span class='comment'># Preparar petición JSON
+</span>          <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
+          <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_symbolize_keys_deep!'>symbolize_keys_deep!</span><span class='lparen'>(</span> <span class='id identifier rubyid_request'>request</span> <span class='rparen'>)</span>
+          <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span>
+          
+          <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>users_auth_disabled</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
+            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Warning!! Users auth disabled!</span><span class='tstring_end'>&quot;</span></span>
+            <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>user_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+          <span class='kw'>end</span>
+          
+          <span class='comment'># Métodos WS
+</span>          <span class='id identifier rubyid_methods'>methods</span> <span class='op'>=</span> <span class='const'>Methods</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span>
 
-          <span class='comment'># Procesar respuesta
-</span>          <span class='comment'># ...
-</span>          <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Response OK.</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span> <span class='rparen'>)</span>
+          <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tx'>tx</span><span class='op'>|</span>
+            <span class='comment'># Tipo de petición
+</span>            <span class='kw'>begin</span>
+              <span class='id identifier rubyid_method'>method</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    
+              <span class='kw'>if</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+                <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid ws request type &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
+              <span class='kw'>else</span>
+                <span class='const'>Methods</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span> <span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+              <span class='kw'>end</span>
+              
+              <span class='comment'># TODO: Implementar (como en REST). Cabe la posibilidad de compatibilizar los métodos REST en este apartado.
+</span>              
+            <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+              <span class='comment'># Deshacer transacción.
+</span>              <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
+              
+              <span class='comment'># Generar error
+</span>              <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_error_response!'>error_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='rparen'>)</span>
+              
+              <span class='comment'># Añadir parámetros adicionales
+</span>              <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:response</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backtrace</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span>
+            <span class='kw'>end</span>
+          <span class='kw'>end</span>
+          
+          <span class='comment'># Parar temporizador
+</span>          <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_stop_timer!'>stop_timer!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span> <span class='rparen'>)</span>
+          
+          <span class='comment'># Eliminar &quot;request&quot; de la respuesta.
+</span>          <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:request</span><span class='rparen'>)</span>
           
           <span class='comment'># Y Enviar mensaje
-</span>          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_ws'>ws</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
+</span>          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_ws'>ws</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
         <span class='kw'>end</span>
         
         <span class='comment'># Petición de cierre.
 </span>        <span class='id identifier rubyid_ws'>ws</span><span class='period'>.</span><span class='id identifier rubyid_onclose'>onclose</span> <span class='kw'>do</span>
-          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_remove_socket'>remove_socket</span><span class='lparen'>(</span><span class='id identifier rubyid_ws'>ws</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_ws_manager'>ws_manager</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='comma'>,</span> <span class='id identifier rubyid_ws'>ws</span><span class='rparen'>)</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span>
     <span class='kw'>end</span>
@@ -360,7 +440,7 @@ Sinatra::API::WebSocket::Methods.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Mar 10 14:16:31 2015 by
+  Generated on Tue Mar 17 19:17:53 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
