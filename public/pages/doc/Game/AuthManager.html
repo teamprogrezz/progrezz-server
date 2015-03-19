@@ -1,0 +1,982 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Game::AuthManager
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!Game/AuthManager.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (A)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Game.html" title="Game (module)">Game</a></span></span>
+     &raquo; 
+    <span class="title">AuthManager</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Game::AuthManager
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Game::AuthManager</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rb/managers/auth.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase gestora de la autenticación de usuarios.</p>
+
+<p>Se hace uso de la API OmniAuth para registrar usuarios, y se guardarán los
+datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="SERVICES-constant" class="">SERVICES =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Servicios disponibles.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:google_oauth2</span><span class='comma'>,</span> <span class='symbol'>:twitter</span><span class='comma'>,</span> <span class='symbol'>:github</span><span class='rbracket'>]</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#auth%3F-class_method" title="auth? (class method)">+ (Boolean) <strong>auth?</strong>(session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Comprobar si el usuario actual está autenticado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ban_user-class_method" title="ban_user (class method)">+ (Object) <strong>ban_user</strong>(user_id, ban_time_seconds) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Banear a un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#banned%3F-class_method" title="banned? (class method)">+ (Boolean) <strong>banned?</strong>(user) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Comprobar si un usuario está baneado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_loaded_services-class_method" title="get_loaded_services (class method)">+ (Array&lt;Symbol&gt;) <strong>get_loaded_services</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de los servicios cargados.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#login-class_method" title="login (class method)">+ (Object) <strong>login</strong>(user_id, user_alias) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Dar de alta a un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search_auth_user-class_method" title="search_auth_user (class method)">+ (Game::Database::User) <strong>search_auth_user</strong>(user_id, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Busca un usuario autenticado en la sesión actual.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#setup-class_method" title="setup (class method)">+ (Object) <strong>setup</strong>(service_exceptions = []) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Iniciar módulos OmniAuth.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="auth?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>auth?</strong>(session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Comprobar si el usuario actual está autenticado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true si es posible, false en caso contrario.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 130</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_auth?'>auth?</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>users_auth_disabled</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Warning!! Users auth disabled!</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>return</span> <span class='kw'>true</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>user_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
+    <span class='kw'>return</span> <span class='kw'>false</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ban_user-class_method">
+  
+    + (<tt>Object</tt>) <strong>ban_user</strong>(user_id, ban_time_seconds) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Banear a un usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Identificador del usuario.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ban_time_seconds</span>
+      
+      
+        <span class='type'>(<tt>DateTime</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cantidad de segundos para banear al usuario.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+118
+119
+120
+121
+122
+123
+124
+125</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 118</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_ban_user'>ban_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_ban_time_seconds'>ban_time_seconds</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
+  
+  <span class='kw'>if</span><span class='lparen'>(</span><span class='id identifier rubyid_ban_time_seconds'>ban_time_seconds</span> <span class='op'>&gt;</span> <span class='int'>0</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_ban'>ban</span> <span class='op'>=</span> <span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_strptime'>strptime</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='id identifier rubyid_ban_time_seconds'>ban_time_seconds</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%s</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>banned_until:</span> <span class='id identifier rubyid_ban'>ban</span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="banned?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>banned?</strong>(user) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Comprobar si un usuario está baneado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Database/User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Usuario a comprobar.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>True si está baneado. False en caso contrario.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 54</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_banned?'>banned?</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>&amp;&amp;</span> <span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span>
+    <span class='kw'>return</span> <span class='kw'>true</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_loaded_services-class_method">
+  
+    + (<tt>Array&lt;Symbol&gt;</tt>) <strong>get_loaded_services</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de los servicios cargados.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Lista o Array de símbolos de los servicios cargados (ej: [:google,
+:twitter, …]).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 47</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_loaded_services'>get_loaded_services</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='cvar'>@@loaded_services</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="login-class_method">
+  
+    + (<tt>Object</tt>) <strong>login</strong>(user_id, user_alias) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Dar de alta a un usuario.</p>
+
+<p>Si el usuario no existe, se creará una entrada en la base de datos. Si el
+usuario ya existe, no se añadirá nada.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Identificador del usuario (correo).</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_alias</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Alias del usuario (nombre).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 98</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_login'>login</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_user_alias'>user_alias</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='comment'># Buscar usuario
+</span>    <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
+    
+    <span class='comment'># Actualizar perfil.
+</span>    <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_update_profile'>update_profile</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='symbol'>:alias</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_user_alias'>user_alias</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  <span class='kw'>rescue</span>
+    <span class='comment'># Si no existe, añadir a la BD
+</span>    <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_sign_up'>sign_up</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_alias'>user_alias</span><span class='comma'>,</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  
+   <span class='kw'>if</span> <span class='id identifier rubyid_banned?'>banned?</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Current &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; is banned until </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="search_auth_user-class_method">
+  
+    + (<tt><span class='object_link'><a href="Database/User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>) <strong>search_auth_user</strong>(user_id, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Busca un usuario autenticado en la sesión actual.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Identificador de usuario (correo electrónico).</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>session</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sesión de Ruby Sinatra.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Database/User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Si el usuario existe y está autenticado en la sesión actual, devuelve una
+referencia al mismo. Si no, genera una excepción.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 68</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='rparen'>)</span>
+  
+  <span class='kw'>if</span> <span class='id identifier rubyid_banned?'>banned?</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Current user &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; is banned until </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>users_auth_disabled</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Warning!! Users auth disabled!</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>!=</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_error_msg'>error_msg</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>You are NOT authenticated as &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+        <span class='id identifier rubyid_error_msg'>error_msg</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> You are authenticated as &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+      
+      <span class='id identifier rubyid_raise'>raise</span> <span class='id identifier rubyid_error_msg'>error_msg</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_user'>user</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="setup-class_method">
+  
+    + (<tt>Object</tt>) <strong>setup</strong>(service_exceptions = []) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Iniciar módulos OmniAuth.</p>
+
+<p>Los datos referentes a los servicios se cargarán desde las variables de
+entorno siguientes:</p>
+<ul><li>
+<p><strong>google</strong>: id: progrezz_google_id, secreto:
+progrezz_google_secret</p>
+</li><li>
+<p><strong>github</strong>: id: progrezz_github_id, secreto:
+progrezz_github_secret</p>
+</li><li>
+<p><strong>twitter</strong>: id: progrezz_twitter_id, secreto:
+progrezz_twitter_secret</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>service_exceptions</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Servicios (símbolos ruby) que no serán cargados. Por defecto, se cargarán
+todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 32</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_service_exceptions'>service_exceptions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='cvar'>@@loaded_services</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  
+  <span class='comment'># Incluir o excluir google.
+</span>  <span class='kw'>for</span> <span class='id identifier rubyid_service'>service</span> <span class='kw'>in</span> <span class='const'>SERVICES</span>
+    <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_service_exceptions'>service_exceptions</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_service'>service</span>
+      <span class='cvar'>@@loaded_services</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_service'>service</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Mar 19 11:13:48 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

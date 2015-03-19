@@ -1,0 +1,22 @@
+[
+  [
+    "Echo", [
+      {
+        "name": "Native echo",
+        "example": {"_comment": "Use this method to test the websocket connection.", "type": "json", "request": {"type":"echo","data":{"name":"your name here"} }}
+      }
+    ]
+  ],
+  [
+    "Users", [
+      {
+        "name": "Update geolocation",
+        "example": {"_comment": "Use this method to update your geolocation position.", "type": "json", "request": {"type":"user_update_geolocation","data":{ "user_id":"yourmail@example.com", "latitude": "new_lat", "longitude": "new_long" } }}
+      },
+      {
+        "name": "Get nearby players",
+        "example": {"_comment": "Use this method to get players that are close to you.", "type": "json", "request": {"type":"user_get_nearby_users","data":{ "user_id":"yourmail@example.com" } }}
+      }     
+    ]
+  ]
+]

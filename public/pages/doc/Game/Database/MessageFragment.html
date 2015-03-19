@@ -1,0 +1,886 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Game::Database::MessageFragment
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Game/Database/MessageFragment.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (M)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Database.html" title="Game::Database (module)">Database</a></span></span>
+     &raquo; 
+    <span class="title">MessageFragment</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Game::Database::MessageFragment
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></li>
+          
+            <li class="next">Game::Database::MessageFragment</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">Neo4j::ActiveNode</dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">rb/db/objects/message_fragment.rb<span class="defines">,<br />
+  rb/db/relations/user-message_fragment.rb,<br /> rb/db/relations/user-completed_message.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase que representa a un fragmento geolocalizado de un juego.</p>
+
+<p>Los atributos se guardan en el objeto (incluida geolocalización) como un
+nodo del grafo neo4j. Las relaciones se harán mediante relaciones directas
+o codificadas.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+
+
+
+  <h2>Constant Summary</h2>
+  
+  <h3 class="inherited">Constants inherited
+     from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#MAX_LATITUDE-constant" title="Game::Database::GeolocatedObject::MAX_LATITUDE (constant)">GeolocatedObject::MAX_LATITUDE</a></span>, <span class='object_link'><a href="GeolocatedObject.html#MAX_LONGITUDE-constant" title="Game::Database::GeolocatedObject::MAX_LONGITUDE (constant)">GeolocatedObject::MAX_LONGITUDE</a></span>, <span class='object_link'><a href="GeolocatedObject.html#MIN_LATITUDE-constant" title="Game::Database::GeolocatedObject::MIN_LATITUDE (constant)">GeolocatedObject::MIN_LATITUDE</a></span>, <span class='object_link'><a href="GeolocatedObject.html#MIN_LONGITUDE-constant" title="Game::Database::GeolocatedObject::MIN_LONGITUDE (constant)">GeolocatedObject::MIN_LONGITUDE</a></span></p>
+
+
+
+
+  <h2>Instance Attribute Summary</h2>
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#is_updating-instance_method" title="Game::Database::GeolocatedObject#is_updating (method)">#is_updating</a></span></p>
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_message_fragment-class_method" title="create_message_fragment (class method)">+ (Object) <strong>create_message_fragment</strong>(msg, f_index, position, group_index) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Creación de nuevos usuarios.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#fragment_index-instance_method" title="#fragment_index (instance method)">- (Integer) <strong>fragment_index</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Índice del fragmento.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#group_index-instance_method" title="#group_index (instance method)">- (Integer) <strong>group_index</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Índice del grupo al que pertenece el fragmento.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#message-instance_method" title="#message (instance method)">- (Game::Database::Message) <strong>message</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con el mensaje padre (#Game::Database::Message).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#owners-instance_method" title="#owners (instance method)">- (Game::Database::User) <strong>owners</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con fragmentos recolectados por el usuario
+(#Game::Database::RelationShips::UserFragmentMessage).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = []) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Transformar objeto a un hash.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_s-instance_method" title="#to_s (instance method)">- (String) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Stringificar objeto.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#clamp-instance_method" title="Game::Database::GeolocatedObject#clamp (method)">#clamp</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp%21-class_method" title="Game::Database::GeolocatedObject.clamp! (method)">clamp!</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp_latitude-class_method" title="Game::Database::GeolocatedObject.clamp_latitude (method)">clamp_latitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp_longitude-class_method" title="Game::Database::GeolocatedObject.clamp_longitude (method)">clamp_longitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#geolocation-instance_method" title="Game::Database::GeolocatedObject#geolocation (method)">#geolocation</a></span>, <span class='object_link'><a href="GeolocatedObject.html#latitude-instance_method" title="Game::Database::GeolocatedObject#latitude (method)">#latitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#longitude-instance_method" title="Game::Database::GeolocatedObject#longitude (method)">#longitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#set_geolocation-instance_method" title="Game::Database::GeolocatedObject#set_geolocation (method)">#set_geolocation</a></span></p>
+
+  
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="create_message_fragment-class_method">
+  
+    + (<tt>Object</tt>) <strong>create_message_fragment</strong>(msg, f_index, position, group_index) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creación de nuevos usuarios.</p>
+
+<p>En caso de error, lanzará una excepción como una String (Exception).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>msg</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Referencia al mensaje.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>f_index</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Índice del fragmento.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>position</span>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Posición geolocalizada del fragmento.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>group_index</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Grupo del fragmento al que pertenece.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 62</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_message_fragment'>create_message_fragment</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='comma'>,</span> <span class='id identifier rubyid_f_index'>f_index</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='comma'>,</span> <span class='id identifier rubyid_group_index'>group_index</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_fmsg'>fmsg</span> <span class='op'>=</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='label'>message:</span> <span class='id identifier rubyid_msg'>msg</span><span class='comma'>,</span> <span class='label'>fragment_index:</span> <span class='id identifier rubyid_f_index'>f_index</span><span class='comma'>,</span> <span class='label'>group_index:</span> <span class='id identifier rubyid_group_index'>group_index</span> <span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_fragment'>fragment</span><span class='op'>|</span>
+      <span class='id identifier rubyid_fragment'>fragment</span><span class='period'>.</span><span class='id identifier rubyid_set_geolocation'>set_geolocation</span><span class='lparen'>(</span> <span class='id identifier rubyid_position'>position</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create fragment </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_f_index'>f_index</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> for the message </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='semicolon'>;</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_fmsg'>fmsg</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="fragment_index-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>fragment_index</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Índice del fragmento.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Debe ser mayor o igual que 0, o menor que el total de fragmentos del
+mensaje.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 24</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:fragment_index</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="group_index-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>group_index</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Índice del grupo al que pertenece el fragmento. Cada vez que se replica un
+mensaje, los fragmentos deben tener un nuevo group_index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Debe ser mayor o igual que 0.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 29</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:group_index</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="message-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Message.html" title="Game::Database::Message (class)">Game::Database::Message</a></span></tt>) <strong>message</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con el mensaje padre (#Game::Database::Message). Se puede acceder
+con el atributo <code>message</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Message.html" title="Game::Database::Message (class)">Game::Database::Message</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Mensaje que está compuesto por este fragmento.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 42</span>
+
+<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:message</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='comma'>,</span> <span class='label'>origin:</span> <span class='symbol'>:fragments</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="owners-instance_method">
+  
+    - (<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>) <strong>owners</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con fragmentos recolectados por el usuario
+(#Game::Database::RelationShips::UserFragmentMessage). Se puede acceder con
+el atributo <code>owners</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Propietarios de este fragmento.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 47</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:owners</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserFragmentMessage</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_hash-instance_method">
+  
+    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = []) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Transformar objeto a un hash.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>exclusion_list</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Lista de propiedades a ignorar.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Objeto como hash.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 90</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:uuid</span><span class='semicolon'>;</span>           <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:uuid</span><span class='rbracket'>]</span>           <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:geolocation</span><span class='semicolon'>;</span>    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span>    <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:fragment_index</span><span class='semicolon'>;</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:fragment_index</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fragment_index'>fragment_index</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:message</span><span class='semicolon'>;</span>        <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span>        <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:group_index</span><span class='semicolon'>;</span>    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:group_index</span><span class='rbracket'>]</span>    <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_group_index'>group_index</span> <span class='kw'>end</span>
+  
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_s-instance_method">
+  
+    - (<tt>String</tt>) <strong>to_s</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Stringificar objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Objeto como string, con el formato “&lt;MessageFragment:
+<code>uuid</code>,<code>message.uuid</code>,<code>fragment_index</code>,<code>geolocation</code>&gt;”.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+83
+84
+85</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 83</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;MessageFragment: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_fragment_index'>fragment_index</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Mar 19 11:13:49 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

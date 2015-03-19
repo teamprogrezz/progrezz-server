@@ -1,3 +1,6 @@
 [submodule "public/lib/client-api-rest"]
 	path = public/lib/client-api-rest
 	url = https://github.com/teamprogrezz/progrezz-client-api-rest.git
+[submodule "public/lib/client-api-websocket"]
+	path = public/lib/client-api-websocket
+	url = https://github.com/teamprogrezz/progrezz-client-api-websocket.git

@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!file.README.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'>
+<h1 id="label-Servidor+proyecto+PROGREZZ">Servidor proyecto PROGREZZ</h1>
+
+<h2 id="label-1.+Introducci-C3-B3n">1. Introducción</h2>
+
+<p>El servidor de Progrezz permite centralizar y procesar todos los datos
+referentes a los usuarios o jugadores del mismo.</p>
+
+<p>Para evitar sobrecarga en los dispositivos y erradicar comportamientos no
+deseados en los jugadores (trampas, lenguaje ofensivo, …), se ha tomado la
+decisión de gestionar el mayor número de tareas posible, permitiendo al
+usuario realizar tareas tan sencillas como dibujar en pantalla el contenido
+solicitado al servidor.</p>
+
+<p>Para una mayor modularidad, se utilizará Ruby Sinatra sobre el servidor
+Thin, usando una base de datos neo4j.</p>
+
+<h2 id="label-2.+Acceso+al+servidor">2. Acceso al servidor</h2>
+
+<p>Actualmente, el servidor está hosteado en los siguientes servidores o
+servicios:</p>
+<ul><li>
+<p>Heroku: <a
+href="http://progrezz-server.herokuapp.com">progrezz-server.herokuapp.com</a>/</p>
+</li></ul>
+
+<h2 id="label-3.+Dependencias">3. Dependencias</h2>
+
+<h4 id="label-Ruby">Ruby</h4>
+
+<p>Las dependecias de ruby se pueden encontrar en el Gemfile del repositorio.
+Pueden ser instaladas cómodamente con <code>bundle</code>, tal como se
+muestra en el punto <strong>6. Uso</strong>.</p>
+
+<h4 id="label-Base+de+datos">Base de datos</h4>
+
+<p>Será necesario un servidor funcional <a href="http://neo4j.com">neo4j</a>,
+junto son su dirección de acceso en una de las siguientes variables de
+entorno:</p>
+<ul><li>
+<p>PROGREZZ_NEO4J_URL</p>
+</li><li>
+<p>GRAPHENDB_URL</p>
+</li></ul>
+
+<p>Deben tener el siguiente formato URI:</p>
+
+<pre class="code ruby"><code class="ruby">&lt;usuario&gt;:&lt;password&gt;@&lt;dominio-servidor&gt;:&lt;puerto&gt;/db/data/</code></pre>
+
+<p>También se intentará buscar como último remedio en el host <em><a
+href="http:localhost:7474">localhost:7474</a></em> (sin credenciales de
+acceso).</p>
+
+<h4 id="label-Servicio+de+rutas">Servicio de rutas</h4>
+
+<p>Por defecto, el servidor usará un servidor <a
+href="https://github.com/Project-OSRM/osrm-backend">OSRM</a> para realizar
+las peticiones (por ejemplo, a
+<code>http://localhost:5000/nearest?loc=26.08,-16.5</code>). Para utilizar
+está función, se debe definir la dirección del servidor en la variable de
+entorno <code>progrezz_matching_osrm</code> con la url del servidor (para
+el caso de anterior, <code>http://localhost:5000</code>).</p>
+
+<p><strong>Nota:</strong> Se recomienda encarecidamente usar un servidor
+propio OSRM para resolver este tipo de peticiones.</p>
+
+<p>En caso de no encontrar un servidor OSRM, se utilizará la <a
+href="http://developer.mapquest.com/web/products/dev-services/directions-ws">API
+de MapQuest Directions</a> para ajustar geolocalizaciones a la carretera
+más próxima. Para ello, se debe definir la variable de entorno
+<code>progrezz_mapquest_key</code> con la APPKey de MapQuest.</p>
+
+<p>También se puede deshabilitar el servicio de rutas usando la variable de
+entorno <code>progrezz_disable_routing</code> a <code>true</code>.</p>
+
+<h2 id="label-6.+Uso">6. Uso</h2>
+
+<h4 id="label-Instalaci-C3-B3n">Instalación</h4>
+
+<p>Una vez instalada e iniciada la base de datos, se puede preparar el
+servidor con el siguiente comando, desde la carpeta raíz del proyecto:</p>
+
+<pre class="code ruby"><code class="ruby">$ rake setup</code></pre>
+
+<h4 id="label-Ejecuci-C3-B3n">Ejecución</h4>
+
+<p>El servidor puede ser iniciado en modo prueba con</p>
+
+<pre class="code ruby"><code class="ruby">$ rake development</code></pre>
+
+<p>Para iniciar en modo producción, use <code> $ rake production </code></p>
+
+<p>Para subir el proyecto a heroku, teniendo definida el repositorio remoto
+<code>heroku</code>, utilice</p>
+
+<pre class="code ruby"><code class="ruby">$ rake heroku</code></pre>
+
+<h4 id="label-Otros">Otros</h4>
+
+<p>Para generar la documentación, use</p>
+
+<pre class="code ruby"><code class="ruby">$ rake doc</code></pre>
+
+<p>Para más información, mire el contenido del fichero <code>rakefile</code>.</p>
+
+<h2 id="label-5.+Contacto">5. Contacto</h2>
+
+<p>Envíe cualquier duda, comentario u opinión a cualquier correo de la
+siguiente lista:</p>
+<ul><li>
+<p>Proyecto progrezz: <a
+href="mailto:proyecto.progrezz@gmail.com">proyecto.progrezz@gmail.com</a></p>
+</li></ul>
+
+<h2 id="label-6.+Agradecimientos+-2F+Referencias">6. Agradecimientos / Referencias</h2>
+<ul><li><p>Directions Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p></li></ul>
+</div></div>
+
+    <div id="footer">
+  Generated on Thu Mar 19 11:13:48 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

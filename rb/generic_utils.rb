@@ -4,14 +4,12 @@ require 'open3'
 
 # Clase de utilidades genéricas.
 class GenericUtils
-
   # Requerir un directorio de ficheros fuente.
   #
   # Se buscarán e incluirán ficheros según se indiquen en los parámetros.
   # 
-  # * *Argumentos* :
-  #   - +dir_regexp+: Expresión regular de la carpeta a incluir.
-  #   - +msg+: Mensaje que se muestra antes de cargar el fichero. Si es nil, no se muestra nada.
+  # @param dir_regexp [String] Expresión regular de la carpeta a incluir.
+  # @param msg [String] Mensaje que se muestra antes de cargar el fichero. Si es nil, no se muestra nada.
   def self.require_dir(dir_regexp, msg = nil)
     Dir[dir_regexp].each {|file|
       if msg != nil; puts msg + file.split(/\.rb/)[0] end
@@ -21,8 +19,7 @@ class GenericUtils
   
   # Medir el tiempo que tarda en ejecutar un bloque de código.
   #
-  # * *Devuelve* 
-  #   - Tiempo que ha tardado en ejecutarse el bloque, en ms.
+  # @return Tiempo que ha tardado en ejecutarse el bloque, en ms.
   #
   def self.timer()
     pre_time = Time.now
@@ -32,14 +29,12 @@ class GenericUtils
   
   # Ejecuta un programa o script cualquiera.
   #
-  # * *Argumentos*:
-  #   - +executable+: Ejecutable o intérprete a lanzar (ejemplo: python, ruby, ls, executable_cpp, ...).
-  #   - +arguments+:  Argumentos a pasar al ejecutable (ejemplo: file.py, main.rb, -la, ...).
-  #   - +env_vars+:   Hash de variables de entorno a pasar al programa (ejemplo: {name: "wikiti", pass: "****"}, ...).
-  #   - +input_str+:  Cadena de entrada sustituyendo al flujo STDIN.
+  # @param executable [String] Ejecutable o intérprete a lanzar (ejemplo: python, ruby, ls, executable_cpp, ...).
+  # @param arguments  [String] Argumentos a pasar al ejecutable (ejemplo: file.py, main.rb, -la, ...).
+  # @param env_vars   [Hash<Symbol, String>] Hash de variables de entorno a pasar al programa (ejemplo: { name: "wikiti", pass: "****" }, ...).
+  # @param input_str  [String] Cadena de entrada sustituyendo al flujo STDIN.
   #
-  # * *Devuelve* 
-  #   - STDOUT y STDERR del script, como un hash, tal que {stdout: STDOUT, stderr: STDERR}.
+  # @return [Hash<Symbol, String>] STDOUT y STDERR del script, como un hash, tal que { stdout: STDOUT, stderr: STDERR}.
   #
   def self.run_script(executable, arguments, env_vars = {}, input_str = "")
     cmd = executable + " " + arguments
@@ -52,19 +47,29 @@ class GenericUtils
   
   # Ejecuta un programa python.
   #
-  # Es un acceso directo al método GenericUtils.run_script con el intérprete de python.
+  # Es un acceso directo al método #GenericUtils.run_script con el intérprete de python.
   #
-  # * *Argumentos*:
-  #   - +script_file+: Fichero del script python.
-  #   - +env_vars+:    Hash de variables de entorno (strings) a pasar al programa (ejemplo: {"name" => "wikiti", "pass" => "****"}, ...). Se accedencon python mediante ENV['variable'].
-  #   - +input_str+:   Cadena de entrada sustituyendo al flujo STDIN.
+  # @param script_file [String] Fichero del script python.
+  # @param env_vars [Hash<Symbol, String>] Hash de variables de entorno (strings) a pasar al programa (ejemplo: { "name" => "wikiti", "pass" => "****" }, ...). Se accede con python mediante ENV ['variable'].
+  # @param input_str [String]  Cadena de entrada sustituyendo al flujo STDIN.
   #
-  # * *Devuelve* 
-  #   - STDOUT y STDERR del script, como un hash, tal que {stdout: STDOUT, stderr: STDERR}.
+  # @return [Hash<Symbol, String>] STDOUT y STDERR del script, como un hash, tal que { stdout: STDOUT, stderr: STDERR }.
   #
   def self.run_py(script_file, env_vars = {}, input_str = "")
     return GenericUtils.run_script('python', script_file, env_vars, input_str)
   end
+  
+  # Convertir las claves de un Hash a claves.
+  #
+  # @param h [Hash] Hash a modificar.
+  # @return [Hash] Hash convertido.
+  def self.symbolize_keys_deep!(h)
+    h.keys.each do |k|
+      ks    = k.respond_to?(:to_sym) ? k.to_sym : k
+      h[ks] = h.delete k # Preserve order even when k == ks
+      symbolize_keys_deep! h[ks] if h[ks].kind_of? Hash
+    end
 
-  #-- ...  #++
+    return h
+  end
 end

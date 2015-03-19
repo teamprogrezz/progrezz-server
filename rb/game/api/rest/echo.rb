@@ -1,4 +1,5 @@
-#:nodoc:
+# encoding: UTF-8
+
 module Sinatra
   module API
   module REST
@@ -17,8 +18,10 @@ module Sinatra
             name = response[:request][:request][:data][:name].to_s
           end
           
-          response[:response][:data][:type]    = "plain"
-          response[:response][:data][:message] = "Hello, " + name + "!"
+          Game::API::JSONResponse.ok_response!( response, {
+            type: "plain",
+            message: "Hello, " + name + "!"
+          })
         rescue Exception => e
           raise "Invalid request: " + e.message
         end
@@ -35,8 +38,11 @@ module Sinatra
           
           input_json = '{"name": "' + name + '"}'
           
-          response[:response][:data][:type]    = "plain"
-          response[:response][:data][:message] = GenericUtils.run_py('scripts/python/echo.py', { "INPUT_JSON" => input_json })[:stdout] 
+          Game::API::JSONResponse.ok_response!( response, {
+            type: "plain",
+            message: GenericUtils.run_py('scripts/python/echo.py', { "INPUT_JSON" => input_json })[:stdout] 
+          })
+
         rescue Exception => e
           raise "Invalid request: " + e.message
         end

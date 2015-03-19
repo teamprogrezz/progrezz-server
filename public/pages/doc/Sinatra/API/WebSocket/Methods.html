@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Sinatra::API::WebSocket::Methods
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../../';
+  framesUrl = "../../../frames.html#!Sinatra/API/WebSocket/Methods.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../../_index.html">Index (M)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../../Sinatra.html" title="Sinatra (module)">Sinatra</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../API.html" title="Sinatra::API (module)">API</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../WebSocket.html" title="Sinatra::API::WebSocket (module)">WebSocket</a></span></span>
+     &raquo; 
+    <span class="title">Methods</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Sinatra::API::WebSocket::Methods
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Sinatra::API::WebSocket::Methods</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rb/game/api/websocket/websocket.rb<span class="defines">,<br />
+  rb/game/api/websocket/echo_ws.rb,<br /> rb/game/api/websocket/user_ws.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase contenedora de los métodos diversos de la API WebSocket.</p>
+
+<p>Los websockets se abrirán accediendo a la URI /dev/api/websocket TODO: …</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://progrezz-server.heroku.com/dev/websocket" target="_parent" title="http://progrezz-server.heroku.com/dev/websocket">http://progrezz-server.heroku.com/dev/websocket</a></li>
+    
+  </ul>
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#echo-class_method" title="echo (class method)">+ (Object) <strong>echo</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Método de prueba (saludar al nombre “request.data.name” de la petición
+realizada).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_get_nearby_users-class_method" title="user_get_nearby_users (class method)">+ (Object) <strong>user_get_nearby_users</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Buscar jugadores cercanos.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_update_geolocation-class_method" title="user_update_geolocation (class method)">+ (Object) <strong>user_update_geolocation</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Actualizar la posición geolocalizada del servidor.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="echo-class_method">
+  
+    + (<tt>Object</tt>) <strong>echo</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Método de prueba (saludar al nombre “request.data.name” de la petición
+realizada).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/websocket/echo_ws.rb', line 10</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>world</span><span class='tstring_end'>&#39;</span></span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='kw'>end</span>
+    
+    <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+      <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hello, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>!</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid request: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user_get_nearby_users-class_method">
+  
+    + (<tt>Object</tt>) <strong>user_get_nearby_users</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Buscar jugadores cercanos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/websocket/user_ws.rb', line 21</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_get_nearby_users'>user_get_nearby_users</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_default_radius'>default_radius</span> <span class='op'>=</span> <span class='int'>2</span> <span class='comment'># km
+</span>  
+  <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  
+  <span class='comment'># Buscar jugadores
+</span>  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_get_online_nearby_users'>get_online_nearby_users</span><span class='lparen'>(</span><span class='id identifier rubyid_default_radius'>default_radius</span><span class='rparen'>)</span>
+
+  <span class='comment'># Generar respuesta
+</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>users:</span> <span class='id identifier rubyid_output'>output</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user_update_geolocation-class_method">
+  
+    + (<tt>Object</tt>) <strong>user_update_geolocation</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Actualizar la posición geolocalizada del servidor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/websocket/user_ws.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_update_geolocation'>user_update_geolocation</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  
+  <span class='comment'># Actualizar en la BD.
+</span>  <span class='id identifier rubyid_lat'>lat</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span>
+  <span class='id identifier rubyid_lon'>lon</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span>
+  <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_set_geolocation'>set_geolocation</span><span class='lparen'>(</span><span class='id identifier rubyid_lat'>lat</span><span class='comma'>,</span> <span class='id identifier rubyid_lon'>lon</span> <span class='rparen'>)</span>
+
+  <span class='comment'># Generar respuesta
+</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User geolocation changed to </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_lat'>lat</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_lon'>lon</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Mar 19 11:13:49 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

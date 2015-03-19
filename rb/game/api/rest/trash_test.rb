@@ -1,121 +1,141 @@
 # encoding: UTF-8
 
+#if development?
+
 require 'sinatra'
 require 'sinatra/base'
 require 'neo4j'
 require 'cgi'
 
-module Sinatra #:nodoc: all
+# Prueba de ajuste geolocalizado
+#location = {latitude: 28.26807, longitude: -16.43555}
+#puts location
+#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationManagement.snap_geolocation!(location) }).to_s
+#puts location
 
+module Sinatra
 module API
 module REST
 
   # Módulo de la api REST para hacer pruebas.
   module Trash
+    
+    # Métodos de ayuda del módulo de pruebas.
     module Helpers
+      
+      # Eliminar contenido de la base de datos.
       def db_drop()
         Game::Database::DatabaseManager.drop()
         
         return "<h2>Database droped.</h2>"
       end
       
+      # Añadir contenido de prueba de la base de datos.
       def db_add()
+        result = nil
+        
+        user_Wikiti = nil
+        user_Shylpx = nil
+        
+        messages = []
+        
         begin
-          user_Wikiti = nil
-          user_Shylpx = nil
-          
-          messages = []
-          
-          #tx = Neo4j::Transaction.new
-          
-          # Usuarios
-          puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
-            user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 2.0, longitude: 0.81})
-            user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
-          end).to_s
-          
-          # Mensajes con autor
-          puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
-            messages << user_Wikiti.write_msg( "Mensaje de prueba de Wikiti." )
-            messages << user_Wikiti.write_msg( "Mensaje de prueba de Shylpx n2 (robado)." )
-            messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
-          end).to_s
-          
-          # Mensajes sin autor
-          puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-            messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 1.995, longitude: 0.809})
-            messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809} )
-            messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
-          end).to_s
-          
-          # Buscar mensajes de Wikiti
-          puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
-            Game::Database::User.all.where( alias: "Wikiti").first.written_messages
-          end).to_s
-          
-          # Añadir fragmentos a Wikiti
-          puts "Tiempo de asosiación de fragmentos a Wikiti: " + (GenericUtils.timer do
-            user_Wikiti.collect_fragment( messages[0].fragments[0] ) # Autor -> No añadido.
+          Game::Database::DatabaseManager.run_nested_transaction do |tx|
             
-            # Añadir fragmentos
-            fragments = messages[4].fragments
-            user_Wikiti.collect_fragment( fragments[0] )
-            user_Wikiti.collect_fragment( fragments[0] ) # Mensaje repetido -> No añadido.
-            user_Wikiti.collect_fragment( fragments[2] )
+            # Usuarios
+            puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
+              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 37.3855213, longitude: -5.9692002})
+              user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
+            end).to_s
             
-            # Añadir mensaje completo
+            # Mensajes con autor
+            puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
+              messages << user_Wikiti.write_msg( "Mensaje de prueba de Wikiti." )
+              messages << user_Wikiti.write_msg( "Mensaje de prueba de Shylpx n2 (robado)." )
+              messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
+            end).to_s
+            
+            # Mensajes sin autor
+            puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
+              messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 })
+              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 })
+              messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+              
+              # Crear copia de un mensaje replicable
+              # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
+              
+            end).to_s
+            
+            # Buscar mensajes de Wikiti
+            puts "Tiempo de búsqueda de mensajes sin autor: " + (GenericUtils.timer do
+              Game::Database::Message.unauthored_messages()
+            end).to_s
+            
+            # Buscar mensajes de Wikiti
+            puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
+              Game::Database::User.find_by( alias: "Wikiti").written_messages
+            end).to_s
+            
+            # Añadir fragmentos a Wikiti
+            puts "Tiempo de asociación de fragmentos a Wikiti: " + (GenericUtils.timer do
+              # Añadir fragmentos
+              fragments = messages[4].fragments
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 2).first )
+              
+              # Añadir mensaje completo
+              fragments = messages[3].fragments
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 1).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 2).first )
+              user_Wikiti.collect_fragment( fragments.where(fragment_index: 3).first )
+              
+            end).to_s
+            
             fragments = messages[3].fragments
-            user_Wikiti.collect_fragment( fragments[0] )
-            user_Wikiti.collect_fragment( fragments[1] )
-            user_Wikiti.collect_fragment( fragments[2] )
-            user_Wikiti.collect_fragment( fragments[3] )
             
-          end).to_s
-          
-          # Añadir fragmentos a Shylpx
-          puts "Tiempo de asosiación de fragmentos a Shylpx: " + (GenericUtils.timer do
-            fragments = messages[3].fragments
-            user_Shylpx.collect_fragment( fragments[0] )
-            user_Shylpx.collect_fragment( fragments[1] )
-            
-            fragments = messages[0].fragments
-            user_Shylpx.collect_fragment( fragments[0] )
-          end).to_s
-          
-          # Borrar usuario
-          puts "Tiempo de borrado de Wikiti: " + (GenericUtils.timer do
-            #user_Wikiti.destroy
-          end).to_s
-          
-          # Tiempos de geocoder
-          puts "Progrezz time: " + (GenericUtils.timer do
-            for i in 0...9999 do
-              distance = Progrezz::Geolocation.distance({latitude: i - 1, longitude: i + 1}, {latitude: i - 2, longitude: i + 2}, :km)
-            end
-          end).to_s
-          
-          puts "Geocoder time: " + (GenericUtils.timer do
-            for i in 0...9999 do
-              Geocoder::Calculations.distance_between([i-1,i+1], [i-2,i+2], {:units => :km})
-            end
-          end).to_s
-          
-          result = "<h2>Datos añadidos correctamente.</h2>"
+            # Añadir fragmentos a Shylpx
+            puts "Tiempo de asociación de fragmentos a Shylpx: " + (GenericUtils.timer do
 
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 1).first )
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 2).first )
+              
+              fragments = messages[0].fragments
+              user_Shylpx.collect_fragment( fragments.where(fragment_index: 0).first )
+              user_Shylpx.change_message_status( messages[0].uuid, "locked" )
+              
+            end).to_s
+            
+            # Tiempos de geocoder
+            puts "Progrezz time: " + (GenericUtils.timer do
+              for i in 0...9999 do
+                distance = Progrezz::Geolocation.distance({latitude: i - 1, longitude: i + 1}, {latitude: i - 2, longitude: i + 2}, :km)
+              end
+            end).to_s
+            
+            puts "Geocoder time: " + (GenericUtils.timer do
+              for i in 0...9999 do
+                Geocoder::Calculations.distance_between([i-1,i+1], [i-2,i+2], {:units => :km})
+              end
+            end).to_s
+            
+            result = "<h2>Datos añadidos correctamente.</h2>"
+          end
+          
+        # Banearme 5 minutos ( D': )
+        #Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
+          
         rescue Exception => e
-          #tx.failure()
-          
-          puts e.message
-          puts e.backtrace
-          result = e.class.name + " -> " + e.message
-          
-        ensure
-          Game::Database::DatabaseManager.force_save() 
+          #puts e.message
+          #puts e.backtrace
+          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
         end
         
         return result
       end
       
+      # Reiniciar contenido de la base de datos.
       def db_reset()
         db_drop()
         return db_add()
@@ -123,6 +143,9 @@ module REST
        
     end
     
+    # Registrar métodos de prueba.
+    #
+    # @param app [Sinatra::Application] Aplicación sinatra.
     def self.registered(app)
        # Añadir "ayudas".
       app.helpers Helpers
@@ -160,7 +183,9 @@ end; end
 register API::REST::Trash
 end
 
-#-- Cargar en el servidor #++
-class ProgrezzServer
+class Sinatra::ProgrezzServer
   register Sinatra::API::REST::Trash
 end
+#-- Cargar en el servidor #++
+
+#end

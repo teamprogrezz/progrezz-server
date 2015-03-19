@@ -1,0 +1,179 @@
+<!-- Externo -->
+<script src="/lib/codemirror/js/codemirror.js"></script>
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+
+<!-- HTML -->
+<div class="container-fluid">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="padding-top: 1px;">
+      <h3>Interactive WebSocket client</h3>
+    </div>
+  </div>
+    
+  <div class="row">
+    <!-- Menú -->
+    <% if defined? websocket_methods %>
+    <% count = 0 %>
+    <div class="col-md-2">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Methods</h3>
+        </div>
+        <div class="panel-body">
+          <div class="btn-group-vertical" style="width: 100%;" role="group" aria-label="Vertical button group">
+            <% websocket_methods.each do |methods| %>
+            <div class="btn-group" role="group">
+              <button id="btnGroupVerticalDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <%= methods[0] %> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                <% methods[1].each do |method| %>
+                <li><a onclick= <%= "dump_example(" + count.to_s + ");" %> > <%= method["name"] %> </a></li>
+                <% count += 1 %>
+                <% end %>
+              </ul>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    
+    <div class="col-md-10">
+      <!-- Request -->
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>WebSocket message</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+          <textarea id="form_request_str" class="form-control" rows="5" style="resize: none;"></textarea>
+          </div>
+          <button type="button" onclick="send_form();" class="btn btn-success">Send message</button>
+        </div>
+      </div>
+      
+      <!-- Response -->
+      <div class="panel panel-default">
+        <div class="panel-heading" style="padding-top: 1px;">
+          <h3>Server Responses</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+          <textarea id="output" class="form-control" rows="5" style="resize: none;"></textarea>
+          </div>
+          <div id="serverstatus" style="visibility: hidden;" class="alert alert-danger" role="alert">Error!</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+</div>
+
+
+  <!-- Javascript -->
+<!-- Cliente de la API Websocket -->
+<script type="text/javascript" src="/lib/client-api-websocket/js/progrezz-api-websocket.js" ></script>
+
+<!-- Procesamiento local -->
+<script type="text/javascript">
+  // Cambiar editor  
+  var editor_input  = CodeMirror.fromTextArea(document.getElementById("form_request_str"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    tabSize: 2
+  });
+  var editor_output = CodeMirror.fromTextArea(document.getElementById("output"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    readOnly: true,
+    tabSize: 2
+  });
+  
+  editor_input.setSize( null, 250 )
+  //editor_output.setSize( null, 80 )
+  
+  websocket_methods_data = [];
+  
+<% websocket_methods.each do |methods| %>
+<% methods[1].each do |method| %>  websocket_methods_data.push( <%= method["example"].to_json %> );
+<% end %>
+<% end %>
+
+  // Métodos de ayuda
+  function dump_example(num) {
+     editor_input.getDoc().setValue(JSON.stringify( websocket_methods_data[num], null, '  ' ));
+  }
+  
+  var response_count = 0;
+  
+  function add_response(msg) {
+    response_count++;
+    editor_output.getDoc().setValue( "\n" + msg + editor_output.getDoc().getValue() )
+  }
+  
+  // Crear websocket
+  ProgrezzWS.DEFAULT.URL = "ws://<%= request.host_with_port %>/" + ProgrezzWS.DEFAULT.URL;
+  console.log( ProgrezzWS.DEFAULT.URL );
+  var ws = new ProgrezzWS;
+  
+  // Asignar callbacks
+  ws.onOpen = function() {
+    add_response("WebSocket opened.")
+  }
+  
+  ws.onClose = function() {
+    add_response("WebSocket closed.")
+  }
+  
+  ws.onError = function(error) {
+    add_response( ProgrezzWS.StringifyError(error) );
+  }
+  
+  ws.onMessage = function(json_msg) {
+    // Suponemos que json_msg es un json.
+    add_response( "Response: " + JSON.stringify(json_msg) );
+  }
+
+  // Abrir y cerrar socket al abrir y cerrar la ventana:
+  window.onload = function() {
+    ws.open( ProgrezzWS.DEFAULT.URL );
+  }
+  
+  window.onbeforeunload = function(){
+    ws.close();
+  }
+  
+  // Enviar formulario
+  function send_form() {
+    ws.send( editor_input.getDoc().getValue() );
+  }
+  
+  // Local storage para guardar el contenido de envío de mensajes.
+  if(typeof(Storage) !== "undefined") {
+    // Cambiar callback
+    editor_input.on("change", function() {
+      if(typeof(Storage) !== "undefined")
+        localStorage.last_ws_input = editor_input.getDoc().getValue()
+    });
+  
+    if (localStorage.last_ws_input)
+      editor_input.getDoc().setValue(localStorage.last_ws_input);
+    else
+      dump_example(0);
+  }
+  else {
+    dump_example(0);
+  }
+    
+</script>
