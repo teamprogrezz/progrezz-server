@@ -9,6 +9,7 @@ require_relative '../relations/user-completed_message'
 module Game
   module Database
     
+    class LevelProfile; end
     class Message; end
     # Forward declaration
     
@@ -87,6 +88,11 @@ module Game
       # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
       
+      # @!method :level_profile
+      # Relación con el nivel del usuario (#Game::Database::User). Se puede acceder con el atributo +user+.
+      # @return [Game::Database::User] Usuario que posee este nivel.
+      has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
+      
       #-- -------------------------
       #      Métodos de clase
       #   ------------------------- #++
@@ -101,6 +107,8 @@ module Game
         begin          
           user = create( { alias: al, user_id: uid } ) do |usr|
             usr.set_geolocation( position[:latitude], position[:longitude] )
+            # Crear perfil
+            usr.level_profile = Game::Database::LevelProfile.create( )
           end
 
         rescue Exception => e
