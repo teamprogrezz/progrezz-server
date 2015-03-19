@@ -114,6 +114,28 @@ entorno:</p>
 href="http:localhost:7474">localhost:7474</a></em> (sin credenciales de
 acceso).</p>
 
+<h4 id="label-Servicio+de+rutas">Servicio de rutas</h4>
+
+<p>Por defecto, el servidor usará un servidor <a
+href="https://github.com/Project-OSRM/osrm-backend">OSRM</a> para realizar
+las peticiones (por ejemplo, a
+<code>http://localhost:5000/nearest?loc=26.08,-16.5</code>). Para utilizar
+está función, se debe definir la dirección del servidor en la variable de
+entorno <code>progrezz_matching_osrm</code> con la url del servidor (para
+el caso de anterior, <code>http://localhost:5000</code>).</p>
+
+<p><strong>Nota:</strong> Se recomienda encarecidamente usar un servidor
+propio OSRM para resolver este tipo de peticiones.</p>
+
+<p>En caso de no encontrar un servidor OSRM, se utilizará la <a
+href="http://developer.mapquest.com/web/products/dev-services/directions-ws">API
+de MapQuest Directions</a> para ajustar geolocalizaciones a la carretera
+más próxima. Para ello, se debe definir la variable de entorno
+<code>progrezz_mapquest_key</code> con la APPKey de MapQuest.</p>
+
+<p>También se puede deshabilitar el servicio de rutas usando la variable de
+entorno <code>progrezz_disable_routing</code> a <code>true</code>.</p>
+
 <h2 id="label-6.+Uso">6. Uso</h2>
 
 <h4 id="label-Instalaci-C3-B3n">Instalación</h4>
@@ -152,10 +174,13 @@ siguiente lista:</p>
 <p>Proyecto progrezz: <a
 href="mailto:proyecto.progrezz@gmail.com">proyecto.progrezz@gmail.com</a></p>
 </li></ul>
+
+<h2 id="label-6.+Agradecimientos+-2F+Referencias">6. Agradecimientos / Referencias</h2>
+<ul><li><p>Directions Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p></li></ul>
 </div></div>
 
     <div id="footer">
-  Generated on Tue Mar 10 14:16:30 2015 by
+  Generated on Thu Mar 19 11:13:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

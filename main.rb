@@ -3,17 +3,24 @@
 #-- Cargar ruta actual en la ruta de carga de fuentes. #++
 $LOAD_PATH << File.dirname(__FILE__) + "\n"
 
+# Mejorar funcionamiento
+require 'oj'
+require 'oj_mimic_json'
+
 require 'sinatra'
 require 'neo4j'
 
+require 'thread'
+
 if development?
   require 'sinatra/reloader'
+  require 'ruby-prof'
 
   puts "--------------------------------------"
   puts "**   Starting in development mode   **"
   puts "--------------------------------------"
   
-  # Variable de desarrollo.
+  # Variable de desarrollo
   DEV = true
 end
 
@@ -103,32 +110,24 @@ end
 
 class Sinatra::ProgrezzServer; register Sinatra::Pages; end
 #-- Registrar. #++
-
-# Cosas a ejecutar cuando se cierre la app.
-at_exit do
-  Game::Database::DatabaseManager.force_save()
-  puts "Progrezz server ended. Crowd applause."
-end
-
 #-- ---------------------------------------------------------------- #++
 
 #-- Require especial (con expresiones regulares, para directorios). #++
 require './rb/generic_utils'
 
-#-- Cargar datos referente a la base de datos. #++
-require './rb/db'
+#-- Cargar Gestores del servidor. #++
+GenericUtils.require_dir("./rb/managers/**/*.rb", "----------------------------------\n    Mánager:                ")
+puts "----------------------------------"
 
-#-- Cargar datos referentes a la api REST. #++
-require './rb/rest'
-
-#-- Cargar datos referentes a la api WebSocket. #++
-require './rb/websocket'
-
-#-- Cargar autenticación de usuarios. #++
-require './rb/auth'
-
-#-- Cargar autenticación de administradores. #++
-require './rb/game/admin/admin'
+# Cosas a ejecutar cuando se cierre la app.
+at_exit do
+  Thread.list.each do |thread|
+    thread.exit unless thread == Thread.current
+  end
+  
+  Game::Database::DatabaseManager.force_save()
+  puts "Progrezz server ended. Crowd applause."
+end
 
 #-- ---------------------------------------------------------------- #++
 

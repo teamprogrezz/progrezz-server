@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'date'
 
 module Sinatra
@@ -45,13 +47,15 @@ module Sinatra
         # CORS para habilitar peticiones JSON entre dominios.
         headers['Access-Control-Allow-Methods']     = 'GET' # , POST'
         headers['Access-Control-Allow-Origin']      = '*'
-        headers['Access-Control-Allow-Headers']     = 'accept, authorization, origin, content-type'
+        headers['Access-Control-Allow-Headers']     = 'X-Requested-With, accept, authorization, origin, content-type'
         headers['Access-Control-Allow-Credentials'] = 'true'
       end
 
       # Acceso mediante método GET
       app.get '/dev/api/rest' do
         content_type :json  # Tipo de respuesta: JSON.
+        
+        #RubyProf.start
         
         # Simbolizar claves de los parámetros
         GenericUtils.symbolize_keys_deep!(params)
@@ -62,39 +66,38 @@ module Sinatra
         response[:request] = request
 
         # Activar gestor de transacciones.
-        transaction = Game::Database::DatabaseManager.start_transaction()
-        begin  
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
           # Tipo de petición
-          method = request[:request][:type].to_s
-
-          if method == ""
-            raise "Invalid request type '" + method + "'"
-          else
-            Methods.send( method, app, response, session )
+          begin
+            method = request[:request][:type].to_s
+  
+            if method == ""
+              raise "Invalid request type '" + method + "'"
+            else
+              Methods.send( method, app, response, session )
+            end
+            
+            response[:metadata][:type] = "response"
+            
+          rescue Exception => e  
+            # Deshacer transacción.
+            tx.failure()
+            
+            # Generar error
+            Game::API::JSONResponse.error_response!( response, e.message )
+            
+            # Añadir parámetros adicionales
+            response[:response][:backtrace] = e.backtrace
           end
-
-        rescue Exception => e  
-          # Deshacer transacción.
-          Game::Database::DatabaseManager.rollback_transaction(transaction)
           
-          # Generar error
-          Game::API::JSONResponse.error_response!( response, e.message )
-          
-          # Añadir parámetros adicionales
-          response[:response][:backtrace] = e.backtrace
-
-        ensure
-          # Cerrar la transacción
-          Game::Database::DatabaseManager.stop_transaction(transaction)
         end
-
-        # Calcular tiempo de cómputo (en ms)
+        
         Game::API::JSONResponse.stop_timer!(response)
 
-        # Quitar la petición del usuario, ya que no es necesario reenviarla (ya está en el cliente).
-        response.delete( :request )
-
-        # Devolver respuesta como un json
+        #profile = RubyProf.stop
+        #printer = RubyProf::GraphHtmlPrinter.new(profile)
+        #File.open("tmp/last_rest_call.html", 'w') { |file| printer.print(file, :min_percent => 10) }
+        
         return response.to_json
       end
 

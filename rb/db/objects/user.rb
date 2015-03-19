@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'progrezz/geolocation'
+
 require_relative 'geolocated_object'
 require_relative '../relations/user-message_fragment'
 require_relative '../relations/user-completed_message'
@@ -26,6 +28,12 @@ module Game
       # Fragmentos en los que se partirán los mensajes de un usuario.
       USER_MESSAGE_FRAGMENTS = 1 
       
+      # Método de búsqueda de mensajes por defecto.
+      DEFAULT_SEARCH_METHOD = "neo4j"
+      
+      # Radio de búsqueda de mensajes por defecto.
+      DEFAULT_SEARCH_RADIUS = 1
+      
       # TODO: Añadir límite de mensajes (según el nivel, o algo así).
       
       #-- -------------------------
@@ -43,8 +51,16 @@ module Game
       property :alias, type: String, default: ""
       
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Milisegundos desde el 1/1/1970.
+      # @return [Integer] Segundos desde el 1/1/1970.
       property :created_at
+      
+      # Fecha hasta la que ha sido baneado el usuario.
+      # @return [Date] Segundos desde el 1/1/1970
+      property :banned_until, type: DateTime, default: 0
+      
+      # Flag para saber si un usuario está conectado o no (mediante websockets).
+      # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
+      property :is_online, type: Boolean, default: false
       
       #-- -------------------------
       #     Relaciones (DB)
@@ -86,14 +102,20 @@ module Game
           user = create( { alias: al, user_id: uid } ) do |usr|
             usr.set_geolocation( position[:latitude], position[:longitude] )
           end
-          
+
         rescue Exception => e
           puts e.message
           puts e.backtrace
           raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message;
         end
-        
+
         return user
+      end
+      
+      # Retornar lista de usuarios online.
+      # @return [Object] Query de neo4j.
+      def self.online_users()
+        return Game::Database::User.where( is_online: true )
       end
       
       # Buscar un usuario
@@ -107,37 +129,12 @@ module Game
         
         # Si no existe, error.
         if user == nil
-          raise "User with user_id '" + user_id + "' does not exist."
+          raise "User with user_id " + user_id.to_s + " does not exist."
         end
         
         return user
       end
       
-      # Busca un usuario autenticado en la sesión actual.
-      #
-      # @param user_id [String] Identificador de usuario (correo electrónico).
-      # @param session [Hash] Sesión de Ruby Sinatra.
-      #
-      # @return [Game::Database::User] Si el usuario existe y está autenticado en la sesión actual, devuelve una referencia al mismo. Si no, genera una excepción.
-      def self.search_auth_user(user_id, session)
-        user = search_user(user_id)
-
-        if ENV['users_auth_disabled'] == "true"
-          puts "Warning!! Users auth disabled!"
-        else
-          if user.user_id != session[:user_id]
-            error_msg = "You are NOT authenticated as '" + user.user_id + "'."
-            if session[:user_id] != nil
-              error_msg += " You are authenticated as '" + session[:user_id] + "'."
-            end
-            
-            raise error_msg
-          end
-        end
-        
-        return user
-      end
-
       #-- -------------------------
       #          Métodos
       #   ------------------------- #++
@@ -154,12 +151,12 @@ module Game
         
         attributes.delete( :user_id )
         self.update( attributes )
-        
-        #if attributes[:alias] != nil && attributes[:alias] != self.alias
-        #  self.alias = attributes[:alias]
-        #  changed = true
-        #end
-        #if changed == true; self.save; end
+      end
+      
+      # Actualizar estado "online" del jugador.
+      # @param new_status [Boolean] Nuevo estado. True si es online, False si es offline.
+      def online(new_status = true) 
+        self.update( {is_online: new_status} )
       end
       
       # Añadir nuevo mensaje.
@@ -188,7 +185,7 @@ module Game
           raise "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")."
         end
         
-        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation() )
+        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation(), { latitude: 0, longitude: 0 }, false, false )
       end
       
       # Recoger fragmento.
@@ -228,7 +225,8 @@ module Game
           # menos uno (el que falta), se borrarán dichas relaciones y se añadirá un nuevo mensaje
           # marcado como completo.
           total_fragments_count         = fragment_message.message.total_fragments
-          collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(uuid: fragment_message.message.uuid).pluck(:rel)
+          collected_fragments_rel       = self.collected_fragment_messages(:f, :rel).message.where(neo_id: fragment_message.message.neo_id).pluck(:rel)
+          
           collected_fragments_rel_count = collected_fragments_rel.count
 
           if collected_fragments_rel_count == total_fragments_count - 1
@@ -273,7 +271,7 @@ module Game
         msg_uuid = message.uuid
         
         self.collected_fragment_messages.each do |fragment|
-          if fragment.message.uuid == msg_uuid
+          if fragment.message.neo_id == message.neo_id
             if output[msg_uuid] == nil
               output[msg_uuid] = []
             end
@@ -303,6 +301,18 @@ module Game
         return output
       end
       
+      # Getter del radio de búsqueda de un determinado objeto
+      # @param element [Symbol] Radio del tipo de elemento deseado (:fragments, ...).
+      # @return [Float] Radio de búsqueda, en km.
+      def get_current_search_radius( element = :fragments)
+        # TODO: El radio (km) se calculará de manera automática con respecto a su nivel.
+        if element == :fragments
+          return DEFAULT_SEARCH_RADIUS
+        end
+
+        return nil
+      end
+      
       # Obtener mensajes fragmentados de un usuario como un hash.
       #
       # Se usará principalmente para la API REST.
@@ -312,7 +322,6 @@ module Game
       #   { type: "json", completed_messages = { uuid1: { content: "...", author: "...", ... }, uuid2: {...}, ... }, fragmented_messages = { uuid1: { content: "...", author: "...", fragments: n, ... }, ... }  }
       #
       # @return [Hash<Symbol, Object>] Se retornará una lista con las características de los mensajes fragmentados de un usuario.
-      
       def get_fragmented_messages()
         output = {}
         
@@ -331,12 +340,120 @@ module Game
         
         return output
       end
+      
+      # Ignorar los fragmentos escritos por el usuario.
+      # @param method [String] Método para realizar la búsqueda (progrezz, geocoder o neo4j).
+      # @param radius [Float] Radio de búsqueda. Si es null, se usará en función de la experiencia.
+      # @param ignore_user_written_messages [Boolean] Flag para ignorar los mensajes escritor por el usuario.
+      # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
+      def get_nearby_fragments( method = nil, radius = nil, ignore_user_written_messages = true )
+        method = method || DEFAULT_SEARCH_METHOD
+        radius = radius || get_search_radius(:fragments)
+        # ...
+        
+        user_geo = geolocation
+
+        # Resultado
+        output = {
+          user_fragments:   {},
+          system_fragments: {}
+        }
+        
+        # Ejecutar de una manera o de otra en función del método.
+        case method
+        when "progrezz"
+          Game::Database::MessageFragment.each do |fragment|
+            frag_geo = fragment.geolocation
+            
+            if Progrezz::Geolocation.distance(user_geo, frag_geo, :km) <= radius
+              sym = :system_fragments
+              sym = :user_fragments if fragment.message.author != nil
+              
+              output[sym][ fragment.uuid ] = fragment.to_hash
+            end
+          end
+          
+        when "geocoder"
+          user_geo = user_geo.values
+          
+          Game::Database::MessageFragment.each do |fragment|
+            frag_geo = fragment.geolocation.values
+
+            if Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km}) <= radius
+              sym = :system_fragments
+              sym = :user_fragments if fragment.message.author != nil
+              
+              output[sym][ fragment.uuid ] = fragment.to_hash
+            end
+          end
+          
+        when "neo4j"
+          user_geo = user_geo.values
+          
+          lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+          lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+          
+          fragments = Game::Database::MessageFragment.query_as(:mf)
+            .where("mf.latitude  > {l1} and mf.latitude  < {l2} and mf.longitude > {l3} and mf.longitude < {l4}")
+            .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:mf)
+             
+          fragments.each do |fragment|
+            sym = :system_fragments
+            sym = :user_fragments if fragment.message.author != nil
+              
+            output[sym][ fragment.uuid ] = fragment.to_hash
+          end
+          
+        end
+      
+        # Eliminar mensajes cuyo autor sea el que realizó la petición
+        if ignore_user_written_messages == true
+          output[:system_fragments].delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
+          output[:user_fragments].delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
+        end
+        
+        return output
+      end
+      
+      # Buscar usuarios cercanos.
+      # @param radius [Float] Radio de búsqueda (km).
+      # @return [Array<Game::Database::User>] Usuarios cercanos.
+      def get_online_nearby_users(radius)
+        user_geo = geolocation.values
+        lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+        lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+        
+        users = User.query_as(:u)
+          .where("u.user_id <> {user_id} and u.is_online = true and u.latitude > {l1} and u.latitude < {l2} and u.longitude > {l3} and u.longitude < {l4}")
+          .params(user_id: self.user_id, l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:u)
+        
+        output = []
+        
+        users.each do |u|
+          output << u.to_hash
+        end
+        
+        return output
+      end
 
       # Stringificar objeto.
       #
       # @return [String] Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
       def to_s
-        return "<User: " + self.user_id + ", " + self.alias + ", " + super.to_s + ">" 
+        return "<User: " + self.user_id + ", " + self.alias + ", " + self.is_online.to_s + ", " + super.to_s + ">" 
+      end
+      
+      # Retornar objeto como hash.
+      # @param exclusion_list [Array<Symbol>] Lista de elementos a excluir.
+      # @return [Hash<Symbol, Object>] Objeto como hash.
+      def to_hash(exclusion_list = [:user_id])
+        output = {}
+        
+        if !exclusion_list.include? :user_id;     output[:user_id]     = self.user_id end
+        if !exclusion_list.include? :alias;       output[:alias]       = self.alias end
+        if !exclusion_list.include? :geolocation; output[:geolocation] = self.geolocation end
+        
+        return output
       end
     end
   end

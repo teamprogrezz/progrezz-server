@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'date'
 require 'sinatra-websocket'
 
@@ -37,11 +39,11 @@ module Sinatra
         if !request.websocket?
           output = Game::API::JSONResponse.get_template()
           Game::API::JSONResponse.error_response!(output, "Invalid request: Not a websocket request.")
+          output[:metadata][:type] = "system"
           
           return output
         else
           request.websocket do |ws|
-            
             # Petición de apertura.
             ws.onopen do
               # Si no está autenticado, rechazar.
@@ -55,20 +57,60 @@ module Sinatra
                 return
               end
               
-              # Generar plantilla de respuesta
-              output = Game::API::JSONResponse.get_template()
+              # Respuesta al usuario
+              response = Game::API::JSONResponse.get_template()
+              
+              # Preparar petición JSON
+              request = JSON.parse(msg)
+              GenericUtils.symbolize_keys_deep!( request )
+              response[:request] = request
+              
+              if ENV['users_auth_disabled'] == "true"
+                puts "Warning!! Users auth disabled!"
+                session['user_id'] = request[:user_id]
+              end
+              
+              # Métodos WS
+              methods = Methods.new()
 
-              # Procesar respuesta
-              # ...
-              Game::API::JSONResponse.ok_response!( output, {type: "plain", message: "Response OK."} )
+              Game::Database::DatabaseManager.run_nested_transaction do |tx|
+                # Tipo de petición
+                begin
+                  method = request[:request][:type].to_s
+        
+                  if method == ""
+                    raise "Invalid ws request type '" + method + "'"
+                  else
+                    Methods.send( method, app, response, session )
+                  end
+                  
+                  # TODO: Implementar (como en REST). Cabe la posibilidad de compatibilizar los métodos REST en este apartado.
+                  
+                rescue Exception => e
+                  # Deshacer transacción.
+                  tx.failure()
+                  
+                  # Generar error
+                  Game::API::JSONResponse.error_response!( response, e.message )
+                  
+                  # Añadir parámetros adicionales
+                  response[:response][:backtrace] = e.backtrace
+                end
+              end
+              
+              # Parar temporizador
+              Game::API::JSONResponse.stop_timer!( response )
+              
+              # Eliminar "request" de la respuesta.
+              response.delete(:request)
               
               # Y Enviar mensaje
-              ws_manager.send(ws, output)
+              ws_manager.send(ws, response)
             end
             
             # Petición de cierre.
             ws.onclose do
-              ws_manager.remove_socket(ws)
+              ws_manager.close(session, ws)
             end
           end
         end

@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../relations/user-message_fragment'
 
 module Game
@@ -21,8 +23,13 @@ module Game
       # @return [Integer] Debe ser mayor o igual que 0, o menor que el total de fragmentos del mensaje.
       property :fragment_index, type: Integer #, constraint: :unique
       
+      # Índice del grupo al que pertenece el fragmento.
+      # Cada vez que se replica un mensaje, los fragmentos deben tener un nuevo group_index.
+      # @return [Integer] Debe ser mayor o igual que 0.
+      property :group_index, type: Integer
+      
       # Timestamp o fecha de creación del fragmento.
-      # return [Integer] Milisegundos desde el 1/1/1970.
+      # return [Integer] Segundos desde el 1/1/1970.
       property :created_at
       
       #-- -------------------------
@@ -51,9 +58,10 @@ module Game
       # @param msg [String] Referencia al mensaje.
       # @param f_index [Integer] Índice del fragmento.
       # @param position [Hash<Symbol, Float>] Posición geolocalizada del fragmento.
-      def self.create_message_fragment(msg, f_index, position)
+      # @param group_index [Integer] Grupo del fragmento al que pertenece.
+      def self.create_message_fragment(msg, f_index, position, group_index)
         begin
-          fmsg = create( {message: msg, fragment_index: f_index }) do |fragment|
+          fmsg = create( {message: msg, fragment_index: f_index, group_index: group_index }) do |fragment|
             fragment.set_geolocation( position[:latitude], position[:longitude] )
           end
 
@@ -86,6 +94,8 @@ module Game
         if !exclusion_list.include? :geolocation;    output[:geolocation]    = self.geolocation end
         if !exclusion_list.include? :fragment_index; output[:fragment_index] = self.fragment_index end
         if !exclusion_list.include? :message;        output[:message]        = self.message.to_hash() end
+        if !exclusion_list.include? :group_index;    output[:group_index]    = self.group_index end
+        
         
         return output
       end

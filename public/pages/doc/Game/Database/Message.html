@@ -224,7 +224,55 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_message-class_method" title="create_message (class method)">+ (Game::Database::Message) <strong>create_message</strong>(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }) </a>
+      <a href="#author_messages-class_method" title="author_messages (class method)">+ (Object) <strong>author_messages</strong>(author_id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de los mensajes de un determinado autor.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#authored_messages-class_method" title="authored_messages (class method)">+ (Object) <strong>authored_messages</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de los mensajes con autor.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_message-class_method" title="create_message (class method)">+ (Game::Database::Message) <strong>create_message</strong>(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = true) </a>
     
 
     
@@ -240,6 +288,54 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Creación de nuevos mensajes.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unauthored_messages-class_method" title="unauthored_messages (class method)">+ (Object) <strong>unauthored_messages</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de los mensajes sin autor.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unauthored_replicable_messages-class_method" title="unauthored_replicable_messages (class method)">+ (Object) <strong>unauthored_replicable_messages</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de los mensajes sin autor que pueden ser replicables.</p>
 </div></span>
   
 </li>
@@ -473,6 +569,78 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#replicable-instance_method" title="#replicable (instance method)">- (Boolean) <strong>replicable</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Mensaje replicable o no (crear más fragmentos).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#replicate-instance_method" title="#replicate (instance method)">- (Hash&lt;Game::Database::MessageFragment&gt;) <strong>replicate</strong>(new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Generar un nuevo fragmento para el mensaje.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#replications-instance_method" title="#replications (instance method)">- (Integer) <strong>replications</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Cantidad de replicaciones del mensaje.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#resource_link-instance_method" title="#resource_link (instance method)">- (String) <strong>resource_link</strong> </a>
     
 
@@ -497,7 +665,31 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong> </a>
+      <a href="#snap_to_roads-instance_method" title="#snap_to_roads (instance method)">- (Boolean) <strong>snap_to_roads</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Ajustar fragmentos de mensajes a carreteras cercanas.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = [:fragments]) </a>
     
 
     
@@ -577,9 +769,157 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="create_message-class_method">
+  <h3 class="signature first" id="author_messages-class_method">
   
-    + (<tt><span class='object_link'><a href="" title="Game::Database::Message (class)">Game::Database::Message</a></span></tt>) <strong>create_message</strong>(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }) 
+    + (<tt>Object</tt>) <strong>author_messages</strong>(author_id) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de los mensajes de un determinado autor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>author_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>identificador del usuario (correo).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Retorna un objeto neo4j conteniendo el resultado de la consulta.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+153
+154
+155
+156
+157
+158
+159
+160</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 153</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author_messages'>author_messages</span><span class='lparen'>(</span><span class='id identifier rubyid_author_id'>author_id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='id identifier rubyid_author_id'>author_id</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_auth'>auth</span> <span class='op'>==</span> <span class='kw'>nil</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User does not exist.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_auth'>auth</span><span class='period'>.</span><span class='id identifier rubyid_written_messages'>written_messages</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="authored_messages-class_method">
+  
+    + (<tt>Object</tt>) <strong>authored_messages</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de los mensajes con autor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Retorna un objeto neo4j conteniendo el resultado de la consulta.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+164
+165
+166</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 164</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_authored_messages'>authored_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>()-[:has_written]-&gt;msg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_return'>return</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_message-class_method">
+  
+    + (<tt><span class='object_link'><a href="" title="Game::Database::Message (class)">Game::Database::Message</a></span></tt>) <strong>create_message</strong>(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = true) 
   
 
   
@@ -667,6 +1007,61 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>position</span>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{latitude: 0, longitude:0 }</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Posición del mensaje, con la forma { latitude: n, longitude: m }</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>deltas</span>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{latitude: 0, longitude:0 }</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Offsets para la geolocalización aleatoria, con la forma { latitude: n,
+longitude: m }</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>replic</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Mensaje replicable (o no).</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -695,49 +1090,163 @@ Game::Database::Message.</p>
       <pre class="lines">
 
 
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119</pre>
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 119</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_message'>create_message</span><span class='lparen'>(</span><span class='id identifier rubyid_cont'>cont</span><span class='comma'>,</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span> <span class='op'>=</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_custom_author'>custom_author</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span><span class='int'>0</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_message'>create_message</span><span class='lparen'>(</span><span class='id identifier rubyid_cont'>cont</span><span class='comma'>,</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span> <span class='op'>=</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_custom_author'>custom_author</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span><span class='int'>0</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_deltas'>deltas</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span><span class='int'>0</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_replic'>replic</span> <span class='op'>=</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='id identifier rubyid_snap_to_roads'>snap_to_roads</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
-    <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='label'>content:</span> <span class='id identifier rubyid_cont'>cont</span><span class='comma'>,</span> <span class='label'>total_fragments:</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span><span class='comma'>,</span> <span class='label'>resource_link:</span> <span class='id identifier rubyid_resource'>resource</span> <span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_msg'>msg</span><span class='op'>|</span>
+    <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='label'>content:</span> <span class='id identifier rubyid_cont'>cont</span><span class='comma'>,</span> <span class='label'>total_fragments:</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span><span class='comma'>,</span> <span class='label'>resource_link:</span> <span class='id identifier rubyid_resource'>resource</span><span class='comma'>,</span> <span class='label'>replicable:</span> <span class='id identifier rubyid_replic'>replic</span><span class='comma'>,</span> <span class='label'>snap_to_roads:</span> <span class='id identifier rubyid_snap_to_roads'>snap_to_roads</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_msg'>msg</span><span class='op'>|</span>
       <span class='kw'>if</span> <span class='id identifier rubyid_custom_author'>custom_author</span> <span class='op'>!=</span> <span class='kw'>nil</span>
         <span class='id identifier rubyid_custom_author'>custom_author</span><span class='period'>.</span><span class='id identifier rubyid_add_msg'>add_msg</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
       <span class='kw'>end</span>
       
-      <span class='comment'># Para cada fragmento, se crea un nuevo nodo en la bd
-</span>      <span class='kw'>for</span> <span class='id identifier rubyid_fragment_index'>fragment_index</span> <span class='kw'>in</span> <span class='int'>0</span><span class='op'>...</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='rparen'>)</span> <span class='kw'>do</span>
-        <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_create_message_fragment'>create_message_fragment</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='comma'>,</span> <span class='id identifier rubyid_fragment_index'>fragment_index</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='rparen'>)</span>
-      <span class='kw'>end</span>
+      <span class='comment'># Generar fragmentos iniciales.
+</span>      <span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_replicate'>replicate</span><span class='lparen'>(</span><span class='id identifier rubyid_position'>position</span><span class='comma'>,</span> <span class='id identifier rubyid_deltas'>deltas</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
 
   <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='semicolon'>;</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\t\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='semicolon'>;</span>
   <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_message'>message</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="unauthored_messages-class_method">
+  
+    + (<tt>Object</tt>) <strong>unauthored_messages</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de los mensajes sin autor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Retorna un objeto neo4j conteniendo el resultado de la consulta.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+140
+141
+142</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 140</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_unauthored_messages'>unauthored_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NOT ()-[:has_written]-&gt;msg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_return'>return</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="unauthored_replicable_messages-class_method">
+  
+    + (<tt>Object</tt>) <strong>unauthored_replicable_messages</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de los mensajes sin autor que pueden ser replicables.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Retorna un objeto neo4j conteniendo el resultado de la consulta.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+146
+147
+148</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 146</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_unauthored_replicable_messages'>unauthored_replicable_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>msg.replicable = true AND NOT ()-[:has_written]-&gt;msg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_return'>return</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -790,10 +1299,10 @@ atributo <code>author</code>.</p>
       <pre class="lines">
 
 
-70</pre>
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 86</span>
 
 <span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:author</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='comma'>,</span> <span class='label'>origin:</span> <span class='symbol'>:written_messages</span></pre>
     </td>
@@ -845,10 +1354,10 @@ atributo <code>author</code>.</p>
       <pre class="lines">
 
 
-51</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 59</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:content</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span></pre>
     </td>
@@ -887,7 +1396,7 @@ atributo <code>author</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Milisegundos desde el 1/1/1970.</p>
+<p>Segundos desde el 1/1/1970.</p>
 </div>
       
     </li>
@@ -900,10 +1409,10 @@ atributo <code>author</code>.</p>
       <pre class="lines">
 
 
-61</pre>
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 77</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:created_at</span></pre>
     </td>
@@ -958,10 +1467,10 @@ los fragmentos.</p>
       <pre class="lines">
 
 
-79</pre>
+95</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 79</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 95</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:fragments</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>is_fragmented_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
@@ -1014,13 +1523,13 @@ Game::Database::Message.NO_AUTHOR</p>
       <pre class="lines">
 
 
-128
-129
-130
-131</pre>
+175
+176
+177
+178</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_author'>get_author</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_AUTHOR</span> <span class='kw'>end</span>
@@ -1076,13 +1585,13 @@ Game::Database::Message.NO_AUTHOR</p>
       <pre class="lines">
 
 
-136
-137
-138
-139</pre>
+183
+184
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 136</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 183</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_AUTHOR</span> <span class='kw'>end</span>
@@ -1138,13 +1647,13 @@ Game::Database::Message.NO_RESOURCE</p>
       <pre class="lines">
 
 
-144
-145
-146
-147</pre>
+191
+192
+193
+194</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 144</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 191</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_link'>resource_link</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_RESOURCE</span> <span class='kw'>end</span>
@@ -1175,7 +1684,29 @@ Game::Database::Message.NO_RESOURCE</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>user_rel</span>
+      
+      
+        <span class='type'>(<tt>Game::Database::Relations::UserCompletedMessage</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Relación entre un usuario y un mensaje completado.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1201,42 +1732,28 @@ Game::Database::Message.NO_RESOURCE</p>
       <pre class="lines">
 
 
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171</pre>
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 253</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_user_message'>get_user_message</span><span class='lparen'>(</span><span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='label'>id:</span>              <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_neo_id'>neo_id</span><span class='comma'>,</span>
-    <span class='label'>author:</span>          <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='comma'>,</span>
-    <span class='label'>author_id:</span>       <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>?</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='label'>content:</span>         <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span><span class='comma'>,</span>
-    <span class='label'>resource:</span>        <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_resource'>get_resource</span><span class='comma'>,</span>
-    <span class='label'>total_fragments:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='comma'>,</span>
-    <span class='label'>write_date:</span>      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
   <span class='kw'>if</span><span class='lparen'>(</span><span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>!=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>                    <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:status</span>
-    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:created_at</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:created_at</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>                    <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:status</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:created_at</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span> <span class='symbol'>:created_at</span>
   <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
@@ -1286,12 +1803,305 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
-86</pre>
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 102</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:owners</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCompletedMessage</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="replicable-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>replicable</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Mensaje replicable o no (crear más fragmentos).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>True si es replicable. False en caso contrario.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+69</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 69</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:replicable</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Boolean</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='kw'>false</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="replicate-instance_method">
+  
+    - (<tt>Hash&lt;<span class='object_link'><a href="MessageFragment.html" title="Game::Database::MessageFragment (class)">Game::Database::MessageFragment</a></span>&gt;</tt>) <strong>replicate</strong>(new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Generar un nuevo fragmento para el mensaje.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>new_location</span>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{ latitude: 0, longitude: 0 }</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>deltas</span>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{ latitude: 0, longitude: 0 }</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Offsets para la latitud y longitud (generación aleatoria).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;<span class='object_link'><a href="MessageFragment.html" title="Game::Database::MessageFragment (class)">Game::Database::MessageFragment</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Retorna un array con las referencias a los fragmentos añadidos.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 200</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_replicate'>replicate</span><span class='lparen'>(</span> <span class='id identifier rubyid_new_location'>new_location</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='int'>0</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_deltas'>deltas</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='int'>0</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  <span class='comment'># Comprobar replicación
+</span>  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_replicable'>replicable</span> <span class='op'>==</span> <span class='kw'>false</span> <span class='op'>&amp;&amp;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fragments'>fragments</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Trying to generate more fragments of a irreplicable message.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  
+  <span class='comment'># Generar aleatoriamente la posición de cada fragmento
+</span>  <span class='id identifier rubyid_random'>random</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+
+  <span class='id identifier rubyid_task_threads'>task_threads</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_locations'>locations</span>    <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='rparen'>)</span> 
+  
+  <span class='comment'>#puts &quot;------- START -------&quot;
+</span>  
+  <span class='id identifier rubyid_locations'>locations</span><span class='period'>.</span><span class='id identifier rubyid_each_index'>each_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+    <span class='id identifier rubyid_task_threads'>task_threads</span> <span class='op'>&lt;&lt;</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span>
+      <span class='id identifier rubyid_locations'>locations</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+        <span class='label'>latitude:</span>  <span class='id identifier rubyid_new_location'>new_location</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span>  <span class='op'>+</span> <span class='id identifier rubyid_random'>random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span> <span class='lparen'>(</span><span class='op'>-</span><span class='id identifier rubyid_deltas'>deltas</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='op'>..</span><span class='lparen'>(</span><span class='id identifier rubyid_deltas'>deltas</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rparen'>)</span><span class='comma'>,</span>
+        <span class='label'>longitude:</span> <span class='id identifier rubyid_new_location'>new_location</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_random'>random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span> <span class='lparen'>(</span><span class='op'>-</span><span class='id identifier rubyid_deltas'>deltas</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='op'>..</span><span class='lparen'>(</span><span class='id identifier rubyid_deltas'>deltas</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rparen'>)</span>
+      <span class='rbrace'>}</span>
+      
+      <span class='comment'># Ajustar a carretera
+</span>      <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_snap_to_roads'>snap_to_roads</span>
+        <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>GeolocationManagement</span><span class='period'>.</span><span class='id identifier rubyid_snap_geolocation!'>snap_geolocation!</span><span class='lparen'>(</span><span class='id identifier rubyid_locations'>locations</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_task_threads'>task_threads</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:join</span><span class='rparen'>)</span>
+  
+  <span class='comment'>#puts &quot;post: &quot; + locations.to_s
+</span>  <span class='comment'>#puts &quot;------- END -------&quot;
+</span>  
+  <span class='comment'># Añadir fragmentos.
+</span>  <span class='kw'>for</span> <span class='id identifier rubyid_i'>i</span> <span class='kw'>in</span> <span class='int'>0</span><span class='op'>...</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_output'>output</span> <span class='op'>&lt;&lt;</span> <span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_create_message_fragment'>create_message_fragment</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='comma'>,</span> <span class='id identifier rubyid_locations'>locations</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_replications'>replications</span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  
+  <span class='comment'># Aumentar canitdad de mensajes
+</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>replications:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_replications'>replications</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="replications-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>replications</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Cantidad de replicaciones del mensaje.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Se incrementará cada vez que se replique un mensaje.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 54</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:replications</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
   </tr>
 </table>
@@ -1341,10 +2151,10 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
-57</pre>
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 65</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:resource_link</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span></pre>
     </td>
@@ -1353,9 +2163,64 @@ con el atributo #owners.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="snap_to_roads-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>snap_to_roads</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Ajustar fragmentos de mensajes a carreteras cercanas.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>True si es ajustable. False en caso contrario.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+73</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 73</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:snap_to_roads</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Boolean</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='kw'>false</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="to_hash-instance_method">
   
-    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong> 
+    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = [:fragments]) 
   
 
   
@@ -1370,7 +2235,30 @@ con el atributo #owners.</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>exclusion_list</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[:fragments]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Elementos a omitir en el hash de resultado (:message, :author, :fragments).
+Por defecto, se ignoran los fragmentos.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1396,33 +2284,71 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187</pre>
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 268</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='lbrace'>{</span>
-    <span class='label'>uuid:</span>            <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span>
-    <span class='label'>id:</span>              <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_neo_id'>neo_id</span><span class='comma'>,</span>
-    <span class='label'>author:</span>          <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='comma'>,</span>
-    <span class='label'>author_id:</span>       <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>?</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='label'>content:</span>         <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span><span class='comma'>,</span>
-    <span class='label'>resource:</span>        <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_resource'>get_resource</span><span class='comma'>,</span>
-    <span class='label'>total_fragments:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='comma'>,</span>
-    <span class='label'>write_date:</span>      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='symbol'>:message</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='label'>uuid:</span>            <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span>
+      <span class='label'>id:</span>              <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_neo_id'>neo_id</span><span class='comma'>,</span>
+      <span class='label'>content:</span>         <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span><span class='comma'>,</span>
+      <span class='label'>resource:</span>        <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_resource'>get_resource</span><span class='comma'>,</span>
+      <span class='label'>total_fragments:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='comma'>,</span>
+      <span class='label'>write_date:</span>      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Q</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+    <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='symbol'>:author</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:author</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='label'>author_alias:</span>    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='comma'>,</span>
+      <span class='label'>author_id:</span>       <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>?</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='symbol'>:fragments</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fragments'>fragments</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_frag'>frag</span><span class='op'>|</span>
+      <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_frag'>frag</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1474,15 +2400,15 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
-192
-193
-194</pre>
+303
+304
+305</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 192</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 303</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;Message: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_author'>get_author</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;Message: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1533,10 +2459,10 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
-46</pre>
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 49</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:total_fragments</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
     </td>
@@ -1549,7 +2475,7 @@ con el atributo #owners.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Mar 10 14:16:31 2015 by
+  Generated on Thu Mar 19 11:13:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

@@ -6,6 +6,8 @@ require './main'
 require 'test/unit'
 require 'rack/test'
 
+require_relative 'helpers'
+
 # def puts(value); raise 'you found a puts'; end
 
 
@@ -15,68 +17,17 @@ class RESTTest < Test::Unit::TestCase
 
   # Iniciar aplicación como "app"
   def app; Sinatra::ProgrezzServer end
-  
+
   # ---------------------------
-  #          Helpers
+  #           Setup
   # ---------------------------
   
-  # Auth an user.
-  def authenticate(provider = "google_oauth2", profile = { user_id: "test", alias: "test" })
-    OmniAuth.config.test_mode = true
-    OmniAuth.config.add_mock( provider.to_sym() , {
-      :uid => '222222222222222222222',
-      :info => {
-        :email => profile[:user_id],
-        :name => profile[:alias]
-      }
-    })
-    
-    get '/auth/' + provider + '/callback', nil, {
-      "omniauth.auth" => OmniAuth.config.mock_auth[ provider.to_sym() ]
-    }
-  end
-  
-  # Do a REST request
+  # REST request method
   def rest_request()
     get '/dev/api/rest', @request
     @response = eval(last_response.body)
     GenericUtils.symbolize_keys_deep!(@response)
   end
-  
-  # Init db
-  def init_db()
-    @users = []
-    @messages = []
-    
-    @transaction = Game::Database::DatabaseManager.start_transaction()
-
-    @users << Game::Database::User.sign_up( "test", 'test', {latitude: 3.0, longitude: 2.0} )
-    @users[0].write_msg( "Hola mundo!!!" )
-    
-    @messages << Game::Database::Message.create_message( "Hello, universe", 2, nil, nil, {latitude: 3.0, longitude: 2.0} )
-    @messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, nil, nil, {latitude: 3.2, longitude: 2.0} )
-    
-    @users[0].collect_fragment(@messages[0].fragments.where(fragment_index: 0).first)
-    @users[0].collect_fragment(@messages[0].fragments.where(fragment_index: 1).first)
-    
-    @users[0].collect_fragment(@messages[1].fragments.where(fragment_index: 0).first)
-    @users[0].collect_fragment(@messages[1].fragments.where(fragment_index: 2).first)
-  end
-  
-  # Undo db
-  def drop_db()
-    if @transaction == nil
-      return
-    end
-
-    # Deshacer cambios en la transacción
-    Game::Database::DatabaseManager.rollback_transaction(@transaction)
-    Game::Database::DatabaseManager.stop_transaction(@transaction)
-  end
-
-  # ---------------------------
-  #           Setup
-  # ---------------------------
   
   # Inicializar antes de cada prueba.
   def setup
@@ -85,13 +36,13 @@ class RESTTest < Test::Unit::TestCase
     
     # Setup other things.
     @request = {
-      metada: {},
+      metada: { },
       request: { }
     }
     
-    @response = {}
-    
-    @session = ENV['rack.session']
+    @response = {
+      metadata: { }
+    }
   end
   
   # Cerrar antes de cada prueba
@@ -169,8 +120,8 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:written_message][:author], "test"
-    assert_equal @response[:response][:data][:written_message][:content], "Holaaaa!!"
+    assert_equal @response[:response][:data][:written_message][:author][:author_alias], "test"
+    assert_equal @response[:response][:data][:written_message][:message][:content], "Holaaaa!!"
   end
   
   # Probar "user_collect_message_fragment"
@@ -211,19 +162,14 @@ class RESTTest < Test::Unit::TestCase
   def test_user_get_nearby_message_fragments
     authenticate()
     
+    @users[0].set_geolocation(40, 30)
+    
     @request[:request][:type] = "user_get_nearby_message_fragments"
     @request[:request][:data] = { user_id: @users[0].user_id }
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:fragments].count, 2
-    
-    @request[:request][:type] = "user_get_nearby_message_fragments"
-    @request[:request][:data] = { user_id: @users[0].user_id, radius: 100 }
-    rest_request()
-    
-    assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:fragments].count, 5
+    assert @response[:response][:data][:fragments][:system_fragments].count > 3
   end
   
   # Probar "user_get_messages"
@@ -249,7 +195,39 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:fragments].values[0].count, 2
+  end
+  
+  # ---------------------------
+  #         Messages
+  # ---------------------------
+  # Probar "message_get"
+  def test_message_get
+    @request[:request][:type] = "message_get"
+    @request[:request][:data] = { msg_uuid: @messages[1].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:info][:message][:uuid], @messages[1].uuid 
+  end
+  
+  # Probar "message_get_unauthored"
+  def test_message_get_unauthored
+    @request[:request][:type] = "message_get_unauthored"
+    @request[:request][:data] = { msg_uuid: @messages[1].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:messages].count, @messages.count
+  end
+  
+  # Probar "message_get_from_fragment"
+  def test_message_get_from_fragment
+    @request[:request][:type] = "message_get_from_fragment"
+    @request[:request][:data] = { frag_uuid: @messages[0].fragments.where(fragment_index: 0).first.uuid  }
+    rest_request()
     
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @messages[0].uuid, @response[:response][:data][:message][:message][:uuid]
   end
   
 end

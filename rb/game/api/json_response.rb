@@ -1,3 +1,4 @@
+# encoding: UTF-8
 
 module Game
   module API
@@ -27,8 +28,9 @@ module Game
       # @param data [Hash] Valores a ajustar.
       def self.auto_metadata!( response, data = {} )
         response[:metadata] = {
-          timestamp: DateTime.now.strftime('%Q'),
-          process_time: 0
+          timestamp: DateTime.now.strftime('%Q').to_i,
+          process_time: 0,
+          type: "response"
         }
       end
       
@@ -41,7 +43,7 @@ module Game
       # Finalizar contador de cómputo (en ms).
       # param response [Hash] Respuesta a ajustar.
       def self.stop_timer!(response)
-        response[:metadata][:process_time] = (Time.now - response[:metadata][:process_time]) * 1000.0
+        response[:metadata][:process_time] = ((Time.now - response[:metadata][:process_time]) * 1000.0).to_f
       end
       
       # Generar un error de respuesta.
@@ -49,6 +51,8 @@ module Game
       # @param response [Hash] Hash de respuesta al usuario.
       # @param reason [String] Razón del error en sí (e.j. 'Me caes mal').
       def self.error_response!(response, reason)
+        response[:type] = "system"
+        
         response[:response].clear()
         response[:response][:status]  = "error"
         response[:response][:message] = reason
@@ -59,6 +63,8 @@ module Game
       # @param response [Hash] Hash de respuesta al usuario.
       # @param data [Hash] Estructura de datos a enviar al usuario.
       def self.ok_response!(response, data)
+        response[:type] = "response"
+        
         response[:response][:status]  = "ok"
         response[:response][:data]    = data
       end

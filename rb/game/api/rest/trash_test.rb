@@ -1,9 +1,17 @@
 # encoding: UTF-8
 
+#if development?
+
 require 'sinatra'
 require 'sinatra/base'
 require 'neo4j'
 require 'cgi'
+
+# Prueba de ajuste geolocalizado
+#location = {latitude: 28.26807, longitude: -16.43555}
+#puts location
+#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationManagement.snap_geolocation!(location) }).to_s
+#puts location
 
 module Sinatra
 module API
@@ -36,7 +44,7 @@ module REST
             
             # Usuarios
             puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
-              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 2.0, longitude: 0.81})
+              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 37.3855213, longitude: -5.9692002})
               user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
             end).to_s
             
@@ -50,11 +58,11 @@ module REST
             # Mensajes sin autor
             puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
               messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 })
-              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 } )
+              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 })
               messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
               
-              # Crear copia de un mensaje
-              messages[3].generate_random_fragments( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
+              # Crear copia de un mensaje replicable
+              # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
               
             end).to_s
             
@@ -115,12 +123,15 @@ module REST
             result = "<h2>Datos añadidos correctamente.</h2>"
           end
           
+        # Banearme 5 minutos ( D': )
+        #Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
+          
         rescue Exception => e
           #puts e.message
           #puts e.backtrace
           result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
         end
-
+        
         return result
       end
       
@@ -176,3 +187,5 @@ class Sinatra::ProgrezzServer
   register Sinatra::API::REST::Trash
 end
 #-- Cargar en el servidor #++
+
+#end

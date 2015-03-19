@@ -1,5 +1,8 @@
 # encoding: UTF-8
 
+require 'thread'
+require 'thwait'
+
 require_relative 'user'
 require_relative 'message_fragment'
 require_relative '../relations/user-completed_message'
@@ -44,6 +47,11 @@ module Game
       #
       # @return [Integer] Debe ser mayor que cero.
       property :total_fragments, type: Integer
+      
+      # Cantidad de replicaciones del mensaje.
+      #
+      # @return [Integer] Se incrementará cada vez que se replique un mensaje.
+      property :replications, type: Integer, default: 0
 
       # Contenido del mensaje.
       #
@@ -56,8 +64,16 @@ module Game
       # @return [String].
       property :resource_link, type: String
       
+      # Mensaje replicable o no (crear más fragmentos).
+      # @return [Boolean] True si es replicable. False en caso contrario.
+      property :replicable, type: Boolean, default: false
+      
+      # Ajustar fragmentos de mensajes a carreteras cercanas.
+      # @return [Boolean] True si es ajustable. False en caso contrario.
+      property :snap_to_roads, type: Boolean, default: false
+      
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Milisegundos desde el 1/1/1970.
+      # @return [Integer] Segundos desde el 1/1/1970.
       property :created_at
 
       #-- -------------------------
@@ -97,22 +113,23 @@ module Game
       # @param custom_author [Game::Database::User] Autor del mensaje (opcional).
       # @param position [Hash<Symbol, Float>] Posición del mensaje, con la forma { latitude: n, longitude: m }
       # @param deltas [Hash<Symbol, Float>] Offsets para la geolocalización aleatoria, con la forma { latitude: n, longitude: m }
+      # @param replic [Boolean] Mensaje replicable (o no).
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 })
+      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = true)
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource }) do |msg|
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic, snap_to_roads: snap_to_roads}) do |msg|
             if custom_author != nil
               custom_author.add_msg(msg)
             end
             
             # Generar fragmentos iniciales.
-            msg.generate_random_fragments(position, deltas)
+            msg.replicate(position, deltas)
           end
 
         rescue Exception => e
           puts e.to_s
-          raise "DB ERROR: Cannot create message: \n\t" + e.message;
+          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
         end
         
         return message
@@ -121,7 +138,13 @@ module Game
       # Getter de los mensajes sin autor.
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
-        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg)
+        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
+      end
+      
+      # Getter de los mensajes sin autor que pueden ser replicables.
+      # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
+      def self.unauthored_replicable_messages()
+        return self.query_as(:msg).where("msg.replicable = true AND NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
       end
       
       # Getter de los mensajes de un determinado autor.
@@ -173,17 +196,51 @@ module Game
       # Generar un nuevo fragmento para el mensaje.
       # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
       # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
-      def generate_random_fragments( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+      # @return [Hash<Game::Database::MessageFragment>] Retorna un array con las referencias a los fragmentos añadidos.
+      def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+        # Comprobar replicación
+        if self.replicable == false && self.fragments.count > 0
+          raise "Trying to generate more fragments of a irreplicable message."
+        end
+        
+        output = []
+        
         # Generar aleatoriamente la posición de cada fragmento
         random = Random.new
+
+        task_threads = []
+        locations    = Array.new(self.total_fragments) 
         
-        location = {}
-        for i in 0...(self.total_fragments)
-          location[:latitude]  = new_location[:latitude] + random.rand( (-deltas[:latitude])..(deltas[:longitude]) )
-          location[:longitude] = new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
-          
-          MessageFragment.create_message_fragment(self, i, location)
+        #puts "------- START -------"
+        
+        locations.each_index do |i|
+          task_threads << Thread.new {
+            locations[i] = {
+              latitude:  new_location[:latitude]  + random.rand( (-deltas[:latitude])..(deltas[:longitude]) ),
+              longitude: new_location[:longitude] + random.rand( (-deltas[:longitude])..(deltas[:longitude]) )
+            }
+            
+            # Ajustar a carretera
+            if self.snap_to_roads
+              Game::Mechanics::GeolocationManagement.snap_geolocation!(locations[i])
+            end
+          }
         end
+        
+        task_threads.each(&:join)
+        
+        #puts "post: " + locations.to_s
+        #puts "------- END -------"
+        
+        # Añadir fragmentos.
+        for i in 0...(self.total_fragments)
+          output << MessageFragment.create_message_fragment( self, i, locations[i], self.replications )
+        end
+        
+        # Aumentar canitdad de mensajes
+        self.update( { replications: self.replications + 1 } )
+        
+        return output
       end
       
       # Getter formateado del mensaje conseguido por un usuario.
@@ -194,38 +251,50 @@ module Game
       #
       # @return [Hash<Symbol, Object>] Hash con los datos referentes al mensaje completado por el usuario.
       def get_user_message(user_rel = nil)
-        output = {
-          id:              self.neo_id,
-          author:          self.get_author_alias,
-          author_id:       self.author != nil ? self.author.user_id : "",
-          content:         self.content,
-          resource:        self.get_resource,
-          total_fragments: self.total_fragments,
-          write_date:      self.created_at.strftime('%Q'),
-        }
+        output = self.to_hash([:fragments])
         
         if(user_rel != nil)
-          output[:status]     = user_rel.status                    if user_rel.respond_to? :status
-          output[:created_at] = user_rel.created_at.strftime('%Q') if user_rel.respond_to? :created_at
+          output[:status] = { }
+          output[:status][:status]     = user_rel.status                    if user_rel.respond_to? :status
+          output[:status][:created_at] = user_rel.created_at.strftime('%Q') if user_rel.respond_to? :created_at
         end
         
         return output
       end
       
       # Transformar objeto a un hash
-      #
+      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (:message, :author, :fragments). Por defecto, se ignoran los fragmentos.
       # @return [Hash<Symbol, Object>] Objeto como hash.
-      def to_hash()
-        return {
-          uuid:            self.uuid,
-          id:              self.neo_id,
-          author:          self.get_author_alias,
-          author_id:       self.author != nil ? self.author.user_id : "",
-          content:         self.content,
-          resource:        self.get_resource,
-          total_fragments: self.total_fragments,
-          write_date:      self.created_at.strftime('%Q')
-        }
+      def to_hash(exclusion_list = [:fragments] )
+        output = {}
+        
+        if !exclusion_list.include?(:message)
+          output[:message] = {
+            uuid:            self.uuid,
+            id:              self.neo_id,
+            content:         self.content,
+            resource:        self.get_resource,
+            total_fragments: self.total_fragments,
+            write_date:      self.created_at.strftime('%Q')
+          }
+        end
+        
+        if !exclusion_list.include?(:author)
+          output[:author] = {
+            author_alias:    self.get_author_alias,
+            author_id:       self.author != nil ? self.author.user_id : ""
+          }
+        end
+        
+        if !exclusion_list.include?(:fragments)
+          output[:fragments] = []
+
+          self.fragments.each do |frag|
+            output[:fragments] << frag.to_hash([:message])
+          end
+        end
+        
+        return output
       end
       
       # Stringificar objeto.
