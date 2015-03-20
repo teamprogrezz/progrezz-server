@@ -131,8 +131,6 @@ module Game
           end
 
         rescue Exception => e
-          puts e.message
-          puts e.backtrace
           raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message + "\n\t\t" + e.backtrace.to_s + "\n";
         end
 
