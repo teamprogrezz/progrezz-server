@@ -93,9 +93,8 @@ module Game
         if !exclusion_list.include? :uuid;           output[:uuid]           = self.uuid end
         if !exclusion_list.include? :geolocation;    output[:geolocation]    = self.geolocation end
         if !exclusion_list.include? :fragment_index; output[:fragment_index] = self.fragment_index end
-        if !exclusion_list.include? :message;        output[:message]        = self.message.to_hash() end
+        if !exclusion_list.include? :message;        output[:message]        = self.message.to_hash([:fragments, :message_content]) end
         if !exclusion_list.include? :group_index;    output[:group_index]    = self.group_index end
-        
         
         return output
       end

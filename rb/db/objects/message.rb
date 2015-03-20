@@ -263,7 +263,7 @@ module Game
       end
       
       # Transformar objeto a un hash
-      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (:message, :author, :fragments). Por defecto, se ignoran los fragmentos.
+      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (:message, :message_content, :author, :fragments). Por defecto, se ignoran los fragmentos.
       # @return [Hash<Symbol, Object>] Objeto como hash.
       def to_hash(exclusion_list = [:fragments] )
         output = {}
@@ -271,12 +271,14 @@ module Game
         if !exclusion_list.include?(:message)
           output[:message] = {
             uuid:            self.uuid,
-            id:              self.neo_id,
-            content:         self.content,
-            resource:        self.get_resource,
             total_fragments: self.total_fragments,
             write_date:      self.created_at.strftime('%Q')
           }
+        end
+        
+        if !exclusion_list.include?(:message_content)
+          output[:message][:content]  = self.content
+          output[:message][:resource] = self.get_resource
         end
         
         if !exclusion_list.include?(:author)
