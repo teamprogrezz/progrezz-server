@@ -48,15 +48,21 @@ module Sinatra; module API ;module REST
       
       extra = {}
       
+      relation = nil
       begin
-        user.collect_fragment( fragment, extra )
+        relation = user.collect_fragment( fragment, extra )
       rescue Exception => e
         raise "The fragment could not be collected: " + e.message
       end
       
+      msg = "Fragment collected."
+      if relation.is_a? Game::Database::RelationShips::UserCompletedMessage
+        msg = "Message completed."
+      end
+      
       Game::API::JSONResponse.ok_response!( response, {
         type: "plain",
-        message: "Fragment collected.",
+        message: msg,
         exp_gained: extra[:exp]
       })
     end
