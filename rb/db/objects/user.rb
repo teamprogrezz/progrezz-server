@@ -520,7 +520,7 @@ module Game
           level: {
             current_level:  self.level_profile.level,
             current_exp:    self.level_profile.level_exp,
-            next_level_exp: Game::Mechanics::LevelingManagement.exp_to_next_level(self.level_profile.level)
+            next_level_exp: Game::Mechanics::LevelingManagement.exp_to_next_level(self.level_profile.level + 1)
           },
           
           # Estadísticas de mensajes

@@ -78,28 +78,45 @@ class RESTTest < Test::Unit::TestCase
   end
   
   # ---------------------------
+  #           User
+  # ---------------------------
+  
+  # Probar "user_get_profile"
+  def test_user_get_profile
+    authenticate()
+    
+    @request[:request][:type] = "user_get_profile"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:profile][:info][:user_id], @users[0].user_id
+    
+  end
+  
+  # ---------------------------
   #       User messages
   # ---------------------------
   
-  # Probar "user_change_message_status"
-  def test_user_change_message_status
+  # Probar "user_unlock_message"
+  def test_user_unlock_message
     authenticate()
     
     # Sin error
-    @request[:request][:type] = "user_change_message_status"
-    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[0].uuid, new_status: "unread" }
+    @request[:request][:type] = "user_unlock_message"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[0].uuid }
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:message], "Message status changed to 'unread'."
+    assert_equal @response[:response][:data][:message], "Message unlocked."
     
     # Error
-    @request[:request][:type] = "user_change_message_status"
-    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[1].uuid, new_status: "unread" }
+    @request[:request][:type] = "user_unlock_message"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[1].uuid }
     rest_request()
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:message], "Could not change message status."
+    assert_equal @response[:response][:message], "User does not own message '" + @messages[1].uuid + "' to unlock."
   end
   
   # Probar "user_write_message"
