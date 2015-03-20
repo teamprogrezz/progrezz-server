@@ -8,6 +8,18 @@ module Sinatra; module API ;module REST
 
   class Methods
     
+    # Desbloquear un mensaje completado por el usuario.
+    def self.user_unlock_message( app, response, session)
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      user.unlock_completed_message( response[:request][:request][:data][:msg_uuid] ) 
+      
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Message unlocked."
+      })
+    end
+    
     # Cambiar el estatus o estado de un mensaje completado.
     def self.user_change_message_status( app, response, session)
       user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
@@ -20,6 +32,8 @@ module Sinatra; module API ;module REST
         type: "plain",
         message: "Message status changed to '" + response[:request][:request][:data][:new_status] + "'."
       })
+      
+      response[:metadata][:warning] = "Deprecated method."
     end
     
     # Recoger un fragmento de mensaje cercano.

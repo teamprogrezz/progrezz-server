@@ -291,12 +291,12 @@ module Game
         return output
       end
       
-      # Obtener referencia a un mensaje completado del usuario.
+      # Cambiar el estado de un mensaje completado por el usuario
       #
-      # Se intentará buscar un mensaje completado mediante el uuid, siempre y cuando exista.
+      # @deprecated No debe ser usado, ya que puede comprometer la jugabilidad.
       #
       # @param msg_uuid [String] Identificador del mensaje completado.
-      # @param new_status [String] Nuevo estado del mensaje a desbloquear (véase Game::Database::Message).
+      # @param new_status [String] Nuevo estado del mensaje a cambiar de estado (véase Game::Database::Message).
       #
       # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
       def change_message_status(msg_uuid, new_status)
@@ -304,6 +304,28 @@ module Game
         
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
           output = rel.change_message_status(new_status)
+        end
+        
+        return output
+      end
+      
+      # Desbloquear un mensaje.
+      #
+      # @param msg_uuid [String] Identificador del mensaje completado.
+      # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil o se generará una excepción.
+      def unlock_completed_message(msg_uuid)
+        output = nil
+        
+        self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
+          if rel.status != Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
+            raise "Message already unlocked."
+          end
+          
+          output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD )
+        end
+        
+        if output == nil
+          raise "User does not own message '" + msg_uuid + "' to unlock."
         end
         
         return output
