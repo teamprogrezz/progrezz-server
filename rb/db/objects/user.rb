@@ -225,9 +225,10 @@ module Game
       # a la lista de mensajes completados por el usuario. 
       #
       # @param fragment_message [Game::Database::FragmentMessage] Nuevo fragmento a añadir.
+      # @param out [Hash] Salida personalizada (exp, etc).
       #
       # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, generará excepciones.
-      def collect_fragment(fragment_message)
+      def collect_fragment(fragment_message, out = {})
         if fragment_message != nil
           
           # Si el fragmento es suyo, no recogerlo
@@ -249,7 +250,7 @@ module Game
           end
                     
           # Añadir experiencia al usuario
-          Game::Mechanics::LevelingManagement.gain_exp(self, "collect_fragment")
+          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, "collect_fragment")
           
           # Añadir al contador
           self.update( { count_collected_fragments: count_collected_fragments + 1 } )
@@ -345,8 +346,9 @@ module Game
       # Desloquear un mensaje otorga, además del contenido del mismo, experiencia.
       #
       # @param msg_uuid [String] Identificador del mensaje completado.
+      # @param out [Hash] Salida personalizada (experiencia, etc.)
       # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil o se generará una excepción.
-      def unlock_completed_message(msg_uuid)
+      def unlock_completed_message(msg_uuid, out = {} )
         output = nil
         
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
@@ -365,7 +367,7 @@ module Game
         self.update( { count_unlocked_messages: count_unlocked_messages + 1 } )
         
         # Añadir experiencia al usuario
-        Game::Mechanics::LevelingManagement.gain_exp(self, "unlock_message")
+        out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, "unlock_message")
         
         return output
       end

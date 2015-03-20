@@ -12,11 +12,13 @@ module Sinatra; module API ;module REST
     def self.user_unlock_message( app, response, session)
       user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
-      user.unlock_completed_message( response[:request][:request][:data][:msg_uuid] ) 
+      extra = {}
+      user.unlock_completed_message( response[:request][:request][:data][:msg_uuid], extra ) 
       
       Game::API::JSONResponse.ok_response!( response, {
         type: "plain",
-        message: "Message unlocked."
+        message: "Message unlocked.",
+        exp_gained: extra[:exp]
       })
     end
     
@@ -44,15 +46,18 @@ module Sinatra; module API ;module REST
       # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
       # ...
       
+      extra = {}
+      
       begin
-        user.collect_fragment( fragment )
+        user.collect_fragment( fragment, extra )
       rescue Exception => e
         raise "The fragment could not be collected: " + e.message
       end
       
       Game::API::JSONResponse.ok_response!( response, {
         type: "plain",
-        message: "Fragment collected."
+        message: "Fragment collected.",
+        exp_gained: extra[:exp]
       })
     end
     
