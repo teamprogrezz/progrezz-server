@@ -12,6 +12,14 @@
     ]
   ],
   [
+    "User", [
+      {
+        "name": "Get profile",
+        "example": {"_comment":"Use this method to retrieve the stats of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_profile","data":{"user_id":"yourmail@example.com"}}}
+      }
+    ]
+  ],
+  [
     "User messages", [
       {
         "name": "<span style='color: red;'>Change user's message status (deprecated)</span>",

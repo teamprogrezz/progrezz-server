@@ -80,7 +80,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">rb/game/api/rest/rest.rb<span class="defines">,<br />
-  rb/game/api/rest/echo.rb,<br /> rb/game/api/rest/trash_test.rb,<br /> rb/game/api/rest/messages_uris.rb,<br /> rb/game/api/rest/user_messages_uris.rb</span>
+  rb/game/api/rest/user.rb,<br /> rb/game/api/rest/echo.rb,<br /> rb/game/api/rest/trash_test.rb,<br /> rb/game/api/rest/messages_uris.rb,<br /> rb/game/api/rest/user_messages_uris.rb</span>
 </dd>
   
 </dl>
@@ -287,7 +287,8 @@ Sinatra::API::REST::Methods.</p>
 119
 120
 121
-122</pre>
+122
+123</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/rest.rb', line 41</span>
@@ -301,7 +302,7 @@ Sinatra::API::REST::Methods.</p>
     <span class='comment'># CORS para habilitar peticiones JSON entre dominios.
 </span>    <span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Access-Control-Allow-Methods</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GET</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># , POST&#39;
 </span>    <span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Access-Control-Allow-Origin</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>      <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>*</span><span class='tstring_end'>&#39;</span></span>
-    <span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Access-Control-Allow-Headers</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>accept, authorization, origin, content-type</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Access-Control-Allow-Headers</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>X-Requested-With, accept, authorization, origin, content-type</span><span class='tstring_end'>&#39;</span></span>
     <span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Access-Control-Allow-Credentials</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>true</span><span class='tstring_end'>&#39;</span></span>
   <span class='kw'>end</span>
 
@@ -331,6 +332,8 @@ Sinatra::API::REST::Methods.</p>
           <span class='const'>Methods</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span> <span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
         <span class='kw'>end</span>
         
+        <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:metadata</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>response</span><span class='tstring_end'>&quot;</span></span>
+        
       <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>  
         <span class='comment'># Deshacer transacción.
 </span>        <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -345,7 +348,6 @@ Sinatra::API::REST::Methods.</p>
     <span class='kw'>end</span>
     
     <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_stop_timer!'>stop_timer!</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:metadata</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>system</span><span class='tstring_end'>&quot;</span></span>
 
     <span class='comment'>#profile = RubyProf.stop
 </span>    <span class='comment'>#printer = RubyProf::GraphHtmlPrinter.new(profile)
@@ -384,7 +386,7 @@ Sinatra::API::REST::Methods.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Mar 19 11:13:48 2015 by
+  Generated on Fri Mar 20 13:35:15 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

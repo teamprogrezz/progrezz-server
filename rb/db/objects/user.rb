@@ -52,7 +52,7 @@ module Game
       property :alias, type: String, default: ""
       
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Segundos desde el 1/1/1970.
+      # @return [DateTime] Fecha de creación.
       property :created_at
       
       # Fecha hasta la que ha sido baneado el usuario.
@@ -62,6 +62,25 @@ module Game
       # Flag para saber si un usuario está conectado o no (mediante websockets).
       # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
       property :is_online, type: Boolean, default: false
+      
+        # Datos auxiliares para no tener que buscar en la base de datos.
+      
+      # Contador de mensajes escritos por el usuario.
+      # @return [Integer] Cantidad de mensajes escritos por el usuario.
+      property :count_written_messages, type: Integer, default: 0
+      
+      # Contador de fragmentos recolectados por el usuario.
+      # @return [Integer] Cantidad de fragmentos recolectados por el usuario.
+      property :count_collected_fragments, type: Integer, default: 0
+      
+      # Contador de mensajes completados por el usuario.
+      # @return [Integer] Cantidad de mensajes completados por el usuario.
+      property :count_completed_messages, type: Integer, default: 0
+      
+      # Contador de mensajes desbloqueados por el usuario.
+      # @return [Integer] Cantidad de mensajes desbloqueados por el usuario.
+      property :count_unlocked_messages, type: Integer, default: 0
+      
       
       #-- -------------------------
       #     Relaciones (DB)
@@ -193,6 +212,9 @@ module Game
           raise "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")."
         end
         
+        # Aumentar mensajes escritos
+        self.update( { count_written_messages: count_written_messages + 1 } )
+        
         return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation(), { latitude: 0, longitude: 0 }, false, false )
       end
       
@@ -229,6 +251,9 @@ module Game
           # Añadir experiencia al usuario
           Game::Mechanics::LevelingManagement.gain_exp(self, "collect_fragment")
           
+          # Añadir al contador
+          self.update( { count_collected_fragments: count_collected_fragments + 1 } )
+          
           # Comprobar si es necesario quitarla, ya que ha completado el mensaje.
           # En este punto, se han descartado fragmentos repetidos. Si la cantidad de
           # fragmentos del mensaje del fragmento actual es el número total de fragmentos
@@ -251,6 +276,9 @@ module Game
             if total_fragments_count == 1
               message_status = Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD
             end
+            
+            # Añadir al contador
+            self.update( { count_completed_messages: count_completed_messages + 1 } )
             
             return Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message, status: message_status )
           else
@@ -332,6 +360,9 @@ module Game
         if output == nil
           raise "User does not own message '" + msg_uuid + "' to unlock."
         end
+        
+        # Añadir al contador
+        self.update( { count_unlocked_messages: count_unlocked_messages + 1 } )
         
         # Añadir experiencia al usuario
         Game::Mechanics::LevelingManagement.gain_exp(self, "unlock_message")
@@ -472,6 +503,38 @@ module Game
         end
         
         return output
+      end
+      
+      # Devuelve las estadísticas del jugador.
+      # @return [Hash<Symbol, Object>] Hash con todas las estadísticas y datos del usuario.
+      def get_stats()
+        return {
+          # Datos del usuario
+          info: {
+            user_id:    self.user_id,
+            alias:      self.alias,
+            created_at: self.created_at.strftime('%Q').to_i
+          },
+          
+          # Nivel y experiencia
+          level: {
+            current_level:  self.level_profile.level,
+            current_exp:    self.level_profile.level_exp,
+            next_level_exp: Game::Mechanics::LevelingManagement.exp_to_next_level(self.level_profile.level)
+          },
+          
+          # Estadísticas de mensajes
+          messages: {
+            completed_messages:  self.count_completed_messages,
+            collected_fragments: self.count_collected_fragments,
+            unlocked_messages:   self.count_unlocked_messages,
+            written_messages:    self.count_written_messages
+          }
+
+          
+          # Otras estadísticas
+          # ...
+        }
       end
 
       # Stringificar objeto.

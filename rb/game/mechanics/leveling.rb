@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Game
   module Mechanics
 
@@ -24,6 +26,14 @@ module Game
         rescue Exception => e
           raise "Error reading '" + LEVELING_FILE + "': " + e.message
         end
+      end
+      
+      # Función auxiliar para ser llamada desde fuera.
+      # Define la experiencia necesaria para subir del nivel +next_level-1+ a +next_level+.
+      # @param next_level [Integer] Siguiente nivel.
+      # @return [Float] Experiencia necesaria para subir de nivel.
+      def self.exp_to_next_level(next_level)
+        return _next_level_required_exp( next_level )
       end
       
       # Dar experiencia a un usuario.

@@ -73,7 +73,7 @@ module Game
       property :snap_to_roads, type: Boolean, default: false
       
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Segundos desde el 1/1/1970.
+      # @return [DateTime] Fecha de creación.
       property :created_at
 
       #-- -------------------------

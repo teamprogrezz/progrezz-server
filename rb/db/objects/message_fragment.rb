@@ -29,7 +29,7 @@ module Game
       property :group_index, type: Integer
       
       # Timestamp o fecha de creación del fragmento.
-      # return [Integer] Segundos desde el 1/1/1970.
+      # return [DateTime] Fecha de creación.
       property :created_at
       
       #-- -------------------------
