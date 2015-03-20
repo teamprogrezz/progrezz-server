@@ -225,6 +225,9 @@ module Game
           if ( query.first != nil )
             raise "Fragment already collected."
           end
+                    
+          # Añadir experiencia al usuario
+          Game::Mechanics::LevelingManagement.gain_exp(self, "collect_fragment")
           
           # Comprobar si es necesario quitarla, ya que ha completado el mensaje.
           # En este punto, se han descartado fragmentos repetidos. Si la cantidad de
@@ -311,6 +314,8 @@ module Game
       
       # Desbloquear un mensaje.
       #
+      # Desloquear un mensaje otorga, además del contenido del mismo, experiencia.
+      #
       # @param msg_uuid [String] Identificador del mensaje completado.
       # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil o se generará una excepción.
       def unlock_completed_message(msg_uuid)
@@ -327,6 +332,9 @@ module Game
         if output == nil
           raise "User does not own message '" + msg_uuid + "' to unlock."
         end
+        
+        # Añadir experiencia al usuario
+        Game::Mechanics::LevelingManagement.gain_exp(self, "unlock_message")
         
         return output
       end
