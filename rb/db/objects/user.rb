@@ -207,7 +207,6 @@ module Game
       # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, generará excepciones.
       def collect_fragment(fragment_message)
         if fragment_message != nil
-          # Comprobar si es necesario añadir la relación
           
           # Si el fragmento es suyo, no recogerlo
           if (fragment_message.message.author != nil && fragment_message.message.author == self)
@@ -239,6 +238,7 @@ module Game
 
           if collected_fragments_rel_count == total_fragments_count - 1
             # Borrar los fragmentos
+            
             collected_fragments_rel.each do |fragment_relation|
               fragment_relation.destroy
             end
@@ -448,7 +448,7 @@ module Game
       #
       # @return [String] Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
       def to_s
-        return "<User: " + self.user_id + ", " + self.alias + ", " + self.is_online.to_s + ", " + super.to_s + ">" 
+        return "<User: " + self.user_id + ", " + self.alias + ", " + self.is_online.to_s + ", " + super.to_s + ", " + self.level_profile.to_s + ">" 
       end
       
       # Retornar objeto como hash.

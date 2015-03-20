@@ -17,8 +17,8 @@ module Game
       #   ------------------------- #++
       
       # Nivel actual del jugador.
-      # @return [Integer] Irá desde el 1 hasta lvl_max
-      property :level, type: Integer, default: 1
+      # @return [Integer] Irá desde el 0 hasta lvl_max
+      property :level, type: Integer, default: 0
       
       # Experiencia del nivel actual.
       # @return [Integer] Irá desde el 0 hasta el máximo del nivel actual (:level).
@@ -29,8 +29,17 @@ module Game
       # @return [Game::Database::User] Usuario que posee este nivel.
       has_one :in, :user, model_class: Game::Database::User, origin: :level_profile
       
+      #-- -------------------------
+      #          Métodos
+      #   ------------------------- #++
       
-      # ...
+      # Stringificar objeto.
+      #
+      # @return [String] Objeto como string.
+      def to_s
+        return "<LevelProfile: " + self.level.to_s + ", " + self.level_exp.to_s + ">" 
+      end
+      
     end
     
   end

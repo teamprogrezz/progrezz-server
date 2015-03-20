@@ -76,6 +76,15 @@ module REST
               Game::Database::User.find_by( alias: "Wikiti").written_messages
             end).to_s
             
+            # Levear a wikiti
+            puts "Tiempo de leveo de Wikiti: " + (GenericUtils.timer do
+              Game::Database::DatabaseManager.run_nested_transaction do
+                for i in 0...30
+                  Game::Mechanics::LevelingManagement.gain_exp( user_Wikiti, "collect_fragment" )
+                end
+              end
+           end).to_s
+            
             # Añadir fragmentos a Wikiti
             puts "Tiempo de asociación de fragmentos a Wikiti: " + (GenericUtils.timer do
               # Añadir fragmentos
@@ -125,7 +134,7 @@ module REST
           
         # Banearme 5 minutos ( D': )
         #Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
-          
+
         rescue Exception => e
           #puts e.message
           #puts e.backtrace
