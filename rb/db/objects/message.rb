@@ -135,10 +135,33 @@ module Game
         return message
       end
       
+      # Creación de nuevos mensajes de sistema.
+      #
+      # @param cont [String] Contenido del mensaje.
+      # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
+      # @param resource [String] Recurso mediático (opcional).
+      #
+      # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
+      def self.create_system_message( content, n_fragments = 1, resource = nil )
+        begin
+          message = create( {content: content, total_fragments: n_fragments, resource_link: resource, replicable: true, snap_to_roads: true})
+
+        rescue Exception => e
+          puts e.to_s
+          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
+        end
+        
+        return message
+      end
+      
       # Getter de los mensajes sin autor.
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
         return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
+      end
+      
+      class << self
+        alias_method :system_messages, :unauthored_messages
       end
       
       # Getter de los mensajes sin autor que pueden ser replicables.

@@ -86,6 +86,14 @@ module Sinatra
         admin_protected!
         erb :"admin/users", :layout => :"admin/layout"
       end
+      
+      app.post '/admin/messages/add' do
+        admin_protected!
+        
+        Game::Database::Message.create_system_message( params["add_content"], params["add_nfragments"].to_i, params["add_resource"] )
+        
+        return {status: "ok"}.to_json
+      end
     end
   end
 
