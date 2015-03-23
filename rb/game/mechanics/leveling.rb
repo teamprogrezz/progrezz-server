@@ -36,12 +36,23 @@ module Game
         return _next_level_required_exp( next_level )
       end
       
+      # Nivel mínimo (incluido).
+      # @return [Integer] Nivel mínimo.
+      def self.min_level
+        return @@leveling_data["levels"]["start"]
+      end
+      
+      # Nivel máximo (incluido).
+      # @return [Integer] Nivel máximo.
+      def self.max_level
+        return @@leveling_data["levels"]["end"]
+      end
+      
       # Dar experiencia a un usuario.
       # @param user [Game::Database::User] Referencia al usuario.
       # @param action_str [String] Acción realizada por el usuario.
       # @return [Hash<Symbol, Object>] Hash con información de la experiencia obtenida, o si se ha alcanzado un nuevo nivel.
       def self.gain_exp(user, action_str)
-        
         # Gestión de errores
         if user == nil || user.level_profile == nil
           raise "Invalid user."

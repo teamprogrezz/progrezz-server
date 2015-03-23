@@ -14,8 +14,12 @@
   [
     "User", [
       {
-        "name": "Get profile",
-        "example": {"_comment":"Use this method to retrieve the stats of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_profile","data":{"user_id":"yourmail@example.com"}}}
+        "name": "User's profile",
+        "example": {"_comment":"Use this method to retrieve the stats of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_profile","data":{"user_id":"yourmail@example.com"}}}
+      },
+      {
+        "name": "User's allowed actions ",
+        "example": {"_comment":"Use this method to retrieve the allowed actions (and their parameters) of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_allowed_actions","data":{"user_id":"yourmail@example.com"}}}
       }
     ]
   ],

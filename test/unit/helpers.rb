@@ -30,7 +30,8 @@ def init_db()
   
   # Añadir cositas
   @users << Game::Database::User.sign_up( "test", 'test', {latitude: 28.4694, longitude: -16.2738} )
-  @users[0].write_msg( "Hola mundo!!!" )
+  @users[0].level_profile.update( {level: 6} )
+  @users[0].write_message( "Hola mundo!!!" )
   
   # Usuarios de prueba
   @users << Game::Database::User.sign_up( "test11", 'test11', {latitude: 28.46673, longitude: -16.27357} )

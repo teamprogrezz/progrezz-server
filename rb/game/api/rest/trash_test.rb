@@ -48,11 +48,21 @@ module REST
               user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
             end).to_s
             
+            # Levear a wikiti
+            puts "Tiempo de leveo de usuarios: " + (GenericUtils.timer do
+              Game::Database::DatabaseManager.run_nested_transaction do
+                for i in 0...80
+                  Game::Mechanics::LevelingManagement.gain_exp( user_Wikiti, "collect_fragment" )
+                  Game::Mechanics::LevelingManagement.gain_exp( user_Shylpx, "collect_fragment" )
+                end
+              end
+            end).to_s
+
             # Mensajes con autor
             puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
-              messages << user_Wikiti.write_msg( "Mensaje de prueba de Wikiti." )
-              messages << user_Wikiti.write_msg( "Mensaje de prueba de Shylpx n2 (robado)." )
-              messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
+              messages << user_Wikiti.write_message( "Mensaje de prueba de Wikiti." )
+              messages << user_Wikiti.write_message( "Mensaje de prueba de Shylpx n2 (robado)." )
+              messages << user_Shylpx.write_message( "Mensaje de prueba de Shylpx n1." )
             end).to_s
             
             # Mensajes sin autor
@@ -75,16 +85,7 @@ module REST
             puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
               Game::Database::User.find_by( alias: "Wikiti").written_messages
             end).to_s
-            
-            # Levear a wikiti
-            puts "Tiempo de leveo de Wikiti: " + (GenericUtils.timer do
-              Game::Database::DatabaseManager.run_nested_transaction do
-                for i in 0...30
-                  Game::Mechanics::LevelingManagement.gain_exp( user_Wikiti, "collect_fragment" )
-                end
-              end
-           end).to_s
-            
+
             # Añadir fragmentos a Wikiti
             puts "Tiempo de asociación de fragmentos a Wikiti: " + (GenericUtils.timer do
               # Añadir fragmentos

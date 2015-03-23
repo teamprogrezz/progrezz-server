@@ -1,17 +1,32 @@
-[
-  "_comment": "Allowed actions per user level (and various params). Quick example: Level 2 includes actions from levels 0, 1 and 2",
+{
+  "_comment": "Allowed actions per user level (and various params). Also, each level includes all previous levels alowed actions. Quick example: Level 2 includes actions from levels 0, 1 and 2",
   
   "0": {
     "collect_fragment": {
-      "radius": 0.5 
-    }
+      "radius": 0.005
+    },
+    "search_nearby_fragments": {
+      "radius": 1.0,
+      "noise": {
+        "latitude":  0.0002703991610292839,
+        "longitude": 0.0002694961485803412
+      }
+    },
+    "unlock_message": true
   },
   "1": {
-    "unlock_message": true
+  
   },
   "2": {
     "collect_fragment": {
-      "radius": 0.75
+      "radius": 0.010
+    },
+    "search_nearby_fragments": {
+      "radius": 0.8,
+      "noise": {
+        "latitude":  0.00018026610735285596,
+        "longitude": 0.0001796640990535608
+      }
     }
   },
   "3": {
@@ -19,7 +34,7 @@
   },
   "4": {
     "collect_fragment": {
-      "radius": 1.0
+      "radius": 0.020
     },
     "write_message": true
   },
@@ -28,7 +43,7 @@
   },
   "6": {
     "collect_fragment": {
-      "radius": 1.25
+      "radius": 0.030
     }
   },
   "7": {
@@ -36,8 +51,7 @@
   },
   "8": {
     "collect_fragment": {
-      "radius": 1.5
+      "radius": 0.040
     }
   }
-
-]
+}

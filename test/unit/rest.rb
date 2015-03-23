@@ -82,15 +82,30 @@ class RESTTest < Test::Unit::TestCase
   # ---------------------------
   
   # Probar "user_get_profile"
-  def test_user_get_profile
+  def test_user_profile
     authenticate()
     
-    @request[:request][:type] = "user_get_profile"
+    @request[:request][:type] = "user_profile"
     @request[:request][:data] = { user_id: @users[0].user_id }
     rest_request()
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:profile][:info][:user_id], @users[0].user_id
+    
+  end
+  
+  # Probar "user_allowed_actions"
+  def test_user_allowed_actions
+    authenticate()
+    
+    @request[:request][:type] = "user_allowed_actions"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert @response[:response][:data][:allowed_actions].keys.include? :unlock_message
+    assert @response[:response][:data][:allowed_actions].keys.include? :collect_fragment
+    assert @response[:response][:data][:allowed_actions].keys.include? :search_nearby_fragments
     
   end
   
