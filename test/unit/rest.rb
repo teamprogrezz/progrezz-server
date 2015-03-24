@@ -113,7 +113,7 @@ class RESTTest < Test::Unit::TestCase
   #       User messages
   # ---------------------------
   
-  # Probar "user_unlock_message"
+  # Probar "user_unlock_message" y "user_read_message"
   def test_user_unlock_message
     authenticate()
     
@@ -124,6 +124,14 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:message], "Message unlocked."
+    
+    # Marcar como leído
+    @request[:request][:type] = "user_read_message"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[0].uuid }
+    rest_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Message read."
     
     # Error
     @request[:request][:type] = "user_unlock_message"

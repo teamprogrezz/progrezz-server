@@ -472,6 +472,27 @@ module Game
 
         return nil
       end
+            
+      # Marcar mensaje como leído.
+      #
+      # @param msg_uuid [String] Identificador único del mensaje (uuid).
+      def read_message(msg_uuid)
+        output = nil
+        
+        self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
+          if rel.status == Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
+            raise "Message locked. Must be unlocked first."
+          end
+          
+          output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_READ )
+        end
+        
+        if output == nil
+          raise "User does not own message '" + msg_uuid + "' to read."
+        end
+        
+        return output
+      end
       
       # Obtener mensajes fragmentados de un usuario como un hash.
       #

@@ -16,9 +16,21 @@ module Sinatra; module API ;module REST
       user.unlock_message( response[:request][:request][:data][:msg_uuid], extra ) 
       
       Game::API::JSONResponse.ok_response!( response, {
-        type: "plain",
+        type: "json",
         message: "Message unlocked.",
         exp_gained: extra[:exp]
+      })
+    end
+    
+    # Marcar un mensaje como leído.
+    def self.user_read_message( app, response, session)
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      user.read_message( response[:request][:request][:data][:msg_uuid] ) 
+      
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Message read."
       })
     end
     
@@ -61,7 +73,7 @@ module Sinatra; module API ;module REST
       end
       
       Game::API::JSONResponse.ok_response!( response, {
-        type: "plain",
+        type: "json",
         message: msg,
         exp_gained: extra[:exp]
       })

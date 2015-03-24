@@ -34,6 +34,10 @@
         "example": {"_comment":"Unlocks a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_unlock_message","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       },
       {
+        "name": "Read user completed message",
+        "example": {"_comment":"Read a completed message for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_read_message","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+      },
+      {
         "name": "Collect message fragment",
         "example": {"_comment":"Collects a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       },
