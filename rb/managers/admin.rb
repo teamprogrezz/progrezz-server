@@ -87,12 +87,62 @@ module Sinatra
         erb :"admin/users", :layout => :"admin/layout"
       end
       
+      # -- Mensajes --
       app.post '/admin/messages/add' do
         admin_protected!
         
         Game::Database::Message.create_system_message( params["add_content"], params["add_nfragments"].to_i, params["add_resource"] )
         
         return {status: "ok"}.to_json
+      end
+      
+      # -- Usuarios --
+      app.post '/admin/users/search_by_alias' do
+        admin_protected!
+        
+        output = nil
+        if params["regexp"] == nil
+          output = Game::Database::User.where( alias: params["alias"] ).to_a
+        else
+          output = Game::Database::User.as(:u).where( "u.alias =~ {al}" ).params(al: params["alias"]).to_a
+        end
+        
+        output.each_index do |i|
+          user = output[i]
+          output[i] = {
+            uuid: user.uuid,
+            user_id: user.user_id,
+            alias: user.alias,
+            banned_until: user.banned_until,
+            banned_reason: user.banned_reason
+          }
+        end
+        
+        return output.to_json
+      end
+      
+      app.post '/admin/users/search_by_email' do
+        admin_protected!
+        
+        output = nil
+        if params["regexp"] == nil
+          output = Game::Database::User.where( user_id: params["email"] ).to_a
+        else
+          output = Game::Database::User.as(:u).where( "u.user_id =~ {u}" ).params(u: params["email"]).to_a
+        end
+        
+        output.each_index do |i|
+          user = output[i]
+          output[i] = {
+            uuid: user.uuid,
+            user_id: user.user_id,
+            alias: user.alias,
+            banned_until: user.banned_until,
+            banned_reason: user.banned_reason
+          }
+        end
+        
+        return output.to_json
       end
     end
   end

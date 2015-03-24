@@ -8,13 +8,6 @@ table tr td, th {
   border: 1px solid black;
 }
 
-label {
-  display: inline-block;
-  width: 140px;
-  text-align: left;
-  padding-right: 15px;
-}​
-
 /* OSM */
 div#osm_map {
   height: 500px;
@@ -53,4 +46,26 @@ ul.navbar li a:link, ul.navbar li a:visited {
 
 ul.navbar li a:hover, ul.navbar li a:active {
     background-color: #314C95;
+}
+
+label {
+  display: inline-block;
+  width: 150px;
+  text-align: left;
+  padding-right: 0px;
+  margin-bottom: 5px;
+}
+
+input {
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  width: 400px;
+  display: inline-block;
+}
+
+input[type="number"] {
+  width: 400px;
+  display: inline-block;
 }

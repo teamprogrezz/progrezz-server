@@ -56,6 +56,10 @@ module Game
       # @return [Date] Segundos desde el 1/1/1970
       property :banned_until, type: DateTime, default: 0
       
+      # Róazn por la que ha sido baneado el usuario.
+      # @return [String] Razón.
+      property :banned_reason, type: String, default: ""
+      
       # Flag para saber si un usuario está conectado o no (mediante websockets).
       # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
       property :is_online, type: Boolean, default: false

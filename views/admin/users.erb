@@ -1,7 +1,115 @@
 <h1>Users administration</h1>
 
-<h2>Block an user</h2>
+<h2>Search user by alias</h2>
+<form id="search_user_by_alias">
+  <label>User alias</label><input type="text" name="alias" placeholder="User alias (e.g: ExampleName)"><br>
+  <label>Regular expression?</label><input type="checkbox" name="regexp" ><br>
+  
+  <button type="submit">Search</button>
+</form><br>
+<div id="user_search_alias_result">
+</div>
+
+<h2>Search user by email</h2>
+<form id="search_user_by_email">
+  <label>User email</label><input type="text" name="email" placeholder="User email (e.g: yourmail@example.com)"><br>
+  <label>Regular expression?</label><input type="checkbox" name="regexp" ><br>
+  
+  <button type="submit">Search</button>
+</form><br>
+<div id="user_search_email_result">
+</div>
+
+<h2>Ban an user</h2>
 <p>...</p>
 
-<h2>User list</h2>
+<h2>Unban an user</h2>
 <p>...</p>
+
+<h2>Banned users list</h2>
+<div id="user_banned_list">
+  <table>
+    <tr>
+      <th>uuid</th>
+      <th>email</th>
+      <th>alias</th>
+      <th>banned until</th>
+      <th>ban reason</th>
+    </tr>
+    <% Game::AuthManager.banned_users().each do |u| %>
+    <tr>
+      <td><%= u.uuid %></td>
+      <td><%= u.user_id %></td>
+      <td><%= u.alias %></td>
+      <td><%= u.banned_until.strftime("%Y/%m/%d - %H:%M:%S - UTC %:z") %></td>
+      <td><%= u.banned_reason %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+
+<script>
+  $(document).ready(function(){
+    // Petición de buscar usuario por alias
+    $('#search_user_by_alias').submit(function(evento){
+      evento.preventDefault();
+      var datos_formulario = $(this).serialize();
+      
+      $.ajax({
+        url: '/admin/users/search_by_alias',
+        data: datos_formulario,
+        type: 'post',
+        dataType: 'json',
+        success: function(datos){
+          html = "<table><tr><th>uuid</th><th>email</th><th>alias</th><th>banned until</th><th>ban reason</th></tr>"
+          
+          for(i in datos) {
+            u = datos[i]
+            html += "<tr>"
+              html += "<td>" + u.uuid + "</td>"
+              html += "<td>" + u.user_id + "</td>"
+              html += "<td>" + u.alias + "</td>"
+              html += "<td>" + u.banned_until + "</td>"
+              html += "<td>" + u.banned_reason + "</td>"
+            html += "</tr>"
+          }
+          
+          html += "</table>"
+          document.getElementById("user_search_alias_result").innerHTML = html
+        }
+      });     
+    });
+    
+    // Petición de buscar usuario por email
+    $('#search_user_by_email').submit(function(evento){
+      evento.preventDefault();
+      var datos_formulario = $(this).serialize();
+      $.ajax({
+        url: '/admin/users/search_by_email',
+        data: datos_formulario,
+        type: 'post',
+        dataType: 'json',
+        success: function(datos){
+          html = "<table><tr><th>uuid</th><th>email</th><th>alias</th><th>banned until</th><th>ban reason</th></tr>"
+          
+          for(i in datos) {
+            u = datos[i]
+            html += "<tr>"
+              html += "<td>" + u.uuid + "</td>"
+              html += "<td>" + u.user_id + "</td>"
+              html += "<td>" + u.alias + "</td>"
+              html += "<td>" + u.banned_until + "</td>"
+              html += "<td>" + u.banned_reason + "</td>"
+            html += "</tr>"
+          }
+          
+          html += "</table>"
+          document.getElementById("user_search_email_result").innerHTML = html
+        }
+      });     
+    });
+    
+    // ...
+  });
+</script>
