@@ -24,8 +24,8 @@
     "search_nearby_fragments": {
       "radius": 0.8,
       "noise": {
-        "latitude":  0.00018026610735285596,
-        "longitude": 0.0001796640990535608
+        "latitude":  0.0007210644294114238,
+        "longitude": 0.0007186563962142432
       }
     }
   },
