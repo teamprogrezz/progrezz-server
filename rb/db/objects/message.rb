@@ -109,22 +109,33 @@ module Game
       #
       # @param cont [String] Contenido del mensaje.
       # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
-      # @param resource [String] Recurso mediático (opcional).
-      # @param custom_author [Game::Database::User] Autor del mensaje (opcional).
-      # @param position [Hash<Symbol, Float>] Posición del mensaje, con la forma { latitude: n, longitude: m }
-      # @param deltas [Hash<Symbol, Float>] Offsets para la geolocalización aleatoria, con la forma { latitude: n, longitude: m }
-      # @param replic [Boolean] Mensaje replicable (o no).
+      # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = true)
+      def self.create_message(cont, n_fragments, extra_params = {} )
+        params = GenericUtils.default_params( {
+          resource_link: nil,
+          author: nil,
+          position: {
+            latitude: 0,
+            longitude:0
+          },
+          deltas: {
+            latitude: 0,
+            longitude:0  
+          },
+          replicable: true,
+          snap_to_roads: true
+        }, extra_params)
+        
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic, snap_to_roads: snap_to_roads}) do |msg|
-            if custom_author != nil
-              custom_author.add_msg(msg)
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: params[:replicable], snap_to_roads: params[:snap_to_roads] }) do |msg|
+            if params[:author] != nil
+              params[:author].add_msg(msg)
             end
             
             # Generar fragmentos iniciales.
-            msg.replicate(position, deltas)
+            msg.replicate(params[:position], params[:deltas])
           end
 
         rescue Exception => e
@@ -139,12 +150,18 @@ module Game
       #
       # @param cont [String] Contenido del mensaje.
       # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
-      # @param resource [String] Recurso mediático (opcional).
+      # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_system_message( content, n_fragments = 1, resource = nil )
+      def self.create_system_message( content, n_fragments, extra_params = {} )
+        default_params = 
+        
+        params = GenericUtils.default_params( {
+          resource_link: nil
+        }, extra_params)
+        
         begin
-          message = create( {content: content, total_fragments: n_fragments, resource_link: resource, replicable: true, snap_to_roads: true})
+          message = create( {content: content, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: true, snap_to_roads: true})
 
         rescue Exception => e
           puts e.to_s

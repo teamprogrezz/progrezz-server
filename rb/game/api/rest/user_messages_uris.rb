@@ -86,7 +86,7 @@ module Sinatra; module API ;module REST
       msg_content  = response[:request][:request][:data][:content].to_s
       msg_resource = response[:request][:request][:data][:resource].to_s
       
-      msg = user.write_message( msg_content, msg_resource )
+      msg = user.write_message( msg_content, :resource_link => msg_resource )
       
       Game::API::JSONResponse.ok_response!( response, {
         type: "json",

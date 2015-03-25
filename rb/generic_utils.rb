@@ -72,6 +72,22 @@ class GenericUtils
 
     return h
   end
+  
+  # Calcular parámetros en base a unos por defecto y unos parámetros requeridos.
+  # @param default [Hash<Symbol, Object>] Parámetros por defecto.
+  # @param user_params [Hash<Symbol, Object>] Parámetros que ha introducido el usuario.
+  # @param required_params [Array<Symbol>] Parámetros requeridos.
+  # @raise [Exception] Si un parámetro requerido no se proporciona, se lanzará una excepción.
+  def self.default_params(default, user_params, required_params = [])
+    keys = user_params.keys
+    for r in required_params
+      if !keys.include? r
+        raise "Parameter '" + r.to_s + "' (not provided) is required"
+      end
+    end
+    
+    return default.deep_merge(user_params)
+  end
 end
 
 class ::Hash

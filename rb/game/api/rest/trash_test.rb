@@ -67,9 +67,13 @@ module REST
             
             # Mensajes sin autor
             puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-              messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 })
-              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 })
+              messages << Game::Database::Message.create_system_message("¡Adelante, campeones de a luz!.", 4)
+              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3)
               messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+              
+              messages[3].replicate( {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 } )
+              messages[4].replicate( {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 } )
+              messages[5].replicate()
               
               # Crear copia de un mensaje replicable
               # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
