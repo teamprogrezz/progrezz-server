@@ -1,5 +1,32 @@
 {
-  "_comment": "Allowed actions per user level (and various params). Also, each level includes all previous levels alowed actions. Quick example: Level 2 includes actions from levels 0, 1 and 2",
+  "_comment": {
+    "_desc": "Allowed actions per user level (and various params). Also, each level includes all previous levels alowed actions.",
+    
+    "collect_fragment": {
+      "_desc": "Collect a message fragment.",
+      "radius": "Radius to collect a fragment."
+    },
+    
+    "search_nearby_fragments": {
+      "_desc": "Search nearby message's fragments.",
+      "radius": "Radius to search nearby fragments.",
+      "noise": {
+        "_dec": "Noise (for the client) to make a 'guess area' near the fragment.",
+        "latitude": "Latitude noise (degrees).",
+        "longitude": "Longitude noise (degrees)."
+      }
+    },
+    
+    "unlock_message": {
+      "_desc": "Unlock a locked messsage."
+    },
+    
+    "write_message": {
+      "_desc": "Allow a user to write a geolocated message.",
+      "duration": "Speified in days."
+    }
+  },
+  
   
   "0": {
     "collect_fragment": {
@@ -43,7 +70,9 @@
         "longitude": 0.005389922971606824
       }
     },
-    "write_message": true
+    "write_message": {
+      "duration": 7
+    }
   },
   "5": {
   
