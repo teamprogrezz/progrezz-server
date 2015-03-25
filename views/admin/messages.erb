@@ -5,6 +5,8 @@
   <label for="add_content">Content: </label><input type="text" placeholder="Message content (e.g: Admin was here.)." name="add_content" id="add_content"><br>
   <label for="add_resource">Resource Link: </label><input type="text" placeholder="Resource link (e.g: http://progrezz.it/image.png)." name="add_resource" id="add_resource"><br>
   <label for="add_nfragments">Total fragments: </label><input type="number" placeholder="Number of fragments." min="1" max="50" name="add_nfragments" id="add_nfragments"><br>
+  <label for="add_duration">Duration: </label><input type="number" placeholder="Duration (in days)." min="0" max="365" name="add_duration" id="add_duration"><br>
+  
   
   <button type="submit">Submit</button>
 </form>
@@ -20,8 +22,8 @@
       <th>content</th>
       <th>resource</th>
       <th>n fragments</th>
-      <th>replicable</th>
-      <th>snap to roads</th>
+      <th>created at</th>
+      <th>duration (days)</th>
       <th>total replications</th>
     </tr>
     <% Game::Database::Message.system_messages.each do |msg| %>
@@ -30,8 +32,8 @@
       <td><%= msg.content %></td>
       <td><a href="<%= msg.resource_link %>"><%= msg.resource_link %></a></td>
       <td><%= msg.total_fragments %></td>
-      <td><%= msg.replicable %></td>
-      <td><%= msg.snap_to_roads %></td>
+      <td><%= msg.created_at.strftime("%Y/%m/%d - %H:%M:%S - UTC %:z") %></td>
+      <td><%= msg.duration %></td>
       <td><%= msg.replications %></td>
     </tr>
     <% end %>

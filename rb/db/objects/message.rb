@@ -75,6 +75,10 @@ module Game
       # Timestamp o fecha de creación del mensaje.
       # @return [DateTime] Fecha de creación.
       property :created_at
+      
+      # Duración (en días) de un mensaje (y todos los fragmentos). Si es 0, durará eternamente.
+      # @return [Integer] Días que durará el mensaje.
+      property :duration, type: Integer, default: 0
 
       #-- -------------------------
       #       Relaciones (DB)
@@ -125,11 +129,12 @@ module Game
             longitude:0  
           },
           replicable: true,
-          snap_to_roads: true
+          snap_to_roads: true,
+          duration: 0
         }, extra_params)
         
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: params[:replicable], snap_to_roads: params[:snap_to_roads] }) do |msg|
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: params[:replicable], snap_to_roads: params[:snap_to_roads], duration: params[:duration]  }) do |msg|
             if params[:author] != nil
               params[:author].add_msg(msg)
             end
@@ -154,14 +159,13 @@ module Game
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
       def self.create_system_message( content, n_fragments, extra_params = {} )
-        default_params = 
-        
         params = GenericUtils.default_params( {
-          resource_link: nil
+          resource_link: nil,
+          duration: 0
         }, extra_params)
         
         begin
-          message = create( {content: content, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: true, snap_to_roads: true})
+          message = create( {content: content, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: true, snap_to_roads: true, duration: params[:duration]})
 
         rescue Exception => e
           puts e.to_s
@@ -300,6 +304,16 @@ module Game
         end
         
         return output
+      end
+      
+      # Comprobar si un mensaje ha caducado.
+      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
+      def caducated?
+        if self.created_at + duration <= Time.now
+          return true
+        end
+        
+        return false
       end
       
       # Transformar objeto a un hash
