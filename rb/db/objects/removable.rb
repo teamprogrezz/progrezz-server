@@ -7,35 +7,16 @@ module Game
     class RemovableObject
       include Neo4j::ActiveNode
       
-      # Propiedad de borrado.
-      # @return [Boolean] Si está "borrado", retorna True. Si no, retorna False.
-      property :removed, type: Boolean, default: false
-      
       # Scope neo4j para acceder rápidamente a objetos sin borrar.
       # @return [Object] Consulta neo4j.
       
       # Eliminar un objeto.
       # @overload
       def remove()
-        self.update( removed: true )
+        # Guardar en ficheros destruidos
+        # TODO ...
       end
     end
     
-  end
-end
-
-module Neo4j
-  module Core
-    class Query
-      
-      def unremoved(id = nil)
-        if(id == nil)
-          where(removed: false)
-        else
-          where("#{id}.removed = false")
-        end
-      end
-      
-    end
   end
 end

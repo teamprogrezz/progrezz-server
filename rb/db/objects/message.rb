@@ -179,7 +179,7 @@ module Game
       # Getter de los mensajes sin autor.
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
-        return self.query_as(:msg).unremoved(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
+        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
       end
       
       class << self
