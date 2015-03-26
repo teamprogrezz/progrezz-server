@@ -5,7 +5,7 @@ require_relative '../relations/user-message_fragment'
 module Game
   module Database
     
-    class Message; end
+    class Message < RemovableObject; end
     # Forward declaration
 
     # Clase que representa a un fragmento geolocalizado de un juego.

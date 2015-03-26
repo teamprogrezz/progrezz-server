@@ -10,7 +10,7 @@ module Game
   module Database
     
     class LevelProfile; end
-    class Message; end
+    class Message < RemovableObject; end
     # Forward declaration
     
     # Clase que representa a un jugador cualquiera en la base de datos.

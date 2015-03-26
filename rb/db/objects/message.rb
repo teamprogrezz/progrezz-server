@@ -6,6 +6,7 @@ require 'thwait'
 require_relative 'user'
 require_relative 'message_fragment'
 require_relative '../relations/user-completed_message'
+require_relative 'removable'
 
 module Game
   module Database
@@ -14,7 +15,7 @@ module Game
     #
     # Se caracteriza por estar enlazado con diversos tipos de nodos, principalmente con
     # un autor y una serie de fragmentos geolocalizados.
-    class Message
+    class Message < RemovableObject
       include Neo4j::ActiveNode
       
       #-- -------------------------
@@ -178,7 +179,7 @@ module Game
       # Getter de los mensajes sin autor.
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
-        return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
+        return self.query_as(:msg).unremoved(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
       end
       
       class << self
@@ -314,6 +315,15 @@ module Game
         end
         
         return false
+      end
+      
+      # Eliminar un mensaje y todos sus fragmentos.
+      def remove()
+        self.update( removed?: true )
+        
+        self.fragments.each do |f|
+          f.remove()
+        end
       end
       
       # Transformar objeto a un hash
