@@ -32,8 +32,6 @@ module Game
       # Método de búsqueda de mensajes por defecto.
       DEFAULT_SEARCH_METHOD = "neo4j"
       
-      # TODO: Añadir límite de mensajes (según el nivel, o algo así).
-      
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
