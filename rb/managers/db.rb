@@ -4,15 +4,13 @@
 module Game
 # Módulo que contiene estructuras de datos referentes a la base de datos.
 module Database
-  
-  # Lista de transacciones.
-  @@transactions = []
-
   # Clase gestora de la base de datos.
   #
   # Se encarga de realizar tareas sencillas, como inicializar el acceso a la base
   # de datos neo4j, reiniciar su estado, etc.
   class DatabaseManager
+    # Lista de transacciones.
+    @@transactions = []
     
     # Fichero para guardar nodos borrados.
     DUMP_FILE_JSON = "tmp/db_dump.json"

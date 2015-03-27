@@ -257,7 +257,7 @@ module Game
       # Generar un nuevo fragmento para el mensaje.
       # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
       # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
-      # @param ignore_replicable_frag [Boolean] Ignorar flag +replicable+ del objeto.
+      # @param ignore_replicable_flag [Boolean] Ignorar flag +replicable+ del objeto.
       # @return [Hash<Game::Database::MessageFragment>] Retorna un array con las referencias a los fragmentos añadidos.
       def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }, ignore_replicable_flag = false )
         # Comprobar replicación

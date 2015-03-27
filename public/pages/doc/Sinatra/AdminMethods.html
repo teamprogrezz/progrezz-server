@@ -189,8 +189,6 @@
       <pre class="lines">
 
 
-68
-69
 70
 71
 72
@@ -268,10 +266,47 @@
 144
 145
 146
-147</pre>
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/admin.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/admin.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_registered'>registered</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span> <span class='const'>Sinatra</span><span class='op'>::</span><span class='const'>AdminHelpers</span>
@@ -297,6 +332,7 @@
   
   <span class='comment'># -- Mensajes --
 </span>  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/messages/add</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
     <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
     
     <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_create_system_message'>create_system_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>add_content</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>add_nfragments</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>resource_link:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>add_resource</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>duration:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>add_duration</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
@@ -304,8 +340,17 @@
     <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ok</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>end</span>
   
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/messages/remove</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
+    <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
+    
+    <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rem_uuid</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>error</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>end</span>
+  
   <span class='comment'># -- Usuarios --
 </span>  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/users/search_by_alias</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
     <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
     
     <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -330,6 +375,7 @@
   <span class='kw'>end</span>
   
   <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/users/search_by_email</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
     <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
     
     <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -352,6 +398,30 @@
     
     <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/users/ban</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
+    <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
+    
+    <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ban_id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_ban_duration'>ban_duration</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ban_duration</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+    <span class='id identifier rubyid_ban_reason'>ban_reason</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ban_reason</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    
+    <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_ban_user'>ban_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_ban_duration'>ban_duration</span><span class='comma'>,</span> <span class='id identifier rubyid_ban_reason'>ban_reason</span><span class='rparen'>)</span>
+
+    <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ok</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/users/unban</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
+    <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
+    
+    <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>unban_id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    
+    <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_unban_user'>unban_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='rparen'>)</span>
+    
+    <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ok</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -363,7 +433,7 @@
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 10:31:45 2015 by
+  Generated on Fri Mar 27 13:50:04 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
