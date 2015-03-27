@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'date'
+
 module Game
   
   # Clase gestora de la administración del juego.
@@ -85,6 +87,99 @@ module Sinatra
       app.get '/admin/users' do
         admin_protected!
         erb :"admin/users", :layout => :"admin/layout"
+      end
+      
+      # -- Mensajes --
+      app.post '/admin/messages/add' do
+        content_type :json
+        admin_protected!
+        
+        Game::Database::Message.create_system_message( params["add_content"], params["add_nfragments"].to_i, { resource_link: params["add_resource"], duration: params["add_duration"]} )
+        
+        return {status: "ok"}.to_json
+      end
+      
+      app.post '/admin/messages/remove' do
+        content_type :json
+        admin_protected!
+        
+        Game::Database::Message.find_by( uuid: params["rem_uuid"] ).remove()
+        return {status: "error"}.to_json
+      end
+      
+      # -- Usuarios --
+      app.post '/admin/users/search_by_alias' do
+        content_type :json
+        admin_protected!
+        
+        output = nil
+        if params["regexp"] == nil
+          output = Game::Database::User.where( alias: params["alias"] ).to_a
+        else
+          output = Game::Database::User.as(:u).where( "u.alias =~ {al}" ).params(al: params["alias"]).to_a
+        end
+        
+        output.each_index do |i|
+          user = output[i]
+          output[i] = {
+            uuid: user.uuid,
+            user_id: user.user_id,
+            alias: user.alias,
+            banned_until: user.banned_until,
+            banned_reason: user.banned_reason
+          }
+        end
+        
+        return output.to_json
+      end
+      
+      app.post '/admin/users/search_by_email' do
+        content_type :json
+        admin_protected!
+        
+        output = nil
+        if params["regexp"] == nil
+          output = Game::Database::User.where( user_id: params["email"] ).to_a
+        else
+          output = Game::Database::User.as(:u).where( "u.user_id =~ {u}" ).params(u: params["email"]).to_a
+        end
+        
+        output.each_index do |i|
+          user = output[i]
+          output[i] = {
+            uuid: user.uuid,
+            user_id: user.user_id,
+            alias: user.alias,
+            banned_until: user.banned_until,
+            banned_reason: user.banned_reason
+          }
+        end
+        
+        return output.to_json
+      end
+      
+      app.post '/admin/users/ban' do
+        content_type :json
+        admin_protected!
+        
+        user_id = params["ban_id"]
+        ban_duration = params["ban_duration"].to_i
+        ban_reason = params["ban_reason"]
+        
+        Game::AuthManager.ban_user(user_id, ban_duration, ban_reason)
+
+        return {status: "ok"}.to_json
+      end
+      
+      app.post '/admin/users/unban' do
+        content_type :json
+        admin_protected!
+        
+        user_id = params["unban_id"]
+        
+        Game::AuthManager.unban_user(user_id)
+        
+        return {status: "ok"}.to_json
       end
     end
   end

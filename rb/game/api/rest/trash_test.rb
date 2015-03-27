@@ -44,22 +44,36 @@ module REST
             
             # Usuarios
             puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
-              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 37.3855213, longitude: -5.9692002})
+              user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 28.4748, longitude: -16.2679})
               user_Shylpx = Game::Database::User.sign_up('Shylpx', 'cristogr.93@gmail.com' )
             end).to_s
             
+            # Levear a wikiti
+            puts "Tiempo de leveo de usuarios: " + (GenericUtils.timer do
+              Game::Database::DatabaseManager.run_nested_transaction do
+                for i in 0...80
+                  Game::Mechanics::LevelingManagement.gain_exp( user_Wikiti, "collect_fragment" )
+                  Game::Mechanics::LevelingManagement.gain_exp( user_Shylpx, "collect_fragment" )
+                end
+              end
+            end).to_s
+
             # Mensajes con autor
             puts "Tiempo de creación de mensajes con autor: " + (GenericUtils.timer do
-              messages << user_Wikiti.write_msg( "Mensaje de prueba de Wikiti." )
-              messages << user_Wikiti.write_msg( "Mensaje de prueba de Shylpx n2 (robado)." )
-              messages << user_Shylpx.write_msg( "Mensaje de prueba de Shylpx n1." )
+              messages << user_Wikiti.write_message( "Mensaje de prueba de Wikiti." )
+              messages << user_Wikiti.write_message( "Mensaje de prueba de Shylpx n2 (robado)." )
+              messages << user_Shylpx.write_message( "Mensaje de prueba de Shylpx n1." )
             end).to_s
             
             # Mensajes sin autor
             puts "Tiempo de creación de mensajes sin autor: " + (GenericUtils.timer do
-              messages << Game::Database::Message.create_message("¡Adelante, campeones de a luz!.", 4, nil, nil, {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 })
-              messages << Game::Database::Message.create_message("¡Salvar el mundo!.", 3, nil, nil, {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 })
-              messages << Game::Database::Message.create_message("Mensaje de prueba sin usuario (perdido).", 2)
+              messages << Game::Database::Message.create_system_message("¡Adelante, campeones de a luz!.", 4)
+              messages << Game::Database::Message.create_system_message("¡Salvar el mundo!.", 3)
+              messages << Game::Database::Message.create_system_message("Mensaje de prueba sin usuario (perdido).", 2)
+              
+              messages[3].replicate( {latitude: 41, longitude: 0.92}, { latitude: 0.05, longitude: 0.05 } )
+              messages[4].replicate( {latitude: 1.995, longitude: 0.809}, { latitude: 0.05, longitude: 0.05 } )
+              messages[5].replicate()
               
               # Crear copia de un mensaje replicable
               # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
@@ -75,7 +89,7 @@ module REST
             puts "Tiempo de búsqueda de mensajes escritos por Wikiti : " + (GenericUtils.timer do
               Game::Database::User.find_by( alias: "Wikiti").written_messages
             end).to_s
-            
+
             # Añadir fragmentos a Wikiti
             puts "Tiempo de asociación de fragmentos a Wikiti: " + (GenericUtils.timer do
               # Añadir fragmentos
@@ -123,9 +137,12 @@ module REST
             result = "<h2>Datos añadidos correctamente.</h2>"
           end
           
-        # Banearme 5 minutos ( D': )
-        #Game::AuthManager.ban_user(user_Wikiti.user_id, 200 )
-          
+        # Banearme 5 minutos ( D': ).
+        # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
+        
+        # Borrar mensaje (prueba).
+        # messages[3].remove
+
         rescue Exception => e
           #puts e.message
           #puts e.backtrace

@@ -1,0 +1,16 @@
+{
+  "levels": {
+    "start": 0,
+    "end":   8
+  },
+  "exp": {
+    "_comment": "Experience needed to level up each level. Use a function written in ruby to calculate the needed exp for the next level. See http://gamedev.stackexchange.com/questions/8965/how-to-implement-an-experience-system",
+    "exp_per_action": {
+      "collect_fragment": 8,
+      "unlock_message":   15
+    }
+  },
+  "functions": {
+    "next_level_required_exp": "def self._next_level_required_exp(next_level, exp_base = 30, exp_factor = 4); (exp_base + (next_level ** exp_factor)).round; end"
+  }
+}

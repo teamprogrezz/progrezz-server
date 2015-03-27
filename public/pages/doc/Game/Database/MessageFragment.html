@@ -411,7 +411,7 @@ o codificadas.</p>
         <span class='name'>position</span>
       
       
-        <span class='type'>(<tt>Hash&lt;Symbol, Float&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Float&gt;</tt>)</span>
       
       
       
@@ -716,7 +716,7 @@ el atributo <code>owners</code>.</p>
       <div class="method_details ">
   <h3 class="signature " id="to_hash-instance_method">
   
-    - (<tt>Hash&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = []) 
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = []) 
   
 
   
@@ -760,7 +760,7 @@ el atributo <code>owners</code>.</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash&lt;Symbol, Object&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Object&gt;</tt>)</span>
       
       
       
@@ -789,8 +789,7 @@ el atributo <code>owners</code>.</p>
 97
 98
 99
-100
-101</pre>
+100</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/message_fragment.rb', line 90</span>
@@ -801,9 +800,8 @@ el atributo <code>owners</code>.</p>
   <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:uuid</span><span class='semicolon'>;</span>           <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:uuid</span><span class='rbracket'>]</span>           <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span> <span class='kw'>end</span>
   <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:geolocation</span><span class='semicolon'>;</span>    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span>    <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span> <span class='kw'>end</span>
   <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:fragment_index</span><span class='semicolon'>;</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:fragment_index</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fragment_index'>fragment_index</span> <span class='kw'>end</span>
-  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:message</span><span class='semicolon'>;</span>        <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span>        <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:message</span><span class='semicolon'>;</span>        <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span>        <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='comma'>,</span> <span class='symbol'>:message_content</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>end</span>
   <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:group_index</span><span class='semicolon'>;</span>    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:group_index</span><span class='rbracket'>]</span>    <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_group_index'>group_index</span> <span class='kw'>end</span>
-  
   
   <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
 <span class='kw'>end</span></pre>
@@ -877,7 +875,7 @@ el atributo <code>owners</code>.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Mar 19 11:13:49 2015 by
+  Generated on Fri Mar 27 10:31:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

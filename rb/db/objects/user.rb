@@ -9,6 +9,7 @@ require_relative '../relations/user-completed_message'
 module Game
   module Database
     
+    class LevelProfile; end
     class Message; end
     # Forward declaration
     
@@ -21,9 +22,9 @@ module Game
     class User < GeolocatedObject
       include Neo4j::ActiveNode
       
-      #-- -------------------------
-      #        Constantes
-      #   ------------------------- #++
+      #-- --------------------------------------------------
+      #                      Constantes
+      #   -------------------------------------------------- #++
       
       # Fragmentos en los que se partirán los mensajes de un usuario.
       USER_MESSAGE_FRAGMENTS = 1 
@@ -31,14 +32,9 @@ module Game
       # Método de búsqueda de mensajes por defecto.
       DEFAULT_SEARCH_METHOD = "neo4j"
       
-      # Radio de búsqueda de mensajes por defecto.
-      DEFAULT_SEARCH_RADIUS = 1
-      
-      # TODO: Añadir límite de mensajes (según el nivel, o algo así).
-      
-      #-- -------------------------
-      #        Atributos (DB)
-      #   ------------------------- #++
+      #-- --------------------------------------------------
+      #                      Atributos (DB)
+      #   -------------------------------------------------- #++
       
       # Identificador del usuario.
       #
@@ -51,20 +47,43 @@ module Game
       property :alias, type: String, default: ""
       
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Segundos desde el 1/1/1970.
+      # @return [DateTime] Fecha de creación.
       property :created_at
       
       # Fecha hasta la que ha sido baneado el usuario.
       # @return [Date] Segundos desde el 1/1/1970
       property :banned_until, type: DateTime, default: 0
       
+      # Róazn por la que ha sido baneado el usuario.
+      # @return [String] Razón.
+      property :banned_reason, type: String, default: ""
+      
       # Flag para saber si un usuario está conectado o no (mediante websockets).
       # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
       property :is_online, type: Boolean, default: false
       
-      #-- -------------------------
-      #     Relaciones (DB)
-      #   ------------------------- #++
+        # Datos auxiliares para no tener que buscar en la base de datos.
+      
+      # Contador de mensajes escritos por el usuario.
+      # @return [Integer] Cantidad de mensajes escritos por el usuario.
+      property :count_written_messages, type: Integer, default: 0
+      
+      # Contador de fragmentos recolectados por el usuario.
+      # @return [Integer] Cantidad de fragmentos recolectados por el usuario.
+      property :count_collected_fragments, type: Integer, default: 0
+      
+      # Contador de mensajes completados por el usuario.
+      # @return [Integer] Cantidad de mensajes completados por el usuario.
+      property :count_completed_messages, type: Integer, default: 0
+      
+      # Contador de mensajes desbloqueados por el usuario.
+      # @return [Integer] Cantidad de mensajes desbloqueados por el usuario.
+      property :count_unlocked_messages, type: Integer, default: 0
+      
+      
+      #-- --------------------------------------------------
+      #                     Relaciones (DB)
+      #   -------------------------------------------------- #++
       
       # @!method written_messages
       #
@@ -87,9 +106,14 @@ module Game
       # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
       
-      #-- -------------------------
+      # @!method :level_profile
+      # Relación con el nivel del usuario (#Game::Database::User). Se puede acceder con el atributo +user+.
+      # @return [Game::Database::User] Usuario que posee este nivel.
+      has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
+      
+      #-- --------------------------------------------------
       #      Métodos de clase
-      #   ------------------------- #++
+      #   -------------------------------------------------- #++
 
       # Creación de nuevos usuarios.
       #
@@ -101,12 +125,12 @@ module Game
         begin          
           user = create( { alias: al, user_id: uid } ) do |usr|
             usr.set_geolocation( position[:latitude], position[:longitude] )
+            # Crear perfil
+            usr.level_profile = Game::Database::LevelProfile.create( )
           end
 
         rescue Exception => e
-          puts e.message
-          puts e.backtrace
-          raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message;
+          raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message + "\n\t\t" + e.backtrace.to_s + "\n";
         end
 
         return user
@@ -135,58 +159,53 @@ module Game
         return user
       end
       
-      #-- -------------------------
-      #          Métodos
-      #   ------------------------- #++
-      
-      # Actualizar perfil del usuario.
-      #
-      # Cambiarán los atributos de un usuario (alias, de momento). Se 
-      # guardará en la base de datos siempre y cuando se haya cambiado 
-      # al menos un atributo.
-      #
-      # @param attributes [Hash<Symbol, Object>] Lista de atributos a actualizar, con sus respectivos valores (ej: { alias: => "pepio" }).
-      def update_profile( attributes = {} )
-        changed = false
-        
-        attributes.delete( :user_id )
-        self.update( attributes )
-      end
-      
-      # Actualizar estado "online" del jugador.
-      # @param new_status [Boolean] Nuevo estado. True si es online, False si es offline.
-      def online(new_status = true) 
-        self.update( {is_online: new_status} )
-      end
-      
-      # Añadir nuevo mensaje.
-      #
-      # @param message [Game::Database::Message] Nuevo mensaje a añadir.
-      def add_msg(message)
-        self.written_messages << message
-        
-        return message
-      end
+      #-- --------------------------------------------------
+      #                     Acciones (juego)
+      #   -------------------------------------------------- #++
       
       # Escribir nuevo mensaje.
       #
       # @param content [String] Contenido del nuevo mensaje a escribir.
-      # @param resource [String, nil] Recurso del mensaje (por defecto es nil).
+      # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
       #
       # @return [Game::Database::Message] Referencia al nuevo mensaje escrito.
-      def write_msg(content, resource = nil)
-        if content.length    < Game::Database::Message::CONTENT_MIN_LENGTH
-          raise "Message too short (" + content.length.to_s + " < " + Game::Database::Message::CONTENT_MIN_LENGTH.to_s + ")."
-        elsif content.length > Game::Database::Message::CONTENT_MAX_LENGTH
-          raise "Message too long (" + content.length.to_s + " > " + Game::Database::Message::CONTENT_MAX_LENGTH.to_s + ")."
+      def write_message(content, extra_params = {})
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        
+        # Parámetros extra
+        params = GenericUtils.default_params(default_params = {
+          resource_link: nil
+        }, extra_params)
+        
+        level_params = Game::Mechanics::AllowedActionsManagement.action_params_by_level( self.level_profile.level, __callee__.to_s )
+        
+        min_lenght = level_params["min_length"]
+        max_lenght = level_params["max_length"]
+        
+        if level_params["allow_resources"] == false
+          params[:resource_link] = nil
         end
         
-        if resource.to_s.length > Game::Database::Message::RESOURCE_MAX_LENGTH
+        if content.length    < min_lenght
+          raise "Message too short (" + content.length.to_s + " < " + min_lenght.to_s + ")."
+        elsif content.length > max_lenght
+          raise "Message too long (" + content.length.to_s + " > " + max_lenght.to_s + ")."
+        end
+        
+        if params[:resource_link].to_s.length > Game::Database::Message::RESOURCE_MAX_LENGTH
           raise "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")."
         end
         
-        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation(), { latitude: 0, longitude: 0 }, false, false )
+        # Aumentar mensajes escritos
+        self.update( { count_written_messages: count_written_messages + 1 } )
+        
+        # Duración
+        duration = level_params["duration"]
+        
+        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, { resource_link: params[:resource_link], author: self, position: geolocation(), duration: duration, deltas: { latitude: 0, longitude: 0 }, snap_to_roads: false, replicable: false } )
       end
+      
       
       # Recoger fragmento.
       #
@@ -195,11 +214,14 @@ module Game
       # a la lista de mensajes completados por el usuario. 
       #
       # @param fragment_message [Game::Database::FragmentMessage] Nuevo fragmento a añadir.
+      # @param out [Hash] Salida personalizada (exp, etc).
       #
       # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, generará excepciones.
-      def collect_fragment(fragment_message)
+      def collect_fragment(fragment_message, out = {})
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        
         if fragment_message != nil
-          # Comprobar si es necesario añadir la relación
           
           # Si el fragmento es suyo, no recogerlo
           if (fragment_message.message.author != nil && fragment_message.message.author == self)
@@ -218,6 +240,13 @@ module Game
           if ( query.first != nil )
             raise "Fragment already collected."
           end
+                    
+          # Añadir experiencia al usuario
+          method_name = (__callee__).to_s
+          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, method_name)
+          
+          # Añadir al contador
+          self.update( { count_collected_fragments: count_collected_fragments + 1 } )
           
           # Comprobar si es necesario quitarla, ya que ha completado el mensaje.
           # En este punto, se han descartado fragmentos repetidos. Si la cantidad de
@@ -231,6 +260,7 @@ module Game
 
           if collected_fragments_rel_count == total_fragments_count - 1
             # Borrar los fragmentos
+            
             collected_fragments_rel.each do |fragment_relation|
               fragment_relation.destroy
             end
@@ -241,6 +271,9 @@ module Game
               message_status = Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD
             end
             
+            # Añadir al contador
+            self.update( { count_completed_messages: count_completed_messages + 1 } )
+            
             return Game::Database::RelationShips::UserCompletedMessage.create(from_node: self, to_node: fragment_message.message, status: message_status )
           else
             return Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
@@ -249,107 +282,53 @@ module Game
           raise "Nul fragment."
         end
       end
-      
-      # Obtener mensajes completados por el usuario como un hash (usado para la API REST).
+    
+      # Desbloquear un mensaje.
       #
-      # @return [Hash<String, Object>] Se retornará una lista con las características de los mensajes completados por el usuario.
-      def get_completed_messages()
-        output = {}
-        
-        self.collected_completed_messages.each_with_rel do |msg, rel|
-          output[msg.uuid] = msg.get_user_message(rel)
-        end
-        
-        return output
-      end
-      
-      # Listar fragmentos recolectados de un mensaje.
-      # @param message [Game::Database::Message] Mensaje cuyos fragmentos serán buscados.
-      # @return [Hash] Lista de fragmentos recolectados por un usuario.
-      def get_collected_message_fragments(message)
-        output = {}
-        msg_uuid = message.uuid
-        
-        self.collected_fragment_messages.each do |fragment|
-          if fragment.message.neo_id == message.neo_id
-            if output[msg_uuid] == nil
-              output[msg_uuid] = []
-            end
-            
-            output[msg_uuid] << fragment.to_hash( [:message] )
-          end
-        end
-        
-        return output
-      end
-      
-      # Obtener referencia a un mensaje completado del usuario.
-      #
-      # Se intentará buscar un mensaje completado mediante el uuid, siempre y cuando exista.
+      # Desloquear un mensaje otorga, además del contenido del mismo, experiencia.
       #
       # @param msg_uuid [String] Identificador del mensaje completado.
-      # @param new_status [String] Nuevo estado del mensaje a desbloquear (véase Game::Database::Message).
-      #
-      # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
-      def change_message_status(msg_uuid, new_status)
+      # @param out [Hash] Salida personalizada (experiencia, etc.)
+      # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil o se generará una excepción.
+      def unlock_message(msg_uuid, out = {} )
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        
         output = nil
         
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
-          output = rel.change_message_status(new_status)
-        end
-        
-        return output
-      end
-      
-      # Getter del radio de búsqueda de un determinado objeto
-      # @param element [Symbol] Radio del tipo de elemento deseado (:fragments, ...).
-      # @return [Float] Radio de búsqueda, en km.
-      def get_current_search_radius( element = :fragments)
-        # TODO: El radio (km) se calculará de manera automática con respecto a su nivel.
-        if element == :fragments
-          return DEFAULT_SEARCH_RADIUS
-        end
-
-        return nil
-      end
-      
-      # Obtener mensajes fragmentados de un usuario como un hash.
-      #
-      # Se usará principalmente para la API REST.
-      #
-      # El formato de respuesta es el siguiente:
-      #
-      #   { type: "json", completed_messages = { uuid1: { content: "...", author: "...", ... }, uuid2: {...}, ... }, fragmented_messages = { uuid1: { content: "...", author: "...", fragments: n, ... }, ... }  }
-      #
-      # @return [Hash<Symbol, Object>] Se retornará una lista con las características de los mensajes fragmentados de un usuario.
-      def get_fragmented_messages()
-        output = {}
-        
-        collected_fragment_messages.each_with_rel do |fragment, rel|
-          msg = fragment.message
-          
-          # Añadir mensaje por primeravez
-          if output[msg.uuid] == nil
-            output[msg.uuid] = msg.get_user_message(rel)
-            output[msg.uuid][:fragments] = []
+          if rel.status != Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
+            raise "Message already unlocked."
           end
-        
-          # Fragmentos
-          output[msg.uuid][:fragments] << fragment.fragment_index
+          
+          output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD )
         end
+        
+        if output == nil
+          raise "User does not own message '" + msg_uuid + "' to unlock."
+        end
+        
+        # Añadir al contador
+        self.update( { count_unlocked_messages: count_unlocked_messages + 1 } )
+        
+        # Añadir experiencia al usuario
+        method_name = (__callee__).to_s
+        out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, method_name)
         
         return output
       end
-      
+
+      # Buscar mensajes cercanos a un usuario.
       # Ignorar los fragmentos escritos por el usuario.
-      # @param method [String] Método para realizar la búsqueda (progrezz, geocoder o neo4j).
-      # @param radius [Float] Radio de búsqueda. Si es null, se usará en función de la experiencia.
       # @param ignore_user_written_messages [Boolean] Flag para ignorar los mensajes escritor por el usuario.
       # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
-      def get_nearby_fragments( method = nil, radius = nil, ignore_user_written_messages = true )
-        method = method || DEFAULT_SEARCH_METHOD
-        radius = radius || get_search_radius(:fragments)
-        # ...
+      def search_nearby_fragments( ignore_user_written_messages = true )
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        
+        # El radio dependerá del nivel del usuario.
+        radius = self.get_current_search_radius(:fragments)
+        method = DEFAULT_SEARCH_METHOD
         
         user_geo = geolocation
 
@@ -415,6 +394,153 @@ module Game
         return output
       end
       
+      
+      #-- --------------------------------------------------
+      #                        Métodos
+      #   -------------------------------------------------- #++
+      
+      # Actualizar perfil del usuario.
+      #
+      # Cambiarán los atributos de un usuario (alias, de momento). Se 
+      # guardará en la base de datos siempre y cuando se haya cambiado 
+      # al menos un atributo.
+      #
+      # @param attributes [Hash<Symbol, Object>] Lista de atributos a actualizar, con sus respectivos valores (ej: { alias: => "pepio" }).
+      def update_profile( attributes = {} )
+        changed = false
+        
+        attributes.delete( :user_id )
+        self.update( attributes )
+      end
+      
+      # Actualizar estado "online" del jugador.
+      # @param new_status [Boolean] Nuevo estado. True si es online, False si es offline.
+      def online(new_status = true) 
+        self.update( {is_online: new_status} )
+      end
+      
+      # Añadir nuevo mensaje.
+      #
+      # @param message [Game::Database::Message] Nuevo mensaje a añadir.
+      def add_msg(message)
+        self.written_messages << message
+        
+        return message
+      end
+      
+      # Obtener mensajes completados por el usuario como un hash (usado para la API REST).
+      #
+      # @return [Hash<String, Object>] Se retornará una lista con las características de los mensajes completados por el usuario.
+      def get_completed_messages()
+        output = {}
+        
+        self.collected_completed_messages.each_with_rel do |msg, rel|
+          output[msg.uuid] = msg.get_user_message(rel)
+        end
+        
+        return output
+      end
+      
+      # Listar fragmentos recolectados de un mensaje.
+      # @param message [Game::Database::Message] Mensaje cuyos fragmentos serán buscados.
+      # @return [Hash] Lista de fragmentos recolectados por un usuario.
+      def get_collected_message_fragments(message)
+        output = {}
+        msg_uuid = message.uuid
+        
+        self.collected_fragment_messages.each do |fragment|
+          if fragment.message.neo_id == message.neo_id
+            if output[msg_uuid] == nil
+              output[msg_uuid] = []
+            end
+            
+            output[msg_uuid] << fragment.to_hash( [:message] )
+          end
+        end
+        
+        return output
+      end
+      
+      # Cambiar el estado de un mensaje completado por el usuario
+      #
+      # @deprecated No debe ser usado, ya que puede comprometer la jugabilidad.
+      #
+      # @param msg_uuid [String] Identificador del mensaje completado.
+      # @param new_status [String] Nuevo estado del mensaje a cambiar de estado (véase Game::Database::Message).
+      #
+      # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil.
+      def change_message_status(msg_uuid, new_status)
+        output = nil
+        
+        self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
+          output = rel.change_message_status(new_status)
+        end
+        
+        return output
+      end
+      
+      # Getter del radio de búsqueda de un determinado objeto
+      # @param element [Symbol] Radio del tipo de elemento deseado (:fragments, ...).
+      # @return [Float] Radio de búsqueda, en km.
+      def get_current_search_radius( element = :fragments)
+        if element == :fragments
+          return Game::Mechanics::AllowedActionsManagement.get_allowed_actions(self.level_profile.level)["search_nearby_fragments"]["radius"]
+        end
+        
+        # ...
+
+        return nil
+      end
+            
+      # Marcar mensaje como leído.
+      #
+      # @param msg_uuid [String] Identificador único del mensaje (uuid).
+      def read_message(msg_uuid)
+        output = nil
+        
+        self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
+          if rel.status == Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
+            raise "Message locked. Must be unlocked first."
+          end
+          
+          output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_READ )
+        end
+        
+        if output == nil
+          raise "User does not own message '" + msg_uuid + "' to read."
+        end
+        
+        return output
+      end
+      
+      # Obtener mensajes fragmentados de un usuario como un hash.
+      #
+      # Se usará principalmente para la API REST.
+      #
+      # El formato de respuesta es el siguiente:
+      #
+      #   { type: "json", completed_messages = { uuid1: { content: "...", author: "...", ... }, uuid2: {...}, ... }, fragmented_messages = { uuid1: { content: "...", author: "...", fragments: n, ... }, ... }  }
+      #
+      # @return [Hash<Symbol, Object>] Se retornará una lista con las características de los mensajes fragmentados de un usuario.
+      def get_fragmented_messages()
+        output = {}
+        
+        collected_fragment_messages.each_with_rel do |fragment, rel|
+          msg = fragment.message
+          
+          # Añadir mensaje por primeravez
+          if output[msg.uuid] == nil
+            output[msg.uuid] = msg.get_user_message(rel)
+            output[msg.uuid][:fragments] = []
+          end
+        
+          # Fragmentos
+          output[msg.uuid][:fragments] << fragment.fragment_index
+        end
+        
+        return output
+      end
+      
       # Buscar usuarios cercanos.
       # @param radius [Float] Radio de búsqueda (km).
       # @return [Array<Game::Database::User>] Usuarios cercanos.
@@ -435,12 +561,44 @@ module Game
         
         return output
       end
+      
+      # Devuelve las estadísticas del jugador.
+      # @return [Hash<Symbol, Object>] Hash con todas las estadísticas y datos del usuario.
+      def get_stats()
+        return {
+          # Datos del usuario
+          info: {
+            user_id:    self.user_id,
+            alias:      self.alias,
+            created_at: self.created_at.strftime('%Q').to_i
+          },
+          
+          # Nivel y experiencia
+          level: {
+            current_level:  self.level_profile.level,
+            current_exp:    self.level_profile.level_exp,
+            next_level_exp: Game::Mechanics::LevelingManagement.exp_to_next_level(self.level_profile.level + 1)
+          },
+          
+          # Estadísticas de mensajes
+          messages: {
+            completed_messages:  self.count_completed_messages,
+            collected_fragments: self.count_collected_fragments,
+            unlocked_messages:   self.count_unlocked_messages,
+            written_messages:    self.count_written_messages
+          }
+
+          
+          # Otras estadísticas
+          # ...
+        }
+      end
 
       # Stringificar objeto.
       #
       # @return [String] Objeto como string, con el formato "<User: +user_id+,+alias+,+geolocation+>".
       def to_s
-        return "<User: " + self.user_id + ", " + self.alias + ", " + self.is_online.to_s + ", " + super.to_s + ">" 
+        return "<User: " + self.user_id + ", " + self.alias + ", " + self.is_online.to_s + ", " + super.to_s + ", " + self.level_profile.to_s + ">" 
       end
       
       # Retornar objeto como hash.
@@ -455,6 +613,7 @@ module Game
         
         return output
       end
+      
     end
   end
 end

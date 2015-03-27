@@ -78,28 +78,68 @@ class RESTTest < Test::Unit::TestCase
   end
   
   # ---------------------------
+  #           User
+  # ---------------------------
+  
+  # Probar "user_get_profile"
+  def test_user_profile
+    authenticate()
+    
+    @request[:request][:type] = "user_profile"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:profile][:info][:user_id], @users[0].user_id
+    
+  end
+  
+  # Probar "user_allowed_actions"
+  def test_user_allowed_actions
+    authenticate()
+    
+    @request[:request][:type] = "user_allowed_actions"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert @response[:response][:data][:allowed_actions].keys.include? :unlock_message
+    assert @response[:response][:data][:allowed_actions].keys.include? :collect_fragment
+    assert @response[:response][:data][:allowed_actions].keys.include? :search_nearby_fragments
+    
+  end
+  
+  # ---------------------------
   #       User messages
   # ---------------------------
   
-  # Probar "user_change_message_status"
-  def test_user_change_message_status
+  # Probar "user_unlock_message" y "user_read_message"
+  def test_user_unlock_message
     authenticate()
     
     # Sin error
-    @request[:request][:type] = "user_change_message_status"
-    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[0].uuid, new_status: "unread" }
+    @request[:request][:type] = "user_unlock_message"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[0].uuid }
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:message], "Message status changed to 'unread'."
+    assert_equal @response[:response][:data][:message], "Message unlocked."
+    
+    # Marcar como leído
+    @request[:request][:type] = "user_read_message"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[0].uuid }
+    rest_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Message read."
     
     # Error
-    @request[:request][:type] = "user_change_message_status"
-    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[1].uuid, new_status: "unread" }
+    @request[:request][:type] = "user_unlock_message"
+    @request[:request][:data] = { user_id: @users[0].user_id, msg_uuid: @messages[1].uuid }
     rest_request()
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:message], "Could not change message status."
+    assert_equal @response[:response][:message], "User does not own message '" + @messages[1].uuid + "' to unlock."
   end
   
   # Probar "user_write_message"

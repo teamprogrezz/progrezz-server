@@ -52,7 +52,7 @@ module Game
         # -------------------------
         
         # Timestamp o fecha de completación del mensaje.
-        # @return [Integer] Segundos desde el 1/1/1970.
+        # @return [DateTime] Fecha de creación.
         property :created_at
         
         # Estado del mensaje para el jugador (leído, no leído, etc).

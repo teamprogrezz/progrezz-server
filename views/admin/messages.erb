@@ -1,15 +1,53 @@
 <h1>Messages administration</h1>
 
 <h2>Add a system message</h2>
-<p>...</p>
+<form id="add_msg">
+  <label for="add_content">Content: </label><input type="text" placeholder="Message content (e.g: Admin was here.)." name="add_content" ><br>
+  <label for="add_resource">Resource Link: </label><input type="text" placeholder="Resource link (e.g: http://progrezz.it/image.png)." name="add_resource" ><br>
+  <label for="add_nfragments">Total fragments: </label><input type="number" placeholder="Number of fragments." min="1" max="50" name="add_nfragments" ><br>
+  <label for="add_duration">Duration: </label><input type="number" placeholder="Duration (in days)." min="0" max="365" name="add_duration" ><br>
+  
+  
+  <button type="submit">Submit</button>
+</form>
 
 <h2>Remove a system message</h2>
-<p>...</p>
+<form id="rem_msg">
+  <label for="rem_uuid">Msg uuid: </label><input type="text" placeholder="Message uuid (e.g: ae10e607-429b-4131-ae49-e0c90f327f88)" name="rem_uuid" ><br>
+
+  <button type="submit">Remove</button>
+</form>
+
+<h2>System messages list</h2>
+<div id="message_list">
+  <table>
+    <tr>
+      <th>uuid</th>
+      <th>content</th>
+      <th>resource</th>
+      <th>n fragments</th>
+      <th>created at</th>
+      <th>duration (days)</th>
+      <th>total replications</th>
+    </tr>
+    <% Game::Database::Message.system_messages.each do |msg| %>
+    <tr <%= msg.caducated? ? "style='color: red;'": ""%> >
+      <td><%= msg.uuid %></td>
+      <td><%= msg.content %></td>
+      <td><a href="<%= msg.resource_link %>"><%= msg.resource_link %></a></td>
+      <td><%= msg.total_fragments %></td>
+      <td><%= msg.created_at.strftime("%Y/%m/%d - %H:%M:%S - UTC %:z") %></td>
+      <td><%= msg.duration %></td>
+      <td><%= msg.replications %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
 
 <h2>Progrezz's messages locations map</h2>
 <form>
   <label for="msg_uuid">Message uuid: </label>
-  <input type="text" id="msg_uuid"><br>
+  <input type="text" id="msg_uuid">
   <input type="button" onclick="query();" value="Submit">
 </form>
 
@@ -20,7 +58,6 @@
 <script src="/lib/client-api-rest/js/progrezz-api-rest.js"></script>
 <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 <script>
-
     // Crear mapa
   map = new OpenLayers.Map("osm_map");
   map.addLayer(new OpenLayers.Layer.OSM());
@@ -54,7 +91,41 @@
   var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
   var icon = null;
   
+    // Añadir mensaje
+  $(document).ready(function(){
+    $('#add_msg').submit(function(evento){
+      evento.preventDefault();
+      var datos_formulario = $(this).serialize();         
+      $.ajax({
+        url: '/admin/messages/add',
+        data: datos_formulario,
+        type: 'post',
+        dataType: 'json',
+        success: function(datos){
+          // Recargar
+          window.location.href=window.location.href
+        }
+      });     
+    });
+  });
   
+    // Borrar mensaje
+  $(document).ready(function(){
+    $('#rem_msg').submit(function(evento){
+      evento.preventDefault();
+      var datos_formulario = $(this).serialize();         
+      $.ajax({
+        url: '/admin/messages/remove',
+        data: datos_formulario,
+        type: 'post',
+        dataType: 'json',
+        success: function(datos){
+          // Recargar
+          window.location.href=window.location.href
+        }
+      });     
+    });
+  });
   
     // Petición REST
   request = new RESTRequest();

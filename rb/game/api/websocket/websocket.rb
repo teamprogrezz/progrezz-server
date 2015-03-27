@@ -60,22 +60,29 @@ module Sinatra
               # Respuesta al usuario
               response = Game::API::JSONResponse.get_template()
               
-              # Preparar petición JSON
-              request = JSON.parse(msg)
-              GenericUtils.symbolize_keys_deep!( request )
-              response[:request] = request
-              
-              if ENV['users_auth_disabled'] == "true"
-                puts "Warning!! Users auth disabled!"
-                session['user_id'] = request[:user_id]
-              end
-              
               # Métodos WS
               methods = Methods.new()
 
               Game::Database::DatabaseManager.run_nested_transaction do |tx|
                 # Tipo de petición
                 begin
+                                
+                # Preparar petición JSON
+                request = nil
+                begin
+                  request = JSON.parse(msg)
+                rescue Exception => e
+                  throw "Cannot parse request: " + e.message
+                end
+                
+                GenericUtils.symbolize_keys_deep!( request )
+                response[:request] = request
+                
+                if ENV['users_auth_disabled'] == "true"
+                  puts "Warning!! Users auth disabled!"
+                  session['user_id'] = request[:user_id]
+                end
+                  
                   method = request[:request][:type].to_s
         
                   if method == ""

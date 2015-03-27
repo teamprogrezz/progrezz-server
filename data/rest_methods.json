@@ -12,18 +12,42 @@
     ]
   ],
   [
+    "User", [
+      {
+        "name": "Who am I",
+        "example": {"_comment":"Use this method to retrieve the current authenticated user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_who_am_i","data":{}}}
+      },
+      {
+        "name": "User's profile",
+        "example": {"_comment":"Use this method to retrieve the stats of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_profile","data":{"user_id":"yourmail@example.com"}}}
+      },
+      {
+        "name": "User's allowed actions ",
+        "example": {"_comment":"Use this method to retrieve the allowed actions (and their parameters) of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_allowed_actions","data":{"user_id":"yourmail@example.com"}}}
+      }
+    ]
+  ],
+  [
     "User messages", [
       {
-        "name": "Change user's message status",
-        "example": {"_comment":"Change a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_change_message_status","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)","new_status":"new message status (read, unread or locked)"}}}
+        "name": "<span style='color: red;'>Change user's message status (deprecated)</span>",
+        "example": {"_comment":"Changes a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_change_message_status","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)","new_status":"new message status (read, unread or locked)"}}}
+      },
+      {
+        "name": "Unlock user completed message",
+        "example": {"_comment":"Unlocks a completed message status for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_unlock_message","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+      },
+      {
+        "name": "Read user completed message",
+        "example": {"_comment":"Read a completed message for a user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_read_message","data":{"user_id":"yourmail@example.com","msg_uuid":"message-uuid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       },
       {
         "name": "Collect message fragment",
-        "example": {"_comment":"Collect a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+        "example": {"_comment":"Collects a message fragment with id <frag_uuid> as <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_message_fragment","data":{"user_id":"yourmail@example.com","frag_uuid":"Message fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       },
       {
         "name": "Write a message",
-        "example": {"_comment":"Write a geolocated message from <user_id> position.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_write_message","data":{"user_id":"yourmail@example.com","content":"Message content (eg: Hello world!!!)","resource":"[Optional] Resource link (eg: http://www.w3schools.com/tags/smiley.gif)."}}}
+        "example": {"_comment":"Writes a geolocated message from <user_id> position.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_write_message","data":{"user_id":"yourmail@example.com","content":"Message content (eg: Hello world!!!)","resource":"[Optional] Resource link (eg: http://www.w3schools.com/tags/smiley.gif)."}}}
       },
       {
         "name": "Get nearby messages",
@@ -35,7 +59,7 @@
       },
       {
         "name": "Get user collected message fragments",
-        "example": {"_comment":"Get collected fragments from a given message and user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_collected_message_fragments","data":{"user_id":"yourmail@example.com","msg_uuid":"Message uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+        "example": {"_comment":"Gets collected fragments from a given message and user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_collected_message_fragments","data":{"user_id":"yourmail@example.com","msg_uuid":"Message uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       }
     ]
   ],

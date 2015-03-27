@@ -8,6 +8,32 @@ module Sinatra; module API ;module REST
 
   class Methods
     
+    # Desbloquear un mensaje completado por el usuario.
+    def self.user_unlock_message( app, response, session)
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      extra = {}
+      user.unlock_message( response[:request][:request][:data][:msg_uuid], extra ) 
+      
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        message: "Message unlocked.",
+        exp_gained: extra[:exp]
+      })
+    end
+    
+    # Marcar un mensaje como leído.
+    def self.user_read_message( app, response, session)
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      user.read_message( response[:request][:request][:data][:msg_uuid] ) 
+      
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Message read."
+      })
+    end
+    
     # Cambiar el estatus o estado de un mensaje completado.
     def self.user_change_message_status( app, response, session)
       user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
@@ -20,6 +46,8 @@ module Sinatra; module API ;module REST
         type: "plain",
         message: "Message status changed to '" + response[:request][:request][:data][:new_status] + "'."
       })
+      
+      response[:metadata][:warning] = "Deprecated method."
     end
     
     # Recoger un fragmento de mensaje cercano.
@@ -30,15 +58,24 @@ module Sinatra; module API ;module REST
       # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
       # ...
       
+      extra = {}
+      
+      relation = nil
       begin
-        user.collect_fragment( fragment )
+        relation = user.collect_fragment( fragment, extra )
       rescue Exception => e
         raise "The fragment could not be collected: " + e.message
       end
       
+      msg = "Fragment collected."
+      if relation.is_a? Game::Database::RelationShips::UserCompletedMessage
+        msg = "Message completed."
+      end
+      
       Game::API::JSONResponse.ok_response!( response, {
-        type: "plain",
-        message: "Fragment collected."
+        type: "json",
+        message: msg,
+        exp_gained: extra[:exp]
       })
     end
     
@@ -49,7 +86,7 @@ module Sinatra; module API ;module REST
       msg_content  = response[:request][:request][:data][:content].to_s
       msg_resource = response[:request][:request][:data][:resource].to_s
       
-      msg = user.write_msg( msg_content, msg_resource )
+      msg = user.write_message( msg_content, :resource_link => msg_resource )
       
       Game::API::JSONResponse.ok_response!( response, {
         type: "json",
@@ -59,15 +96,13 @@ module Sinatra; module API ;module REST
     
     # Recibir fragmentos de mensajes cercanos al usuario.
     def self.user_get_nearby_message_fragments( app, response, session )
-      default_method = "neo4j" # progrezz, geocoder o neo4j
       default_ignore = "true"
       
-      user    = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
-      radius  = user.get_current_search_radius(:fragments)
       ignore  = (response[:request][:request][:data][:ignore_user_written_messages] || default_ignore) == "true"
+      user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
 
       # Geolocalizaciones (como arrays).
-      output = user.get_nearby_fragments(default_method, radius, ignore)
+      output = user.search_nearby_fragments(ignore)
 
       # Comprobar si es necesario añadir nuevos fragmentos
       if ignore == true

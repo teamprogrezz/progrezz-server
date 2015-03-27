@@ -29,7 +29,7 @@ module Game
       property :group_index, type: Integer
       
       # Timestamp o fecha de creación del fragmento.
-      # return [Integer] Segundos desde el 1/1/1970.
+      # return [DateTime] Fecha de creación.
       property :created_at
       
       #-- -------------------------
@@ -77,6 +77,15 @@ module Game
       #           Métodos
       #   ------------------------- #++
       
+      # Borrar fragmento.
+      def remove()
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Destruir nodo
+        self.destroy()
+      end
+      
       # Stringificar objeto.
       #
       # @return [String] Objeto como string, con el formato "<MessageFragment: +uuid+,+message.uuid+,+fragment_index+,+geolocation+>".
@@ -93,9 +102,8 @@ module Game
         if !exclusion_list.include? :uuid;           output[:uuid]           = self.uuid end
         if !exclusion_list.include? :geolocation;    output[:geolocation]    = self.geolocation end
         if !exclusion_list.include? :fragment_index; output[:fragment_index] = self.fragment_index end
-        if !exclusion_list.include? :message;        output[:message]        = self.message.to_hash() end
+        if !exclusion_list.include? :message;        output[:message]        = self.message.to_hash([:fragments, :message_content]) end
         if !exclusion_list.include? :group_index;    output[:group_index]    = self.group_index end
-        
         
         return output
       end

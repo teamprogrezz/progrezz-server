@@ -8,6 +8,9 @@ gem 'sinatra-websocket'
 gem 'thin'
 gem 'rest-client'
 
+# Schedules
+gem 'rufus-scheduler'
+
 # Geolocation
 gem 'progrezz-geolocation', :git => 'https://github.com/teamprogrezz/progrezz-geolocation.git'
 gem 'geocoder'

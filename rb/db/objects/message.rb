@@ -2,6 +2,7 @@
 
 require 'thread'
 require 'thwait'
+require 'rest-client'
 
 require_relative 'user'
 require_relative 'message_fragment'
@@ -26,15 +27,8 @@ module Game
       # Nombre de recurso no especificado.
       NO_RESOURCE = ""
       
-      # Tamaño mínimo del contenido.
-      CONTENT_MIN_LENGTH = 9
-      
-      # Tamaño máximo del contenido.
-      CONTENT_MAX_LENGTH = 255
-      
       # Tamaño máximo del recurso.
       RESOURCE_MAX_LENGTH = 128
-      
       
       #-- -------------------------
       #        Atributos (DB)
@@ -73,8 +67,12 @@ module Game
       property :snap_to_roads, type: Boolean, default: false
       
       # Timestamp o fecha de creación del mensaje.
-      # @return [Integer] Segundos desde el 1/1/1970.
+      # @return [DateTime] Fecha de creación.
       property :created_at
+      
+      # Duración (en días) de un mensaje (y todos los fragmentos). Si es 0, durará eternamente.
+      # @return [Integer] Días que durará el mensaje.
+      property :duration, type: Integer, default: 0
 
       #-- -------------------------
       #       Relaciones (DB)
@@ -109,23 +107,59 @@ module Game
       #
       # @param cont [String] Contenido del mensaje.
       # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
-      # @param resource [String] Recurso mediático (opcional).
-      # @param custom_author [Game::Database::User] Autor del mensaje (opcional).
-      # @param position [Hash<Symbol, Float>] Posición del mensaje, con la forma { latitude: n, longitude: m }
-      # @param deltas [Hash<Symbol, Float>] Offsets para la geolocalización aleatoria, con la forma { latitude: n, longitude: m }
-      # @param replic [Boolean] Mensaje replicable (o no).
+      # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
       #
       # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
-      def self.create_message(cont, n_fragments = 1, resource = nil, custom_author = nil, position = {latitude: 0, longitude:0 }, deltas = {latitude: 0, longitude:0 }, replic = true, snap_to_roads = true)
+      def self.create_message(cont, n_fragments, extra_params = {} )
+        params = GenericUtils.default_params( {
+          resource_link: nil,
+          author: nil,
+          position: {
+            latitude: 0,
+            longitude:0
+          },
+          deltas: {
+            latitude: 0,
+            longitude:0  
+          },
+          replicable: true,
+          snap_to_roads: true,
+          duration: 0
+        }, extra_params)
+        
         begin
-          message = create( {content: cont, total_fragments: n_fragments, resource_link: resource, replicable: replic, snap_to_roads: snap_to_roads}) do |msg|
-            if custom_author != nil
-              custom_author.add_msg(msg)
+          message = create( {content: cont, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: params[:replicable], snap_to_roads: params[:snap_to_roads], duration: params[:duration]  }) do |msg|
+            if params[:author] != nil
+              params[:author].add_msg(msg)
             end
             
             # Generar fragmentos iniciales.
-            msg.replicate(position, deltas)
+            msg.replicate(params[:position], params[:deltas], true)
           end
+
+        rescue Exception => e
+          puts e.to_s
+          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
+        end
+        
+        return message
+      end
+      
+      # Creación de nuevos mensajes de sistema.
+      #
+      # @param content [String] Contenido del mensaje.
+      # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
+      # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
+      #
+      # @return [Game::Database::Message] Referencia al objeto creado en la base de datos, de tipo Game::Database::Message.
+      def self.create_system_message( content, n_fragments, extra_params = {} )
+        params = GenericUtils.default_params( {
+          resource_link: nil,
+          duration: 0
+        }, extra_params)
+        
+        begin
+          message = create( {content: content, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: true, snap_to_roads: true, duration: params[:duration]})
 
         rescue Exception => e
           puts e.to_s
@@ -139,6 +173,10 @@ module Game
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.unauthored_messages()
         return self.query_as(:msg).where("NOT ()-[:has_written]->msg").return(:msg).pluck(:msg)
+      end
+      
+      class << self
+        alias_method :system_messages, :unauthored_messages
       end
       
       # Getter de los mensajes sin autor que pueden ser replicables.
@@ -163,6 +201,29 @@ module Game
       # @return [Object] Retorna un objeto neo4j conteniendo el resultado de la consulta.
       def self.authored_messages()
         return self.query_as(:msg).where("()-[:has_written]->msg").return(:msg)
+      end
+      
+      # Limpiar mensajes caducados de la base de datos.
+      # @return [Integer] Retorna el número de mensajes que han sido borrados.
+      def self.clear_caducated_messages()
+        count = 0
+        
+        Game::Database::DatabaseManager.run_nested_transaction do |t|
+          Game::Database::Message.as(:m).where("m.duration <> 0").each do |msg|
+            if msg.caducated?
+              
+              if msg.authored?
+                msg.remove()
+              else
+                msg.remove_keep_msg()
+              end
+              
+              count += 1
+            end
+          end
+        end
+        
+        return count
       end
     
       #-- -------------------------
@@ -196,11 +257,12 @@ module Game
       # Generar un nuevo fragmento para el mensaje.
       # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
       # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
+      # @param ignore_replicable_frag [Boolean] Ignorar flag +replicable+ del objeto.
       # @return [Hash<Game::Database::MessageFragment>] Retorna un array con las referencias a los fragmentos añadidos.
-      def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+      def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }, ignore_replicable_flag = false )
         # Comprobar replicación
-        if self.replicable == false && self.fragments.count > 0
-          raise "Trying to generate more fragments of a irreplicable message."
+        if ignore_replicable_flag != true && self.replicable == false
+          raise "Trying to generate fragments of a irreplicable message."
         end
         
         output = []
@@ -243,6 +305,31 @@ module Game
         return output
       end
       
+      # Borrar mensaje y fragmentos.
+      def remove()
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Exportar y destruir fragmentos
+        self.fragments.each do |f|
+          f.remove
+        end
+        
+        # Destruir nodo
+        self.destroy()
+      end
+      
+      # Borrar fragmentos y mantener el mensaje como replicable.
+      def remove_keep_msg()
+        # Exportar y destruir fragmentos
+        self.fragments.each do |f|
+          f.remove
+        end
+        
+        # Marcar nodo como no replicable (ya que no se podrá copiar más).
+        self.update( replicable: false )
+      end
+      
       # Getter formateado del mensaje conseguido por un usuario.
       #
       # Usado para la API REST.
@@ -262,8 +349,28 @@ module Game
         return output
       end
       
+      # Comprobar si un mensaje ha caducado.
+      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
+      def caducated?
+        if duration == 0
+          return false
+        end
+        
+        if self.created_at + duration <= Time.now
+          return true
+        end
+        
+        return false
+      end
+      
+      # Comprobar si un mensaje tiene autor.
+      # @return [Boolean] Si tiene autor, retorna True. En caso contrario, False.
+      def authored?
+        return self.author != nil
+      end
+      
       # Transformar objeto a un hash
-      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (:message, :author, :fragments). Por defecto, se ignoran los fragmentos.
+      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (:message, :message_content, :author, :fragments). Por defecto, se ignoran los fragmentos.
       # @return [Hash<Symbol, Object>] Objeto como hash.
       def to_hash(exclusion_list = [:fragments] )
         output = {}
@@ -271,12 +378,14 @@ module Game
         if !exclusion_list.include?(:message)
           output[:message] = {
             uuid:            self.uuid,
-            id:              self.neo_id,
-            content:         self.content,
-            resource:        self.get_resource,
             total_fragments: self.total_fragments,
             write_date:      self.created_at.strftime('%Q')
           }
+        end
+        
+        if !exclusion_list.include?(:message_content)
+          output[:message][:content]  = self.content
+          output[:message][:resource] = self.get_resource
         end
         
         if !exclusion_list.include?(:author)
