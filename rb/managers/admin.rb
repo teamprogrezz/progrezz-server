@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'date'
+
 module Game
   
   # Clase gestora de la administración del juego.
@@ -89,6 +91,7 @@ module Sinatra
       
       # -- Mensajes --
       app.post '/admin/messages/add' do
+        content_type :json
         admin_protected!
         
         Game::Database::Message.create_system_message( params["add_content"], params["add_nfragments"].to_i, { resource_link: params["add_resource"], duration: params["add_duration"]} )
@@ -97,6 +100,7 @@ module Sinatra
       end
       
       app.post '/admin/messages/remove' do
+        content_type :json
         admin_protected!
         
         Game::Database::Message.find_by( uuid: params["rem_uuid"] ).remove()
@@ -105,6 +109,7 @@ module Sinatra
       
       # -- Usuarios --
       app.post '/admin/users/search_by_alias' do
+        content_type :json
         admin_protected!
         
         output = nil
@@ -129,6 +134,7 @@ module Sinatra
       end
       
       app.post '/admin/users/search_by_email' do
+        content_type :json
         admin_protected!
         
         output = nil
@@ -150,6 +156,30 @@ module Sinatra
         end
         
         return output.to_json
+      end
+      
+      app.post '/admin/users/ban' do
+        content_type :json
+        admin_protected!
+        
+        user_id = params["ban_id"]
+        ban_duration = params["ban_duration"].to_i
+        ban_reason = params["ban_reason"]
+        
+        Game::AuthManager.ban_user(user_id, ban_duration, ban_reason)
+
+        return {status: "ok"}.to_json
+      end
+      
+      app.post '/admin/users/unban' do
+        content_type :json
+        admin_protected!
+        
+        user_id = params["unban_id"]
+        
+        Game::AuthManager.unban_user(user_id)
+        
+        return {status: "ok"}.to_json
       end
     end
   end

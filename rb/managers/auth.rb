@@ -14,6 +14,9 @@ module Game
   # Se hace uso de la API OmniAuth para registrar usuarios, y se guardarán
   # los datos de la sesión en las cookies de las sesiones de Ruby Sinatra.
   class AuthManager
+        
+    # Log de usuarios baneados.
+    BAN_FILE = "tmp/ban.log"
     
     # Servicios disponibles.
     SERVICES = [:google_oauth2, :twitter, :github]
@@ -122,6 +125,10 @@ module Game
       if(ban_time_seconds > 0)
         ban = DateTime.strptime((DateTime.now.to_time.to_i + ban_time_seconds).to_s,'%s')
         user.update( banned_until: ban, banned_reason: ban_reason )
+        
+        File.open(BAN_FILE, 'a') { |f|
+          f.puts DateTime.now.to_s + " - Banned '" + user_id + "' " + ban_time_seconds.to_s + " seconds. Reason: '" + ban_reason + "'."
+        }
       end
     end
     
@@ -131,6 +138,9 @@ module Game
       user = Game::Database::User.search_user( user_id )
       
       user.update( banned_until: 0, banned_reason: "" )
+      File.open(BAN_FILE, 'a') { |f|
+        f.puts DateTime.now.to_s + " - Unbanned '" + user_id + "'."
+      }
     end
     
     # Lista de usuarios baneados.
