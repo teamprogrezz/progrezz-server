@@ -77,6 +77,15 @@ module Game
       #           Métodos
       #   ------------------------- #++
       
+      # Borrar fragmento.
+      def remove()
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Destruir nodo
+        self.destroy()
+      end
+      
       # Stringificar objeto.
       #
       # @return [String] Objeto como string, con el formato "<MessageFragment: +uuid+,+message.uuid+,+fragment_index+,+geolocation+>".

@@ -168,27 +168,44 @@ module Game
       # Escribir nuevo mensaje.
       #
       # @param content [String] Contenido del nuevo mensaje a escribir.
-      # @param resource [String, nil] Recurso del mensaje (por defecto es nil).
+      # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
       #
       # @return [Game::Database::Message] Referencia al nuevo mensaje escrito.
-      def write_message(content, resource = nil)
+      def write_message(content, extra_params = {})
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
         
-        if content.length    < Game::Database::Message::CONTENT_MIN_LENGTH
-          raise "Message too short (" + content.length.to_s + " < " + Game::Database::Message::CONTENT_MIN_LENGTH.to_s + ")."
-        elsif content.length > Game::Database::Message::CONTENT_MAX_LENGTH
-          raise "Message too long (" + content.length.to_s + " > " + Game::Database::Message::CONTENT_MAX_LENGTH.to_s + ")."
+        # Parámetros extra
+        params = GenericUtils.default_params(default_params = {
+          resource_link: nil
+        }, extra_params)
+        
+        level_params = Game::Mechanics::AllowedActionsManagement.action_params_by_level( self.level_profile.level, __callee__.to_s )
+        
+        min_lenght = level_params["min_length"]
+        max_lenght = level_params["max_length"]
+        
+        if level_params["allow_resources"] == false
+          params[:resource_link] = nil
         end
         
-        if resource.to_s.length > Game::Database::Message::RESOURCE_MAX_LENGTH
+        if content.length    < min_lenght
+          raise "Message too short (" + content.length.to_s + " < " + min_lenght.to_s + ")."
+        elsif content.length > max_lenght
+          raise "Message too long (" + content.length.to_s + " > " + max_lenght.to_s + ")."
+        end
+        
+        if params[:resource_link].to_s.length > Game::Database::Message::RESOURCE_MAX_LENGTH
           raise "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")."
         end
         
         # Aumentar mensajes escritos
         self.update( { count_written_messages: count_written_messages + 1 } )
         
-        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, resource, self, geolocation(), { latitude: 0, longitude: 0 }, false, false )
+        # Duración
+        duration = level_params["duration"]
+        
+        return Game::Database::Message.create_message(content, USER_MESSAGE_FRAGMENTS, { resource_link: params[:resource_link], author: self, position: geolocation(), duration: duration, deltas: { latitude: 0, longitude: 0 }, snap_to_roads: false, replicable: false } )
       end
       
       
