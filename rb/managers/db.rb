@@ -64,6 +64,30 @@ module Database
       end
     end
     
+    # Exportar nodo neo4j y sus relaciones.
+    #
+    # Se accede a los atributos del nodo con node.attributes
+    #   puts node.attributes
+    #
+    # Se accede a cada relación con node_relations.each
+    #   node_relations.each do |rel|
+    #     if rel.is_a? Neo4j::Server::CypherRelationship
+    #       puts rel.start_node, rel.end_node # Acceso a nodos de la relación (genérica).
+    #     else
+    #       puts rel.from_node, rel.to_node   # Acceso a nodos de la relación (personalizada).
+    #     end
+    #     puts rel.attributes if rel.respond_to? :attributes  # Acceso a atributos de la relación (si existen).
+    #   end
+    #
+    # @param node [Object] Nodo neo4j a exportar.
+    # @param node_relations [Array<Object>] Relaciones de un nodo. Se puede acceder también con +node.rels+.
+    # @param extra_params [Hash<Symbol, Object>] Parámetros extra, por si fueran necesario.
+    # @todo Implementar
+    def self.export_neo4jnode(node, node_relations, extra_params = {})
+      # TODO: Exportar nodos de la manera deseada (a otra base de datos, a un fichero json, etc).
+      # ...
+    end
+    
     # Ejecutar transacciones anidadas.
     #
     # La base de datos se encargará de gestionar la finalización de las transacciones anidadas.

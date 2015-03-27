@@ -382,7 +382,7 @@ se piden).</p>
       <div class="method_details ">
   <h3 class="signature " id="get_allowed_actions-class_method">
   
-    + (<tt>Hash</tt>) <strong>get_allowed_actions</strong>(level) 
+    + (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>get_allowed_actions</strong>(level) 
   
 
   
@@ -424,7 +424,7 @@ se piden).</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -527,7 +527,7 @@ se piden).</p>
 </span>  <span class='cvar'>@@precomputed_allowed_actions</span> <span class='op'>&lt;&lt;</span> <span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span>
   <span class='kw'>for</span> <span class='id identifier rubyid_i'>i</span> <span class='kw'>in</span> <span class='lparen'>(</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span><span class='rparen'>)</span><span class='op'>..</span><span class='lparen'>(</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span><span class='rparen'>)</span>
     <span class='comment'># Crear de anera apilada (con los datos del anterior).
-</span>    <span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='rparen'>)</span>  <span class='rparen'>)</span>
+</span>    <span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_deep_merge'>deep_merge</span><span class='lparen'>(</span><span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='rparen'>)</span>  <span class='rparen'>)</span>
     
     <span class='comment'># Previsualizar
 </span>    <span class='comment'># puts i.to_s, JSON.pretty_generate(@@precomputed_allowed_actions[i])
@@ -544,7 +544,7 @@ se piden).</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Mar 23 11:16:13 2015 by
+  Generated on Fri Mar 27 10:31:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

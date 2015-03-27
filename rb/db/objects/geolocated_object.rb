@@ -2,13 +2,11 @@
 
 require 'neo4j'
 
-require_relative 'removable'
-
 module Game
   module Database
 
     # Clase abstracta que representa un objeto geolocalizado.
-    class GeolocatedObject < RemovableObject
+    class GeolocatedObject
       include Neo4j::ActiveNode
 
       #-- -------------------------

@@ -5,7 +5,7 @@ require_relative '../relations/user-message_fragment'
 module Game
   module Database
     
-    class Message < RemovableObject; end
+    class Message; end
     # Forward declaration
 
     # Clase que representa a un fragmento geolocalizado de un juego.
@@ -76,6 +76,15 @@ module Game
       #-- -------------------------
       #           Métodos
       #   ------------------------- #++
+      
+      # Borrar fragmento.
+      def remove()
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Destruir nodo
+        self.destroy()
+      end
       
       # Stringificar objeto.
       #

@@ -2,7 +2,7 @@
 module Game
   module Database
     
-    class GeolocatedObject < RemovableObject; end
+    class GeolocatedObject; end
     class User < GeolocatedObject; end
     class MessageFragment < GeolocatedObject; end
     # Forward declaration

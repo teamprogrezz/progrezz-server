@@ -40,23 +40,14 @@ module Game
     #
     # Los métodos deben incluir el prefijo +schtsk+.
     class Tasks
+      
       # Eliminar mensajes caducados.
       # @param scheduler [Rufus::Scheduler] Gestor de tareas.
       def self.schtsk_remove_caducated_messages(scheduler)
         # Realizar todos los días, a las 04:00 am
         scheduler.cron '0 4 * * *' do
-          count = 0
           
-          Game::Database::DatabaseManager.run_nested_transaction do |t|
-            Game::Database::Message.as(:m).where("m.duration <> 0").each do |msg|
-              if msg.caducated?
-                msg.destroy
-                count += 1
-              end
-            end
-          end
-          
-          Game::Schedule::TasksManager.tasks_msg("Removing caducated messages (" + count.to_s + ").")
+          Game::Schedule::TasksManager.tasks_msg("Removing caducated messages (" + Game::Database::Message.clear_caducated_messages().to_s + ").")
           
         end
         

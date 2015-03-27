@@ -2,11 +2,11 @@
 
 require 'thread'
 require 'thwait'
+require 'rest-client'
 
 require_relative 'user'
 require_relative 'message_fragment'
 require_relative '../relations/user-completed_message'
-require_relative 'removable'
 
 module Game
   module Database
@@ -15,7 +15,7 @@ module Game
     #
     # Se caracteriza por estar enlazado con diversos tipos de nodos, principalmente con
     # un autor y una serie de fragmentos geolocalizados.
-    class Message < RemovableObject
+    class Message
       include Neo4j::ActiveNode
       
       #-- -------------------------
@@ -35,6 +35,9 @@ module Game
       
       # Tamaño máximo del recurso.
       RESOURCE_MAX_LENGTH = 128
+      
+      # Fichero para guardar mensajes borrados.
+      REMOVE_DUMP_FILE = "tmp/dump_"
       
       
       #-- -------------------------
@@ -141,7 +144,7 @@ module Game
             end
             
             # Generar fragmentos iniciales.
-            msg.replicate(params[:position], params[:deltas])
+            msg.replicate(params[:position], params[:deltas], true)
           end
 
         rescue Exception => e
@@ -154,7 +157,7 @@ module Game
       
       # Creación de nuevos mensajes de sistema.
       #
-      # @param cont [String] Contenido del mensaje.
+      # @param content [String] Contenido del mensaje.
       # @param n_fragments [Integer] Número de fragmentos en el que se romperá el mensaje. Por defecto, 1.
       # @param extra_params [Hash<Symbol, Object>] Parámetros extra. Véase el código para saber los parámetros por defecto.
       #
@@ -209,6 +212,29 @@ module Game
       def self.authored_messages()
         return self.query_as(:msg).where("()-[:has_written]->msg").return(:msg)
       end
+      
+      # Limpiar mensajes caducados de la base de datos.
+      # @return [Integer] Retorna el número de mensajes que han sido borrados.
+      def self.clear_caducated_messages()
+        count = 0
+        
+        Game::Database::DatabaseManager.run_nested_transaction do |t|
+          Game::Database::Message.as(:m).where("m.duration <> 0").each do |msg|
+            if msg.caducated?
+              
+              if msg.authored?
+                msg.remove()
+              else
+                msg.remove_keep_msg()
+              end
+              
+              count += 1
+            end
+          end
+        end
+        
+        return count
+      end
     
       #-- -------------------------
       #          Métodos
@@ -241,11 +267,12 @@ module Game
       # Generar un nuevo fragmento para el mensaje.
       # @param new_location [Hash<Symbol, Float>] Hash de la geolocalización, con la forma { latitude: 0, longitude: 0 }
       # @param deltas [Hash<Symbol, Float>] Offsets para la latitud y longitud (generación aleatoria).
+      # @param ignore_replicable_frag [Boolean] Ignorar flag +replicable+ del objeto.
       # @return [Hash<Game::Database::MessageFragment>] Retorna un array con las referencias a los fragmentos añadidos.
-      def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 } )
+      def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }, ignore_replicable_flag = false )
         # Comprobar replicación
-        if self.replicable == false && self.fragments.count > 0
-          raise "Trying to generate more fragments of a irreplicable message."
+        if ignore_replicable_flag != true && self.replicable == false
+          raise "Trying to generate fragments of a irreplicable message."
         end
         
         output = []
@@ -288,6 +315,31 @@ module Game
         return output
       end
       
+      # Borrar mensaje y fragmentos.
+      def remove()
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Exportar y destruir fragmentos
+        self.fragments.each do |f|
+          f.remove
+        end
+        
+        # Destruir nodo
+        self.destroy()
+      end
+      
+      # Borrar fragmentos y mantener el mensaje como replicable.
+      def remove_keep_msg()
+        # Exportar y destruir fragmentos
+        self.fragments.each do |f|
+          f.remove
+        end
+        
+        # Marcar nodo como no replicable (ya que no se podrá copiar más).
+        self.update( replicable: false )
+      end
+      
       # Getter formateado del mensaje conseguido por un usuario.
       #
       # Usado para la API REST.
@@ -317,13 +369,10 @@ module Game
         return false
       end
       
-      # Eliminar un mensaje y todos sus fragmentos.
-      def remove()
-        self.update( removed?: true )
-        
-        self.fragments.each do |f|
-          f.remove()
-        end
+      # Comprobar si un mensaje tiene autor.
+      # @return [Boolean] Si tiene autor, retorna True. En caso contrario, False.
+      def authored?
+        return self.author != nil
       end
       
       # Transformar objeto a un hash
