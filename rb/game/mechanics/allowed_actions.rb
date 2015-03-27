@@ -40,13 +40,20 @@ module Game
         
       end
       
+      # Comprobar que el nivel sea válido
+      # @param level [Integer] Nivel dado.
+      # @raise [Exception] Si no es válido, genera una excepción.
+      def self.check_level(level)
+        if !level.is_a? Fixnum || level < LevelingManagement.min_level || level > LevelingManagement.max_level
+          raise "Invalid level '" + level.to_s + "'."
+        end
+      end
+      
       # Listar acciones permitidas a un cierto nivel.
       # @param level [Integer] Nivel actual del jugador.
       # @return [Hash] Lista de acciones permitidas, con los correspondientes parámetros.
       def self.get_allowed_actions(level)
-        if level < LevelingManagement.min_level || level > LevelingManagement.max_level
-          raise "Invalid level '" + level.to_s + "'."
-        end
+        check_level(level)
         
         return @@precomputed_allowed_actions[level]
       end
@@ -56,11 +63,22 @@ module Game
       # @param action_name [String] Acción a realizar.
       # @raise [Exception] Si la acción no está permitida, genera una excepción.
       def self.action_allowed?(level, action_name)
+        check_level(level)
+        
         if !@@precomputed_allowed_actions[level].keys.include? action_name
           raise "Action '" + action_name + "' not allowed at level '" + level.to_s + "'."
         end
         
         return nil
+      end
+      
+      # Retornar parámetros de una acción por nivel.
+      # @param level [Integer] Nivel actual.
+      # @param action_name [String] Nombre de la acción.
+      def self.action_params_by_level(level, action_name)
+        check_level(level)
+        
+        return @@precomputed_allowed_actions[level][action_name]
       end
       
     end

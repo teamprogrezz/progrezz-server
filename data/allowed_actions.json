@@ -57,7 +57,12 @@
     }
   },
   "3": {
-
+    "write_message": {
+      "duration": 7,
+      "min_length": 5,
+      "max_length": 80,
+      "allow_resources": false
+    }
   },
   "4": {
     "collect_fragment": {
@@ -69,13 +74,13 @@
         "latitude":  0.005407983220585678,
         "longitude": 0.005389922971606824
       }
-    },
-    "write_message": {
-      "duration": 7
     }
   },
   "5": {
-  
+    "write_message": {
+      "duration": 14,
+      "max_length": 140
+    }
   },
   "6": {
     "collect_fragment": {
@@ -90,7 +95,11 @@
     }
   },
   "7": {
-  
+    "write_message": {
+      "duration": 30,
+      "max_length": 200,
+      "allow_resources": true
+    }
   },
   "8": {
     "collect_fragment": {
