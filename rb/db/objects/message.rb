@@ -379,7 +379,8 @@ module Game
           output[:message] = {
             uuid:            self.uuid,
             total_fragments: self.total_fragments,
-            write_date:      self.created_at.strftime('%Q')
+            write_date:      self.created_at.strftime('%Q'),
+            duration:        self.duration
           }
         end
         

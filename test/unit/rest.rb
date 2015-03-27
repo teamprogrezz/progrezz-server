@@ -81,6 +81,19 @@ class RESTTest < Test::Unit::TestCase
   #           User
   # ---------------------------
   
+  # Probar "user_who_am_i"
+  def test_user_who_am_i
+    authenticate()
+    
+    @request[:request][:type] = "user_who_am_i"
+    @request[:request][:data] = { }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:user][:user_id], @users[0].user_id
+    
+  end
+  
   # Probar "user_get_profile"
   def test_user_profile
     authenticate()
