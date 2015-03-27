@@ -88,37 +88,47 @@ module Database
     # @param extra_params [Hash<Symbol, Object>] Parámetros extra, por si fueran necesario.
     # @todo Implementar
     def self.export_neo4jnode(node, node_relations, extra_params = {})
-      # TODO: Exportar nodos de la manera deseada (a otra base de datos, a un fichero json, etc).
-      output = {}
-      output["node"] = {
-        "id" => node.neo_id,
-        "uuid" => node.uuid,
-        "attributes" => node.attributes
-      } 
+      params = GenericUtils.default_params( {
+        export_type: :json
+      }, extra_params )
       
-      output["relations"] = []
-      
-      node_relations.each do |rel|
-        relation = {}
-        if rel.is_a? Neo4j::Server::CypherRelationship
-          relation["from_node"] = rel.start_node.uuid
-          relation["to_node"] = rel.end_node.uuid
-        else
-          relation["from_node"] = rel.from_node.uuid
-          relation["to_node"] = rel.to_node.uuid
+      case params[:export_type]
+      when :json
+        output = {}
+        output["node"] = {
+          "id" => node.neo_id,
+          "uuid" => node.uuid,
+          "attributes" => node.attributes
+        } 
+        
+        output["relations"] = []
+        
+        node_relations.each do |rel|
+          relation = {}
+          if rel.is_a? Neo4j::Server::CypherRelationship
+            relation["from_node"] = rel.start_node.uuid
+            relation["to_node"] = rel.end_node.uuid
+          else
+            relation["from_node"] = rel.from_node.uuid
+            relation["to_node"] = rel.to_node.uuid
+          end
+          
+          if rel.respond_to? :attributes
+            relation["attributes"] = rel.attributes
+          end
+          
+          output["relations"] << relation
         end
         
-        if rel.respond_to? :attributes
-          relation["attributes"] = rel.attributes
+        # Escribir en un fichero
+        File.open(DUMP_FILE_JSON, 'a') do |f|
+          f.puts output.to_json + ","
         end
         
-        output["relations"] << relation
+      else
+        raise "Unknow export type '" + params[:export_type].to_s + "'."
       end
       
-      # Escribir en un fichero
-      File.open(DUMP_FILE_JSON, 'a') do |f|
-        f.puts output.to_json + ","
-      end
     end
     
     # Ejecutar transacciones anidadas.
