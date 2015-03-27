@@ -153,6 +153,11 @@ module Game
       return true
     end
     
+    # Obtener usuario actual
+    def self.current_user(session)
+      return session['user_id']
+    end
+    
     
   end
 end

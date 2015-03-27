@@ -14,6 +14,10 @@
   [
     "User", [
       {
+        "name": "Who am I",
+        "example": {"_comment":"Use this method to retrieve the current authenticated user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_who_am_i","data":{}}}
+      },
+      {
         "name": "User's profile",
         "example": {"_comment":"Use this method to retrieve the stats of <user_id> user.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_profile","data":{"user_id":"yourmail@example.com"}}}
       },

@@ -27,18 +27,8 @@ module Game
       # Nombre de recurso no especificado.
       NO_RESOURCE = ""
       
-      # Tamaño mínimo del contenido.
-      CONTENT_MIN_LENGTH = 9
-      
-      # Tamaño máximo del contenido.
-      CONTENT_MAX_LENGTH = 255
-      
       # Tamaño máximo del recurso.
       RESOURCE_MAX_LENGTH = 128
-      
-      # Fichero para guardar mensajes borrados.
-      REMOVE_DUMP_FILE = "tmp/dump_"
-      
       
       #-- -------------------------
       #        Atributos (DB)
