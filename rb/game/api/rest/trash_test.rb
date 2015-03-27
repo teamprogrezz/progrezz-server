@@ -141,7 +141,7 @@ module REST
         # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
         
         # Borrar mensaje (prueba).
-        # messages[3].remove_keep_msg
+        messages[3].remove
 
         rescue Exception => e
           #puts e.message

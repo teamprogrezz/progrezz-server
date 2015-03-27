@@ -13,6 +13,10 @@ module Database
   # Se encarga de realizar tareas sencillas, como inicializar el acceso a la base
   # de datos neo4j, reiniciar su estado, etc.
   class DatabaseManager
+    
+    # Fichero para guardar nodos borrados.
+    DUMP_FILE_JSON = "tmp/db_dump.json"
+    
     # Inicializa la base de datos.
     #
     # Si se encuentra la variable de entorno 'GRAPHENEDB_URL' (heroku), se usará dicha dirección como servidor
@@ -85,7 +89,36 @@ module Database
     # @todo Implementar
     def self.export_neo4jnode(node, node_relations, extra_params = {})
       # TODO: Exportar nodos de la manera deseada (a otra base de datos, a un fichero json, etc).
-      # ...
+      output = {}
+      output["node"] = {
+        "id" => node.neo_id,
+        "uuid" => node.uuid,
+        "attributes" => node.attributes
+      } 
+      
+      output["relations"] = []
+      
+      node_relations.each do |rel|
+        relation = {}
+        if rel.is_a? Neo4j::Server::CypherRelationship
+          relation["from_node"] = rel.start_node.uuid
+          relation["to_node"] = rel.end_node.uuid
+        else
+          relation["from_node"] = rel.from_node.uuid
+          relation["to_node"] = rel.to_node.uuid
+        end
+        
+        if rel.respond_to? :attributes
+          relation["attributes"] = rel.attributes
+        end
+        
+        output["relations"] << relation
+      end
+      
+      # Escribir en un fichero
+      File.open(DUMP_FILE_JSON, 'a') do |f|
+        f.puts output.to_json + ","
+      end
     end
     
     # Ejecutar transacciones anidadas.
