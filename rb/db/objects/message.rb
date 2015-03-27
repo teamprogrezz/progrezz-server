@@ -352,6 +352,10 @@ module Game
       # Comprobar si un mensaje ha caducado.
       # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
       def caducated?
+        if duration == 0
+          return false
+        end
+        
         if self.created_at + duration <= Time.now
           return true
         end

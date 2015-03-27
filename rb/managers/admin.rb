@@ -96,6 +96,13 @@ module Sinatra
         return {status: "ok"}.to_json
       end
       
+      app.post '/admin/messages/remove' do
+        admin_protected!
+        
+        Game::Database::Message.find_by( uuid: params["rem_uuid"] ).remove()
+        return {status: "error"}.to_json
+      end
+      
       # -- Usuarios --
       app.post '/admin/users/search_by_alias' do
         admin_protected!
