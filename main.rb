@@ -9,6 +9,7 @@ require 'oj_mimic_json'
 
 require 'sinatra'
 require 'neo4j'
+require 'logger'
 
 require 'thread'
 
@@ -74,6 +75,10 @@ module Sinatra
         
         # Añadir multihilos. 
         app.set :threaded, true # TODO: Probar con Thin y no con rackup.
+        
+        # Activar loggin
+        app.enable :loggin
+        app.use Rack::CommonLogger, Logger.new("tmp/app.log")
       end
       
       # Ruta principal del servidor.
