@@ -14,7 +14,7 @@
     "name": "Gold",
     "description": "In its purest form, it is a bright, slightly reddish yellow, dense, soft, malleable and ductile metal. It is one of the least reactive chemical elements, and is solid under standard conditions. ",
     "deposit": {
-      "weight": 12,
+      "weight": 10,
       "max_ammount": 18,
       "min_ammount": 6
     }

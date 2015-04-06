@@ -56,7 +56,7 @@ module Game
       # @param extra_params [Hash] Parámetros a cargar. Véase el código para entender los parámetros.
       # @return [Game::Database::ItemDeposit] Depósito creado en la base de datos.
       def self.create_item_deposit(item_ref, extra_params)
-        if item == null or !item_ref.is_a? Game::Database::Item
+        if item_ref == nil or !item_ref.is_a? Game::Database::Item
           raise "Invalid item."
         end
         
@@ -72,6 +72,7 @@ module Game
       # Borrar el depósito y sus estancias.
       def remove()
         # TODO: Implementar.
+        self.destroy()
       end
       
     end

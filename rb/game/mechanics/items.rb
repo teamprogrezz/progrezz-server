@@ -41,7 +41,7 @@ module Game
           end
           
           # Realizar gestión de depósitos
-          if i[:deposit] != nil || !i[:deposit].empty?
+          if i[:deposit] != nil && !i[:deposit].empty?
             # Si se especifica, actualizar.
             
             if item.deposit != nil
