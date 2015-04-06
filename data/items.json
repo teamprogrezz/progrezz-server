@@ -1,6 +1,6 @@
 [
   {
-    "item_id": "mineral_common1",
+    "item_id": "mineral_iron",
     "name": "Iron",
     "description": "It is a metal in the first transition series. It is by mass the most common element on Earth, forming much of Earth's outer and inner core. It is the fourth most common element in the Earth's crust. ",
     "deposit": {
@@ -10,9 +10,10 @@
     }
   },
   {
-    "item_id": "mineral_rare1",
+    "item_id": "mineral_gold",
     "name": "Gold",
     "description": "In its purest form, it is a bright, slightly reddish yellow, dense, soft, malleable and ductile metal. It is one of the least reactive chemical elements, and is solid under standard conditions. ",
+    "image": "/img/game/items/gold.png",
     "deposit": {
       "weight": 10,
       "max_ammount": 18,

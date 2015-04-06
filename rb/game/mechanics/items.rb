@@ -29,7 +29,9 @@ module Game
         end
         
         # Para cada objeto
+        item_id_list = []
         @@items.each do |i|
+          item_id_list << i[:item_id]
           item = Game::Database::Item.find_by( item_id: i[:item_id] )
 
           if item == nil
@@ -59,6 +61,12 @@ module Game
           
         end
         
+        # Destruir los objetos que no esten en la base de datos.
+        Game::Database::Item.all.each do |item|
+          if !item_id_list.include? item.item_id
+            item.remove()
+          end
+        end
       end
       
     end

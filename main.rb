@@ -16,7 +16,7 @@ require 'thread'
 if development?
   require 'sinatra/reloader'
   require 'ruby-prof'
-  require 'irb'
+  require 'pry'
 
   puts "--------------------------------------"
   puts "**   Starting in development mode   **"
@@ -129,20 +129,19 @@ if development? && ENV['progrezz_irb'] == "true"
 
   Thread.new do |t|
     sleep(1)
-    @irb = IRB.start
+    binding.pry
+    exit()
   end
 end
 
 # Cosas a ejecutar cuando se cierre la app.
 at_exit do
-
-  Thread.list.each do |thread|
-    thread.exit unless thread == Thread.current
-  end
-  
   Game::Database::DatabaseManager.force_save()
   puts "Progrezz server ended. Crowd applause."
 
+  Thread.list.each do |thread|
+    begin; thread.exit unless thread == Thread.current; rescue Exception => e; end
+  end
 end
 
 #-- ---------------------------------------------------------------- #++

@@ -96,6 +96,12 @@ module Game
         return Game::Database::ItemDeposit.create_item_deposit(self, extra_params)
       end
       
+      # Borrar el objeto y sus relacionados (depósito, etc).
+      def remove()
+        # TODO: Implementar.
+        self.destroy()
+      end
+      
     end
   end
 end
