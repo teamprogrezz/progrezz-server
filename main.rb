@@ -125,10 +125,9 @@ GenericUtils.require_dir("./rb/managers/**/*.rb", "-----------------------------
 puts "----------------------------------"
 
 # Ejecutar una terminal (si procede)
-if development? && ENV['progrezz_irb'] == "true"
+if development? && ENV['progrezz_interactive_shell'] == "true"
 
   Thread.new do |t|
-    sleep(1)
     binding.pry
     exit()
   end
@@ -140,7 +139,7 @@ at_exit do
   puts "Progrezz server ended. Crowd applause."
 
   Thread.list.each do |thread|
-    begin; thread.exit unless thread == Thread.current; rescue Exception => e; end
+    thread.exit
   end
 end
 

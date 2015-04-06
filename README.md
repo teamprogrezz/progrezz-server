@@ -71,7 +71,46 @@ Para generar la documentación, use
 $ rake doc
 ```
 
-Para más información, mire el contenido del fichero ```rakefile```.
+Para utilizar la consola interactiva de *pry*, se debe definir la variable de entorno ```progrezz_interactive_shell``` a ```true```.
+
+Se activará automáticamente cuando se ejecute el proyecto en modo *development*, y se ejecutará de manera asíncrona con respecto a la aplicación principal, por lo que no bloqueará el acceso a los sitios web.
+
+Un ejemplo de ejecución podría ser el siguiente:
+
+```ruby
+Thin web server (v1.6.3 codename Protein Powder)
+Maximum connections set to 1024
+Listening on localhost:9292, CTRL+C to stop
+
+From: /home/daniel/Dev/Proyectos/Progrezz/progrezz-server/main.rb @ line 131 :
+
+    126: 
+    127: # Ejecutar una terminal (si procede)
+    128: if development? && ENV['progrezz_interactive_shell'] == "true"
+    129: 
+    130:   Thread.new do |t|
+ => 131:     binding.pry
+    132:     exit()
+    133:   end
+    134: end
+    135: 
+
+[1] pry(main)> Game::Database::User.all.each {|u| puts u.alias }
+Wikiti
+... 
+=> [ ... ]
+```
+
+Para cerrar la terminar y la aplicación, basta con ejecutar el comando ```exit```:
+
+```ruby
+... 
+[2] pry(main)> exit()
+--------------------------------------
+**        Forced saving DB          **
+--------------------------------------
+Progrezz server ended. Crowd applause.
+```
 
 ## 5. Contacto ##
 Envíe cualquier duda, comentario u opinión a cualquier correo de la siguiente lista:
