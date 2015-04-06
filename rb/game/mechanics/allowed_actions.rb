@@ -3,6 +3,8 @@
 require 'rest-client'
 require 'progrezz/geolocation'
 
+require_relative './leveling'
+
 module Game
   module Mechanics
 

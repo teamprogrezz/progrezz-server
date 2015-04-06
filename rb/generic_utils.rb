@@ -11,7 +11,7 @@ class GenericUtils
   # @param dir_regexp [String] Expresión regular de la carpeta a incluir.
   # @param msg [String] Mensaje que se muestra antes de cargar el fichero. Si es nil, no se muestra nada.
   def self.require_dir(dir_regexp, msg = nil)
-    Dir[dir_regexp].each {|file|
+    Dir[dir_regexp].sort.each {|file|
       if msg != nil; puts msg + file.split(/\.rb/)[0] end
       require file.split(/\.rb/)[0]
     }
@@ -64,10 +64,16 @@ class GenericUtils
   # @param h [Hash] Hash a modificar.
   # @return [Hash] Hash convertido.
   def self.symbolize_keys_deep!(h)
-    h.keys.each do |k|
-      ks    = k.respond_to?(:to_sym) ? k.to_sym : k
-      h[ks] = h.delete k # Preserve order even when k == ks
-      symbolize_keys_deep! h[ks] if h[ks].kind_of? Hash
+    if h.is_a? Array
+      h.each do |hash|
+        symbolize_keys_deep!(hash)
+      end
+    else
+      h.keys.each do |k|
+        ks    = k.respond_to?(:to_sym) ? k.to_sym : k
+        h[ks] = h.delete k # Preserve order even when k == ks
+        symbolize_keys_deep! h[ks] if (h[ks].kind_of? Hash or h[ks].kind_of? Array)
+      end
     end
 
     return h

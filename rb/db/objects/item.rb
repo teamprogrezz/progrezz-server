@@ -7,7 +7,9 @@ module Game
     # 
     # Será usado para representar objetos de un usuario, de
     # una veta o depósitov¡, ... mediante relaciones neo4j.
-    class User < GeolocatedObject
+    #
+    # Principalmente, son recursos que el usuario puede craftear.
+    class Item
       include Neo4j::ActiveNode
       
       # Cantidad máxima de objetos por defecto en un stack de un usuario.
@@ -31,13 +33,37 @@ module Game
       #
       # Se usará principalmente para el lore del juego.
       # @return [String] 
-      property :name, type: String, default: ""
+      property :description, type: String, default: ""
       
       
       # Cantidad máxima en el stack del jugador.
       # @return [Integer] 
-      property :name, type: Integer, default: DEFAULT_MAX_ITEM
+      property :max_ammount, type: Integer, default: DEFAULT_MAX_ITEM
       
+      # Crear un objeto parametrizado (json).
+      # @param extra_params [Hash] Parámetros a cargar. Véase el código para ver los parámetros.
+      # @return [Game::Database::Item] Objeto creado en la base de datos.
+      def self.create_item(extra_params)
+        params = GenericUtils.default_params( {
+          name: "",
+          description: "",
+          max_ammount: DEFAULT_MAX_ITEM
+        }, extra_params, [:item_id])
+        
+        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_ammount: params[:max_ammount] )
+      end
+      
+      # Actualizar los parámetros de un objeto.
+      # @param extra_params [Hash] Parámetros a cargar. Véase el código para ver los parámetros.
+      def update_item(extra_params)
+        params = GenericUtils.default_params( {
+          name: self.name,
+          description: self.description,
+          max_ammount: self.max_ammount
+        }, extra_params, [:item_id])
+        
+        self.update( name: params[:name], description: params[:description], max_ammount: params[:max_ammount] )
+      end
     end
   end
 end
