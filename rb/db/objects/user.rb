@@ -112,7 +112,7 @@ module Game
       has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
       
       #-- --------------------------------------------------
-      #      Métodos de clase
+      #                    Métodos de clase
       #   -------------------------------------------------- #++
 
       # Creación de nuevos usuarios.

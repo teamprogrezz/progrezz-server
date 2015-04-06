@@ -35,14 +35,28 @@ module Game
           if item == nil
             # Si no existe, añadir a la base de datos.
             item = Game::Database::Item.create_item( i )
-            
-            # TODO: Añadir gestión de depósitos aquí.
           else
             # Si ya existe, actualizar todo
             item.update_item( i )
-            
-            # TODO: Añadir gestión de depósitos aquí.
           end
+          
+          # Realizar gestión de depósitos
+          if i[:deposit] != nil || !i[:deposit].empty?
+            # Si se especifica, actualizar.
+            
+            if item.deposit != nil
+              # Si existe, actualizarlo
+              item.deposit.update( i[:deposit] )
+            else
+              # Si no, crearlo
+              item.create_deposit( i[:deposit] )
+            end
+            
+          else
+            # Si no, borrar de la base de datos.
+            item.deposit.remove() if item.deposit != nil
+          end
+          
         end
         
       end
