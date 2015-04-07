@@ -1,4 +1,7 @@
 # Servidor proyecto PROGREZZ #
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)  [![Build Status](https://travis-ci.org/teamprogrezz/progrezz-server.svg)](https://travis-ci.org/teamprogrezz/progrezz-server)
+
 ## 1. Introducción ##
 El servidor de Progrezz permite centralizar y procesar todos los datos referentes a los usuarios o jugadores del mismo.
 

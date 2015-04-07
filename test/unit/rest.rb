@@ -294,7 +294,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:item][:name], "LAG Grenaded"
+    assert_equal @response[:response][:data][:item][:name], "LAG Grenade"
     
   end
   
