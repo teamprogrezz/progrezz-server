@@ -108,7 +108,13 @@ module Game
       
       # Borrar el objeto y sus relacionados (depósito, etc).
       def remove()
-        # TODO: Implementar.
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Destruir el depósito del objeto
+        self.deposit.remove()  if self.deposit != nil
+        
+        # Destruir nodo
         self.destroy()
       end
       

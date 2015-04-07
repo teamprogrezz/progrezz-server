@@ -92,10 +92,13 @@ module Database
       
       case params[:export_type]
       when :json
+        puts "Exporting..."
+        
         output = {}
         output["node"] = {
           "id" => node.neo_id,
           "uuid" => node.uuid,
+          "labels" => node.labels,
           "attributes" => node.attributes
         } 
         

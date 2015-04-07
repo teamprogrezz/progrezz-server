@@ -71,7 +71,13 @@ module Game
       
       # Borrar el depósito y sus estancias.
       def remove()
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+        
+        # Destruir estancias del depósito
         # TODO: Implementar.
+        
+        # Borrar el nodo.
         self.destroy()
       end
       

@@ -8,6 +8,7 @@
     "item_id": "mineral_iron",
     "name": "Iron",
     "description": "It is a metal in the first transition series. It is by mass the most common element on Earth, forming much of Earth's outer and inner core. It is the fourth most common element in the Earth's crust. ",
+    "image": "/img/game/items/mineral_iron.png",
     "deposit": {
       "weight": 60,
       "max_ammount": 15,
