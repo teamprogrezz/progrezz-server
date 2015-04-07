@@ -47,6 +47,11 @@ module Game
       # @return [Game::Database::Item] Objeto contenido en el depósito.
       has_one :in, :item, model_class: Game::Database::Item, origin: :deposit
       
+      # @!method instances
+      # Relación con las estancias del depósito. Se puede acceder con el atributo +instances+.
+      # @return [Game::Database::ItemDepositInstance] Estancias del depósito.
+      has_many :out, :instances, model_class: Game::Database::Item, type: "geolocated_in", dependent: :destroy 
+      
       #-- --------------------------------------------------
       #                    Métodos de clase
       #   -------------------------------------------------- #++
@@ -75,10 +80,20 @@ module Game
         Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
         
         # Destruir estancias del depósito
-        # TODO: Implementar.
+        self.instances.each do |i|
+          i.remove()
+        end
         
         # Borrar el nodo.
         self.destroy()
+      end
+      
+      # Estanciar depósito en una posición geolocalizada.
+      # 
+      # @param geolocation [Hash<Symbol, Float>] Posición en la que se colocará la estancia.
+      # @return [Game::Database::ItemDepositInstance] Estancia creada.
+      def instance(geolocation = {latitude: 0.0, longitude: 0.0})
+        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_uses: 10} )
       end
       
     end
