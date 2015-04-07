@@ -1,4 +1,4 @@
-require "yard"
+require 'yard'
 require 'rake/testtask'
 
 task :default => ["development:start"]
