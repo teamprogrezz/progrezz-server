@@ -112,6 +112,7 @@ GEM
     racksh (1.0.0)
       rack (>= 1.0)
       rack-test (>= 0.5)
+    rake (10.4.2)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -171,6 +172,7 @@ DEPENDENCIES
   progrezz-geolocation!
   pry
   racksh
+  rake
   rest-client
   ruby-prof
   rufus-scheduler
