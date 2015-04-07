@@ -283,4 +283,19 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @messages[0].uuid, @response[:response][:data][:message][:message][:uuid]
   end
   
+  # ---------------------------
+  #          Items
+  # ---------------------------
+  
+  # Probar "item_get"
+  def test_item_get
+    @request[:request][:type] = "item_get"
+    @request[:request][:data] = { item_id: "test_item"  }
+    rest_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:item][:name], "LAG Grenaded"
+    
+  end
+  
 end

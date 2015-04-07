@@ -26,7 +26,10 @@ def init_db()
   @transaction = Game::Database::DatabaseManager.start_transaction()
   
   # Borrar contenido actual
-  Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
+  Game::Database::User.all.each { |u| u.destroy }
+  Game::Database::Message.all.each { |m| m.destroy }
+  Game::Database::MessageFragment.all.each { |f| f.destroy }
+  # Neo4j::Session.current._query('MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r')
   
   # Añadir cositas
   @users << Game::Database::User.sign_up( "test", 'test', {latitude: 28.4694, longitude: -16.2738} )
