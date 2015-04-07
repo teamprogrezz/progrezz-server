@@ -78,5 +78,13 @@
         "example": {"_comment":"Get the message of a given fragment.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"message_get_from_fragment","data":{"frag_uuid":"Fragment uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
       }
     ]
+  ],
+  [
+    "Items", [
+      {
+        "name": "Get item info",
+        "example": "example": {"_comment":"Get some information about an item.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"item_get","data":{"item_id":"Item id (e.g: test_item)"}}}
+      }
+    ]
   ]
 ]

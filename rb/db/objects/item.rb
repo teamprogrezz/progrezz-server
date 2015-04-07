@@ -22,6 +22,9 @@ module Game
       # Cantidad máxima de objetos por defecto en un stack de un usuario.
       DEFAULT_MAX_ITEM = 500
       
+      # Imagen por defecto para el objeto.
+      DEFAULT_IMAGE = "/img/game/null.png"
+      
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
@@ -46,6 +49,11 @@ module Game
       # @return [String] 
       property :description, type: String, default: ""
       
+      # Descripción del objeto (narrativa).
+      #
+      # Se usará principalmente para el lore del juego.
+      # @return [String] 
+      property :image, type: String, default: DEFAULT_IMAGE
       
       # Cantidad máxima en el stack del jugador.
       # @return [Integer] 
@@ -67,10 +75,11 @@ module Game
         params = GenericUtils.default_params( {
           name: "",
           description: "",
-          max_ammount: DEFAULT_MAX_ITEM
+          max_ammount: DEFAULT_MAX_ITEM,
+          image: DEFAULT_IMAGE
         }, extra_params, [:item_id])
         
-        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_ammount: params[:max_ammount] )
+        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_ammount: params[:max_ammount], image: params[:image] )
       end
       
       #-- --------------------------------------------------
@@ -83,10 +92,11 @@ module Game
         params = GenericUtils.default_params( {
           name: self.name,
           description: self.description,
+          image: self.image,
           max_ammount: self.max_ammount
         }, extra_params, [:item_id])
         
-        self.update( name: params[:name], description: params[:description], max_ammount: params[:max_ammount] )
+        self.update( name: params[:name], description: params[:description], max_ammount: params[:max_ammount], image: params[:image] )
       end
       
       # Crear un depósito del objeto.
@@ -102,6 +112,18 @@ module Game
         self.destroy()
       end
       
+      # Transformar objeto a un hash
+      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (...).
+      # @return [Hash<Symbol, Object>] Objeto como hash.
+      def to_hash(exclusion_list = [])
+        return {
+          item_id: self.item_id,
+          name: self.name,
+          description: self.description,
+          image: self.image,
+          max_ammount: self.max_ammount
+        }
+      end
     end
   end
 end

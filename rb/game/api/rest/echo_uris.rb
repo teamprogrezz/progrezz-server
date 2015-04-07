@@ -5,7 +5,7 @@ module Sinatra
   module REST
     class Methods
       # Redireccionar a página interactiva
-      def self.test(app, response)
+      def self.test(app, response, session)
         app.redirect to("/dev/api/rest/interactive")
       end
 

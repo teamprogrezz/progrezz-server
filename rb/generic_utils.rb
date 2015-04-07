@@ -68,7 +68,7 @@ class GenericUtils
       h.each do |hash|
         symbolize_keys_deep!(hash)
       end
-    else
+    elsif h.respond_to? :keys
       h.keys.each do |k|
         ks    = k.respond_to?(:to_sym) ? k.to_sym : k
         h[ks] = h.delete k # Preserve order even when k == ks

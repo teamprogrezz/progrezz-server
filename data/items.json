@@ -1,5 +1,10 @@
 [
   {
+    "item_id": "test_item",
+    "name": "LAG Grenade",
+    "description": "Limits the framerate of all enemies in its radius to 15 fps and resolution to 800 x 640, with a 5% chance of instant desconnection from the server."
+  },
+  {
     "item_id": "mineral_iron",
     "name": "Iron",
     "description": "It is a metal in the first transition series. It is by mass the most common element on Earth, forming much of Earth's outer and inner core. It is the fourth most common element in the Earth's crust. ",
@@ -13,7 +18,7 @@
     "item_id": "mineral_gold",
     "name": "Gold",
     "description": "In its purest form, it is a bright, slightly reddish yellow, dense, soft, malleable and ductile metal. It is one of the least reactive chemical elements, and is solid under standard conditions. ",
-    "image": "/img/game/items/gold.png",
+    "image": "/img/game/items/mineral_gold.png",
     "deposit": {
       "weight": 10,
       "max_ammount": 18,
