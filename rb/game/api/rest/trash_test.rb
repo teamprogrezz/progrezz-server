@@ -25,7 +25,11 @@ module REST
       
       # Eliminar contenido de la base de datos.
       def db_drop()
-        Game::Database::DatabaseManager.drop()
+        # Game::Database::DatabaseManager.drop()
+        Game::Database::User.all.each { |u| u.destroy }
+        Game::Database::Message.all.each { |m| m.destroy }
+        Game::Database::MessageFragment.all.each { |m| m.destroy }
+        Game::Database::ItemDepositInstance.all.each { |m| m.destroy }
         
         return "<h2>Database droped.</h2>"
       end
@@ -142,6 +146,9 @@ module REST
         
         # Borrar mensaje (prueba).
         # messages[3].remove
+        
+        # Añadir estancia de prueba a un objeto
+        Game::Database::Item.find_by(item_id: "mineral_iron").deposit.instantiate( { latitude: 10.0, longitude: 12.2 } )
 
         rescue Exception => e
           #puts e.message

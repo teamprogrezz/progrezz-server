@@ -3,6 +3,10 @@
 module Game
   module Database
     
+    class GeolocatedObject; end
+    class ItemDepositInstance < GeolocatedObject; end
+    # Forward declaration
+    
     # Clase que representa un depósito o veta de objetos.
     # 
     # A diferencia de los fragmentos de un mensaje, esta clase no está geolocalizada.
@@ -50,7 +54,7 @@ module Game
       # @!method instances
       # Relación con las estancias del depósito. Se puede acceder con el atributo +instances+.
       # @return [Game::Database::ItemDepositInstance] Estancias del depósito.
-      has_many :out, :instances, model_class: Game::Database::Item, type: "geolocated_in", dependent: :destroy 
+      has_many :out, :instances, model_class: Game::Database::ItemDepositInstance, type: "geolocated_in", dependent: :destroy 
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -92,8 +96,10 @@ module Game
       # 
       # @param geolocation [Hash<Symbol, Float>] Posición en la que se colocará la estancia.
       # @return [Game::Database::ItemDepositInstance] Estancia creada.
-      def instance(geolocation = {latitude: 0.0, longitude: 0.0})
-        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_uses: 10} )
+      def instantiate(geolocation = {latitude: 0.0, longitude: 0.0})
+        total_uses = Random.new.rand( self.min_ammount .. self.max_ammount )
+        
+        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_uses: total_uses} )
       end
       
     end

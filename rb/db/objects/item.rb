@@ -25,6 +25,9 @@ module Game
       # Imagen por defecto para el objeto.
       DEFAULT_IMAGE = "/img/game/null.png"
       
+      # Calidad por defecto.
+      DEFAULT_QUALITY = "Common"
+      
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
@@ -40,24 +43,33 @@ module Game
       # Nombre legible del objeto.
       #
       # Puede ser o no similar a la propiedad #item_id
-      # @return [String] 
+      # @return [String] Nombre.
       property :name, type: String, default: ""
       
-      # Descripción del objeto (narrativa).
+      # Calidad del objeto.
       #
-      # Se usará principalmente para el lore del juego.
-      # @return [String] 
-      property :description, type: String, default: ""
+      # @return [String] Calidad.
+      property :quality, type: String, default: DEFAULT_QUALITY
       
       # Descripción del objeto (narrativa).
       #
       # Se usará principalmente para el lore del juego.
-      # @return [String] 
+      # @return [String] Descripción.
+      property :description, type: String, default: ""
+      
+      # Imagen del objeto.
+      #
+      # Se usará principalmente para el lore del juego.
+      # @return [String] Imagen.
       property :image, type: String, default: DEFAULT_IMAGE
       
       # Cantidad máxima en el stack del jugador.
-      # @return [Integer] 
+      # @return [Integer] Cantidad numérica.
       property :max_ammount, type: Integer, default: DEFAULT_MAX_ITEM
+      
+      #-- --------------------------------------------------
+      #                      Relaciones (DB)
+      #   -------------------------------------------------- #++
       
       # @!method :deposit
       # Relación con el depósito del objeto. Puede no existir.
@@ -76,10 +88,11 @@ module Game
           name: "",
           description: "",
           max_ammount: DEFAULT_MAX_ITEM,
+          quality: DEFAULT_QUALITY,
           image: DEFAULT_IMAGE
         }, extra_params, [:item_id])
         
-        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_ammount: params[:max_ammount], image: params[:image] )
+        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_ammount: params[:max_ammount], quality: params[:quality], image: params[:image] )
       end
       
       #-- --------------------------------------------------
@@ -93,10 +106,11 @@ module Game
           name: self.name,
           description: self.description,
           image: self.image,
+          quality: self.quality,
           max_ammount: self.max_ammount
         }, extra_params, [:item_id])
         
-        self.update( name: params[:name], description: params[:description], max_ammount: params[:max_ammount], image: params[:image] )
+        self.update( name: params[:name], description: params[:description], max_ammount: params[:max_ammount], quality: params[:quality], image: params[:image] )
       end
       
       # Crear un depósito del objeto.

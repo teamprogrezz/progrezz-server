@@ -5,6 +5,9 @@ require_relative './geolocated_object'
 module Game
   module Database
     
+    class ItemDeposit; end
+    # Forward declaration
+    
     # Clase que representa un depósito o veta de objetos geolocalizado.
     # 
     # A diferencia de #Game::Database::ItemDeposit, los
@@ -35,7 +38,7 @@ module Game
       # @!method item
       # Relación con el objeto (#Game::Database::Item). Se puede acceder con el atributo +item+.
       # @return [Game::Database::Item] Objeto contenido en el depósito.
-      has_one :in, :deposit, model_class: Game::Database::Item, origin: :instances
+      has_one :in, :deposit, model_class: Game::Database::ItemDeposit, origin: :instances
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -52,10 +55,11 @@ module Game
         
         params = GenericUtils.default_params( {}, extra_params, [:total_uses, :geolocation])
         
-        this = self
-        deposit_instance = self.create( deposit: deposit_ref, uses: params[:total_uses], total_uses: params[:total_uses] ) do
-          this.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
+        deposit_instance = self.create( deposit: deposit_ref, uses: params[:total_uses], total_uses: params[:total_uses] ) do |i|
+          i.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
         end
+        
+        return deposit_instance
       end
       
       #-- --------------------------------------------------
@@ -69,6 +73,15 @@ module Game
         
         # Borrar el nodo.
         self.destroy()
+      end
+      
+      def to_hash(exclusion_list = [])
+        output = {}
+        
+        output[:item]     = self.deposit.item.to_hash([]) if !exlusion_list.include? :item
+        output[:instance] = self.deposit.item.to_hash([]) if !exlusion_list.include? :item
+        
+        return output
       end
       
     end
