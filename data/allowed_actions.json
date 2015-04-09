@@ -46,6 +46,9 @@
     "unlock_message": true
   },
   "1": {
+    "search_nearby_deposits": {
+      "radius": 0.8
+    },
     "collect_item_from_deposit_Common": {}
   },
   "2": {
@@ -67,6 +70,9 @@
       "max_length": 80,
       "allow_resources": false
     },
+    "search_nearby_deposits": {
+      "radius": 1.1
+    },
     "collect_item_from_deposit_Rare": {}
   },
   "4": {
@@ -85,6 +91,9 @@
     "write_message": {
       "duration": 14,
       "max_length": 140
+    },
+    "search_nearby_deposits": {
+      "radius": 1.6
     },
     "collect_item_from_deposit_Epic": {}
   },

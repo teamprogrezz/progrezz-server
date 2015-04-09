@@ -12,7 +12,7 @@
     "quality": "Common",
     "image": "/img/game/items/mineral_iron.png",
     "deposit": {
-      "weight": 60,
+      "weight": 100,
       "max_ammount": 15,
       "min_ammount": 8
     }

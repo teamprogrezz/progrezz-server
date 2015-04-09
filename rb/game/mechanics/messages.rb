@@ -25,16 +25,14 @@ module Game
         
         # Fragmentos cercanos al usuario
         fragment_count = system_fragments.length
-        
-        # Fragmentos a generar
-        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
-        
-        #puts "" + fragment_count.to_s + "/" + FRAGMENT_MIN_COUNT.to_s + "? -> " + max_fragments.to_s
-        
+
         # Salir si ya hay suficientes fragmentos generados.
         if fragment_count >= FRAGMENT_MIN_COUNT
           return
         end
+        
+        # Fragmentos a generar
+        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
         
         random_generator = Random.new
         random_list = Game::Database::Message.unauthored_replicable_messages()

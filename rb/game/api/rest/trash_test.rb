@@ -147,8 +147,10 @@ module REST
         # Borrar mensaje (prueba).
         # messages[3].remove
         
-        # Añadir estancia de prueba a un objeto
-        deposit = Game::Database::Item.find_by(item_id: "mineral_gold").deposit.instantiate( { latitude: 10.0, longitude: 12.2 } )
+        # Generar depósitos cercanos
+        puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
+          Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
+        end).to_s
         
         # Recolectarla
         #exp = {}

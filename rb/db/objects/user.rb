@@ -260,11 +260,12 @@ module Game
       def get_current_search_radius( element = :fragments)
         if element == :fragments
           return Game::Mechanics::AllowedActionsManagement.get_allowed_actions(self.level_profile.level)["search_nearby_fragments"]["radius"]
+        elsif element == :deposits
+          return Game::Mechanics::AllowedActionsManagement.get_allowed_actions(self.level_profile.level)["search_nearby_deposits"]["radius"]
         end
         
         # ...
-
-        return nil
+        raise "Invalid search radius."
       end
             
       # Marcar mensaje como leído.

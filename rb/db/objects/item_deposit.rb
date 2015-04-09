@@ -95,9 +95,12 @@ module Game
       # Estanciar depósito en una posición geolocalizada.
       # 
       # @param geolocation [Hash<Symbol, Float>] Posición en la que se colocará la estancia.
+      # @param snap_to_road [Boolean] True si se desea ajustar el depósito creado a la carretera más próxima.
       # @return [Game::Database::ItemDepositInstance] Estancia creada.
-      def instantiate(geolocation = {latitude: 0.0, longitude: 0.0})
+      def instantiate(geolocation = {latitude: 0.0, longitude: 0.0}, snap_to_road = true)
         ammount = Random.new.rand( self.min_ammount .. self.max_ammount )
+        
+        Game::Mechanics::GeolocationManagement.snap_geolocation!(geolocation) if snap_to_road
         
         return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, ammount: ammount} )
       end
