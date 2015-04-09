@@ -52,12 +52,7 @@ module Database
     # Se ignorará el tiempo mínimo para guardar datos en la DB.
     def self.force_save()
       # Borrar y cancelar transacciones actuales.
-      for tx in @@transactions do
-        tx.failure()
-        tx.close()
-      end
-      
-      @@transactions = []
+      stop_all_transactions()
       
       if defined? DEV
         puts "--------------------------------------"
@@ -150,7 +145,9 @@ module Database
       raise ArgumentError.new("Expected a block to run in DatabaseManager.run_transaction_anidated") unless block_given?
       
       Neo4j::Transaction.run do |tx|
+        @@transactions << tx
         block.call(tx)
+        @@transactions.delete(tx)
       end
     end
     
@@ -178,6 +175,15 @@ module Database
       tx.failure()
     end
     
+    # Forzar el cierre de todas las transacciones.
+    def self.stop_all_transactions()
+      @@transactions.reverse_each do |tx|
+        tx.failure()
+        tx.stop()
+      end
+      
+      @@transactions = []
+    end
   end
 
   #-- Lanzar el método setup #++

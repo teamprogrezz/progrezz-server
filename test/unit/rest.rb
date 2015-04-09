@@ -4,6 +4,8 @@ ENV['RACK_ENV'] = 'test'
 
 require './main'
 require 'test/unit'
+require 'test/unit/testsuite'
+require 'test/unit/ui/console/testrunner'
 require 'rack/test'
 
 require_relative 'helpers'
@@ -31,8 +33,12 @@ class RESTTest < Test::Unit::TestCase
   
   # Inicializar antes de cada prueba.
   def setup
-    # Setup database
-    init_db()
+    # Cargar usuarios y mensajes (referencias)
+    @users = CustomTestSuite.users
+    @messages = CustomTestSuite.messages
+    
+    # Iniciar transaccion
+    @transaction = Game::Database::DatabaseManager.start_transaction()
     
     # Setup other things.
     @request = {
@@ -50,7 +56,8 @@ class RESTTest < Test::Unit::TestCase
     OmniAuth.config.mock_auth[:google_oauth2] = nil
     
     # Deshacer cambios en la base de datos.
-    drop_db()
+    Game::Database::DatabaseManager.rollback_transaction(@transaction)
+    Game::Database::DatabaseManager.stop_transaction(@transaction)
   end
 
   # ---------------------------
@@ -295,7 +302,17 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:item][:name], "LAG Grenade"
-    
   end
   
+end
+
+# Ejecutar test
+Game::Database::DatabaseManager.run_nested_transaction do |tx|
+  # Agregar ojetos de prueba
+  #init_test_db()
+  
+  #Test::Unit::UI::Console::TestRunner.run(RESTTest)
+  
+  # Rollback
+  #tx.failure
 end

@@ -26,8 +26,12 @@ class WebSocketTest < Test::Unit::TestCase
   
   # Inicializar antes de cada prueba.
   def setup
-    # Setup database
-    init_db()
+    # Cargar usuarios y mensajes (referencias)
+    @users = CustomTestSuite.users
+    @messages = CustomTestSuite.messages
+    
+    # Iniciar transaccion
+    @transaction = Game::Database::DatabaseManager.start_transaction()
     
     # Setup other things.
     @request = {
@@ -49,7 +53,8 @@ class WebSocketTest < Test::Unit::TestCase
     OmniAuth.config.mock_auth[:google_oauth2] = nil
     
     # Deshacer cambios en la base de datos.
-    drop_db()
+    Game::Database::DatabaseManager.rollback_transaction(@transaction)
+    Game::Database::DatabaseManager.stop_transaction(@transaction)
   end
   
   # ---------------------------

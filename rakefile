@@ -40,30 +40,15 @@ task :setup do Rake::Task['setup:bundle'].execute end
 
 # --------------------------------------------------------------
 
+#  ----------- TEST MUST NEVER BE RUN IN PRODUCTION MODE -----------
 namespace :test do
-  namespace :unit do
-    Rake::TestTask.new(:all) do |t|
-      t.libs << "test"
-      t.test_files = FileList['test/unit/all.rb']
-      t.verbose = true
-    end
-    
-    Rake::TestTask.new(:rest) do |t|
-      t.libs << "test"
-      t.test_files = FileList['test/unit/rest.rb']
-      t.verbose = true
-    end
-    
-    Rake::TestTask.new(:websocket) do |t|
-      t.libs << "test"
-      t.test_files = FileList['test/unit/websocket.rb']
-      t.verbose = true
-    end
+  task :unit => :development do
+    ruby 'test/unit/all.rb'
   end
 end
 
 desc 'Default test task'
-task :test do Rake::Task['test:unit:all'].execute end
+task :test do Rake::Task['test:unit'].execute end
 
 # --------------------------------------------------------------
 
