@@ -151,9 +151,8 @@ module REST
         deposit = Game::Database::Item.find_by(item_id: "mineral_gold").deposit.instantiate( { latitude: 10.0, longitude: 12.2 } )
         
         # Recolectarla
-        exp = {}
-        user_Wikiti.collect_item_from_deposit(deposit, exp)
-        puts exp
+        #exp = {}
+        #user_Wikiti.collect_item_from_deposit(deposit, exp)
         
         rescue Exception => e
           #puts e.message

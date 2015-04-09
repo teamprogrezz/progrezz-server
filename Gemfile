@@ -4,6 +4,7 @@ ruby '2.2.0'
 # General
 gem 'rake'
 gem 'test-unit'
+gem 'pickup'
 
 # Sinatra
 gem 'sinatra'
