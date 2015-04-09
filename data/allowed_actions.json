@@ -24,6 +24,10 @@
     "write_message": {
       "_desc": "Allow a user to write a geolocated message.",
       "duration": "Speified in days."
+    },
+    
+    "collect_item_from_deposit_Common": {
+      "_desc": "Collect a common item from a deposit."
     }
   },
   
@@ -42,7 +46,7 @@
     "unlock_message": true
   },
   "1": {
-  
+    "collect_item_from_deposit_Common": {}
   },
   "2": {
     "collect_fragment": {
@@ -62,7 +66,8 @@
       "min_length": 5,
       "max_length": 80,
       "allow_resources": false
-    }
+    },
+    "collect_item_from_deposit_Rare": {}
   },
   "4": {
     "collect_fragment": {
@@ -80,7 +85,8 @@
     "write_message": {
       "duration": 14,
       "max_length": 140
-    }
+    },
+    "collect_item_from_deposit_Epic": {}
   },
   "6": {
     "collect_fragment": {

@@ -148,8 +148,13 @@ module REST
         # messages[3].remove
         
         # Añadir estancia de prueba a un objeto
-        Game::Database::Item.find_by(item_id: "mineral_iron").deposit.instantiate( { latitude: 10.0, longitude: 12.2 } )
-
+        deposit = Game::Database::Item.find_by(item_id: "mineral_gold").deposit.instantiate( { latitude: 10.0, longitude: 12.2 } )
+        
+        # Recolectarla
+        exp = {}
+        user_Wikiti.collect_item_from_deposit(deposit, exp)
+        puts exp
+        
         rescue Exception => e
           #puts e.message
           #puts e.backtrace

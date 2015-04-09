@@ -80,6 +80,9 @@ module Game
       # @return [Integer] Cantidad de mensajes desbloqueados por el usuario.
       property :count_unlocked_messages, type: Integer, default: 0
       
+      # Contador de objetos recolectados por el usuario.
+      # @return [Integer] Cantidad de objetos recolectados por el usuario.
+      property :count_collected_item_deposits, type: Integer, default: 0
       
       #-- --------------------------------------------------
       #                     Relaciones (DB)
@@ -105,6 +108,13 @@ module Game
       # Se puede acceder con el atributo +collected_completed_messages+.
       # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
+      
+      # @!method collected_item_deposit_instances
+      # Relación de depósitos recolectados por el usuario.
+      # Se puede acceder con el atributo +collected_item_deposit_instances+.
+      # @return [Game::Database::RelationShips::UserCompletedMessage] 
+      has_many :out, :collected_item_deposit_instances, rel_class: Game::Database::RelationShips::UserCollected_ItemDepositInstance, model_class: Game::Database::ItemDepositInstance
+      
       
       # @!method :level_profile
       # Relación con el nivel del usuario (#Game::Database::User). Se puede acceder con el atributo +user+.

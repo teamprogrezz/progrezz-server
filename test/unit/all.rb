@@ -16,7 +16,6 @@ class CustomTestSuite < Test::Unit::TestSuite
   end
 
   def setup
-    #@@transaction = Neo4j::Transaction.new
     
     # Iniciar base de datos
     @@users = []

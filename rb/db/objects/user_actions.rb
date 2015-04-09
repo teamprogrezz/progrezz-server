@@ -258,6 +258,47 @@ module Game
         return output
       end
       
+      
+      # Recolectar o minar depósito (genérico).
+      #
+      # No se recogerán depósitos ya recolectados.
+      #
+      # @param deposit_instance [Game::Database::ItemDepositInstance] Nuevo depósito a recolectar.
+      # @param out [Hash] Salida personalizada (exp, etc).
+      #
+      # @return [Game::Database::RelationShips::UserCollected_ItemDepositInstance] Si es posible recolectar el depósito, se añade a la lista de depósitos recolectados por el usuario. En cualquier otro caso, generará excepciones.
+      def collect_item_from_deposit(deposit_instance, out = {})
+        # Nótese que se añade la calidad del objeto como parte de la acción. Esto se hace para
+        # diferenciar claramente unas acciones de otras.
+        action_name = (__callee__).to_s + "_" + deposit_instance.deposit.item.quality
+        
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, action_name)
+        
+        if deposit_instance != nil
+          # Si ya lo ha recolectado, lanzar un error
+          if ( self.collected_item_deposit_instances.include?(deposit_instance) ) 
+             raise "Deposit already collected."
+          end
+          
+          # TODO: Comprobar si está lo suficientemente cerca
+          # ...
+          
+          # TODO: Añadir al inventario del usuario
+          # ...
+                    
+          # Añadir experiencia al usuario en función de lo recolectado (calidad).
+          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, action_name)
+          
+          # Añadir al contador
+          self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
+          
+          # Marcar depósito como recolectado.
+          return Game::Database::RelationShips::UserCollected_ItemDepositInstance.create(from_node: self, to_node: deposit_instance )
+        else     
+          raise "Null deposit."
+        end
+      end
     end
     
   end
