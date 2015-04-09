@@ -20,6 +20,7 @@ class CustomTestSuite < Test::Unit::TestSuite
     # Iniciar base de datos
     @@users = []
     @@messages = []
+    @@deposit_instances = []
     
     # Borrar contenido actual
     Game::Database::User.all.each { |u| u.destroy }
@@ -38,6 +39,8 @@ class CustomTestSuite < Test::Unit::TestSuite
     @@messages << Game::Database::Message.create_message( "Hello, universe", 2, { position: {latitude: 28.4694, longitude: -16.2738} })
     @@messages << Game::Database::Message.create_message( "Hello, universe (2)", 3, { position: {latitude: 28.2694, longitude: -16.7346} })
     
+    @@deposit_instances << Game::Database::Item.find_by(item_id: "mineral_iron").deposit.instantiate( @@users[0].geolocation )
+    
     @@users[0].collect_fragment(@@messages[0].fragments.where(fragment_index: 0).first)
     @@users[0].collect_fragment(@@messages[0].fragments.where(fragment_index: 1).first)
     
@@ -51,6 +54,7 @@ class CustomTestSuite < Test::Unit::TestSuite
     # Deshacer cambios en la base de datos.
     @@users.each { |u| u.destroy }
     @@messages.each { |m| m.destroy }
+    @@deposit_instances.each { |d| d.destroy }
   end
 
   def run(*args)
@@ -60,11 +64,15 @@ class CustomTestSuite < Test::Unit::TestSuite
   end
   
   def self.users
-    return @@users
+    @@users
   end
   
   def self.messages
-    return @@messages
+    @@messages
+  end
+  
+  def self.deposit_instances
+    @@deposit_instances
   end
 end
 

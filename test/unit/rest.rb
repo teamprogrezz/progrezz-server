@@ -36,6 +36,7 @@ class RESTTest < Test::Unit::TestCase
     # Cargar usuarios y mensajes (referencias)
     @users = CustomTestSuite.users
     @messages = CustomTestSuite.messages
+    @deposit_instances = CustomTestSuite.deposit_instances
     
     # Iniciar transaccion
     @transaction = Game::Database::DatabaseManager.start_transaction()
@@ -197,7 +198,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:message], "The fragment could not be collected: Fragment already collected."
+    assert_equal @response[:response][:message], "The fragment could not be collected: Already collected."
 
     # Ni recoger fragmentos de mensajes ya completados.
     @request[:request][:type] = "user_collect_message_fragment"
@@ -205,7 +206,7 @@ class RESTTest < Test::Unit::TestCase
     rest_request()
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:message], "The fragment could not be collected: Message already completed."
+    assert_equal @response[:response][:message], "The fragment could not be collected: Already completed."
      
     # Completar mensaje correctamente.
     @request[:request][:type] = "user_collect_message_fragment"
@@ -255,6 +256,31 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:fragments].values[0].count, 2
+  end
+  
+  # ---------------------------
+  #       User items
+  # ---------------------------
+  
+  # Probar "user_collect_item_from_deposit"
+  def test_user_collect_item_from_deposit
+    authenticate()
+    
+    @request[:request][:type] = "user_collect_item_from_deposit"
+    @request[:request][:data] = { user_id: @users[0].user_id, deposit_uuid: @deposit_instances[0].uuid  }
+    rest_request()
+    puts @response
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Deposit collected."
+    
+    # Intentar recolectar de nuevo (error)
+    rest_request()
+    puts @response
+    
+    assert_equal @response[:response][:status], "error"
+    assert_equal @response[:response][:message], "The deposit could not be collected: Already collected."
+
   end
   
   # ---------------------------
