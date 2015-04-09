@@ -95,14 +95,14 @@ module Game
           # Si ya tiene el mensaje completado, no añadir el fragmento
           #if ( self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) 
           if ( self.collected_completed_messages.include?(fragment_message.message) ) 
-             raise "Message already completed."
+             raise "Already completed."
           end
           
           # Si ya tiene el fragmento, no volver a añadirlo
           #if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
           query = self.collected_fragment_messages.where(fragment_index: fragment_message.fragment_index).message.where( uuid: fragment_message.message.uuid )
           if ( query.first != nil )
-            raise "Fragment already collected."
+            raise "Already collected."
           end
                     
           # Añadir experiencia al usuario
@@ -162,7 +162,7 @@ module Game
         
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
           if rel.status != Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
-            raise "Message already unlocked."
+            raise "Already unlocked."
           end
           
           output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD )
@@ -278,7 +278,7 @@ module Game
         if deposit_instance != nil
           # Si ya lo ha recolectado, lanzar un error
           if ( self.collected_item_deposit_instances.include?(deposit_instance) ) 
-             raise "Deposit already collected."
+             raise "Already collected."
           end
           
           # TODO: Comprobar si está lo suficientemente cerca
