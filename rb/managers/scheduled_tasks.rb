@@ -8,7 +8,7 @@ module Game
   module Schedule
     # Clase gestora de tareas programadas.
     class TasksManager
-      
+
       # Clase gestora (rufus)
       @@scheduler = Rufus::Scheduler.new
       
@@ -41,16 +41,25 @@ module Game
     # Los métodos deben incluir el prefijo +schtsk+.
     class Tasks
       
+      # Hora por defecto de tareas programadas.
+      DEFAULT_CRON_TIME = "0 4 * * *"
+      
       # Eliminar mensajes caducados.
       # @param scheduler [Rufus::Scheduler] Gestor de tareas.
       def self.schtsk_remove_caducated_messages(scheduler)
         # Realizar todos los días, a las 04:00 am
-        scheduler.cron '0 4 * * *' do
-          
-          Game::Schedule::TasksManager.tasks_msg("Removing caducated messages (" + Game::Database::Message.clear_caducated_messages().to_s + ").")
-          
+        scheduler.cron DEFAULT_CRON_TIME do
+          Game::Schedule::TasksManager.tasks_msg("Removing caducated messages (" + Game::Database::Message.clear_caducated().to_s + ").")
         end
-        
+      end
+      
+      # Eliminar depósitos caducados.
+      # @param scheduler [Rufus::Scheduler] Gestor de tareas.
+      def self.schtsk_remove_caducated_item_deposit_instances(scheduler)
+        # Realizar todos los días, a las 04:00 am
+        scheduler.cron DEFAULT_CRON_TIME do
+          Game::Schedule::TasksManager.tasks_msg("Removing caducated item deposit instances (" + Game::Database::ItemDepositInstance.clear_caducated().to_s + ").")
+        end
       end
      
     end

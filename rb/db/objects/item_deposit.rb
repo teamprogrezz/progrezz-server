@@ -97,9 +97,9 @@ module Game
       # @param geolocation [Hash<Symbol, Float>] Posición en la que se colocará la estancia.
       # @return [Game::Database::ItemDepositInstance] Estancia creada.
       def instantiate(geolocation = {latitude: 0.0, longitude: 0.0})
-        total_uses = Random.new.rand( self.min_ammount .. self.max_ammount )
+        ammount = Random.new.rand( self.min_ammount .. self.max_ammount )
         
-        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_uses: total_uses} )
+        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, ammount: ammount} )
       end
       
     end

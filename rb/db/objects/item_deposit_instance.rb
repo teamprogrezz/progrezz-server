@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require_relative './geolocated_object'
+require_relative '../relations/user-collected_item-deposit-instance'
 
 module Game
   module Database
@@ -16,20 +17,28 @@ module Game
       include Neo4j::ActiveNode
       
       #-- --------------------------------------------------
+      #                      Constantes
+      #   -------------------------------------------------- #++
+      
+      # Duración por defecto de un depósito, especificado en días.
+      DEFAULT_DURATION = 1
+      
+      #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
       
       # Usos totales del depósito.
       #
       # @return [Integer] Usos totales del depósito.
-      property :total_uses, type: Integer, default: 0
+      property :ammount, type: Integer, default: 0
       
-      # Usos restantes del depósito.
-      #
-      # @return [Integer] Usos restantes del depósito.
-      property :uses, type: Integer, default: 0
+      # Timestamp o fecha de recolección del depósito.
+      # @return [DateTime] Fecha de creación.
+      property :created_at
       
-      # ...
+      # Duración (en días) de un depósito. Si es 0, durará eternamente.
+      # @return [Integer] Días que durará el depósito.
+      property :duration, type: Integer, default: DEFAULT_DURATION
       
       #-- --------------------------------------------------
       #                     Relaciones (DB)
@@ -39,6 +48,12 @@ module Game
       # Relación con el objeto (#Game::Database::Item). Se puede acceder con el atributo +item+.
       # @return [Game::Database::Item] Objeto contenido en el depósito.
       has_one :in, :deposit, model_class: Game::Database::ItemDeposit, origin: :instances
+      
+      # @!method collectors
+      # Relación de usuarios que han recolectado este depósito. Se puede acceder con el atributo #collectors.
+      # @return [Game::Database::RelationShips::UserFragmentMessage] 
+      has_many :in, :collectors, rel_class: Game::Database::RelationShips::UserCollected_ItemDepositInstance, model_class: Game::Database::User
+      
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -53,18 +68,49 @@ module Game
           raise "Invalid deposit."
         end
         
-        params = GenericUtils.default_params( {}, extra_params, [:total_uses, :geolocation])
+        params = GenericUtils.default_params( {}, extra_params, [:ammount, :geolocation])
         
-        deposit_instance = self.create( deposit: deposit_ref, uses: params[:total_uses], total_uses: params[:total_uses] ) do |i|
+        deposit_instance = self.create( deposit: deposit_ref, ammount: params[:ammount] ) do |i|
           i.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
         end
         
         return deposit_instance
       end
       
+      # Limpiar depósitos caducados de la base de datos.
+      # @return [Integer] Retorna el número de depósitos que han sido borrados.
+      def self.clear_caducated()
+        count = 0
+        
+        Game::Database::DatabaseManager.run_nested_transaction do |t|
+          Game::Database::ItemDepositInstance.as(:i).where("i.duration <> 0").each do |idi|
+            if idi.caducated?
+              idi.remove()
+              count += 1
+            end
+          end
+        end
+        
+        return count
+      end
+      
       #-- --------------------------------------------------
       #                      Métodos
       #   -------------------------------------------------- #++
+      
+      # Comprobar si un depósito ha caducado.
+      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
+      def caducated?
+        if duration == 0
+          return false
+        end
+        
+        if self.created_at + duration <= Time.now
+          return true
+        end
+        
+        return false
+      end
       
       # Borrar la estancia.
       def remove()

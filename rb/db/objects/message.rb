@@ -205,7 +205,7 @@ module Game
       
       # Limpiar mensajes caducados de la base de datos.
       # @return [Integer] Retorna el número de mensajes que han sido borrados.
-      def self.clear_caducated_messages()
+      def self.clear_caducated()
         count = 0
         
         Game::Database::DatabaseManager.run_nested_transaction do |t|
