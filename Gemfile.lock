@@ -67,6 +67,7 @@ GEM
       net-http-persistent
       os
       zip
+    nesty (1.0.2)
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     oauth (0.4.7)
@@ -167,6 +168,7 @@ PLATFORMS
 DEPENDENCIES
   geocoder
   neo4j
+  nesty
   oj
   oj_mimic_json
   omniauth

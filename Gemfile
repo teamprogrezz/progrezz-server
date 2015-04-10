@@ -5,6 +5,7 @@ ruby '2.2.0'
 gem 'rake'
 gem 'test-unit'
 gem 'pickup'
+gem 'nesty'
 
 # Sinatra
 gem 'sinatra'

@@ -278,9 +278,7 @@ module Game
         if deposit_instance != nil
           # Si ya lo ha recolectado y está en cooldown, lanzar un error
           # TODO: Comprobar para múltiples objetos.
-          self.collected_item_deposit_instances(:d).where(uuid: deposit_instance.uuid).pluck(:d).each_rel do |r|
-            raise "Deposit in cooldown" if r.cooldown?
-          end
+          raise "Deposit in cooldown" if self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first.cooldown?
           
           # TODO: Comprobar si está lo suficientemente cerca
           # ...
