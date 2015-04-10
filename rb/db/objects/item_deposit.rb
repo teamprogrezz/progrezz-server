@@ -42,6 +42,22 @@ module Game
       # @return [Integer] Cantidad mínima de usos o recursos en un depósito.
       property :min_ammount, type: Integer
       
+      # Cantidad de recursos mínima obtenidos por un usuario al recolectar antes de saltar el cooldown.
+      # @return [Integer] Cantidad mínima de usos o recursos recolectados.
+      property :user_min_ammount, type: Integer
+      
+      # Cantidad de recursos máxima obtenidos por un usuario al recolectar antes de saltar el cooldown.
+      # @return [Integer] Cantidad máxima de usos o recursos recolectados.
+      property :user_max_ammount, type: Integer
+      
+      # Reutilización del usuario para el depósito.
+      #
+      # Especificado en segundos. Hasta que no transcurra el tiempo, el usuario no podrá volver a usar el
+      # depósito para obtener recursos.
+      #
+      # @return [Integer] Segundos de cooldown.
+      property :user_cooldown, type: Integer
+      
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -69,9 +85,17 @@ module Game
           raise "Invalid item."
         end
         
-        params = GenericUtils.default_params( {}, extra_params, [:weight, :min_ammount, :max_ammount])
+        params = GenericUtils.default_params( {}, extra_params, [:weight, :min_ammount, :max_ammount, :user_min_ammount, :user_max_ammount, :user_cooldown])
         
-        return self.create( item: item_ref, weight: params[:weight], min_ammount: params[:min_ammount], max_ammount: params[:max_ammount] )
+        return self.create( { 
+          item: item_ref,
+          weight: params[:weight],
+          min_ammount: params[:min_ammount],
+          max_ammount: params[:max_ammount],
+          user_min_ammount: params[:user_min_ammount],
+          user_max_ammount: params[:user_max_ammount],
+          user_cooldown: params[:user_cooldown]
+        } )
       end
       
       #-- --------------------------------------------------
@@ -102,7 +126,7 @@ module Game
         
         Game::Mechanics::GeolocationManagement.snap_geolocation!(geolocation) if snap_to_road
         
-        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, ammount: ammount} )
+        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_ammount: ammount} )
       end
       
     end

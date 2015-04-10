@@ -12,9 +12,12 @@
     "quality": "Common",
     "image": "/img/game/items/mineral_iron.png",
     "deposit": {
-      "weight": 100,
-      "max_ammount": 15,
-      "min_ammount": 8
+      "weight": 75,
+      "max_ammount": 800,
+      "min_ammount": 400,
+      "user_max_ammount": 15,
+      "user_min_ammount": 10,
+      "user_cooldown": 1200
     }
   },
   {
@@ -24,9 +27,12 @@
     "quality": "Rare",
     "image": "/img/game/items/mineral_gold.png",
     "deposit": {
-      "weight": 10,
-      "max_ammount": 18,
-      "min_ammount": 6
+      "weight": 25,
+      "max_ammount": 500,
+      "min_ammount": 300,
+      "user_max_ammount": 18,
+      "user_min_ammount": 6,
+      "cooldown": 2400
     }
   }
 ]

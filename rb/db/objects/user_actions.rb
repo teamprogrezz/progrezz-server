@@ -276,15 +276,17 @@ module Game
         Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, action_name)
         
         if deposit_instance != nil
-          # Si ya lo ha recolectado, lanzar un error
-          if ( self.collected_item_deposit_instances.include?(deposit_instance) ) 
-             raise "Already collected."
+          # Si ya lo ha recolectado y está en cooldown, lanzar un error
+          # TODO: Comprobar para múltiples objetos.
+          self.collected_item_deposit_instances(:d).where(uuid: deposit_instance.uuid).pluck(:d).each_rel do |r|
+            raise "Deposit in cooldown" if r.cooldown?
           end
           
           # TODO: Comprobar si está lo suficientemente cerca
           # ...
           
           # TODO: Añadir al inventario del usuario
+          resources = deposit_instance.collect()
           # ...
                     
           # Añadir experiencia al usuario en función de lo recolectado (calidad).

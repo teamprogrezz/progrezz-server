@@ -1,3 +1,6 @@
+# encoding: UTF-8
+
+require 'date'
 
 module Game
   module Database
@@ -39,7 +42,27 @@ module Game
         # Timestamp o fecha de recolección del depósito.
         # @return [DateTime] Fecha de creación.
         property :created_at
-
+        
+        # Tiempo de reutilización para el usuario para reusar la mina, especificado en segundos.
+        # @return [Integer] Tiempo especificado en segundos.
+        property :cooldown, type: Integer, default: 0
+        
+        # Comprobador del cooldown.
+        # @return [Boolean] Si está en cooldown, devuelve True. En caso contrario, devuelve false.
+        def cooldown?
+          return DateTime.strptime((created_at.to_time.to_i + cooldown).to_s,'%s') > DateTime.now
+        end
+        
+        # Actualizar cooldown (reusar relación).
+        # @param new_cooldown [Integer] Nuevo cooldown, especificado en segundos. Si es nil, no se actualiza.
+        def update_cooldown(new_cooldown = nil)
+          properties = {}
+          properties[:created_at] = DateTime.now
+          properties[:cooldown]   = new_cooldown if new_cooldown != nil
+          
+          self.update( properties )
+        end
+        
       end
       
     end

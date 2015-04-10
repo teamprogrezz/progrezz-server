@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'date'
+
 require_relative './geolocated_object'
 require_relative '../relations/user-collected_item-deposit-instance'
 
@@ -21,16 +23,21 @@ module Game
       #   -------------------------------------------------- #++
       
       # Duración por defecto de un depósito, especificado en días.
-      DEFAULT_DURATION = 1
+      DEFAULT_DURATION = 7
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
       
-      # Usos totales del depósito.
+      # Recursos totales del depósito.
       #
-      # @return [Integer] Usos totales del depósito.
-      property :ammount, type: Integer, default: 0
+      # @return [Integer] Recursos totales del depósito.
+      property :total_ammount, type: Integer
+      
+      # Recursos actuales del depósito.
+      #
+      # @return [Integer] Recursos actuales del depósito.
+      property :current_ammount, type: Integer
       
       # Timestamp o fecha de recolección del depósito.
       # @return [DateTime] Fecha de creación.
@@ -68,9 +75,9 @@ module Game
           raise "Invalid deposit."
         end
         
-        params = GenericUtils.default_params( {}, extra_params, [:ammount, :geolocation])
+        params = GenericUtils.default_params( {}, extra_params, [:total_ammount, :geolocation])
         
-        deposit_instance = self.create( deposit: deposit_ref, ammount: params[:ammount] ) do |i|
+        deposit_instance = self.create( deposit: deposit_ref, total_ammount: params[:total_ammount], current_ammount: params[:total_ammount] ) do |i|
           i.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
         end
         
@@ -98,16 +105,28 @@ module Game
       #                      Métodos
       #   -------------------------------------------------- #++
       
-      # Comprobar si un depósito ha caducado.
-      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
-      def caducated?
-        if duration == 0
-          return false
+      # Recoger recursos.
+      # @return [Integer] Recursos recogidos.
+      # TODO: Usar esta función.
+      def collect()
+        raise "Invalid deposit (caducated)." if caducated?
+        
+        resources = Random.new.rand(self.deposit.user_min_ammount ... self.deposit.user_max_ammount)
+        if (resources >= self.current_ammount)
+          resources = self.current_ammount
         end
         
-        if self.created_at + duration <= Time.now
-          return true
-        end
+        self.update( current_ammount: current_amount - resources )
+        
+        return resources
+      end
+      
+      # Comprobar si un depósito ha caducado (por tiempo o por falta de recursos).
+      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
+      def caducated?
+        return true  if current_ammount <= 0
+        return false if duration == 0
+        return true  if self.created_at + duration <= Time.now
         
         return false
       end
@@ -120,12 +139,22 @@ module Game
         # Borrar el nodo.
         self.destroy()
       end
-      
+
+      # Retornar objeto como hash.
+      # @param exclusion_list [Array<Symbol>] Lista de elementos a excluir.
+      # @return [Hash<Symbol, Object>] Objeto como hash.
       def to_hash(exclusion_list = [])
         output = {}
         
         output[:item]     = self.deposit.item.to_hash([]) if !exlusion_list.include? :item
-        output[:instance] = self.deposit.item.to_hash([]) if !exlusion_list.include? :item
+
+        output[:instance] = {
+          total_ammount: self.total_ammount,
+          current_ammount: self.current_ammount,
+          created_at:  self.created_at,
+          duration: self.duration,
+          remaining_seconds: duration - (self.created_at + DateTime.now).to_i
+        }
         
         return output
       end
