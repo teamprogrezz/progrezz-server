@@ -140,7 +140,7 @@ module Game
           end
 
         rescue Exception => e
-          raise "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message + "\n\t\t" + e.backtrace.to_s + "\n";
+          raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message + "\n\t\t" + e.backtrace.to_s + "\n" )
         end
 
         return user
@@ -163,7 +163,7 @@ module Game
         
         # Si no existe, error.
         if user == nil
-          raise "User with user_id " + user_id.to_s + " does not exist."
+          raise ::GenericException.new( "User with user_id " + user_id.to_s + " does not exist." )
         end
         
         return user
@@ -265,7 +265,7 @@ module Game
         end
         
         # ...
-        raise "Invalid search radius."
+        raise ::GenericException.new( "Invalid search radius." )
       end
             
       # Marcar mensaje como leído.
@@ -276,14 +276,14 @@ module Game
         
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
           if rel.status == Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
-            raise "Message locked. Must be unlocked first."
+            raise ::GenericException.new( "Message locked. Must be unlocked first." )
           end
           
           output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_READ )
         end
         
         if output == nil
-          raise "User does not own message '" + msg_uuid + "' to read."
+          raise ::GenericException.new( "User does not own message '" + msg_uuid + "' to read." )
         end
         
         return output

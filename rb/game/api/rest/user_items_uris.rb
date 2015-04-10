@@ -17,7 +17,7 @@ module Sinatra; module API ;module REST
       begin
         relation = user.collect_item_from_deposit( deposit, extra )
       rescue Exception => e
-        raise "The deposit could not be collected: " + e.message
+        raise ::GenericException.new( "The deposit could not be collected: " + e.message, e)
       end
       
       Game::API::JSONResponse.ok_response!( response, {

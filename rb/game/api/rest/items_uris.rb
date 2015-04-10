@@ -11,10 +11,10 @@ module Sinatra
           item_id = response[:request][:request][:data][:item_id]
           item = Game::Database::Item.find_by(item_id: item_id)
           
-          raise "Item not found in database." if item == nil
+          raise ::GenericException.new( "Item not found in database." ) if item == nil
           
         rescue Exception => e
-          raise "Invalid item id '" + item_id.to_s + "': " + e.message
+          raise ::GenericException.new( "Invalid item id '" + item_id.to_s + "': " + e.message, e)
         end
         
         Game::API::JSONResponse.ok_response!( response, {

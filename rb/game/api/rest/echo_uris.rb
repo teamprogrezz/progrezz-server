@@ -23,7 +23,7 @@ module Sinatra
             message: "Hello, " + name + "!"
           })
         rescue Exception => e
-          raise "Invalid request: " + e.message
+          raise ::GenericException.new( "Invalid request: " + e.message, e )
         end
       end
 
@@ -44,7 +44,7 @@ module Sinatra
           })
 
         rescue Exception => e
-          raise "Invalid request: " + e.message
+          raise ::GenericException.new( "Invalid request: " + e.message, e)
         end
 
       end

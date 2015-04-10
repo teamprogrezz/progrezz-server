@@ -39,7 +39,7 @@ module Game
         num_of_msg = random_list.count
         
         if num_of_msg == 0
-          raise "There are no replicable messages to generate."
+          raise ::GenericException.new( "There are no replicable messages to generate." )
         end
         
         offsets = {latitude: 0, longitude: 0}

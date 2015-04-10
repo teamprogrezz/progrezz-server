@@ -13,7 +13,7 @@ module Sinatra; module API ;module REST
       msg = Game::Database::Message.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
       
       if msg == nil
-        raise "Message with uuid '" + response[:request][:request][:data][:msg_uuid].to_s + "' not found."
+        raise ::GenericException.new( "Message with uuid '" + response[:request][:request][:data][:msg_uuid].to_s + "' not found.", e)
       end
       
       Game::API::JSONResponse.ok_response!( response, {
@@ -42,7 +42,7 @@ module Sinatra; module API ;module REST
       fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:frag_uuid] )
 
       if fragment == nil
-        raise "Fragment with uuid '" + response[:request][:request][:data][:frag_uuid].to_s + "' not found."
+        raise ::GenericException.new( "Fragment with uuid '" + response[:request][:request][:data][:frag_uuid].to_s + "' not found.", e)
       end
 
       Game::API::JSONResponse.ok_response!( response, {

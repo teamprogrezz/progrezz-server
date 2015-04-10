@@ -30,25 +30,25 @@ module Game
       
       # Cantidad máxima de usos o recursos de un depósito.
       #
-      # La cantidad de objetos se genera aleatoriamente entre #max_ammount y #min_ammount.
+      # La cantidad de objetos se genera aleatoriamente entre #max_amount y #min_amount.
       #
       # @return [Integer] Cantidad máxima de usos o recursos en un depósito.
-      property :max_ammount, type: Integer
+      property :max_amount, type: Integer
       
       # Cantidad mínima de usos o recursos de un depósito.
       #
-      # La cantidad de objetos se genera aleatoriamente entre #max_ammount y #min_ammount.
+      # La cantidad de objetos se genera aleatoriamente entre #max_amount y #min_amount.
       #
       # @return [Integer] Cantidad mínima de usos o recursos en un depósito.
-      property :min_ammount, type: Integer
+      property :min_amount, type: Integer
       
       # Cantidad de recursos mínima obtenidos por un usuario al recolectar antes de saltar el cooldown.
       # @return [Integer] Cantidad mínima de usos o recursos recolectados.
-      property :user_min_ammount, type: Integer
+      property :user_min_amount, type: Integer
       
       # Cantidad de recursos máxima obtenidos por un usuario al recolectar antes de saltar el cooldown.
       # @return [Integer] Cantidad máxima de usos o recursos recolectados.
-      property :user_max_ammount, type: Integer
+      property :user_max_amount, type: Integer
       
       # Reutilización del usuario para el depósito.
       #
@@ -82,18 +82,18 @@ module Game
       # @return [Game::Database::ItemDeposit] Depósito creado en la base de datos.
       def self.create_item_deposit(item_ref, extra_params)
         if item_ref == nil or !item_ref.is_a? Game::Database::Item
-          raise "Invalid item."
+          raise ::GenericException.new( "Invalid item.")
         end
         
-        params = GenericUtils.default_params( {}, extra_params, [:weight, :min_ammount, :max_ammount, :user_min_ammount, :user_max_ammount, :user_cooldown])
+        params = GenericUtils.default_params( {}, extra_params, [:weight, :min_amount, :max_amount, :user_min_amount, :user_max_amount, :user_cooldown])
         
         return self.create( { 
           item: item_ref,
           weight: params[:weight],
-          min_ammount: params[:min_ammount],
-          max_ammount: params[:max_ammount],
-          user_min_ammount: params[:user_min_ammount],
-          user_max_ammount: params[:user_max_ammount],
+          min_amount: params[:min_amount],
+          max_amount: params[:max_amount],
+          user_min_amount: params[:user_min_amount],
+          user_max_amount: params[:user_max_amount],
           user_cooldown: params[:user_cooldown]
         } )
       end
@@ -122,11 +122,11 @@ module Game
       # @param snap_to_road [Boolean] True si se desea ajustar el depósito creado a la carretera más próxima.
       # @return [Game::Database::ItemDepositInstance] Estancia creada.
       def instantiate(geolocation = {latitude: 0.0, longitude: 0.0}, snap_to_road = true)
-        ammount = Random.new.rand( self.min_ammount .. self.max_ammount )
+        amount = Random.new.rand( self.min_amount .. self.max_amount )
         
         Game::Mechanics::GeolocationManagement.snap_geolocation!(geolocation) if snap_to_road
         
-        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_ammount: ammount} )
+        return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_amount: amount} )
       end
       
     end

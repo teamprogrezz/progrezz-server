@@ -13,6 +13,8 @@ require 'logger'
 
 require 'thread'
 
+require './rb/generic_utils'
+
 if development?
   require 'sinatra/reloader'
   require 'ruby-prof'

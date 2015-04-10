@@ -86,7 +86,7 @@ module Sinatra
                   method = request[:request][:type].to_s
         
                   if method == ""
-                    raise "Invalid ws request type '" + method + "'"
+                    raise ::GenericException.new( "Invalid ws request type '" + method + "'" )
                   else
                     Methods.send( method, app, response, session )
                   end

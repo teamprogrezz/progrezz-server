@@ -139,7 +139,7 @@ module Game
 
         rescue Exception => e
           puts e.to_s
-          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
+          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s)
         end
         
         return message
@@ -163,7 +163,7 @@ module Game
 
         rescue Exception => e
           puts e.to_s
-          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
+          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s)
         end
         
         return message
@@ -191,7 +191,7 @@ module Game
       def self.author_messages(author_id)
         auth = Game::Database::User.search(author_id)
         if auth == nil
-          raise "User does not exist."
+          raise ::GenericException.new( "User does not exist." )
         end
         
         return auth.written_messages
@@ -262,7 +262,7 @@ module Game
       def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }, ignore_replicable_flag = false )
         # Comprobar replicación
         if ignore_replicable_flag != true && self.replicable == false
-          raise "Trying to generate fragments of a irreplicable message."
+          raise ::GenericException.new( "Trying to generate fragments of a irreplicable message." )
         end
         
         output = []

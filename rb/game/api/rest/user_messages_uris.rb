@@ -39,7 +39,7 @@ module Sinatra; module API ;module REST
       user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
       if user.change_message_status( response[:request][:request][:data][:msg_uuid], response[:request][:request][:data][:new_status] ) == nil
-        raise "Could not change message status."
+        raise ::GenericException.new( "Could not change message status." )
       end
       
       Game::API::JSONResponse.ok_response!( response, {
@@ -64,7 +64,7 @@ module Sinatra; module API ;module REST
       begin
         relation = user.collect_fragment( fragment, extra )
       rescue Exception => e
-        raise "The fragment could not be collected: " + e.message
+        raise ::GenericException.new( "The fragment could not be collected: " + e.message, e)
       end
       
       msg = "Fragment collected."
@@ -136,7 +136,7 @@ module Sinatra; module API ;module REST
       message  = Game::Database::Message.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
       
       if message == nil
-        raise "Unkown message."
+        raise ::GenericException.new( "Unkown message." )
       end
 
       Game::API::JSONResponse.ok_response!( response, {

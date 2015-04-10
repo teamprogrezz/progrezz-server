@@ -67,7 +67,7 @@ module Game
 
         rescue Exception => e
           puts e.to_s
-          raise "DB ERROR: Cannot create fragment " + f_index.to_s + " for the message " + message.to_s + ": \n\t" + e.message;
+          raise ::GenericException.new("DB ERROR: Cannot create fragment " + f_index.to_s + " for the message " + message.to_s + ": \n\t" + e.message);
         end
         
         return fmsg

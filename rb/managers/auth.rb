@@ -72,7 +72,7 @@ module Game
       user = Game::Database::User.search_user(user_id)
       
       if banned?(user)
-        raise "Current user '" + user_id + "' is banned until " + user.banned_until.to_s
+        raise ::GenericException.new( "Current user '" + user_id + "' is banned until " + user.banned_until.to_s )
       end
 
       if ENV['users_auth_disabled'] == "true"
@@ -84,7 +84,7 @@ module Game
             error_msg += " You are authenticated as '" + session[:user_id] + "'."
           end
           
-          raise error_msg
+          raise ::GenericException.new( error_msg )
         end
       end
       
@@ -111,7 +111,7 @@ module Game
       end
       
        if banned?(user)
-        raise "Current '" + user_id + "' is banned until " + user.banned_until.to_s
+        raise ::GenericException.new( "Current '" + user_id + "' is banned until " + user.banned_until.to_s )
       end
     end
     

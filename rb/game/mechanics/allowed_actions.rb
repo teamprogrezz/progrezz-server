@@ -27,7 +27,7 @@ module Game
           @@data = JSON.parse( File.read(DATAFILE) )
           
         rescue Exception => e
-          raise "Error reading '" + DATAFILE + "': " + e.message
+          raise ::GenericException.new( "Error reading '" + DATAFILE + "': " + e.message, e)
         end
         
         # Calcular acciones de cada usuario
@@ -47,7 +47,7 @@ module Game
       # @raise [Exception] Si no es válido, genera una excepción.
       def self.check_level(level)
         if !level.is_a? Fixnum || level < LevelingManagement.min_level || level > LevelingManagement.max_level
-          raise "Invalid level '" + level.to_s + "'."
+          raise ::GenericException.new( "Invalid level '" + level.to_s + "'.")
         end
       end
       
@@ -68,7 +68,7 @@ module Game
         check_level(level)
         
         if !@@precomputed_allowed_actions[level].keys.include? action_name
-          raise "Action '" + action_name + "' not allowed at level '" + level.to_s + "'."
+          raise ::GenericException.new( "Action '" + action_name + "' not allowed at level '" + level.to_s + "'.")
         end
         
         return nil

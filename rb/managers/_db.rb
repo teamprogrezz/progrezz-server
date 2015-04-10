@@ -34,8 +34,8 @@ module Database
   
         Neo4j::Session.open(:server_db, server_url, basic_auth: { username: uri.user, password: uri.password})
         @@transactions = []
-      rescue
-        raise "Could not connect to database."
+      rescue Exception => e
+        raise ::GenericException.new( "Could not connect to database.", e)
       end
     end
 
@@ -122,7 +122,7 @@ module Database
         end
         
       else
-        raise "Unknow export type '" + params[:export_type].to_s + "'."
+        raise ::GenericException.new( "Unknow export type '" + params[:export_type].to_s + "'." )
       end
       
     end

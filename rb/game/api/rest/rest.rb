@@ -72,14 +72,14 @@ module Sinatra
             method = request[:request][:type].to_s
   
             if method == ""
-              raise "Invalid request type '" + method + "'"
+              raise ::GenericException.new( "Invalid request type '" + method + "'")
             else
               Methods.send( method, app, response, session )
             end
             
             response[:metadata][:type] = "response"
             
-          rescue Exception => e  
+          rescue Exception => e
             # Deshacer transacción.
             tx.failure()
             

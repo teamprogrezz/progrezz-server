@@ -10,7 +10,7 @@ require 'rack/test'
 
 require_relative 'helpers'
 
-# def puts(value); raise 'you found a puts'; end
+# def puts(value); raise ::GenericException.new( 'you found a puts' ); end
 
 
 # Pruebas unitarias de la API REST.

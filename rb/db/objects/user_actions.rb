@@ -52,13 +52,13 @@ module Game
         end
         
         if content.length    < min_lenght
-          raise "Message too short (" + content.length.to_s + " < " + min_lenght.to_s + ")."
+          raise ::GenericException.new( "Message too short (" + content.length.to_s + " < " + min_lenght.to_s + ")." )
         elsif content.length > max_lenght
-          raise "Message too long (" + content.length.to_s + " > " + max_lenght.to_s + ")."
+          raise ::GenericException.new( "Message too long (" + content.length.to_s + " > " + max_lenght.to_s + ")." )
         end
         
         if params[:resource_link].to_s.length > Game::Database::Message::RESOURCE_MAX_LENGTH
-          raise "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")."
+          raise ::GenericException.new( "Resource too long (" + resource.length.to_s + " > " + Game::Database::Message::RESOURCE_MAX_LENGTH.to_s + ")." )
         end
         
         # Aumentar mensajes escritos
@@ -89,20 +89,20 @@ module Game
           
           # Si el fragmento es suyo, no recogerlo
           if (fragment_message.message.author != nil && fragment_message.message.author == self)
-            raise "User fragment."
+            raise ::GenericException.new( "User fragment." )
           end
           
           # Si ya tiene el mensaje completado, no añadir el fragmento
           #if ( self.collected_completed_messages.where(uuid: fragment_message.message.uuid).first != nil ) 
           if ( self.collected_completed_messages.include?(fragment_message.message) ) 
-             raise "Already completed."
+             raise ::GenericException.new( "Already completed." )
           end
           
           # Si ya tiene el fragmento, no volver a añadirlo
           #if ( self.collected_fragment_messages.where(uuid: fragment_message.uuid).first != nil )
           query = self.collected_fragment_messages.where(fragment_index: fragment_message.fragment_index).message.where( uuid: fragment_message.message.uuid )
           if ( query.first != nil )
-            raise "Already collected."
+            raise ::GenericException.new( "Already collected." )
           end
                     
           # Añadir experiencia al usuario
@@ -143,7 +143,7 @@ module Game
             return Game::Database::RelationShips::UserFragmentMessage.create(from_node: self, to_node: fragment_message )
           end
         else     
-          raise "Nul fragment."
+          raise ::GenericException.new( "Nul fragment." )
         end
       end
     
@@ -162,14 +162,14 @@ module Game
         
         self.collected_completed_messages.where(uuid: msg_uuid).each_with_rel do |msg, rel|
           if rel.status != Game::Database::RelationShips::UserCompletedMessage::STATUS_LOCKED
-            raise "Already unlocked."
+            raise ::GenericException.new( "Already unlocked." )
           end
           
           output = rel.change_message_status( Game::Database::RelationShips::UserCompletedMessage::STATUS_UNREAD )
         end
         
         if output == nil
-          raise "User does not own message '" + msg_uuid + "' to unlock."
+          raise ::GenericException.new( "User does not own message '" + msg_uuid + "' to unlock." )
         end
         
         # Añadir al contador
@@ -278,7 +278,8 @@ module Game
         if deposit_instance != nil
           # Si ya lo ha recolectado y está en cooldown, lanzar un error
           # TODO: Comprobar para múltiples objetos.
-          raise "Deposit in cooldown" if self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first.cooldown?
+          current_rel = self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first
+          raise ::GenericException.new( "Deposit in cooldown" ) if current_rel != nil and current_rel.cooldown?
           
           # TODO: Comprobar si está lo suficientemente cerca
           # ...
@@ -296,7 +297,7 @@ module Game
           # Marcar depósito como recolectado.
           return Game::Database::RelationShips::UserCollected_ItemDepositInstance.create(from_node: self, to_node: deposit_instance )
         else     
-          raise "Null deposit."
+          raise ::GenericException.new( "Null deposit." )
         end
       end
     end

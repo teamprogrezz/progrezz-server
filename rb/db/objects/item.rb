@@ -65,7 +65,7 @@ module Game
       
       # Cantidad máxima en el stack del jugador.
       # @return [Integer] Cantidad numérica.
-      property :max_ammount, type: Integer, default: DEFAULT_MAX_ITEM
+      property :max_amount, type: Integer, default: DEFAULT_MAX_ITEM
       
       #-- --------------------------------------------------
       #                      Relaciones (DB)
@@ -87,12 +87,12 @@ module Game
         params = GenericUtils.default_params( {
           name: "",
           description: "",
-          max_ammount: DEFAULT_MAX_ITEM,
+          max_amount: DEFAULT_MAX_ITEM,
           quality: DEFAULT_QUALITY,
           image: DEFAULT_IMAGE
         }, extra_params, [:item_id])
         
-        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_ammount: params[:max_ammount], quality: params[:quality], image: params[:image] )
+        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], image: params[:image] )
       end
       
       #-- --------------------------------------------------
@@ -107,10 +107,10 @@ module Game
           description: self.description,
           image: self.image,
           quality: self.quality,
-          max_ammount: self.max_ammount
+          max_amount: self.max_amount
         }, extra_params, [:item_id])
         
-        self.update( name: params[:name], description: params[:description], max_ammount: params[:max_ammount], quality: params[:quality], image: params[:image] )
+        self.update( name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], image: params[:image] )
       end
       
       # Crear un depósito del objeto.
@@ -141,7 +141,7 @@ module Game
           name: self.name,
           description: self.description,
           image: self.image,
-          max_ammount: self.max_ammount
+          max_amount: self.max_amount
         }
       end
     end

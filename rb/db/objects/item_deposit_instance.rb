@@ -32,12 +32,12 @@ module Game
       # Recursos totales del depósito.
       #
       # @return [Integer] Recursos totales del depósito.
-      property :total_ammount, type: Integer
+      property :total_amount, type: Integer
       
       # Recursos actuales del depósito.
       #
       # @return [Integer] Recursos actuales del depósito.
-      property :current_ammount, type: Integer
+      property :current_amount, type: Integer
       
       # Timestamp o fecha de recolección del depósito.
       # @return [DateTime] Fecha de creación.
@@ -72,12 +72,12 @@ module Game
       # @return [Game::Database::ItemDeposit] Depósito creado en la base de datos.
       def self.create_item_deposit_instance(deposit_ref, extra_params)
         if deposit_ref == nil or !deposit_ref.is_a? Game::Database::ItemDeposit
-          raise "Invalid deposit."
+          raise ::GenericException.new("Invalid deposit.")
         end
         
-        params = GenericUtils.default_params( {}, extra_params, [:total_ammount, :geolocation])
+        params = GenericUtils.default_params( {}, extra_params, [:total_amount, :geolocation])
         
-        deposit_instance = self.create( deposit: deposit_ref, total_ammount: params[:total_ammount], current_ammount: params[:total_ammount] ) do |i|
+        deposit_instance = self.create( deposit: deposit_ref, total_amount: params[:total_amount], current_amount: params[:total_amount] ) do |i|
           i.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
         end
         
@@ -109,14 +109,14 @@ module Game
       # @return [Integer] Recursos recogidos.
       # TODO: Usar esta función.
       def collect()
-        raise "Invalid deposit (caducated)." if caducated?
+        raise ::GenericException.new("Invalid deposit (caducated).") if caducated?
         
-        resources = Random.new.rand(self.deposit.user_min_ammount ... self.deposit.user_max_ammount)
-        if (resources >= self.current_ammount)
-          resources = self.current_ammount
+        resources = Random.new.rand(self.deposit.user_min_amount ... self.deposit.user_max_amount)
+        if (resources >= self.current_amount)
+          resources = self.current_amount
         end
         
-        self.update( current_ammount: current_amount - resources )
+        self.update( current_amount: self.current_amount - resources )
         
         return resources
       end
@@ -124,7 +124,7 @@ module Game
       # Comprobar si un depósito ha caducado (por tiempo o por falta de recursos).
       # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
       def caducated?
-        return true  if current_ammount <= 0
+        return true  if current_amount <= 0
         return false if duration == 0
         return true  if self.created_at + duration <= Time.now
         
@@ -149,8 +149,8 @@ module Game
         output[:item]     = self.deposit.item.to_hash([]) if !exlusion_list.include? :item
 
         output[:instance] = {
-          total_ammount: self.total_ammount,
-          current_ammount: self.current_ammount,
+          total_amount: self.total_amount,
+          current_amount: self.current_amount,
           created_at:  self.created_at,
           duration: self.duration,
           remaining_seconds: duration - (self.created_at + DateTime.now).to_i

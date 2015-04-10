@@ -24,7 +24,7 @@ module Game
           end
           
         rescue Exception => e
-          raise "Error reading '" + LEVELING_FILE + "': " + e.message
+          raise ::GenericException.new( "Error reading '" + LEVELING_FILE + "': " + e.message, e)
         end
       end
       
@@ -55,7 +55,7 @@ module Game
       def self.gain_exp(user, action_str)
         # Gestión de errores
         if user == nil || user.level_profile == nil
-          raise "Invalid user."
+          raise ::GenericException.new( "Invalid user." )
         end
         
         # Ganar experiencia
@@ -73,7 +73,7 @@ module Game
         # Recoger cantidad de experiencia por la acción.
         action_exp = @@leveling_data["exp"]["exp_per_action"][action_str]
         if action_exp == nil
-          raise "Invalid action: there is no exp related to '" + action_str + "'"
+          raise ::GenericException.new( "Invalid action: there is no exp related to '" + action_str + "'" )
         end
         
         # Añadir al usuario la experiencia actual.

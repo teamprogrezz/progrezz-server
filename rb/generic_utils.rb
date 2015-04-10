@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'open3'
+require 'nesty'
 
 # Clase de utilidades genéricas.
 class GenericUtils
@@ -88,7 +89,7 @@ class GenericUtils
     keys = user_params.keys
     for r in required_params
       if !keys.include? r
-        raise "Parameter '" + r.to_s + "' (not provided) is required"
+        raise ::GenericException.new( "Parameter '" + r.to_s + "' (not provided) is required" )
       end
     end
     
@@ -105,4 +106,9 @@ class ::Hash
     merger = proc { |key, v1, v2| Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
     self.merge(second, &merger)
   end
+end
+
+# Clase de excepción personalizada.
+class GenericException < StandardError
+  include ::Nesty::NestedError
 end

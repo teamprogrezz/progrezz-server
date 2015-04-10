@@ -32,7 +32,7 @@ module Game
           @@items = JSON.parse( File.read(DATAFILE) )
           GenericUtils.symbolize_keys_deep!(@@items)
         rescue Exception => e
-          raise "Error while parsing item list: " + e.message
+          raise ::GenericException.new( "Error while parsing item list: " + e.message, e)
         end
         
         # Para cada objeto
@@ -78,7 +78,7 @@ module Game
         # Preparar lista de objetos (referencias)
         @@deposit_list = {}
         Game::Database::ItemDeposit.all.each { |id| @@deposit_list[id.item.item_id] = id }
-        raise "There are no deposits in the database to intantiate." if @@deposit_list.empty?
+        raise ::GenericException.new( "There are no deposits in the database to intantiate.") if @@deposit_list.empty?
 
       end
       
