@@ -64,6 +64,11 @@
     <div id="content"><div id='filecontents'>
 <h1 id="label-Servidor+proyecto+PROGREZZ">Servidor proyecto PROGREZZ</h1>
 
+<p><a href="LICENSE.txt"><img
+src="https://img.shields.io/badge/license-MIT-blue.svg"></a> <a
+href="https://travis-ci.org/teamprogrezz/progrezz-server"><img
+src="https://travis-ci.org/teamprogrezz/progrezz-server.svg"></a></p>
+
 <h2 id="label-1.+Introducci-C3-B3n">1. Introducción</h2>
 
 <p>El servidor de Progrezz permite centralizar y procesar todos los datos
@@ -164,7 +169,49 @@ servidor con el siguiente comando, desde la carpeta raíz del proyecto:</p>
 
 <pre class="code ruby"><code class="ruby">$ rake doc</code></pre>
 
-<p>Para más información, mire el contenido del fichero <code>rakefile</code>.</p>
+<p>Para utilizar la consola interactiva de <em>pry</em>, se debe definir la
+variable de entorno <code>progrezz_interactive_shell</code> a
+<code>true</code>.</p>
+
+<p>Se activará automáticamente cuando se ejecute el proyecto en modo
+<em>development</em>, y se ejecutará de manera asíncrona con respecto a la
+aplicación principal, por lo que no bloqueará el acceso a los sitios web.</p>
+
+<p>Un ejemplo de ejecución podría ser el siguiente:</p>
+
+<pre class="code ruby"><code class="ruby">Thin web server (v1.6.3 codename Protein Powder)
+Maximum connections set to 1024
+Listening on localhost:9292, CTRL+C to stop
+
+From: /home/daniel/Dev/Proyectos/Progrezz/progrezz-server/main.rb @ line 131 :
+
+    126: 
+    127: # Ejecutar una terminal (si procede)
+    128: if development? &amp;&amp; ENV[&#39;progrezz_interactive_shell&#39;] == &quot;true&quot;
+    129: 
+    130:   Thread.new do |t|
+ =&gt; 131:     binding.pry
+    132:     exit()
+    133:   end
+    134: end
+    135: 
+
+[1] pry(main)&gt; Game::Database::User.all.each {|u| puts u.alias }
+Wikiti
+... 
+=&gt; [ ... ]
+</code></pre>
+
+<p>Para cerrar la terminar y la aplicación, basta con ejecutar el comando
+<code>exit</code>:</p>
+
+<pre class="code ruby"><code class="ruby">... 
+[2] pry(main)&gt; exit()
+--------------------------------------
+**        Forced saving DB          **
+--------------------------------------
+Progrezz server ended. Crowd applause.
+</code></pre>
 
 <h2 id="label-5.+Contacto">5. Contacto</h2>
 
@@ -180,7 +227,7 @@ href="mailto:proyecto.progrezz@gmail.com">proyecto.progrezz@gmail.com</a></p>
 </div></div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:04 2015 by
+  Generated on Fri Apr 10 10:43:46 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

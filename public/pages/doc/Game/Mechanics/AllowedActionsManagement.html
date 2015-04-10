@@ -404,18 +404,18 @@ se piden).</p>
       <pre class="lines">
 
 
-65
-66
 67
 68
 69
 70
 71
 72
-73</pre>
+73
+74
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_action_allowed?'>action_allowed?</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_action_name'>action_name</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
@@ -493,14 +493,14 @@ se piden).</p>
       <pre class="lines">
 
 
-78
-79
 80
 81
-82</pre>
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_action_params_by_level'>action_params_by_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_action_name'>action_name</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
@@ -576,14 +576,14 @@ se piden).</p>
       <pre class="lines">
 
 
-46
-47
 48
 49
-50</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Fixnum</span> <span class='op'>||</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>&lt;</span> <span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span> <span class='op'>||</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>&gt;</span> <span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span>
@@ -659,14 +659,14 @@ se piden).</p>
       <pre class="lines">
 
 
-55
-56
 57
 58
-59</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
@@ -704,8 +704,6 @@ se piden).</p>
       <pre class="lines">
 
 
-23
-24
 25
 26
 27
@@ -722,10 +720,12 @@ se piden).</p>
 38
 39
 40
-41</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -756,7 +756,7 @@ se piden).</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:07 2015 by
+  Generated on Fri Apr 10 10:43:50 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

@@ -99,7 +99,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">rb/db/objects/message.rb<span class="defines">,<br />
-  rb/db/objects/user.rb,<br /> rb/db/objects/message_fragment.rb,<br /> rb/db/relations/user-completed_message.rb</span>
+  rb/db/objects/user.rb,<br /> rb/db/objects/user_actions.rb,<br /> rb/db/objects/message_fragment.rb,<br /> rb/db/relations/user-completed_message.rb</span>
 </dd>
   
 </dl>
@@ -240,7 +240,7 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#clear_caducated_messages-class_method" title="clear_caducated_messages (class method)">+ (Integer) <strong>clear_caducated_messages</strong> </a>
+      <a href="#clear_caducated-class_method" title="clear_caducated (class method)">+ (Integer) <strong>clear_caducated</strong> </a>
     
 
     
@@ -1055,9 +1055,9 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="clear_caducated_messages-class_method">
+  <h3 class="signature " id="clear_caducated-class_method">
   
-    + (<tt>Integer</tt>) <strong>clear_caducated_messages</strong> 
+    + (<tt>Integer</tt>) <strong>clear_caducated</strong> 
   
 
   
@@ -1122,7 +1122,7 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 208</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clear_caducated_messages'>clear_caducated_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clear_caducated'>clear_caducated</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='int'>0</span>
   
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span>
@@ -3133,7 +3133,7 @@ con el atributo #owners.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:05 2015 by
+  Generated on Fri Apr 10 10:43:47 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

@@ -322,9 +322,7 @@ fragmentos.</p>
 62
 63
 64
-65
-66
-67</pre>
+65</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/mechanics/messages.rb', line 22</span>
@@ -335,16 +333,14 @@ fragmentos.</p>
   
   <span class='comment'># Fragmentos cercanos al usuario
 </span>  <span class='id identifier rubyid_fragment_count'>fragment_count</span> <span class='op'>=</span> <span class='id identifier rubyid_system_fragments'>system_fragments</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
-  
-  <span class='comment'># Fragmentos a generar
-</span>  <span class='id identifier rubyid_max_fragments'>max_fragments</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span> <span class='op'>*</span> <span class='const'>FRAGMENT_REPLICATION_PER_RADIUS_KM</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span>
-  
-  <span class='comment'>#puts &quot;&quot; + fragment_count.to_s + &quot;/&quot; + FRAGMENT_MIN_COUNT.to_s + &quot;? -&gt; &quot; + max_fragments.to_s
-</span>  
+
   <span class='comment'># Salir si ya hay suficientes fragmentos generados.
 </span>  <span class='kw'>if</span> <span class='id identifier rubyid_fragment_count'>fragment_count</span> <span class='op'>&gt;=</span> <span class='const'>FRAGMENT_MIN_COUNT</span>
     <span class='kw'>return</span>
   <span class='kw'>end</span>
+  
+  <span class='comment'># Fragmentos a generar
+</span>  <span class='id identifier rubyid_max_fragments'>max_fragments</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span> <span class='op'>*</span> <span class='const'>FRAGMENT_REPLICATION_PER_RADIUS_KM</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span>
   
   <span class='id identifier rubyid_random_generator'>random_generator</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_random_list'>random_list</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_unauthored_replicable_messages'>unauthored_replicable_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -385,7 +381,7 @@ fragmentos.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:06 2015 by
+  Generated on Fri Apr 10 10:43:49 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
