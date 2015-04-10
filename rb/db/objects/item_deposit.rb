@@ -122,7 +122,7 @@ module Game
       # @param snap_to_road [Boolean] True si se desea ajustar el depósito creado a la carretera más próxima.
       # @return [Game::Database::ItemDepositInstance] Estancia creada.
       def instantiate(geolocation = {latitude: 0.0, longitude: 0.0}, snap_to_road = true)
-        amount = Random.new.rand( self.min_amount .. self.max_amount )
+        amount = Random.new.rand(self.min_amount..self.max_amount)
         
         Game::Mechanics::GeolocationManagement.snap_geolocation!(geolocation) if snap_to_road
         

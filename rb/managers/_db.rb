@@ -179,7 +179,7 @@ module Database
     def self.stop_all_transactions()
       @@transactions.reverse_each do |tx|
         tx.failure()
-        tx.stop()
+        tx.close()
       end
       
       @@transactions = []

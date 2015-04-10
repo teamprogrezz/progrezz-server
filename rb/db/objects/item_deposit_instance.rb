@@ -124,9 +124,9 @@ module Game
       # Comprobar si un depósito ha caducado (por tiempo o por falta de recursos).
       # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
       def caducated?
-        return true  if current_amount <= 0
-        return false if duration == 0
-        return true  if self.created_at + duration <= Time.now
+        return true  if self.current_amount <= 0
+        return false if self.duration == 0
+        return true  if self.created_at + self.duration <= DateTime.now
         
         return false
       end

@@ -268,36 +268,42 @@ module Game
       #
       # @return [Game::Database::RelationShips::UserCollected_ItemDepositInstance] Si es posible recolectar el depósito, se añade a la lista de depósitos recolectados por el usuario. En cualquier otro caso, generará excepciones.
       def collect_item_from_deposit(deposit_instance, out = {})
+        raise ::GenericException.new("Null deposit.") if deposit_instance == nil
+        
         # Nótese que se añade la calidad del objeto como parte de la acción. Esto se hace para
         # diferenciar claramente unas acciones de otras.
         action_name = (__callee__).to_s + "_" + deposit_instance.deposit.item.quality
         
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, action_name)
+
+        # Si ya lo ha recolectado y está en cooldown, lanzar un error
+        # TODO: Comprobar para múltiples objetos.
+        current_rel = self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first
+        raise ::GenericException.new( "Deposit in cooldown." ) if current_rel != nil and current_rel.cooldown?
         
-        if deposit_instance != nil
-          # Si ya lo ha recolectado y está en cooldown, lanzar un error
-          # TODO: Comprobar para múltiples objetos.
-          current_rel = self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first
-          raise ::GenericException.new( "Deposit in cooldown" ) if current_rel != nil and current_rel.cooldown?
-          
-          # TODO: Comprobar si está lo suficientemente cerca
-          # ...
-          
-          # TODO: Añadir al inventario del usuario
-          resources = deposit_instance.collect()
-          # ...
-                    
-          # Añadir experiencia al usuario en función de lo recolectado (calidad).
-          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, action_name)
-          
-          # Añadir al contador
-          self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
-          
-          # Marcar depósito como recolectado.
-          return Game::Database::RelationShips::UserCollected_ItemDepositInstance.create(from_node: self, to_node: deposit_instance )
-        else     
-          raise ::GenericException.new( "Null deposit." )
+        # TODO: Comprobar si está lo suficientemente cerca
+        # ...
+        
+        # TODO: Añadir al inventario del usuario
+        resources = deposit_instance.collect()
+        # ...
+                  
+        # Añadir experiencia al usuario en función de lo recolectado (calidad).
+        out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, action_name)
+        
+        # Añadir al contador
+        self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
+        
+        # TODO: Cooldown en función de su nivel
+        cooldown = deposit_instance.deposit.user_cooldown
+        
+        # Marcar depósito como recolectado.
+        if current_rel != nil
+          current_rel.update_cooldown( cooldown )
+          return current_rel
+        else
+          return Game::Database::RelationShips::UserCollected_ItemDepositInstance.create(from_node: self, to_node: deposit_instance, cooldown: cooldown )
         end
       end
     end
