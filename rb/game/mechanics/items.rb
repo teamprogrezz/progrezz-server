@@ -9,10 +9,10 @@ module Game
     # los objetos del juego (recursos, básicamente).
     class ItemsManagement
       # Cantidad de fragmentos a generar por kilómetro cuadrado
-      DEPOSIT_REPLICATION_PER_RADIUS_KM = 5
+      DEPOSIT_REPLICATION_PER_RADIUS_KM = 4
 
       # Número mínimo de depósitos en la zona para empezar a generar más.
-      DEPOSIT_MIN_COUNT = 3
+      DEPOSIT_MIN_COUNT = 2
       
       # Datos referentes a este gestor.
       DATAFILE = "data/items.json"
@@ -86,12 +86,16 @@ module Game
       # @param user [Game::Database::User] Referencia a un usuario.
       # @param deposits [Hash<Symbol, Object>] Depósitos cercanos a +user+.
       # @return [Integer] Número de depósitos generados.
-      def self.generate_nearby_deposits(user, deposits) 
+      def self.generate_nearby_deposits(user, deposits_output)
+        require 'ruby-prof'
+
+        RubyProf.start
+
         # El radio se obtiene directamente del usuario
         radius = user.get_current_search_radius(:deposits)
         
         # Depósitos cercanos al jugador
-        deposits_count = deposits.length
+        deposits_count = deposits_output.length
         
         # Salir si ya hay suficientes depósitos.
         if deposits_count >= DEPOSIT_MIN_COUNT
@@ -120,15 +124,20 @@ module Game
             random_geolocation[:latitude]  = user_geo[:latitude] + Progrezz::Geolocation.distance_to_latitude(  radius, :km )
             random_geolocation[:longitude] = user_geo[:longitude] + Progrezz::Geolocation.distance_to_longitude( radius, :km )
             
-            # Elegir un depósito aleatoriamente según su peso
-            deposit = @@deposit_list[deposit_picker.pick]
+            # Elegir un depósito aleatoriamente según su peso y replicarlo
+            new_instance = @@deposit_list[deposit_picker.pick].instantiate( random_geolocation )
             
-            # Replicar el depósito
-            deposit.instantiate( random_geolocation )
+            # Añadir a la salida
+            deposits_output[new_instance.uuid] = new_instance
             
             # Incrementar número de depósitos generados
             deposits_count += 1
           end
+        end
+        
+        result = RubyProf.stop
+        File.open "tmp/profile-graph.html", 'w' do |file|
+          RubyProf::CallStackPrinter.new(result).print(file)
         end
         
         return deposits_count

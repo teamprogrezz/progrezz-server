@@ -192,8 +192,6 @@ module Game
         
         # El radio dependerá del nivel del usuario.
         radius = self.get_current_search_radius(:fragments)
-        method = DEFAULT_SEARCH_METHOD
-        
         user_geo = geolocation
 
         # Resultado
@@ -202,57 +200,54 @@ module Game
           system_fragments: {}
         }
         
-        # Ejecutar de una manera o de otra en función del método.
-        case method
-        when "progrezz"
-          Game::Database::MessageFragment.each do |fragment|
-            frag_geo = fragment.geolocation
+        user_geo = user_geo.values
+        
+        lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+        lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+        
+        fragments = Game::Database::MessageFragment.query_as(:mf)
+          .where("mf.latitude  > {l1} and mf.latitude  < {l2} and mf.longitude > {l3} and mf.longitude < {l4}")
+          .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:mf)
+           
+        fragments.each do |fragment|
+          sym = :system_fragments
+          sym = :user_fragments if fragment.message.author != nil
             
-            if Progrezz::Geolocation.distance(user_geo, frag_geo, :km) <= radius
-              sym = :system_fragments
-              sym = :user_fragments if fragment.message.author != nil
-              
-              output[sym][ fragment.uuid ] = fragment.to_hash
-            end
-          end
-          
-        when "geocoder"
-          user_geo = user_geo.values
-          
-          Game::Database::MessageFragment.each do |fragment|
-            frag_geo = fragment.geolocation.values
-
-            if Geocoder::Calculations.distance_between(user_geo, frag_geo, {:units => :km}) <= radius
-              sym = :system_fragments
-              sym = :user_fragments if fragment.message.author != nil
-              
-              output[sym][ fragment.uuid ] = fragment.to_hash
-            end
-          end
-          
-        when "neo4j"
-          user_geo = user_geo.values
-          
-          lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
-          lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
-          
-          fragments = Game::Database::MessageFragment.query_as(:mf)
-            .where("mf.latitude  > {l1} and mf.latitude  < {l2} and mf.longitude > {l3} and mf.longitude < {l4}")
-            .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:mf)
-             
-          fragments.each do |fragment|
-            sym = :system_fragments
-            sym = :user_fragments if fragment.message.author != nil
-              
-            output[sym][ fragment.uuid ] = fragment.to_hash
-          end
-          
+          output[sym][ fragment.uuid ] = fragment.to_hash
         end
       
         # Eliminar mensajes cuyo autor sea el que realizó la petición
         if ignore_user_written_messages == true
           output[:system_fragments].delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
           output[:user_fragments].delete_if { |key, fragment| fragment[:message][:author][:author_id] == self.user_id }
+        end
+        
+        return output
+      end
+      
+      # Buscar depósitos cercanos a un usuario.
+      # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
+      def search_nearby_deposits()
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        
+        # El radio dependerá del nivel del usuario.
+        radius = self.get_current_search_radius(:deposits)
+
+        # Resultado
+        output = { }
+        
+        user_geo = geolocation.values
+        
+        lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+        lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+        
+        deposits = Game::Database::ItemDepositInstance.query_as(:id)
+          .where("id.latitude  > {l1} and id.latitude  < {l2} and id.longitude > {l3} and id.longitude < {l4}")
+          .params(l1: (user_geo[0] - lat), l2: (user_geo[0] + lat), l3: (user_geo[1] - lon), l4: (user_geo[1] + lon)).pluck(:id)
+        
+        deposits.each do |d|
+          output[d.uuid] = d
         end
         
         return output

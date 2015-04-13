@@ -126,7 +126,7 @@ module Game
       def caducated?
         return true  if self.current_amount <= 0
         return false if self.duration == 0
-        return true  if self.created_at + self.duration <= DateTime.now
+        return true  if DateTime.now >= self.created_at + self.duration
         
         return false
       end
@@ -143,18 +143,24 @@ module Game
       # Retornar objeto como hash.
       # @param exclusion_list [Array<Symbol>] Lista de elementos a excluir.
       # @return [Hash<Symbol, Object>] Objeto como hash.
-      def to_hash(exclusion_list = [])
+      def to_hash(exclusion_list = [], user_rel = nil)
         output = {}
         
-        output[:item]     = self.deposit.item.to_hash([]) if !exlusion_list.include? :item
+        output[:item]     = self.deposit.item.to_hash() unless exclusion_list.include? :item
 
         output[:instance] = {
           total_amount: self.total_amount,
           current_amount: self.current_amount,
           created_at:  self.created_at,
           duration: self.duration,
-          remaining_seconds: duration - (self.created_at + DateTime.now).to_i
+          remaining_seconds: duration - (DateTime.now - self.created_at).to_i
         }
+        
+        if user_rel == nil
+          output[:user] = { in_cooldown: false }
+        else
+          output[:user] = user_rel.to_hash
+        end
         
         return output
       end

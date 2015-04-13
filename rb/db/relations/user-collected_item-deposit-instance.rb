@@ -63,6 +63,18 @@ module Game
           self.update( properties )
         end
         
+        # Retornar objeto como hash.
+        # @param exclusion_list [Array<Symbol>] Lista de elementos a excluir.
+        # @return [Hash<Symbol, Object>] Objeto como hash.
+        def to_hash(exclusion_list = [])
+          return {
+            in_cooldown:       (self.cooldown?) ? true : false,
+            start:             self.created_at.to_i,
+            cooldown:          self.cooldown,
+            remaining_seconds: self.cooldown - (DateTime.now - self.created_at).to_i
+          }
+        end
+        
       end
       
     end

@@ -26,8 +26,13 @@
       "duration": "Speified in days."
     },
     
-    "collect_item_from_deposit_Common": {
-      "_desc": "Collect a common item from a deposit."
+    "collect_item_from_deposit_<q>": {
+      "_desc": "Collect an item with <q> quality from a deposit."
+    },
+    
+    "search_nearby_deposits": {
+      "_desc": "Search nearby items's deposits.",
+      "radius": "Radius to search nearby deposits."
     }
   },
   
@@ -43,12 +48,12 @@
         "longitude": 0.0008983204952678041
       }
     },
-    "unlock_message": true
-  },
-  "1": {
     "search_nearby_deposits": {
       "radius": 0.8
     },
+    "unlock_message": true
+  },
+  "1": {
     "collect_item_from_deposit_Common": {}
   },
   "2": {
@@ -61,6 +66,9 @@
         "latitude":  0.0007210644294114238,
         "longitude": 0.0007186563962142432
       }
+    },
+    "search_nearby_deposits": {
+      "radius": 1.0
     }
   },
   "3": {
@@ -69,9 +77,6 @@
       "min_length": 5,
       "max_length": 80,
       "allow_resources": false
-    },
-    "search_nearby_deposits": {
-      "radius": 1.1
     },
     "collect_item_from_deposit_Rare": {}
   },
@@ -85,15 +90,15 @@
         "latitude":  0.0005407983220585678,
         "longitude": 0.0005389922971606824
       }
+    },
+    "search_nearby_deposits": {
+      "radius": 1.3
     }
   },
   "5": {
     "write_message": {
       "duration": 14,
       "max_length": 140
-    },
-    "search_nearby_deposits": {
-      "radius": 1.6
     },
     "collect_item_from_deposit_Epic": {}
   },
@@ -107,6 +112,9 @@
         "latitude":  0.00036053221470571193,
         "longitude": 0.00035932819810712163
       }
+    },
+    "search_nearby_deposits": {
+      "radius": 1.7
     }
   },
   "7": {
@@ -126,6 +134,9 @@
         "latitude":  0.0002703991610292839,
         "longitude": 0.0002694961485803412
       }
+    },
+    "search_nearby_deposits": {
+      "radius": 2.0
     }
   }
 }

@@ -269,17 +269,15 @@ class RESTTest < Test::Unit::TestCase
     @request[:request][:type] = "user_collect_item_from_deposit"
     @request[:request][:data] = { user_id: @users[0].user_id, deposit_uuid: @deposit_instances[0].uuid  }
     rest_request()
-    puts @response
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:message], "Deposit collected."
     
     # Intentar recolectar de nuevo (error)
     rest_request()
-    puts @response
     
     assert_equal @response[:response][:status], "error"
-    assert_equal @response[:response][:message], "The deposit could not be collected: Already collected."
+    assert_equal @response[:response][:message], "The deposit could not be collected: Deposit in cooldown."
 
   end
   

@@ -148,9 +148,9 @@ module REST
         # messages[3].remove
         
         # Generar depósitos cercanos
-        puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
-          Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
-        end).to_s
+        #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
+        #  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
+        #end).to_s
         
         # Recolectarla
         #exp = {}

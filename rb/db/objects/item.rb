@@ -135,14 +135,16 @@ module Game
       # Transformar objeto a un hash
       # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado (...).
       # @return [Hash<Symbol, Object>] Objeto como hash.
-      def to_hash(exclusion_list = [])
-        return {
-          item_id: self.item_id,
-          name: self.name,
-          description: self.description,
-          image: self.image,
-          max_amount: self.max_amount
-        }
+      def to_hash(exclusion_list = [:description, :max_ammount])
+        output = {}
+        
+        output[:item_id]     = self.item_id      if !exclusion_list.include? :item_id
+        output[:name]        = self.name         if !exclusion_list.include? :name
+        output[:description] = self.description  if !exclusion_list.include? :description
+        output[:image]       = self.image        if !exclusion_list.include? :image
+        output[:max_amount]  = self.max_amount   if !exclusion_list.include? :max_amount
+        
+        return output
       end
     end
   end
