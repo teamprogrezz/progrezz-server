@@ -281,6 +281,36 @@ class RESTTest < Test::Unit::TestCase
 
   end
   
+  # Probar "user_get_nearby_item_deposits"
+  def test_user_get_nearby_item_deposits
+    authenticate()
+    
+    # Recoger depósitos cercanos
+    @request[:request][:type] = "user_get_nearby_item_deposits"
+    @request[:request][:data] = { user_id: @users[0].user_id  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:deposits].count, 8
+    
+    # Recoger depósito
+    @request[:request][:type] = "user_collect_item_from_deposit"
+    @request[:request][:data] = { user_id: @users[0].user_id, deposit_uuid: @deposit_instances[0].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Deposit collected."
+    
+    # Comprobar que está en cooldown
+    @request[:request][:type] = "user_get_nearby_item_deposits"
+    @request[:request][:data] = { user_id: @users[0].user_id  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert @response[:response][:data][:deposits][@deposit_instances[0].uuid.to_sym][:user][:in_cooldown]
+
+  end
+  
   # ---------------------------
   #         Messages
   # ---------------------------
