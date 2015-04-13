@@ -106,6 +106,11 @@ class ::Hash
     merger = proc { |key, v1, v2| Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
     self.merge(second, &merger)
   end
+  
+  # Clone current hash.
+  def deep_clone()
+    return Marshal.load(Marshal.dump(self))
+  end
 end
 
 # Clase de excepción personalizada.

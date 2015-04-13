@@ -155,6 +155,7 @@ module Game
       def to_hash(exclusion_list = [], user_rel = nil)
         output = {}
         
+        # TODO: Acomodar para el cliente.
         output[:item_id]     = self.item_id_shortcut unless exclusion_list.include? :item_id
 
         output[:instance] = {

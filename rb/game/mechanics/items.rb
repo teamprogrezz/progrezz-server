@@ -79,7 +79,16 @@ module Game
         @@deposit_list = {}
         Game::Database::ItemDeposit.all.each { |id| @@deposit_list[id.item.item_id] = id }
         raise ::GenericException.new( "There are no deposits in the database to intantiate.") if @@deposit_list.empty?
-
+        
+        # Preparar lista de objetos (acceso rápido)
+        @@items = Hash[@@items.map { |i| [i[:item_id], i ] } ]
+      end
+      
+      # Getter de un objeto (más rápido que buscarlo en la base de datos).
+      # @param item_id [String] Identificador del objeto.
+      # @return [Hash, nil] Información del objeto. Si no encuentra nada, retornará +nil+.
+      def self.find_item(item_id)
+        return @@items[item_id].deep_clone
       end
       
       # Generar depósitos cercanos al usuario.
