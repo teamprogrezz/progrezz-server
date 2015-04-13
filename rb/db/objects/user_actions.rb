@@ -273,7 +273,6 @@ module Game
         Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, action_name)
 
         # Si ya lo ha recolectado y está en cooldown, lanzar un error
-        # TODO: Comprobar para múltiples objetos.
         current_rel = self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first
         raise ::GenericException.new( "Deposit in cooldown." ) if current_rel != nil and current_rel.cooldown?
         

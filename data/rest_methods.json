@@ -68,6 +68,10 @@
       {
         "name": "Collect an item's deposit.",
         "example": {"_comment":"Collect an instance of an item's deposit. It may only be collect once.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_collect_item_from_deposit","data":{"user_id":"yourmail@example.com","deposit_uuid":"Deposit uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"}}}
+      },
+      {
+        "name": "Get nearby item's deposit.",
+        "example": {"_comment":"Use this method to search the nearby deposits for user <user_id>. ","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_nearby_item_deposits","data":{"user_id":"yourmail@example.com"}}}
       }
     ]
   ],

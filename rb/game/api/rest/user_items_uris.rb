@@ -35,8 +35,7 @@ module Sinatra; module API ;module REST
       output = user.search_nearby_deposits()
 
       # Añadir nuevos depósitos (si fuese necesario)
-      puts "Tiempo - " + (GenericUtils.timer {Game::Mechanics::ItemsManagement.generate_nearby_deposits(user, output)}).to_s
-      
+      Game::Mechanics::ItemsManagement.generate_nearby_deposits(user, output)
       
       # Eliminar mensajes caducados
       output.delete_if { |k, v| v.caducated? }

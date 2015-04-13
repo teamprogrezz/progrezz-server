@@ -87,10 +87,6 @@ module Game
       # @param deposits [Hash<Symbol, Object>] Depósitos cercanos a +user+.
       # @return [Integer] Número de depósitos generados.
       def self.generate_nearby_deposits(user, deposits_output)
-        require 'ruby-prof'
-
-        RubyProf.start
-
         # El radio se obtiene directamente del usuario
         radius = user.get_current_search_radius(:deposits)
         
@@ -106,8 +102,7 @@ module Game
         max_deposits = (radius * DEPOSIT_REPLICATION_PER_RADIUS_KM).round
         
         # Preparar selector de objetos según su peso.
-        ponderation = {}
-        @@deposit_list.each { |key, value| ponderation[key] = value.weight }
+        ponderation = @@deposit_list.map { |key, value| [key, value.weight] }
         deposit_picker = Pickup.new(ponderation)
         
         # TODO: Aumentar probabilidad de generación si hay balizas cercanas
@@ -133,11 +128,6 @@ module Game
             # Incrementar número de depósitos generados
             deposits_count += 1
           end
-        end
-        
-        result = RubyProf.stop
-        File.open "tmp/profile-graph.html", 'w' do |file|
-          RubyProf::CallStackPrinter.new(result).print(file)
         end
         
         return deposits_count

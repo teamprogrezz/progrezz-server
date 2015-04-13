@@ -77,9 +77,13 @@ module Game
         
         params = GenericUtils.default_params( {}, extra_params, [:total_amount, :geolocation])
         
-        deposit_instance = self.create( deposit: deposit_ref, total_amount: params[:total_amount], current_amount: params[:total_amount] ) do |i|
-          i.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
-        end
+        deposit_instance = self.create({
+          deposit: deposit_ref,
+          total_amount: params[:total_amount],
+          current_amount: params[:total_amount],
+          latitude: params[:geolocation][:latitude],
+          longitude: params[:geolocation][:longitude]
+        })
         
         return deposit_instance
       end
@@ -149,9 +153,10 @@ module Game
         output[:item]     = self.deposit.item.to_hash() unless exclusion_list.include? :item
 
         output[:instance] = {
+          uuid: self.uuid,
           total_amount: self.total_amount,
           current_amount: self.current_amount,
-          created_at:  self.created_at,
+          created_at:  self.created_at.to_time.to_i,
           duration: self.duration,
           remaining_seconds: duration - (DateTime.now - self.created_at).to_i
         }
