@@ -23,6 +23,19 @@ module Sinatra
         })
       end
       
+      # Getter de todos los objetos
+      def self.item_list(app, response, session)
+        output = {}
+        Game::Database::Item.all.each do |i|
+          output[i.item_id] = i.to_hash([])
+        end
+        
+        Game::API::JSONResponse.ok_response!( response, {
+          type: "json",
+          items: output
+        })
+      end
+      
       # ...
     end
   end

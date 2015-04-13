@@ -4,6 +4,7 @@ module Game
   module Database
     
     class ItemDeposit; end
+    class ItemDepositInstance < GeolocatedObject; end
     # Forward declaration.
     
     # Clase que representa un objeto de usuario en la base de datos.
@@ -71,10 +72,10 @@ module Game
       #                      Relaciones (DB)
       #   -------------------------------------------------- #++
       
-      # @!method :deposit
+      # @!method deposit
       # Relación con el depósito del objeto. Puede no existir.
       # @return [Game::Database::ItemDeposit] Depósito que encapsula a este objeto..
-      has_one :out, :deposit, model_class: Game::Database::ItemDeposit, type: "deposited_in", dependent: :destroy 
+      has_one :out, :deposit, model_class: Game::Database::ItemDeposit, type: "deposited_in", dependent: :destroy
       
       #-- --------------------------------------------------
       #                    Métodos de clase

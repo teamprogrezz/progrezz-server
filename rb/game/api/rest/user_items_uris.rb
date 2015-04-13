@@ -46,7 +46,7 @@ module Sinatra; module API ;module REST
 
       output.each do |k, v|
         user_rel  = user_deposits[k]
-        output[k] = v.to_hash([:item], user_rel)
+        output[k] = v.to_hash([], user_rel)
       end
     
       # Formatear output

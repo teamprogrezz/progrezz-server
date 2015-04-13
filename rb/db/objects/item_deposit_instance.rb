@@ -47,20 +47,24 @@ module Game
       # @return [Integer] Días que durará el depósito.
       property :duration, type: Integer, default: DEFAULT_DURATION
       
+      
+      # Acceso directo al identificador del objeto relacionado con este depósito.
+      # @return [String] item_id del objeto en sí.
+      property :item_id_shortcut, type: String, default: ""
+      
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
       
-      # @!method item
-      # Relación con el objeto (#Game::Database::Item). Se puede acceder con el atributo +item+.
-      # @return [Game::Database::Item] Objeto contenido en el depósito.
+      # @!method deposit
+      # Relación con el depósito (#Game::Database::ItemDeposit). Se puede acceder con el atributo +deposit+.
+      # @return [Game::Database::ItemDeposit] Depósito relacionado con la estancia.
       has_one :in, :deposit, model_class: Game::Database::ItemDeposit, origin: :instances
       
       # @!method collectors
       # Relación de usuarios que han recolectado este depósito. Se puede acceder con el atributo #collectors.
       # @return [Game::Database::RelationShips::UserFragmentMessage] 
       has_many :in, :collectors, rel_class: Game::Database::RelationShips::UserCollected_ItemDepositInstance, model_class: Game::Database::User
-      
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -79,6 +83,7 @@ module Game
         
         deposit_instance = self.create({
           deposit: deposit_ref,
+          item_id_shortcut: deposit_ref.item.item_id,
           total_amount: params[:total_amount],
           current_amount: params[:total_amount],
           latitude: params[:geolocation][:latitude],
@@ -150,7 +155,7 @@ module Game
       def to_hash(exclusion_list = [], user_rel = nil)
         output = {}
         
-        output[:item]     = self.deposit.item.to_hash() unless exclusion_list.include? :item
+        output[:item_id]     = self.item_id_shortcut unless exclusion_list.include? :item_id
 
         output[:instance] = {
           uuid: self.uuid,
