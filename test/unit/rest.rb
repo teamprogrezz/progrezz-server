@@ -358,6 +358,16 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:data][:item][:name], "LAG Grenade"
   end
   
+  # Probar "item_list"
+  def test_item_list
+    @request[:request][:type] = "item_list"
+    @request[:request][:data] = { }
+    rest_request()
+    
+    assert_equal @response[:response][:status], "ok"
+    assert !@response[:response][:data][:item_list].empty?
+  end
+  
 end
 
 # Ejecutar test

@@ -27,7 +27,7 @@ module Game
       DEFAULT_IMAGE = "/img/game/null.png"
       
       # Calidad por defecto.
-      DEFAULT_QUALITY = "Common"
+      NULL_QUALITY = "Null"
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
@@ -50,7 +50,7 @@ module Game
       # Calidad del objeto.
       #
       # @return [String] Calidad.
-      property :quality, type: String, default: DEFAULT_QUALITY
+      property :quality, type: String, default: NULL_QUALITY
       
       # Descripción del objeto (narrativa).
       #
@@ -89,7 +89,7 @@ module Game
           name: "",
           description: "",
           max_amount: DEFAULT_MAX_ITEM,
-          quality: DEFAULT_QUALITY,
+          quality: NULL_QUALITY,
           image: DEFAULT_IMAGE
         }, extra_params, [:item_id])
         

@@ -3,7 +3,7 @@
     "item_id": "test_item",
     "name": "LAG Grenade",
     "description": "Limits the framerate of all enemies in its radius to 15 fps and resolution to 800 x 640, with a 5% chance of instant desconnection from the server.",
-    "quality": "Legendary"
+    "quality": "Null"
   },
   {
     "item_id": "mineral_iron",

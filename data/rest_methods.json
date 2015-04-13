@@ -96,6 +96,10 @@
       {
         "name": "Get item info",
         "example": {"_comment":"Get some information about an item.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"item_get","data":{"item_id":"Item id (e.g: test_item)"}}}
+      },
+      {
+        "name": "List all items",
+        "example": {"_comment":"Get information from all items.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"item_list","data":{}}}
       }
     ]
   ]
