@@ -89,6 +89,36 @@ module Sinatra
         erb :"admin/users", :layout => :"admin/layout"
       end
       
+      app.get '/admin/items' do
+        admin_protected!
+        erb :"admin/items", :layout => :"admin/layout"
+      end
+      
+      # -- Objetos --
+      app.post '/admin/items/edit_items' do
+        content_type :json
+        admin_protected!
+        
+        begin
+          data = params["data"]
+          
+          # Reiniciar objetos
+          Game::Mechanics::ItemsManagement.init_items(data)
+          
+          # Guardar una copia del anterior
+          FileUtils.cp(Game::Mechanics::ItemsManagement::DATAFILE, "tmp/items_" + DateTime.now.to_time.to_i.to_s + ".json")
+          
+          # Y sobrescribir
+          File.open(Game::Mechanics::ItemsManagement::DATAFILE, 'w') { |file| file.write( data ) }
+          
+          
+        rescue Exception => e
+          halt 400, {'Content-Type' => 'text/plain'}, e.message + "\n" + e.backtrace.to_s
+        end
+        
+        return {}.to_json
+      end
+      
       # -- Mensajes --
       app.post '/admin/messages/add' do
         content_type :json

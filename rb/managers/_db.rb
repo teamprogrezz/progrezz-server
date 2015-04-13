@@ -87,7 +87,7 @@ module Database
       
       case params[:export_type]
       when :json
-        puts "Exporting..."
+        # puts "Exporting..."
         
         output = {}
         output["node"] = {

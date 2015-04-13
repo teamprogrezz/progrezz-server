@@ -26,13 +26,13 @@ module Game
       end
       
       # Inicializar objetos del juego (cargando desde un json).
-      def self.init_items()
+      def self.init_items(content = nil)
         # Leer de fichero
         begin
-          @@items = JSON.parse( File.read(DATAFILE) )
+          @@items = JSON.parse( content || File.read(DATAFILE) )
           GenericUtils.symbolize_keys_deep!(@@items)
         rescue Exception => e
-          raise ::GenericException.new( "Error while parsing item list: " + e.message, e)
+          raise ::GenericException.new( "Error while parsing item list from '" + content.to_s + "': " + e.message, e)
         end
         
         # Para cada objeto

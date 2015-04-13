@@ -113,7 +113,7 @@
   $(document).ready(function(){
     $('#rem_msg').submit(function(evento){
       evento.preventDefault();
-      var datos_formulario = $(this).serialize();         
+      var datos_formulario = $(this).serialize();
       $.ajax({
         url: '/admin/messages/remove',
         data: datos_formulario,
