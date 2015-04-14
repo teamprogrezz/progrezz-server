@@ -35,15 +35,29 @@ module Game
       
       # Incremento del inventario por nivel.
       # @return [Integer, Float] Incremento del inventario por nivel.
-      def self.per_level_slots()
-        return @@data[:backpack][:base_slots]
+      def self.slots_per_level()
+        return @@data[:backpack][:slots_per_level]
       end
       
       # Tamaño de un inventario dado un nivel.
       # @param level [Integer] Nivel de entrada.
       # @return [Integer] Tamaño de un inventario dado un nivel.
       def self.slots(level)
-        return (base_slots + level * per_level_slots).to_i
+        return (base_slots + level * slots_per_level).round
+      end
+      
+      # Recalcular 
+      def self.recaculate_slots_for_players()
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          begin
+            Game::Database::User.all.each { |u| u.backpack.recalculate_slots() }
+          rescue Exception => e
+            Game::Database::DatabaseManager.rollback_transaction(tx)
+            raise e
+          end
+        end
+        
+        return nil
       end
       
     end

@@ -139,25 +139,23 @@ module REST
             
             result = "<h2>Datos añadidos correctamente.</h2>"
           
-          # Banearme 5 minutos ( D': ).
-          # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
-          
-          # Borrar mensaje (prueba).
-          # messages[3].remove
-          
-          # Generar depósitos cercanos
-          #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
-          #  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
-          #end).to_s
-          
-          # Recolectarla
-          #exp = {}
-          #user_Wikiti.collect_item_from_deposit(deposit, exp)
+            # Banearme 5 minutos ( D': ).
+            # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
+            
+            # Borrar mensaje (prueba).
+            # messages[3].remove
+            
+            # Generar depósitos cercanos
+            #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
+            #  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
+            #end).to_s
+            
+            # Recolectarla
+            #exp = {}
+            #user_Wikiti.collect_item_from_deposit(deposit, exp)
           
           rescue Exception => e
-            #puts e.message
-            #puts e.backtrace
-            tx.rollback
+            Game::Database::DatabaseManager.rollback_transaction(tx)
             result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
           end
         end

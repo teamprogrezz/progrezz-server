@@ -144,7 +144,7 @@ module Game
             usr.level_profile = Game::Database::LevelProfile.create_level_profile( )
             
             # Crear el inventario
-            usr.backpack = Game::Database::Backpack.create_backpack( )
+            usr.backpack = Game::Database::Backpack.create_backpack( usr.level_profile.level )
           end
 
         rescue Exception => e
@@ -396,6 +396,16 @@ module Game
         if !exclusion_list.include? :geolocation; output[:geolocation] = self.geolocation end
         
         return output
+      end
+      
+      # Callback de ejecución cuando el jugador sube de nivel.
+      # @param new_level [Integer] Nuevo nivel alcanzado.
+      def on_level_up(new_level)
+        raise ::GenericException.new("Invalid level '" + new_level.to_s + "'.") if (new_level == nil)
+        
+        self.backpack.recalculate_slots(new_level)
+        
+        # ...
       end
       
     end

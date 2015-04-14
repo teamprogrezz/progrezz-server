@@ -1,6 +1,6 @@
 {
   "backpack": {
     "base_slots": 4,
-    "per_level_slot": 1
+    "slots_per_level": 2
   } 
 }
