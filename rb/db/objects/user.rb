@@ -123,7 +123,7 @@ module Game
       # @!method backpack
       # Relación con el inventario del usuario (#Game::Database::Backpack). Se puede acceder con el atributo +backpack+.
       # @return [Game::Database::Backpack] Inventario del usuario.
-      #has_one :out, :backpack, model_class: Game::Database::Backpack, type: "has_a", dependent: :destroy
+      has_one :out, :backpack, model_class: Game::Database::Backpack, type: "has_a", dependent: :destroy
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -144,7 +144,7 @@ module Game
             usr.level_profile = Game::Database::LevelProfile.create_level_profile( )
             
             # Crear el inventario
-            # usr.backpack = Game::Database::Backpack.create_backpack( )
+            usr.backpack = Game::Database::Backpack.create_backpack( )
           end
 
         rescue Exception => e
