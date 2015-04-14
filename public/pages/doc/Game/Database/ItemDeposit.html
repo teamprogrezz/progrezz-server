@@ -243,7 +243,7 @@ geolocalizada. Por el contrario, se geolocaliza en los nodos de tipo
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#max_ammount-instance_method" title="#max_ammount (instance method)">- (Integer) <strong>max_ammount</strong> </a>
+      <a href="#max_amount-instance_method" title="#max_amount (instance method)">- (Integer) <strong>max_amount</strong> </a>
     
 
     
@@ -267,7 +267,7 @@ geolocalizada. Por el contrario, se geolocaliza en los nodos de tipo
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#min_ammount-instance_method" title="#min_ammount (instance method)">- (Integer) <strong>min_ammount</strong> </a>
+      <a href="#min_amount-instance_method" title="#min_amount (instance method)">- (Integer) <strong>min_amount</strong> </a>
     
 
     
@@ -307,6 +307,80 @@ geolocalizada. Por el contrario, se geolocaliza en los nodos de tipo
   
     <span class="summary_desc"><div class='inline'>
 <p>Borrar el depósito y sus estancias.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_cooldown-instance_method" title="#user_cooldown (instance method)">- (Integer) <strong>user_cooldown</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Reutilización del usuario para el depósito.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_max_amount-instance_method" title="#user_max_amount (instance method)">- (Integer) <strong>user_max_amount</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Cantidad de recursos máxima obtenidos por un usuario al recolectar antes de
+saltar el cooldown.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_min_amount-instance_method" title="#user_min_amount (instance method)">- (Integer) <strong>user_min_amount</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Cantidad de recursos mínima obtenidos por un usuario al recolectar antes de
+saltar el cooldown.</p>
 </div></span>
   
 </li>
@@ -426,27 +500,43 @@ geolocalizada. Por el contrario, se geolocaliza en los nodos de tipo
       <pre class="lines">
 
 
-69
-70
-71
-72
-73
-74
-75
-76
-77</pre>
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit'>create_item_deposit</span><span class='lparen'>(</span><span class='id identifier rubyid_item_ref'>item_ref</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_item_ref'>item_ref</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='kw'>or</span> <span class='op'>!</span><span class='id identifier rubyid_item_ref'>item_ref</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid item.</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid item.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
-  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:weight</span><span class='comma'>,</span> <span class='symbol'>:min_ammount</span><span class='comma'>,</span> <span class='symbol'>:max_ammount</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:weight</span><span class='comma'>,</span> <span class='symbol'>:min_amount</span><span class='comma'>,</span> <span class='symbol'>:max_amount</span><span class='comma'>,</span> <span class='symbol'>:user_min_amount</span><span class='comma'>,</span> <span class='symbol'>:user_max_amount</span><span class='comma'>,</span> <span class='symbol'>:user_cooldown</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>item:</span> <span class='id identifier rubyid_item_ref'>item_ref</span><span class='comma'>,</span> <span class='label'>weight:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:weight</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>min_ammount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:min_ammount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_ammount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_ammount</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='lbrace'>{</span> 
+    <span class='label'>item:</span> <span class='id identifier rubyid_item_ref'>item_ref</span><span class='comma'>,</span>
+    <span class='label'>weight:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:weight</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>min_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:min_amount</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>user_min_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:user_min_amount</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>user_max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:user_max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>user_cooldown:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:user_cooldown</span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -504,10 +594,10 @@ geolocalizada. Por el contrario, se geolocaliza en los nodos de tipo
       <pre class="lines">
 
 
-59</pre>
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 73</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:instances</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>geolocated_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
@@ -599,23 +689,23 @@ geolocalizada. Por el contrario, se geolocaliza en los nodos de tipo
       <pre class="lines">
 
 
-102
-103
-104
-105
-106
-107
-108</pre>
+124
+125
+126
+127
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 124</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_instantiate'>instantiate</span><span class='lparen'>(</span><span class='id identifier rubyid_geolocation'>geolocation</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='float'>0.0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='float'>0.0</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_snap_to_road'>snap_to_road</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_ammount'>ammount</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_min_ammount'>min_ammount</span> <span class='op'>..</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_ammount'>max_ammount</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_amount'>amount</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_min_amount'>min_amount</span><span class='op'>..</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_amount'>max_amount</span><span class='rparen'>)</span>
   
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>GeolocationManagement</span><span class='period'>.</span><span class='id identifier rubyid_snap_geolocation!'>snap_geolocation!</span><span class='lparen'>(</span><span class='id identifier rubyid_geolocation'>geolocation</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_snap_to_road'>snap_to_road</span>
   
-  <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit_instance'>create_item_deposit_instance</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>geolocation:</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='label'>ammount:</span> <span class='id identifier rubyid_ammount'>ammount</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit_instance'>create_item_deposit_instance</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>geolocation:</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='label'>total_amount:</span> <span class='id identifier rubyid_amount'>amount</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -667,10 +757,10 @@ atributo <code>item</code>.</p>
       <pre class="lines">
 
 
-54</pre>
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 68</span>
 
 <span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:item</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='comma'>,</span> <span class='label'>origin:</span> <span class='symbol'>:deposit</span></pre>
     </td>
@@ -679,9 +769,9 @@ atributo <code>item</code>.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="max_ammount-instance_method">
+  <h3 class="signature " id="max_amount-instance_method">
   
-    - (<tt>Integer</tt>) <strong>max_ammount</strong> 
+    - (<tt>Integer</tt>) <strong>max_amount</strong> 
   
 
   
@@ -692,8 +782,8 @@ atributo <code>item</code>.</p>
     
 <p>Cantidad máxima de usos o recursos de un depósito.</p>
 
-<p>La cantidad de objetos se genera aleatoriamente entre #max_ammount y
-#min_ammount.</p>
+<p>La cantidad de objetos se genera aleatoriamente entre #max_amount y
+#min_amount.</p>
 
 
   </div>
@@ -730,16 +820,16 @@ atributo <code>item</code>.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 36</span>
 
-<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:max_ammount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:max_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
     </td>
   </tr>
 </table>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="min_ammount-instance_method">
+  <h3 class="signature " id="min_amount-instance_method">
   
-    - (<tt>Integer</tt>) <strong>min_ammount</strong> 
+    - (<tt>Integer</tt>) <strong>min_amount</strong> 
   
 
   
@@ -750,8 +840,8 @@ atributo <code>item</code>.</p>
     
 <p>Cantidad mínima de usos o recursos de un depósito.</p>
 
-<p>La cantidad de objetos se genera aleatoriamente entre #max_ammount y
-#min_ammount.</p>
+<p>La cantidad de objetos se genera aleatoriamente entre #max_amount y
+#min_amount.</p>
 
 
   </div>
@@ -788,7 +878,7 @@ atributo <code>item</code>.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 43</span>
 
-<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:min_ammount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:min_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
     </td>
   </tr>
 </table>
@@ -820,21 +910,21 @@ atributo <code>item</code>.</p>
       <pre class="lines">
 
 
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95</pre>
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Exportar el nodo
@@ -848,6 +938,176 @@ atributo <code>item</code>.</p>
   <span class='comment'># Borrar el nodo.
 </span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_destroy'>destroy</span><span class='lparen'>(</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user_cooldown-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>user_cooldown</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reutilización del usuario para el depósito.</p>
+
+<p>Especificado en segundos. Hasta que no transcurra el tiempo, el usuario no
+podrá volver a usar el depósito para obtener recursos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Segundos de cooldown.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+59</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 59</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:user_cooldown</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user_max_amount-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>user_max_amount</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Cantidad de recursos máxima obtenidos por un usuario al recolectar antes de
+saltar el cooldown.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cantidad máxima de usos o recursos recolectados.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 51</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:user_max_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user_min_amount-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>user_min_amount</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Cantidad de recursos mínima obtenidos por un usuario al recolectar antes de
+saltar el cooldown.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cantidad mínima de usos o recursos recolectados.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit.rb', line 47</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:user_min_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
     </td>
   </tr>
 </table>
@@ -917,7 +1177,7 @@ así un sistema sencillo de “rareza”.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Apr 10 10:43:48 2015 by
+  Generated on Tue Apr 14 12:18:49 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

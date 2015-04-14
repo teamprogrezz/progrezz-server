@@ -51,10 +51,11 @@
     "search_nearby_deposits": {
       "radius": 0.8
     },
+    "collect_item_from_deposit_Common": {},
     "unlock_message": true
   },
   "1": {
-    "collect_item_from_deposit_Common": {}
+
   },
   "2": {
     "collect_fragment": {

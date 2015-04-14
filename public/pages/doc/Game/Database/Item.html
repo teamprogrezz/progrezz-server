@@ -156,7 +156,7 @@ depósitov¡, … mediante relaciones neo4j.</p>
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/img/game/null.png</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
-        <dt id="DEFAULT_QUALITY-constant" class="">DEFAULT_QUALITY =
+        <dt id="NULL_QUALITY-constant" class="">NULL_QUALITY =
           <div class="docstring">
   <div class="discussion">
     
@@ -170,7 +170,7 @@ depósitov¡, … mediante relaciones neo4j.</p>
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Common</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Null</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
     </dl>
   
@@ -241,6 +241,30 @@ depósitov¡, … mediante relaciones neo4j.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Crear un depósito del objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deposit-instance_method" title="#deposit (instance method)">- (Game::Database::ItemDeposit) <strong>deposit</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con el depósito del objeto.</p>
 </div></span>
   
 </li>
@@ -321,7 +345,7 @@ depósitov¡, … mediante relaciones neo4j.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#max_ammount-instance_method" title="#max_ammount (instance method)">- (Integer) <strong>max_ammount</strong> </a>
+      <a href="#max_amount-instance_method" title="#max_amount (instance method)">- (Integer) <strong>max_amount</strong> </a>
     
 
     
@@ -361,30 +385,6 @@ depósitov¡, … mediante relaciones neo4j.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Nombre legible del objeto.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#out-instance_method" title="#out (instance method)">- (Game::Database::ItemDeposit) <strong>out</strong>(:deposit) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Relación con el depósito del objeto.</p>
 </div></span>
   
 </li>
@@ -441,7 +441,7 @@ depósitov¡, … mediante relaciones neo4j.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = []) </a>
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = [:description, :max_ammount]) </a>
     
 
     
@@ -560,7 +560,6 @@ depósitov¡, … mediante relaciones neo4j.</p>
       <pre class="lines">
 
 
-86
 87
 88
 89
@@ -570,21 +569,22 @@ depósitov¡, … mediante relaciones neo4j.</p>
 93
 94
 95
-96</pre>
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_item'>create_item</span><span class='lparen'>(</span><span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
     <span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
     <span class='label'>description:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='label'>max_ammount:</span> <span class='const'>DEFAULT_MAX_ITEM</span><span class='comma'>,</span>
-    <span class='label'>quality:</span> <span class='const'>DEFAULT_QUALITY</span><span class='comma'>,</span>
+    <span class='label'>max_amount:</span> <span class='const'>DEFAULT_MAX_ITEM</span><span class='comma'>,</span>
+    <span class='label'>quality:</span> <span class='const'>NULL_QUALITY</span><span class='comma'>,</span>
     <span class='label'>image:</span> <span class='const'>DEFAULT_IMAGE</span>
   <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>item_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_ammount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_ammount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>item_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -662,16 +662,71 @@ depósitov¡, … mediante relaciones neo4j.</p>
       <pre class="lines">
 
 
-119
 120
-121</pre>
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_deposit'>create_deposit</span><span class='lparen'>(</span><span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit'>create_item_deposit</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deposit-instance_method">
+  
+    - (<tt><span class='object_link'><a href="ItemDeposit.html" title="Game::Database::ItemDeposit (class)">Game::Database::ItemDeposit</a></span></tt>) <strong>deposit</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con el depósito del objeto. Puede no existir.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="ItemDeposit.html" title="Game::Database::ItemDeposit (class)">Game::Database::ItemDeposit</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Depósito que encapsula a este objeto..</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+78</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 78</span>
+
+<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:deposit</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>deposited_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
   </tr>
 </table>
@@ -723,10 +778,10 @@ depósitov¡, … mediante relaciones neo4j.</p>
       <pre class="lines">
 
 
-58</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 59</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:description</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
     </td>
@@ -780,10 +835,10 @@ depósitov¡, … mediante relaciones neo4j.</p>
       <pre class="lines">
 
 
-64</pre>
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 65</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:image</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_IMAGE</span></pre>
     </td>
@@ -838,10 +893,10 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-41</pre>
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 42</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:item_id</span><span class='comma'>,</span> <span class='label'>constraint:</span> <span class='symbol'>:unique</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span></pre>
     </td>
@@ -850,9 +905,9 @@ id coherente para todos los objetos.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="max_ammount-instance_method">
+  <h3 class="signature " id="max_amount-instance_method">
   
-    - (<tt>Integer</tt>) <strong>max_ammount</strong> 
+    - (<tt>Integer</tt>) <strong>max_amount</strong> 
   
 
   
@@ -893,12 +948,12 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-68</pre>
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 69</span>
 
-<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:max_ammount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_MAX_ITEM</span></pre>
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:max_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_MAX_ITEM</span></pre>
     </td>
   </tr>
 </table>
@@ -950,67 +1005,12 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-47</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 48</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="out-instance_method">
-  
-    - (<tt><span class='object_link'><a href="ItemDeposit.html" title="Game::Database::ItemDeposit (class)">Game::Database::ItemDeposit</a></span></tt>) <strong>out</strong>(:deposit) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Relación con el depósito del objeto. Puede no existir.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="ItemDeposit.html" title="Game::Database::ItemDeposit (class)">Game::Database::ItemDeposit</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Depósito que encapsula a este objeto..</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-77</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 77</span>
-
-<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:deposit</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>deposited_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
   </tr>
 </table>
@@ -1060,12 +1060,12 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-52</pre>
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 53</span>
 
-<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:quality</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_QUALITY</span></pre>
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:quality</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>NULL_QUALITY</span></pre>
     </td>
   </tr>
 </table>
@@ -1097,7 +1097,6 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-124
 125
 126
 127
@@ -1106,10 +1105,11 @@ id coherente para todos los objetos.</p>
 130
 131
 132
-133</pre>
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Exportar el nodo
@@ -1129,7 +1129,7 @@ id coherente para todos los objetos.</p>
       <div class="method_details ">
   <h3 class="signature " id="to_hash-instance_method">
   
-    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = []) 
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = [:description, :max_ammount]) 
   
 
   
@@ -1155,7 +1155,7 @@ id coherente para todos los objetos.</p>
         <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>[]</tt>)</em>
+        <em class="default">(defaults to: <tt>[:description, :max_ammount]</tt>)</em>
       
       
         &mdash;
@@ -1192,7 +1192,6 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-138
 139
 140
 141
@@ -1200,19 +1199,24 @@ id coherente para todos los objetos.</p>
 143
 144
 145
-146</pre>
+146
+147
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 139</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='lbrace'>{</span>
-    <span class='label'>item_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_id'>item_id</span><span class='comma'>,</span>
-    <span class='label'>name:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span>
-    <span class='label'>description:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span><span class='comma'>,</span>
-    <span class='label'>image:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='comma'>,</span>
-    <span class='label'>max_ammount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_ammount'>max_ammount</span>
-  <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:description</span><span class='comma'>,</span> <span class='symbol'>:max_ammount</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_id'>item_id</span>      <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:item_id</span>
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span>        <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>         <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:name</span>
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span>  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:description</span>
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span>       <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span>        <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:image</span>
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span>  <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_amount'>max_amount</span>   <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:max_amount</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1265,7 +1269,6 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-104
 105
 106
 107
@@ -1275,10 +1278,11 @@ id coherente para todos los objetos.</p>
 111
 112
 113
-114</pre>
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update_item'>update_item</span><span class='lparen'>(</span><span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
@@ -1286,10 +1290,10 @@ id coherente para todos los objetos.</p>
     <span class='label'>description:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span><span class='comma'>,</span>
     <span class='label'>image:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='comma'>,</span>
     <span class='label'>quality:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_quality'>quality</span><span class='comma'>,</span>
-    <span class='label'>max_ammount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_ammount'>max_ammount</span>
+    <span class='label'>max_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_amount'>max_amount</span>
   <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_ammount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_ammount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1301,7 +1305,7 @@ id coherente para todos los objetos.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Apr 10 10:43:49 2015 by
+  Generated on Tue Apr 14 12:18:50 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

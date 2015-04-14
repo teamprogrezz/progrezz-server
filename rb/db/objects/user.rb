@@ -148,7 +148,7 @@ module Game
           end
 
         rescue Exception => e
-          raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message + "\n\t\t" + e.backtrace.to_s + "\n" )
+          raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': " + e.message, e )
         end
 
         return user

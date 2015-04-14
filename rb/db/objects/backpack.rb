@@ -16,6 +16,14 @@ module Game
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
       
+      # Casillas del inventario.
+      # @return [Integer] Tamaño del inventario (slots).
+      property :slots, type: Integer, default: 0
+      
+      #-- --------------------------------------------------
+      #                     Relaciones (DB)
+      #   -------------------------------------------------- #++
+      
       # @!method user
       # Relación con el usuario que posee el inventario (#Game::Database::User). Se puede acceder con el atributo +user+.
       # @return [Game::Database::User] Usuario.
@@ -28,7 +36,7 @@ module Game
       # Crear un inventario para un usuario.
       # @return [Game::Mechanics::Backpack] Objeto creado (no enlazado a un usuario).
       def self.create_backpack()
-        return self.create( ) # TODO: Rellenar
+        return self.create( ) # TODO: Rellenar.
       end
     end
     
