@@ -192,7 +192,7 @@ de los diferentes usuarios.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#per_level_slots-class_method" title="per_level_slots (class method)">+ (Integer, Float) <strong>per_level_slots</strong> </a>
+      <a href="#recaculate_slots_for_players-class_method" title="recaculate_slots_for_players (class method)">+ (Object) <strong>recaculate_slots_for_players</strong> </a>
     
 
     
@@ -207,7 +207,7 @@ de los diferentes usuarios.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Incremento del inventario por nivel.</p>
+<p>Recalcular.</p>
 </div></span>
   
 </li>
@@ -256,6 +256,30 @@ de los diferentes usuarios.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Tamaño de un inventario dado un nivel.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#slots_per_level-class_method" title="slots_per_level (class method)">+ (Integer, Float) <strong>slots_per_level</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Incremento del inventario por nivel.</p>
 </div></span>
   
 </li>
@@ -330,9 +354,9 @@ de los diferentes usuarios.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="per_level_slots-class_method">
+  <h3 class="signature " id="recaculate_slots_for_players-class_method">
   
-    + (<tt>Integer</tt>, <tt>Float</tt>) <strong>per_level_slots</strong> 
+    + (<tt>Object</tt>) <strong>recaculate_slots_for_players</strong> 
   
 
   
@@ -341,31 +365,13 @@ de los diferentes usuarios.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Incremento del inventario por nivel.</p>
+<p>Recalcular</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Integer</tt>, <tt>Float</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Incremento del inventario por nivel.</p>
-</div>
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -373,15 +379,33 @@ de los diferentes usuarios.</p>
       <pre class="lines">
 
 
-38
-39
-40</pre>
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/backpack.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/backpack.rb', line 50</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_per_level_slots'>per_level_slots</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='symbol'>:backpack</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:base_slots</span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_recaculate_slots_for_players'>recaculate_slots_for_players</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tx'>tx</span><span class='op'>|</span>
+    <span class='kw'>begin</span>
+      <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_u'>u</span><span class='op'>|</span> <span class='id identifier rubyid_u'>u</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_recalculate_slots'>recalculate_slots</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_rollback_transaction'>rollback_transaction</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -515,7 +539,66 @@ de los diferentes usuarios.</p>
       <pre class="code"><span class="info file"># File 'rb/game/mechanics/backpack.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_slots'>slots</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='lparen'>(</span><span class='id identifier rubyid_base_slots'>base_slots</span> <span class='op'>+</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>*</span> <span class='id identifier rubyid_per_level_slots'>per_level_slots</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='kw'>return</span> <span class='lparen'>(</span><span class='id identifier rubyid_base_slots'>base_slots</span> <span class='op'>+</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>*</span> <span class='id identifier rubyid_slots_per_level'>slots_per_level</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="slots_per_level-class_method">
+  
+    + (<tt>Integer</tt>, <tt>Float</tt>) <strong>slots_per_level</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Incremento del inventario por nivel.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Incremento del inventario por nivel.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/backpack.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_slots_per_level'>slots_per_level</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='symbol'>:backpack</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:slots_per_level</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -527,7 +610,7 @@ de los diferentes usuarios.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Apr 14 12:18:50 2015 by
+  Generated on Thu Apr 16 10:57:24 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

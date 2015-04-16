@@ -90,18 +90,22 @@
   
   
     
+      <dt class="r2">Extended by:</dt>
+      <dd class="r2"><span class='object_link'><a href="../../Evented.html" title="Evented (module)">Evented</a></span></dd>
+      
+    
   
     
-      <dt class="r2">Includes:</dt>
-      <dd class="r2">Neo4j::ActiveNode</dd>
+      <dt class="r1">Includes:</dt>
+      <dd class="r1">Neo4j::ActiveNode</dd>
       
     
   
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">rb/db/objects/user.rb<span class="defines">,<br />
-  rb/db/objects/backpack.rb,<br /> rb/db/objects/user_actions.rb,<br /> rb/db/relations/user-message_fragment.rb,<br /> rb/db/relations/user-completed_message.rb,<br /> rb/db/relations/user-collected_item-deposit-instance.rb</span>
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rb/db/objects/user.rb<span class="defines">,<br />
+  rb/db/objects/backpack.rb,<br /> rb/db/objects/user_events.rb,<br /> rb/db/objects/user_actions.rb,<br /> rb/db/relations/user-message_fragment.rb,<br /> rb/db/relations/user-completed_message.rb,<br /> rb/db/relations/user-collected_item-deposit-instance.rb</span>
 </dd>
   
 </dl>
@@ -680,6 +684,30 @@ tener una serie de propiedades o atributos.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#dispatch-instance_method" title="#dispatch (instance method)">- (Object) <strong>dispatch</strong>(event_name, *args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Lanzar un evento desde el usuario actual.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#get_collected_message_fragments-instance_method" title="#get_collected_message_fragments (instance method)">- (Hash) <strong>get_collected_message_fragments</strong>(message) </a>
     
 
@@ -1146,6 +1174,17 @@ REST).</p>
   
   
   
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../Evented.html" title="Evented (module)">Evented</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../Evented.html#add_event_listener-instance_method" title="Evented#add_event_listener (method)">add_event_listener</a></span>, <span class='object_link'><a href="../../Evented.html#dispatch_event-instance_method" title="Evented#dispatch_event (method)">dispatch_event</a></span>, <span class='object_link'><a href="../../Evented.html#remove_event_listener-instance_method" title="Evented#remove_event_listener (method)">remove_event_listener</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#clamp-instance_method" title="Game::Database::GeolocatedObject#clamp (method)">#clamp</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp%21-class_method" title="Game::Database::GeolocatedObject.clamp! (method)">clamp!</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp_latitude-class_method" title="Game::Database::GeolocatedObject.clamp_latitude (method)">clamp_latitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp_longitude-class_method" title="Game::Database::GeolocatedObject.clamp_longitude (method)">clamp_longitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#geolocation-instance_method" title="Game::Database::GeolocatedObject#geolocation (method)">#geolocation</a></span>, <span class='object_link'><a href="GeolocatedObject.html#latitude-instance_method" title="Game::Database::GeolocatedObject#latitude (method)">#latitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#longitude-instance_method" title="Game::Database::GeolocatedObject#longitude (method)">#longitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#set_geolocation-instance_method" title="Game::Database::GeolocatedObject#set_geolocation (method)">#set_geolocation</a></span></p>
@@ -1200,12 +1239,12 @@ REST).</p>
       <pre class="lines">
 
 
-159
 160
-161</pre>
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_online_users'>online_users</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span> <span class='label'>is_online:</span> <span class='kw'>true</span> <span class='rparen'>)</span>
@@ -1280,7 +1319,6 @@ excepción.</p>
       <pre class="lines">
 
 
-168
 169
 170
 171
@@ -1290,10 +1328,11 @@ excepción.</p>
 175
 176
 177
-178</pre>
+178
+179</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 168</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='rparen'>)</span>
   <span class='comment'># Identificar que el usuario exista, etc.
@@ -1375,7 +1414,6 @@ excepción.</p>
       <pre class="lines">
 
 
-138
 139
 140
 141
@@ -1392,10 +1430,11 @@ excepción.</p>
 152
 153
 154
-155</pre>
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sign_up'>sign_up</span><span class='lparen'>(</span><span class='id identifier rubyid_al'>al</span><span class='comma'>,</span> <span class='id identifier rubyid_uid'>uid</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='float'>0.0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='float'>0.0</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='kw'>begin</span>          
@@ -1406,7 +1445,7 @@ excepción.</p>
 </span>      <span class='id identifier rubyid_usr'>usr</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>LevelProfile</span><span class='period'>.</span><span class='id identifier rubyid_create_level_profile'>create_level_profile</span><span class='lparen'>(</span> <span class='rparen'>)</span>
       
       <span class='comment'># Crear el inventario
-</span>      <span class='id identifier rubyid_usr'>usr</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Backpack</span><span class='period'>.</span><span class='id identifier rubyid_create_backpack'>create_backpack</span><span class='lparen'>(</span> <span class='rparen'>)</span>
+</span>      <span class='id identifier rubyid_usr'>usr</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Backpack</span><span class='period'>.</span><span class='id identifier rubyid_create_backpack'>create_backpack</span><span class='lparen'>(</span> <span class='id identifier rubyid_usr'>usr</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='rparen'>)</span>
     <span class='kw'>end</span>
 
   <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
@@ -1472,14 +1511,14 @@ excepción.</p>
       <pre class="lines">
 
 
-208
 209
 210
 211
-212</pre>
+212
+213</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 209</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_msg'>add_msg</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_written_messages'>written_messages</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_message'>message</span>
@@ -1530,10 +1569,10 @@ excepción.</p>
       <pre class="lines">
 
 
-47</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 48</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:alias</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
     </td>
@@ -1586,10 +1625,10 @@ puede acceder con el atributo <code>backpack</code>.</p>
       <pre class="lines">
 
 
-126</pre>
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 127</span>
 
 <span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:backpack</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Backpack</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>has_a</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
@@ -1641,10 +1680,10 @@ puede acceder con el atributo <code>backpack</code>.</p>
       <pre class="lines">
 
 
-59</pre>
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 60</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:banned_reason</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
     </td>
@@ -1696,10 +1735,10 @@ puede acceder con el atributo <code>backpack</code>.</p>
       <pre class="lines">
 
 
-55</pre>
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 56</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:banned_until</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>DateTime</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
@@ -1792,7 +1831,6 @@ retornará nil.</p>
       <pre class="lines">
 
 
-255
 256
 257
 258
@@ -1800,10 +1838,11 @@ retornará nil.</p>
 260
 261
 262
-263</pre>
+263
+264</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 255</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 256</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_message_status'>change_message_status</span><span class='lparen'>(</span><span class='id identifier rubyid_msg_uuid'>msg_uuid</span><span class='comma'>,</span> <span class='id identifier rubyid_new_status'>new_status</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -2269,10 +2308,10 @@ atributo <code>collected_completed_messages</code>.</p>
       <pre class="lines">
 
 
-110</pre>
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 111</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:collected_completed_messages</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCompletedMessage</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span></pre>
     </td>
@@ -2320,10 +2359,10 @@ atributo #collected_fragment_messages.</p>
       <pre class="lines">
 
 
-104</pre>
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 105</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:collected_fragment_messages</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserFragmentMessage</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span></pre>
     </td>
@@ -2371,10 +2410,10 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-116</pre>
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 117</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:collected_item_deposit_instances</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCollected_ItemDepositInstance</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span></pre>
     </td>
@@ -2426,10 +2465,10 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-73</pre>
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 74</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:count_collected_fragments</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
@@ -2481,10 +2520,10 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-85</pre>
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 86</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:count_collected_item_deposits</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
@@ -2536,10 +2575,10 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-77</pre>
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 78</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:count_completed_messages</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
@@ -2591,10 +2630,10 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-81</pre>
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 82</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:count_unlocked_messages</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
@@ -2646,10 +2685,10 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-69</pre>
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 70</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:count_written_messages</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
     </td>
@@ -2701,12 +2740,94 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-51</pre>
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 52</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:created_at</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dispatch-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dispatch</strong>(event_name, *args) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Lanzar un evento desde el usuario actual.</p>
+
+<p>Lista de eventos registrados:</p>
+<ul><li>
+<p><tt>:onLevelUp (user, new_level)</tt>: Al subir de nivel.</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>event_name</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Nombre del evento a lanzar.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>args</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Argumentos a pasar a los callbacks (además de <code>self</code>).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_events.rb', line 36</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='id identifier rubyid_event_name'>event_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_dispatch_event'>dispatch_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event_name'>event_name</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2776,7 +2897,6 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-230
 231
 232
 233
@@ -2791,10 +2911,11 @@ atributo <code>collected_item_deposit_instances</code>.</p>
 242
 243
 244
-245</pre>
+245
+246</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 230</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 231</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_collected_message_fragments'>get_collected_message_fragments</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -2863,7 +2984,6 @@ por el usuario.</p>
       <pre class="lines">
 
 
-217
 218
 219
 220
@@ -2871,10 +2991,11 @@ por el usuario.</p>
 222
 223
 224
-225</pre>
+225
+226</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 217</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 218</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_completed_messages'>get_completed_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -2969,7 +3090,6 @@ por el usuario.</p>
       <pre class="lines">
 
 
-268
 269
 270
 271
@@ -2978,10 +3098,11 @@ por el usuario.</p>
 274
 275
 276
-277</pre>
+277
+278</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 269</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_current_search_radius'>get_current_search_radius</span><span class='lparen'>(</span> <span class='id identifier rubyid_element'>element</span> <span class='op'>=</span> <span class='symbol'>:fragments</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_element'>element</span> <span class='op'>==</span> <span class='symbol'>:fragments</span>
@@ -3049,7 +3170,6 @@ de un usuario.</p>
       <pre class="lines">
 
 
-309
 310
 311
 312
@@ -3066,10 +3186,11 @@ de un usuario.</p>
 323
 324
 325
-326</pre>
+326
+327</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 309</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 310</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_fragmented_messages'>get_fragmented_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -3158,7 +3279,6 @@ de un usuario.</p>
       <pre class="lines">
 
 
-331
 332
 333
 334
@@ -3174,10 +3294,11 @@ de un usuario.</p>
 344
 345
 346
-347</pre>
+347
+348</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 331</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 332</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_online_nearby_users'>get_online_nearby_users</span><span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user_geo'>user_geo</span> <span class='op'>=</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span>
@@ -3245,7 +3366,6 @@ de un usuario.</p>
       <pre class="lines">
 
 
-351
 352
 353
 354
@@ -3273,10 +3393,11 @@ de un usuario.</p>
 376
 377
 378
-379</pre>
+379
+380</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 351</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 352</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_stats'>get_stats</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbrace'>{</span>
@@ -3356,10 +3477,10 @@ de un usuario.</p>
       <pre class="lines">
 
 
-63</pre>
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 64</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:is_online</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Boolean</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='kw'>false</span></pre>
     </td>
@@ -3415,12 +3536,12 @@ de un usuario.</p>
       <pre class="lines">
 
 
-201
 202
-203</pre>
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 201</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 202</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_online'>online</span><span class='lparen'>(</span><span class='id identifier rubyid_new_status'>new_status</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span> 
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='label'>is_online:</span> <span class='id identifier rubyid_new_status'>new_status</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
@@ -3475,10 +3596,10 @@ acceder con el atributo <code>leel_profile</code>.</p>
       <pre class="lines">
 
 
-121</pre>
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 122</span>
 
 <span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:level_profile</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>LevelProfile</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>profiles_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
@@ -3532,7 +3653,6 @@ acceder con el atributo <code>leel_profile</code>.</p>
       <pre class="lines">
 
 
-282
 283
 284
 285
@@ -3548,10 +3668,11 @@ acceder con el atributo <code>leel_profile</code>.</p>
 295
 296
 297
-298</pre>
+298
+299</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 282</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 283</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_message'>read_message</span><span class='lparen'>(</span><span class='id identifier rubyid_msg_uuid'>msg_uuid</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -3896,7 +4017,6 @@ el usuario.</p>
       <pre class="lines">
 
 
-391
 392
 393
 394
@@ -3904,10 +4024,11 @@ el usuario.</p>
 396
 397
 398
-399</pre>
+399
+400</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 391</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 392</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -3968,12 +4089,12 @@ el usuario.</p>
       <pre class="lines">
 
 
-384
 385
-386</pre>
+386
+387</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 384</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 385</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;User: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_alias'>alias</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_is_online'>is_online</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
@@ -4183,15 +4304,15 @@ la base de datos siempre y cuando se haya cambiado  al menos un atributo.</p>
       <pre class="lines">
 
 
-192
 193
 194
 195
 196
-197</pre>
+197
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 192</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 193</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update_profile'>update_profile</span><span class='lparen'>(</span> <span class='id identifier rubyid_attributes'>attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_changed'>changed</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -4248,10 +4369,10 @@ la base de datos siempre y cuando se haya cambiado  al menos un atributo.</p>
       <pre class="lines">
 
 
-42</pre>
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 43</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:user_id</span><span class='comma'>,</span> <span class='label'>constraint:</span> <span class='symbol'>:unique</span></pre>
     </td>
@@ -4465,10 +4586,10 @@ con el atributo #written_messages. Tiene como tipo
       <pre class="lines">
 
 
-99</pre>
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 100</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:written_messages</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>has_written</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
@@ -4481,7 +4602,7 @@ con el atributo #written_messages. Tiene como tipo
 </div>
 
     <div id="footer">
-  Generated on Tue Apr 14 12:18:49 2015 by
+  Generated on Thu Apr 16 10:57:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

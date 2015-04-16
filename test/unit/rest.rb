@@ -32,7 +32,9 @@ class RESTTest < Test::Unit::TestCase
   end
   
   def ok?
-    exit(-1) if !@exec_ok
+    if @exec_ok == false
+      $EXIT_ERROR = ($EXIT_ERROR || 0) + 1
+    end
   end
   
   def ok
@@ -83,7 +85,7 @@ class RESTTest < Test::Unit::TestCase
     @request[:request][:data] = { name: "ProgrezzTest" }
     rest_request()
 
-    assert_equal @response[:response][:status], "error"
+    assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:message], "Hello, ProgrezzTest!"
     
     ok

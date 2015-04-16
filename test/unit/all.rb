@@ -15,8 +15,7 @@ class CustomTestSuite < Test::Unit::TestSuite
     return result
   end
 
-  def setup
-    
+  def setup  
     # Iniciar base de datos
     @@users = []
     @@messages = []
@@ -26,6 +25,7 @@ class CustomTestSuite < Test::Unit::TestSuite
     Game::Database::User.all.each { |u| u.destroy }
     Game::Database::Message.all.each { |m| m.destroy }
     Game::Database::MessageFragment.all.each { |f| f.destroy }
+    Game::Database::ItemDepositInstance.all.each { |d| d.destroy }
     
     # Añadir cositas
     @@users << Game::Database::User.sign_up( "test", 'test', {latitude: 28.4694, longitude: -16.2738} )
@@ -79,3 +79,4 @@ end
 
 # Ejecutar pruebas
 Test::Unit::UI::Console::TestRunner.run(CustomTestSuite)
+raise $EXIT_ERROR.to_s + " tests failed." if $EXIT_ERROR

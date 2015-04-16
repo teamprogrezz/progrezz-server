@@ -359,12 +359,12 @@ necesaria para subir del nivel <code>next_level-1</code> a
       <pre class="lines">
 
 
-35
 36
-37</pre>
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_exp_to_next_level'>exp_to_next_level</span><span class='lparen'>(</span><span class='id identifier rubyid_next_level'>next_level</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid__next_level_required_exp'>_next_level_required_exp</span><span class='lparen'>(</span> <span class='id identifier rubyid_next_level'>next_level</span> <span class='rparen'>)</span>
@@ -455,7 +455,6 @@ nuevo nivel.</p>
       <pre class="lines">
 
 
-55
 56
 57
 58
@@ -506,10 +505,14 @@ nuevo nivel.</p>
 103
 104
 105
-106</pre>
+106
+107
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_action_str'>action_str</span><span class='rparen'>)</span>
   <span class='comment'># Gestión de errores
@@ -559,6 +562,9 @@ nuevo nivel.</p>
   
   <span class='comment'># Actualizar datos del usuario
 </span>  <span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>level:</span> <span class='id identifier rubyid_current_level'>current_level</span><span class='comma'>,</span> <span class='label'>level_exp:</span> <span class='id identifier rubyid_current_exp'>current_exp</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  
+  <span class='comment'># Llamar al callback del usuario de subida de nivel
+</span>  <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='symbol'>:OnLevelUp</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:new_level</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:new_level</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span>
   
   <span class='comment'># Y retornar estructura
 </span>  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
@@ -612,12 +618,12 @@ nuevo nivel.</p>
       <pre class="lines">
 
 
-47
 48
-49</pre>
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span>
   <span class='kw'>return</span> <span class='cvar'>@@leveling_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>levels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>end</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
@@ -671,12 +677,12 @@ nuevo nivel.</p>
       <pre class="lines">
 
 
-41
 42
-43</pre>
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span>
   <span class='kw'>return</span> <span class='cvar'>@@leveling_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>levels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>start</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
@@ -713,7 +719,6 @@ nuevo nivel.</p>
       <pre class="lines">
 
 
-17
 18
 19
 20
@@ -725,10 +730,11 @@ nuevo nivel.</p>
 26
 27
 28
-29</pre>
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/leveling.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -753,7 +759,7 @@ nuevo nivel.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Apr 14 12:18:50 2015 by
+  Generated on Thu Apr 16 10:57:24 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
