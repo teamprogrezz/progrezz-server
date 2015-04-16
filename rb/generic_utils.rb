@@ -179,13 +179,13 @@ module Evented
   # @param name [Object] Nombre del evento (dispatcher) al que se le añadirá el callback o handler.
   # @param handler [Lambda] Función handler del evento.
   def add_event_listener(name, handler)
-    dispatcher(name) << handler
+    dispatcher(name) << handler unless dispatcher(name).include? handler
   end
   
   # Eliminar un callback.
   # @param name [Object] Nombre del evento (dispatcher) al que se le quitará el callback o handler.
   # @param handler [Lambda] Función handler del evento.
   def remove_event_listener( name, handler )
-    dispatcher(name).delete(handler)
+    dispatcher(name).delete(handler) if dispatcher(name).include? handler
   end
 end

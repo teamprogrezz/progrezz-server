@@ -12,6 +12,7 @@ module Game
       # Datos de leveo (hash)
       @@leveling_data = {}
       
+      
       # Inicializar mecánica.
       # Cargará los datos de leveo desde el fichero #LEVELING_FILE.
       def self.setup()
@@ -102,7 +103,7 @@ module Game
         level_profile.update( { level: current_level, level_exp: current_exp } )
         
         # Llamar al callback del usuario de subida de nivel
-        user.on_level_up( output[:new_level] ) if output[:new_level] != nil
+        user.dispatch(:OnLevelUp, output[:new_level]) if output[:new_level] != nil
         
         # Y retornar estructura
         return output

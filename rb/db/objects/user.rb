@@ -20,7 +20,8 @@ module Game
     #
     # Se considera un objeto geolocalizado.
     class User < GeolocatedObject
-      include Neo4j::ActiveNode
+      include Neo4j::ActiveNode # Neo4j
+      extend Evented # Eventos.
       
       #-- --------------------------------------------------
       #                      Constantes
@@ -397,16 +398,7 @@ module Game
         
         return output
       end
-      
-      # Callback de ejecución cuando el jugador sube de nivel.
-      # @param new_level [Integer] Nuevo nivel alcanzado.
-      def on_level_up(new_level)
-        raise ::GenericException.new("Invalid level '" + new_level.to_s + "'.") if (new_level == nil)
-        
-        self.backpack.recalculate_slots(new_level)
-        
-        # ...
-      end
+
       
     end
   end
