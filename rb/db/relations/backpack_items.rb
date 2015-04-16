@@ -61,6 +61,7 @@ module Game
         # @return [Hash<Symbol, Object>] Objeto como hash.
         def to_hash(exclusion_list = [])
           return {
+            id:              neo_id,
             created_at:      self.created_at.to_i,
             #backpack_index:  self.backpack_index,
             amount:          self.amount,

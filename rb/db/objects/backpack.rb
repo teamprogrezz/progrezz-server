@@ -114,11 +114,15 @@ module Game
       # @return [Hash<Symbol, Object>] Objeto como hash.
       def to_hash(exclusion_list = [])
         output = []
+        index = 0
+        
         self.stacks.each_with_rel do |item, rel|
           output << {
             item_id: item.item_id,
             stack: rel.to_hash
           }
+          
+          index += 1
         end
         
         return output

@@ -351,6 +351,28 @@ class RESTTest < Test::Unit::TestCase
 
   end
   
+  # Probar "user_get_backpack"
+  def test_user_get_backpack
+    authenticate()
+    
+    # Recolectar depósito
+    @request[:request][:type] = "user_collect_item_from_deposit"
+    @request[:request][:data] = { user_id: @users[0].user_id, deposit_uuid: @deposit_instances[0].uuid  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    
+    # Ver el inventario
+    @request[:request][:type] = "user_get_backpack"
+    @request[:request][:data] = { user_id: @users[0].user_id  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:backpack][0][:item_id], @deposit_instances[0].deposit.item.item_id
+
+    ok
+  end
+  
   # ---------------------------
   #         Messages
   # ---------------------------

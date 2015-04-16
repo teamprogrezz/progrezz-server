@@ -57,6 +57,17 @@ module Sinatra; module API ;module REST
       })
       
     end
+    
+    # Ver los datos de la mochila del usuario
+    def self.user_get_backpack( app, response, session )
+      user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
+      
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        backpack: user.backpack.to_hash
+      })
+    end
+    
   end
   
 end; end; end
