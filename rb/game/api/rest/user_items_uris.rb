@@ -23,7 +23,8 @@ module Sinatra; module API ;module REST
       Game::API::JSONResponse.ok_response!( response, {
         type: "json",
         message: "Deposit collected.",
-        exp_gained: extra[:exp]
+        exp_gained: extra[:exp],
+        mining_info: extra[:mining]
       })
     end
     

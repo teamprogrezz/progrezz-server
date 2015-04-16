@@ -279,26 +279,29 @@ module Game
         # TODO: Comprobar si está lo suficientemente cerca
         # ...
         
-        # TODO: Añadir al inventario del usuario
-        resources = deposit_instance.collect()
-        # ...
+        # TODO: Añadir al inventario del usuario (o intentarlo).
+        out[:mining] = deposit_instance.gather( self )
                   
-        # Añadir experiencia al usuario en función de lo recolectado (calidad).
-        out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, action_name)
-        
-        # Añadir al contador
-        self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
-        
-        # TODO: Cooldown en función de su nivel
-        cooldown = deposit_instance.deposit.user_cooldown
-        
-        # Marcar depósito como recolectado.
-        if current_rel != nil
-          current_rel.update_cooldown( cooldown )
-          return current_rel
-        else
-          return Game::Database::RelationShips::UserCollected_ItemDepositInstance.create(from_node: self, to_node: deposit_instance, cooldown: cooldown )
+        # Si realmente ha recolectado algo, hacer lo que sigue
+        if out[:mining][:added_amount] > 0
+          # Añadir experiencia al usuario en función de lo recolectado (calidad).
+          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, action_name)
+          
+          # Añadir al contador
+          self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
+          
+          # TODO: Cooldown en función de su nivel
+          cooldown = deposit_instance.deposit.user_cooldown
+          
+          # Marcar depósito como recolectado.
+          if current_rel != nil
+            current_rel.update_cooldown( cooldown )
+            return current_rel
+          else
+            return Game::Database::RelationShips::UserCollected_ItemDepositInstance.create(from_node: self, to_node: deposit_instance, cooldown: cooldown )
+          end
         end
+        
       end
     end
     

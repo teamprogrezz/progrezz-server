@@ -71,7 +71,7 @@ module Game
             in_cooldown:       (self.cooldown?) ? true : false,
             start:             self.created_at.to_i,
             cooldown:          self.cooldown,
-            remaining_seconds: self.cooldown - (DateTime.now - self.created_at).to_i
+            remaining_seconds: self.cooldown - (DateTime.now.to_time.to_i - self.created_at.to_time.to_i)
           }
         end
         
