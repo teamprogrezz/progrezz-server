@@ -164,7 +164,7 @@ module Game
           current_amount: self.current_amount,
           created_at:  self.created_at.to_time.to_i,
           duration: self.duration,
-          remaining_seconds: duration - (DateTime.now - self.created_at).to_i
+          remaining_seconds: (duration * 86400) - (DateTime.now.to_time.to_i - self.created_at.to_time.to_i)
         }
         
         if user_rel == nil
