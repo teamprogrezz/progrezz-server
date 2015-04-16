@@ -13,11 +13,12 @@ module Game
       #-- --------------------------------------------------
       #                    Callbacks (juego)
       #   -------------------------------------------------- #++
-      
             
       # Callback de subida de nivel.
       add_event_listener :OnLevelUp, lambda { |user, new_level|
-        raise ::GenericException.new("Invalid level '" + new_level.to_s + "'.") if (new_level == nil)
+        raise ::GenericException.new("Invalid user.") if (user == nil)
+        
+        new_level ||= user.level_profile.level
         user.backpack.recalculate_slots(new_level)
       }
       

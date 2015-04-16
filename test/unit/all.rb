@@ -30,7 +30,7 @@ class CustomTestSuite < Test::Unit::TestSuite
     # Añadir cositas
     @@users << Game::Database::User.sign_up( "test", 'test', {latitude: 28.4694, longitude: -16.2738} )
     @@users[0].level_profile.update( {level: 6} )
-    @@users[0].on_level_up()
+    @@users[0].dispatch(:OnLevelUp, @@users[0].level_profile.level)
     @@users[0].write_message( "Hola mundo!!!" )
     
     # Usuarios de prueba

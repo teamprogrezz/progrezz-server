@@ -31,6 +31,14 @@ class RESTTest < Test::Unit::TestCase
     GenericUtils.symbolize_keys_deep!(@response)
   end
   
+  def ok?
+    exit(-1) if !@exec_ok
+  end
+  
+  def ok
+    @exec_ok = true
+  end
+  
   # Inicializar antes de cada prueba.
   def setup
     # Cargar usuarios y mensajes (referencias)
@@ -50,6 +58,8 @@ class RESTTest < Test::Unit::TestCase
     @response = {
       metadata: { }
     }
+    
+    @exec_ok = false
   end
   
   # Cerrar antes de cada prueba
@@ -59,6 +69,8 @@ class RESTTest < Test::Unit::TestCase
     # Deshacer cambios en la base de datos.
     Game::Database::DatabaseManager.rollback_transaction(@transaction)
     Game::Database::DatabaseManager.stop_transaction(@transaction)
+    
+    ok?
   end
 
   # ---------------------------
@@ -71,8 +83,10 @@ class RESTTest < Test::Unit::TestCase
     @request[:request][:data] = { name: "ProgrezzTest" }
     rest_request()
 
-    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:status], "error"
     assert_equal @response[:response][:data][:message], "Hello, ProgrezzTest!"
+    
+    ok
   end
   
   # Probar "echo_py"
@@ -83,6 +97,8 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:message], "Hello, pythonist ProgrezzTest!"
+    
+    ok
   end
   
   # ---------------------------
@@ -100,6 +116,8 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:user][:user_id], @users[0].user_id
     
+    ok
+    
   end
   
   # Probar "user_get_profile"
@@ -112,6 +130,8 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:profile][:info][:user_id], @users[0].user_id
+    
+    ok
     
   end
   
@@ -127,6 +147,8 @@ class RESTTest < Test::Unit::TestCase
     assert @response[:response][:data][:allowed_actions].keys.include? :unlock_message
     assert @response[:response][:data][:allowed_actions].keys.include? :collect_fragment
     assert @response[:response][:data][:allowed_actions].keys.include? :search_nearby_fragments
+    
+    ok
     
   end
   
@@ -161,6 +183,8 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "error"
     assert_equal @response[:response][:message], "User does not own message '" + @messages[1].uuid + "' to unlock."
+    
+    ok
   end
   
   # Probar "user_write_message"
@@ -183,6 +207,8 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:written_message][:author][:author_alias], "test"
     assert_equal @response[:response][:data][:written_message][:message][:content], "Holaaaa!!"
+    
+    ok
   end
   
   # Probar "user_collect_message_fragment"
@@ -217,6 +243,8 @@ class RESTTest < Test::Unit::TestCase
     
     # Mensaje completado!
     assert_equal @users[0].collected_completed_messages.count, 2
+    
+    ok
   end
   
   # Probar "user_get_nearby_message_fragments"
@@ -231,6 +259,8 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert @response[:response][:data][:fragments][:system_fragments].count > 3
+    
+    ok
   end
   
   # Probar "user_get_messages"
@@ -244,6 +274,8 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:completed_messages].count, 1
     assert_equal @response[:response][:data][:fragmented_messages].count, 1
+    
+    ok
   end
   
   # Probar "user_get_messages"
@@ -256,6 +288,8 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:fragments].values[0].count, 2
+    
+    ok
   end
   
   # ---------------------------
@@ -278,6 +312,8 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "error"
     assert_equal @response[:response][:message], "The deposit could not be collected: Deposit in cooldown."
+    
+    ok
 
   end
   
@@ -308,6 +344,8 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert @response[:response][:data][:deposits][@deposit_instances[0].uuid.to_sym][:user][:in_cooldown]
+    
+    ok
 
   end
   
@@ -322,6 +360,8 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:info][:message][:uuid], @messages[1].uuid 
+    
+    ok
   end
   
   # Probar "message_get_unauthored"
@@ -332,6 +372,8 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:messages].count, @messages.count
+    
+    ok
   end
   
   # Probar "message_get_from_fragment"
@@ -342,6 +384,8 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert_equal @messages[0].uuid, @response[:response][:data][:message][:message][:uuid]
+    
+    ok
   end
   
   # ---------------------------
@@ -356,6 +400,8 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:item][:name], "LAG Grenade"
+    
+    ok
   end
   
   # Probar "item_list"
@@ -366,17 +412,8 @@ class RESTTest < Test::Unit::TestCase
     
     assert_equal @response[:response][:status], "ok"
     assert !@response[:response][:data][:item_list].empty?
+    
+    ok
   end
   
-end
-
-# Ejecutar test
-Game::Database::DatabaseManager.run_nested_transaction do |tx|
-  # Agregar ojetos de prueba
-  #init_test_db()
-  
-  #Test::Unit::UI::Console::TestRunner.run(RESTTest)
-  
-  # Rollback
-  #tx.failure
 end
