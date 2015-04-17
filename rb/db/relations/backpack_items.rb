@@ -48,7 +48,7 @@ module Game
         
         # Índice del objeto o stack en el inventario.
         # @return [Integer] Índice en la mochila. Debe ser mayor que cero, y no tiene porque estar contenido en el número de slots de la mochila.
-        property :stack_id, type: Integer, default: -1
+        property :stack_id, type: Integer, default: 0
         
         # Cantidad de objetos en este stack.
         # @return [Integer] No puede superar el límite según el objeto.
@@ -61,7 +61,7 @@ module Game
         # @return [Hash<Symbol, Object>] Objeto como hash.
         def to_hash(exclusion_list = [])
           return {
-            id:              neo_id,
+            stack_id:        self.stack_id,
             created_at:      self.created_at.to_i,
             #backpack_index:  self.backpack_index,
             amount:          self.amount,
@@ -120,8 +120,8 @@ module Game
         
         # Borrar enlace.
         def remove()
-          Game::Database::DatabaseManager.export_neo4jnode(nil, [stack])
-          stack.destroy()
+          Game::Database::DatabaseManager.export_neo4jnode(nil, [self])
+          self.destroy()
         end
         
       end

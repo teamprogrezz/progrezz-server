@@ -343,7 +343,12 @@
 161
 162
 163
-164</pre>
+164
+165
+166
+167
+168
+169</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 38</span>
@@ -450,8 +455,11 @@
         <span class='kw'>end</span>
       <span class='kw'>end</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
       
-      <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;h2&gt;Datos añadidos correctamente.&lt;/h2&gt;</span><span class='tstring_end'>&quot;</span></span>
-    
+      <span class='comment'># Generar depósitos cercanos
+</span>      <span class='comment'>#puts &quot;Tiempo de adición de objetos a inventario: &quot; + (GenericUtils.timer do
+</span>      <span class='comment'>#  user_Wikiti.backpack.add_item( Game::Database::Item.find_by(item_id: &quot;mineral_iron&quot;), 100 )
+</span>      <span class='comment'>#end).to_s
+</span>    
       <span class='comment'># Banearme 5 minutos ( D&#39;: ).
 </span>      <span class='comment'># Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
 </span>      
@@ -466,7 +474,9 @@
       <span class='comment'># Recolectarla
 </span>      <span class='comment'>#exp = {}
 </span>      <span class='comment'>#user_Wikiti.collect_item_from_deposit(deposit, exp)
-</span>    
+</span>                
+      <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;h2&gt;Datos añadidos correctamente.&lt;/h2&gt;</span><span class='tstring_end'>&quot;</span></span>
+      
     <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
       <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_rollback_transaction'>rollback_transaction</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -&gt; </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> \n\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -559,13 +569,13 @@
       <pre class="lines">
 
 
-167
-168
-169
-170</pre>
+172
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 167</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 172</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db_reset'>db_reset</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db_drop'>db_drop</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -581,7 +591,7 @@
 </div>
 
     <div id="footer">
-  Generated on Thu Apr 16 10:57:21 2015 by
+  Generated on Fri Apr 17 14:07:41 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

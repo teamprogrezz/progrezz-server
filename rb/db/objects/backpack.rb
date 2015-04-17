@@ -106,7 +106,7 @@ module Game
               from_node: self,
               to_node:   item,
               amount:    amount,
-              stack_id: self.last_stack_id + 1
+              stack_id:  self.last_stack_id
             })
             
             self.update(last_stack_id: self.last_stack_id + 1)
@@ -122,7 +122,7 @@ module Game
         raise ::GenericException.new( "Invalid stack id." ) if stack_id == nil || amount.to_i < 0
         raise ::GenericException.new( "Invalid amount (null)." ) if amount == nil || amount.to_i <= 0
         
-        stack = self.stacks(:s, :r).where("r.stack_id = {sid}").params(sid: stack_id).first
+        stack = self.stacks(:s, :r).where("r.stack_id = " + stack_id.to_s).pluck(:r).first 
         raise ::GenericException.new( "Stack not found." ) if stack == nil
         
         item = stack.to_node
@@ -130,6 +130,15 @@ module Game
         
         # TODO: Cambiar el contenido borrado por energía, o algo así.
         # ...
+        
+        return {
+          removed: count
+        }
+      end
+      
+      # ...
+      def split_stack(stack_id, restack_amount)
+        # TODO: IMPLEMENTAME!
       end
       
       # Transformar objeto a un hash

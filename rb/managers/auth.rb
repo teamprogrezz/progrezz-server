@@ -1,10 +1,11 @@
 # encoding: UTF-8
 
+
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 require 'omniauth-twitter'
 require 'omniauth-github'
-require 'omniauth-steam'
+# require 'omniauth-steam'
 
 require 'date'
 
@@ -174,7 +175,7 @@ module Game
 end
 
 # Inicializar.
-Game::AuthManager.setup( [] )
+Game::AuthManager.setup( [:steam] )
 
 module Sinatra
   
@@ -245,9 +246,7 @@ module Sinatra
         session[:name]    = auth['info'].name                  # Nombre completo
         session[:alias]   = auth['info'].nick || auth['info'].alias || auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
         #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
-        
-        puts "->", session[:user_id], session[:name], session[:alias]
-        
+
         # Registrar el usuario en la base de datos.
         begin
           Game::AuthManager.login( session[:user_id], session[:alias] )

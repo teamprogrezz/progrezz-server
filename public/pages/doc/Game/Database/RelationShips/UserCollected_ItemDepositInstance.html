@@ -678,7 +678,7 @@ ha minado el depósito.</p>
     <span class='label'>in_cooldown:</span>       <span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cooldown?'>cooldown?</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span><span class='comma'>,</span>
     <span class='label'>start:</span>             <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span>
     <span class='label'>cooldown:</span>          <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cooldown'>cooldown</span><span class='comma'>,</span>
-    <span class='label'>remaining_seconds:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cooldown'>cooldown</span> <span class='op'>-</span> <span class='lparen'>(</span><span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>-</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+    <span class='label'>remaining_seconds:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cooldown'>cooldown</span> <span class='op'>-</span> <span class='lparen'>(</span><span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>-</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
   <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -817,7 +817,7 @@ ha minado el depósito.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Apr 16 10:57:25 2015 by
+  Generated on Fri Apr 17 14:07:45 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

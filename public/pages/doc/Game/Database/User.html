@@ -2220,7 +2220,10 @@ recolectados por el usuario. En cualquier otro caso, generará excepciones.</p>
 299
 300
 301
-302</pre>
+302
+303
+304
+305</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 265</span>
@@ -2242,26 +2245,29 @@ recolectados por el usuario. En cualquier otro caso, generará excepciones.</p>
   <span class='comment'># TODO: Comprobar si está lo suficientemente cerca
 </span>  <span class='comment'># ...
 </span>  
-  <span class='comment'># TODO: Añadir al inventario del usuario
-</span>  <span class='id identifier rubyid_resources'>resources</span> <span class='op'>=</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='comment'># ...
-</span>            
-  <span class='comment'># Añadir experiencia al usuario en función de lo recolectado (calidad).
-</span>  <span class='id identifier rubyid_out'>out</span><span class='lbracket'>[</span><span class='symbol'>:exp</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_action_name'>action_name</span><span class='rparen'>)</span>
-  
-  <span class='comment'># Añadir al contador
-</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>count_collected_item_deposits:</span> <span class='id identifier rubyid_count_collected_item_deposits'>count_collected_item_deposits</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
-  
-  <span class='comment'># TODO: Cooldown en función de su nivel
-</span>  <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='op'>=</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_cooldown'>user_cooldown</span>
-  
-  <span class='comment'># Marcar depósito como recolectado.
-</span>  <span class='kw'>if</span> <span class='id identifier rubyid_current_rel'>current_rel</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='id identifier rubyid_current_rel'>current_rel</span><span class='period'>.</span><span class='id identifier rubyid_update_cooldown'>update_cooldown</span><span class='lparen'>(</span> <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_current_rel'>current_rel</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCollected_ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='label'>from_node:</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='label'>to_node:</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='comma'>,</span> <span class='label'>cooldown:</span> <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='rparen'>)</span>
+  <span class='comment'># TODO: Añadir al inventario del usuario (o intentarlo).
+</span>  <span class='id identifier rubyid_out'>out</span><span class='lbracket'>[</span><span class='symbol'>:mining</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='period'>.</span><span class='id identifier rubyid_gather'>gather</span><span class='lparen'>(</span> <span class='kw'>self</span> <span class='rparen'>)</span>
+            
+  <span class='comment'># Si realmente ha recolectado algo, hacer lo que sigue
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_out'>out</span><span class='lbracket'>[</span><span class='symbol'>:mining</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:added_amount</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='comment'># Añadir experiencia al usuario en función de lo recolectado (calidad).
+</span>    <span class='id identifier rubyid_out'>out</span><span class='lbracket'>[</span><span class='symbol'>:exp</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_action_name'>action_name</span><span class='rparen'>)</span>
+    
+    <span class='comment'># Añadir al contador
+</span>    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>count_collected_item_deposits:</span> <span class='id identifier rubyid_count_collected_item_deposits'>count_collected_item_deposits</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+    
+    <span class='comment'># TODO: Cooldown en función de su nivel
+</span>    <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='op'>=</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_cooldown'>user_cooldown</span>
+    
+    <span class='comment'># Marcar depósito como recolectado.
+</span>    <span class='kw'>if</span> <span class='id identifier rubyid_current_rel'>current_rel</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_current_rel'>current_rel</span><span class='period'>.</span><span class='id identifier rubyid_update_cooldown'>update_cooldown</span><span class='lparen'>(</span> <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='rparen'>)</span>
+      <span class='kw'>return</span> <span class='id identifier rubyid_current_rel'>current_rel</span>
+    <span class='kw'>else</span>
+      <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCollected_ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='label'>from_node:</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='label'>to_node:</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='comma'>,</span> <span class='label'>cooldown:</span> <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='rparen'>)</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
+  
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -4602,7 +4608,7 @@ con el atributo #written_messages. Tiene como tipo
 </div>
 
     <div id="footer">
-  Generated on Thu Apr 16 10:57:23 2015 by
+  Generated on Fri Apr 17 14:07:43 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

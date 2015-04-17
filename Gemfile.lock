@@ -184,6 +184,7 @@ DEPENDENCIES
   omniauth
   omniauth-github
   omniauth-google-oauth2
+  omniauth-openid
   omniauth-steam
   omniauth-twitter
   pickup

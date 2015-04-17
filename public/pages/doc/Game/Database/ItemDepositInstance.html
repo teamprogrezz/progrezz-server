@@ -254,30 +254,6 @@ están geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#collect-instance_method" title="#collect (instance method)">- (Integer) <strong>collect</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recoger recursos.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#collectors-instance_method" title="#collectors (instance method)">- (Game::Database::RelationShips::UserFragmentMessage) <strong>collectors</strong> </a>
     
 
@@ -390,6 +366,30 @@ están geolocalizados.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Duración (en días) de un depósito.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#gather-instance_method" title="#gather (instance method)">- (Integer) <strong>gather</strong>(user) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recoger recursos.</p>
 </div></span>
   
 </li>
@@ -793,96 +793,6 @@ están geolocalizados.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="collect-instance_method">
-  
-    - (<tt>Integer</tt>) <strong>collect</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Recoger recursos. TODO: Usar esta función.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Recursos recogidos.</p>
-</div>
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 120</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_collect'>collect</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid deposit (caducated).</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_caducated?'>caducated?</span>
-  
-  <span class='id identifier rubyid_resources'>resources</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_min_amount'>user_min_amount</span> <span class='op'>...</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_max_amount'>user_max_amount</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_resources'>resources</span> <span class='op'>&gt;=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_resources'>resources</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span>
-  <span class='kw'>end</span>
-  
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>current_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span> <span class='op'>-</span> <span class='id identifier rubyid_resources'>resources</span> <span class='rparen'>)</span>
-  
-  <span class='kw'>return</span> <span class='id identifier rubyid_resources'>resources</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="collectors-instance_method">
   
     - (<tt><span class='object_link'><a href="RelationShips/UserFragmentMessage.html" title="Game::Database::RelationShips::UserFragmentMessage (class)">Game::Database::RelationShips::UserFragmentMessage</a></span></tt>) <strong>collectors</strong> 
@@ -1155,6 +1065,116 @@ con el atributo <code>deposit</code>.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="gather-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>gather</strong>(user) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Recoger recursos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Usuario para la recolección.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Recursos recogidos.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 120</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_gather'>gather</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid deposit (caducated).</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_caducated?'>caducated?</span>
+  
+  <span class='comment'># Escoger una cantidad aleatoria de recursos
+</span>  <span class='id identifier rubyid_resources'>resources</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span><span class='comma'>,</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_min_amount'>user_min_amount</span> <span class='op'>...</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_max_amount'>user_max_amount</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span>
+  
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_add_item'>add_item</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span><span class='comma'>,</span> <span class='id identifier rubyid_resources'>resources</span> <span class='rparen'>)</span>
+
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>current_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span> <span class='op'>-</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:added_amount</span><span class='rbracket'>]</span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:added_amount</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="item_id_shortcut-instance_method">
   
     - (<tt>String</tt>) <strong>item_id_shortcut</strong> 
@@ -1363,7 +1383,7 @@ con el atributo <code>deposit</code>.</p>
     <span class='label'>current_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span><span class='comma'>,</span>
     <span class='label'>created_at:</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span>
     <span class='label'>duration:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_duration'>duration</span><span class='comma'>,</span>
-    <span class='label'>remaining_seconds:</span> <span class='id identifier rubyid_duration'>duration</span> <span class='op'>-</span> <span class='lparen'>(</span><span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>-</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+    <span class='label'>remaining_seconds:</span> <span class='lparen'>(</span><span class='id identifier rubyid_duration'>duration</span> <span class='op'>*</span> <span class='int'>86400</span><span class='rparen'>)</span> <span class='op'>-</span> <span class='lparen'>(</span><span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>-</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
   <span class='rbrace'>}</span>
   
   <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>==</span> <span class='kw'>nil</span>
@@ -1439,7 +1459,7 @@ con el atributo <code>deposit</code>.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Apr 16 10:57:24 2015 by
+  Generated on Fri Apr 17 14:07:43 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

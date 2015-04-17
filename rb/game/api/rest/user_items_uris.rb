@@ -68,6 +68,20 @@ module Sinatra; module API ;module REST
       })
     end
     
+    # Eliminar una cantidad de objetos del inventario.
+    def self.user_exchange_backpack_stack( app, response, session )
+      user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
+      stack_id = response[:request][:request][:data][:stack_id]
+      amount   = response[:request][:request][:data][:amount]
+      
+      output = user.backpack.exchange_stack_amount(stack_id, amount)
+      
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        removed: output[:removed]
+      })
+    end
+    
   end
   
 end; end; end
