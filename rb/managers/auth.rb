@@ -174,7 +174,7 @@ module Game
 end
 
 # Inicializar.
-Game::AuthManager.setup( [:twitter] )
+Game::AuthManager.setup( [] )
 
 module Sinatra
   
@@ -241,7 +241,7 @@ module Sinatra
       app.route :get, :post, '/auth/:provider/callback' do
         auth = request.env['omniauth.auth']
         
-        session[:user_id] = auth['info'].email || auth['uid']  # ID -> correo (salvo steam)
+        session[:user_id] = auth['info'].email || params['provider'].to_s + "-" + auth['uid'].to_s  # ID -> correo (salvo steam)
         session[:name]    = auth['info'].name                  # Nombre completo
         session[:alias]   = auth['info'].nick || auth['info'].alias || auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
         #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
