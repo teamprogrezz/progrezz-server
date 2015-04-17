@@ -8,6 +8,7 @@ require 'oj'
 require 'oj_mimic_json'
 
 require 'sinatra'
+require 'sinatra/multi_route'
 require 'neo4j'
 require 'logger'
 
@@ -25,7 +26,7 @@ if development?
   puts "--------------------------------------"
   
   # Variable de desarrollo
-  DEV = true
+  ::DEV = true
 end
 
 # Módulo Sinatra (predefinido).
@@ -115,7 +116,10 @@ module Sinatra
   register Pages
 end
 
-class Sinatra::ProgrezzServer; register Sinatra::Pages; end
+class Sinatra::ProgrezzServer
+  register Sinatra::Pages
+  register Sinatra::MultiRoute
+end
 #-- Registrar. #++
 #-- ---------------------------------------------------------------- #++
 

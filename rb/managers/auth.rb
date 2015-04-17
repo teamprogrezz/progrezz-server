@@ -4,6 +4,7 @@ require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 require 'omniauth-twitter'
 require 'omniauth-github'
+require 'omniauth-steam'
 
 require 'date'
 
@@ -19,7 +20,7 @@ module Game
     BAN_FILE = "tmp/ban.log"
     
     # Servicios disponibles.
-    SERVICES = [:google_oauth2, :twitter, :github]
+    SERVICES = [:google_oauth2, :twitter, :github, :steam]
     
     # Servicios cargados con OmniAuth.
     @@loaded_services
@@ -207,6 +208,11 @@ module Sinatra
             provider :github, ENV['progrezz_github_id'], ENV['progrezz_github_secret'], scope: "user"
           end
           
+          # Configurar GitHub
+          if Game::AuthManager.get_loaded_services.include? :steam
+            provider :steam, ENV['progrezz_steam_id']
+          end
+          
           # ...
         end
       end
@@ -232,14 +238,16 @@ module Sinatra
       
       # Callback que será llamado por el servicio.
       # Se puede acceder a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter o /auth/google_oauth2).
-      app.get '/auth/:provider/callback' do
+      app.route :get, :post, '/auth/:provider/callback' do
         auth = request.env['omniauth.auth']
         
-        session[:user_id] = auth['info'].email              # ID -> correo
-        session[:name]    = auth['info'].name               # Nombre completo
-        session[:alias]   = auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
+        session[:user_id] = auth['info'].email || auth['uid']  # ID -> correo (salvo steam)
+        session[:name]    = auth['info'].name                  # Nombre completo
+        session[:alias]   = auth['info'].nick || auth['info'].alias || auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
         #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
-
+        
+        puts "->", session[:user_id], session[:name], session[:alias]
+        
         # Registrar el usuario en la base de datos.
         begin
           Game::AuthManager.login( session[:user_id], session[:alias] )

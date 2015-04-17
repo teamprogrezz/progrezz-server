@@ -10,9 +10,9 @@
 <div id="user_search_alias_result">
 </div>
 
-<h2>Search user by email</h2>
+<h2>Search user by user id</h2>
 <form id="search_user_by_email">
-  <label>User email</label><input type="text" name="email" placeholder="User email (e.g: yourmail@example.com)"><br>
+  <label>User id</label><input type="text" name="email" placeholder="User email (e.g: yourmail@example.com) or id"><br>
   <label>Regular expression?</label><input type="checkbox" name="regexp" ><br>
   
   <button type="submit">Search</button>
@@ -22,7 +22,7 @@
 
 <h2>Ban an user</h2>
 <form id="ban_user">
-  <label for="ban_id">User id: </label><input type="text" placeholder="User email (e.g: yourmail@example.com)" name="ban_id" ><br>
+  <label for="ban_id">User id: </label><input type="text" placeholder="User email (e.g: yourmail@example.com) or id" name="ban_id" ><br>
   <label for="ban_duration">Ban duration: </label><input type="number" placeholder="Ban duration (in seconds)" name="ban_duration" ><br>
   <label for="ban_reason">Ban reason: </label><input type="text" placeholder="Ban reason (e.g: 'Offensive language.')" name="ban_reason" ><br>
 
@@ -31,7 +31,7 @@
 
 <h2>Unban an user</h2>
 <form id="unban_user">
-  <label for="unban_id">User id: </label><input type="text" placeholder="User email (e.g: yourmail@example.com)" name="unban_id" ><br>
+  <label for="unban_id">User id: </label><input type="text" placeholder="User email (e.g: yourmail@example.com) or id" name="unban_id" ><br>
 
   <button type="submit">Unban user</button>
 </form>
