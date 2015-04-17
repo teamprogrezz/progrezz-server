@@ -47,8 +47,8 @@ module Game
         property :created_at
         
         # Índice del objeto o stack en el inventario.
-        # @return [Integer] Índice en la mochila. Debe ir desde 0 hasta el número de casillas máximo del inventario (excluido).
-        #property :backpack_index, type: Integer, default: -1
+        # @return [Integer] Índice en la mochila. Debe ser mayor que cero, y no tiene porque estar contenido en el número de slots de la mochila.
+        property :stack_id, type: Integer, default: -1
         
         # Cantidad de objetos en este stack.
         # @return [Integer] No puede superar el límite según el objeto.
@@ -81,7 +81,7 @@ module Game
         # @note No use esta función a la ligera.
         # @param add_amount [Integer] Cantidad a añadir.
         # @return [Integer, nil] Devuelve la cantidad actual del stack una vez añadido.
-        def force_add(add_amount)
+        def force_add_item(add_amount)
           current_amount = self.amount + add_amount
           self.update( amount: self.amount + add_amount )
           return current_amount
@@ -90,14 +90,38 @@ module Game
         # Intenta añadir una cantidad al stack.
         # @param add_amount [Integer] Cantidad a añadir.
         # @return [Integer, nil] Devuelve la cantidad actual del stack una vez añadido. Si no puede añadirse, retorna nil.
-        def add(add_amount)
-          return force_add(add_amount) if fits?(add_amount)          
+        def add_item(add_amount)
+          return force_add_item(add_amount) if fits?(add_amount)          
           return nil
+        end
+        
+        # Borrar una cantidad de objetos del stack.
+        #
+        # Si es demasiado grande, se borrará el stack completo.
+        #
+        # @param am [Integer] Cantidad de objetos a borrar del stack.
+        # @return [Integer] Cantidad de objetos borrados.
+        def remove_amount(am)
+          if am < self.amount      
+            self.update( amount: self.amount - am )
+            am = self.amount
+          else
+            am = self.amount
+            self.remove()
+          end
+          
+          return am
         end
         
         # Cantidad de objetos que caben en el 
         def empty_space()
           return to_node.max_amount - self.amount
+        end
+        
+        # Borrar enlace.
+        def remove()
+          Game::Database::DatabaseManager.export_neo4jnode(nil, [stack])
+          stack.destroy()
         end
         
       end

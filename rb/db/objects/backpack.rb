@@ -22,6 +22,10 @@ module Game
       # @return [Integer] Tamaño del inventario (slots).
       property :slots, type: Integer, default: 0
       
+      # Contador de stacks.
+      # @return [Integer] Contador de stacks.
+      property :last_stack_id, type: Integer, default: 0
+      
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -81,7 +85,7 @@ module Game
           if (empty_space = rel.empty_space()) >= 0
             add_amount = [empty_space, amount].min
             
-            rel.force_add( add_amount )
+            rel.force_add_item( add_amount )
             amount -= add_amount
             output[:added_amount] += add_amount
           end
@@ -101,12 +105,31 @@ module Game
             Game::Database::RelationShips::BackpackItemStacks.create({
               from_node: self,
               to_node:   item,
-              amount: amount
+              amount:    amount,
+              stack_id: self.last_stack_id + 1
             })
+            
+            self.update(last_stack_id: self.last_stack_id + 1)
           end
         end
         
         return output
+      end
+      
+      # Borra una cantidad de un stack de objetos.
+      # @param stack_id [Integer] Identificador neo4j de la relación (stack).
+      def exchange_stack_amount(stack_id, amount)
+        raise ::GenericException.new( "Invalid stack id." ) if stack_id == nil || amount.to_i < 0
+        raise ::GenericException.new( "Invalid amount (null)." ) if amount == nil || amount.to_i <= 0
+        
+        stack = self.stacks(:s, :r).where("r.stack_id = {sid}").params(sid: stack_id).first
+        raise ::GenericException.new( "Stack not found." ) if stack == nil
+        
+        item = stack.to_node
+        count = stack.remove_amount( amount.to_i )
+        
+        # TODO: Cambiar el contenido borrado por energía, o algo así.
+        # ...
       end
       
       # Transformar objeto a un hash
