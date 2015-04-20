@@ -1,23 +1,25 @@
 # encoding: UTF-8
 
+require_relative './management'
+
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente al leveo.
-    class LevelingManagement
+    class LevelingManagement < Management
       
       # Fichero que contiene la información relativa al leveo.
-      LEVELING_FILE = "data/leveling.json"
+      DATAFILE = "data/leveling.json"
       
       # Datos de leveo (hash)
       @@leveling_data = {}
       
       
       # Inicializar mecánica.
-      # Cargará los datos de leveo desde el fichero #LEVELING_FILE.
+      # Cargará los datos de leveo desde el fichero #DATAFILE.
       def self.setup()
         begin
-          @@leveling_data = JSON.parse( File.read(LEVELING_FILE) )
+          @@leveling_data = JSON.parse( File.read(DATAFILE) )
           
           # Parsear funciones y añadirlas aquí.
           for function in @@leveling_data["functions"].values
@@ -25,7 +27,7 @@ module Game
           end
           
         rescue Exception => e
-          raise ::GenericException.new( "Error reading '" + LEVELING_FILE + "': " + e.message, e)
+          raise ::GenericException.new( "Error reading '" + DATAFILE + "': " + e.message, e)
         end
       end
       
@@ -80,7 +82,7 @@ module Game
         # Añadir al usuario la experiencia actual.
         current_exp += action_exp
         
-        # Calcular cuanta experiencia hace falta para el siguiente nivel (función parseada de LEVELING_FILE)
+        # Calcular cuanta experiencia hace falta para el siguiente nivel (función parseada de DATAFILE)
         exp_for_next_level = _next_level_required_exp( current_level + 1 )
         
         # Si es mayor que la experiencia actual, añadir un nuevo nivel, además de darle el exceso de experiencia.

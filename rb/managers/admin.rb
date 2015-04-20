@@ -94,30 +94,47 @@ module Sinatra
         erb :"admin/items", :layout => :"admin/layout"
       end
       
-      # -- Objetos --
-      app.post '/admin/items/edit_items' do
+      app.get '/admin/game_parameters' do
+        admin_protected!
+        erb :"admin/game_parameters", :layout => :"admin/layout"
+      end
+      
+      # -- Parámetros de juego (parametrizado). # ++
+      app.post '/admin/game_parameters/:action' do   
         content_type :json
         admin_protected!
         
+        @@action_list ||= {
+          "allowed_actions" => Game::Mechanics::AllowedActionsManagement,
+          "backpack" => Game::Mechanics::BackpackManagement,
+          "items" => Game::Mechanics::ItemsManagement,
+          "leveling" => Game::Mechanics::LevelingManagement
+        }
+        
         begin
-          data = params["data"]
+          data    = params["data"]
+          action  = params['action']
+          manager = @@action_list[ action ]
           
           # Reiniciar objetos
-          Game::Mechanics::ItemsManagement.init_items(data)
+          manager.update(data)
           
           # Guardar una copia del anterior
-          FileUtils.cp(Game::Mechanics::ItemsManagement::DATAFILE, "tmp/items_" + DateTime.now.to_time.to_i.to_s + ".json")
+          FileUtils.cp(manager::DATAFILE, "tmp/" + action + "_" + DateTime.now.to_time.to_i.to_s + ".sav")
           
           # Y sobrescribir
-          File.open(Game::Mechanics::ItemsManagement::DATAFILE, 'w') { |file| file.write( data ) }
+          File.open(manager::DATAFILE, 'w') { |file| file.write( data ) }
           
           
         rescue Exception => e
           halt 400, {'Content-Type' => 'text/plain'}, e.message + "\n" + e.backtrace.to_s
         end
         
-        return {}.to_json
+        puts "->", @@action_list[ params['action'] ]
+
+        return {status: "ok"}.to_json
       end
+      
       
       # -- Mensajes --
       app.post '/admin/messages/add' do

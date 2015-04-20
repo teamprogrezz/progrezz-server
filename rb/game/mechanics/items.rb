@@ -2,12 +2,14 @@
 
 require 'pickup'
 
+require_relative './management'
+
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente a
     # los objetos del juego (recursos, básicamente).
-    class ItemsManagement
+    class ItemsManagement < Management
       # Cantidad de fragmentos a generar por kilómetro cuadrado
       DEPOSIT_REPLICATION_PER_RADIUS_KM = 4
 
@@ -21,18 +23,20 @@ module Game
       @@items = nil
       
       # Inicializar gestor de mecánicas de objetos.
-      def self.setup()
-        init_items()
+      # @param str_data [String] Datos de entrada (si existiesen).
+      def self.setup(str_content = nil)
+        init_items(str_content)
       end
       
       # Inicializar objetos del juego (cargando desde un json).
+      # @param content [String] Datos de entrada (si existiesen).
       def self.init_items(content = nil)
         # Leer de fichero
         begin
           @@items = JSON.parse( content || File.read(DATAFILE) )
           GenericUtils.symbolize_keys_deep!(@@items)
         rescue Exception => e
-          raise ::GenericException.new( "Error while parsing item list from '" + content.to_s + "': " + e.message, e)
+          raise ::GenericException.new( "Error reading json: " + e.message, e)
         end
         
         # Para cada objeto

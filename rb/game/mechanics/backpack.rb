@@ -2,12 +2,14 @@
 
 require 'pickup'
 
+require_relative './management'
+
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente al
     # inventario o mochila de los diferentes usuarios.
-    class BackpackManagement
+    class BackpackManagement < Management
       
       # Datos referentes a este gestor.
       DATAFILE = "data/backpack.json"
@@ -16,12 +18,14 @@ module Game
       @@data = nil
       
       # Inicializar gestor de mecánicas de objetos.
-      def self.setup()
+      # @param str_data [String] Datos de entrada (si existiesen).
+      def self.setup(str_data = nil)
         begin
-          @@data = JSON.parse( File.read(DATAFILE) )
+          str_data ||= File.read(DATAFILE)
+          @@data = JSON.parse( str_data )
           
         rescue Exception => e
-          raise ::GenericException.new( "Error reading '" + DATAFILE + "': " + e.message, e)
+          raise ::GenericException.new( "Error reading json: " + e.message, e)
         end
         
         GenericUtils.symbolize_keys_deep!(@@data)
@@ -44,6 +48,13 @@ module Game
       # @return [Integer] Tamaño de un inventario dado un nivel.
       def self.slots(level)
         return (base_slots + level * slots_per_level).round
+      end
+      
+      # Actualizar (tiempo de ejecución).
+      # @param data [Object] Datos a pasar a la actualización del módulo.
+      def self.update(data = nil)
+        super(data)
+        self.recaculate_slots_for_players()
       end
       
       # Recalcular 

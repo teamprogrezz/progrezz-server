@@ -2,13 +2,15 @@
 
 require 'progrezz/geolocation'
 
+require_relative './management'
+
 module Game
   
   # Módulo de mecánicas de juego
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente a los mensajes y sus fragmentos.
-    class MessageManagement
+    class MessageManagement < Management
       # Cantidad de fragmentos a generar por kilómetro
       FRAGMENT_REPLICATION_PER_RADIUS_KM = 4
 

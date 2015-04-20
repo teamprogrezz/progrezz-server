@@ -3,6 +3,7 @@
 require 'rest-client'
 require 'progrezz/geolocation'
 
+require_relative './management'
 require_relative './leveling'
 
 module Game
@@ -10,7 +11,7 @@ module Game
 
     # Clase gestora de las mecánicas de juego referente a
     # las acciones permitidas por los usuario según el nivel.
-    class AllowedActionsManagement
+    class AllowedActionsManagement < Management
       # Hash que contiene los datos de DATAFILE
       @@data = {}
       
@@ -22,12 +23,14 @@ module Game
       
       # Inicializar mecánica.
       # Cargará los datos desde el fichero #DATAFILE.
-      def self.setup()
+      # @param str_data [String] Datos de entrada (si existiesen).
+      def self.setup(str_data = nil)
         begin
-          @@data = JSON.parse( File.read(DATAFILE) )
+          str_data ||= File.read(DATAFILE)
+          @@data = JSON.parse( str_data )
           
         rescue Exception => e
-          raise ::GenericException.new( "Error reading '" + DATAFILE + "': " + e.message, e)
+          raise ::GenericException.new( "Error reading json: " + e.message, e)
         end
         
         # Calcular acciones de cada usuario

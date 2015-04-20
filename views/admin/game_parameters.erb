@@ -1,0 +1,122 @@
+<script src="/lib/codemirror/js/codemirror.js"></script>
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+
+<h1>Game parameters</h1>
+<h2>Items list editor</h2>
+<form id="items">
+  <textarea id="items_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
+  <button type="submit">Save</button>
+</form>
+<pre id="items_output"></pre>
+
+<script type="text/javascript">
+  // Cambiar editor de objetos 
+  var editor_items  = CodeMirror.fromTextArea(document.getElementById("items_editor"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    tabSize: 2
+  });
+
+  editor_items.setValue( <%= file = File.open( Game::Mechanics::ItemsManagement::DATAFILE ).read.to_json %> );
+  
+  // Enviar al servidor lista de objetos
+  $(document).ready(function(){
+    $('#items').submit(function(evento){
+      evento.preventDefault();
+
+      var data;
+      try {
+        data = editor_items.getValue();
+        document.getElementById("items_output").innerHTML = "";
+      }
+      catch(error) {
+        document.getElementById("items_output").innerHTML = "Error: " + error;
+        document.getElementById("items_output").style.color = "red";
+        
+        return;
+      }
+
+      $.ajax({
+        url: '/admin/game_parameters/items',
+        type: 'post',
+        dataType: 'json',
+        data: { data: data },
+        success: function(datos){
+          document.getElementById("items_output").innerHTML = "Ok."
+          document.getElementById("items_output").style.color = "green";
+        },
+        error: function( jqXHR, textStatus, errorThrown ) {
+          console.log(jqXHR);
+          document.getElementById("items_output").innerHTML = "Error " + jqXHR.status + ": " + jqXHR.responseText;
+          document.getElementById("items_output").style.color = "red";
+        }
+      });
+    });
+    
+    
+  });
+</script>
+
+
+<h2>Allowed actions</h2>
+<form id="allowed_actions">
+  <textarea id="allowed_actions_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
+  <button type="submit">Save</button>
+</form>
+<pre id="allowed_actions_output"></pre>
+
+<script type="text/javascript">
+  // Cambiar editor de objetos 
+  var editor_allowed_actions  = CodeMirror.fromTextArea(document.getElementById("allowed_actions_editor"), {
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    mode: "application/ld+json",
+    lineWrapping: true,
+    lineNumbers: true,
+    smartIndent: true,
+    tabSize: 2
+  });
+
+  editor_allowed_actions.setValue( <%= file = File.open( Game::Mechanics::AllowedActionsManagement::DATAFILE ).read.to_json %> );
+  
+  // Enviar al servidor lista de objetos
+  $(document).ready(function(){
+    $('#allowed_actions').submit(function(evento){
+      evento.preventDefault();
+
+      var data;
+      try {
+        data = editor_allowed_actions.getValue();
+        document.getElementById("allowed_actions_output").innerHTML = "";
+      }
+      catch(error) {
+        document.getElementById("allowed_actions_output").innerHTML = "Error: " + error;
+        document.getElementById("allowed_actions_output").style.color = "red";
+        
+        return;
+      }
+
+      $.ajax({
+        url: '/admin/game_parameters/allowed_actions',
+        type: 'post',
+        dataType: 'json',
+        data: { data: data },
+        success: function(datos){
+          document.getElementById("allowed_actions_output").innerHTML = "Ok."
+          document.getElementById("allowed_actions_output").style.color = "green";
+        },
+        error: function( jqXHR, textStatus, errorThrown ) {
+          console.log(jqXHR);
+          document.getElementById("allowed_actions_output").innerHTML = "Error " + jqXHR.status + ": " + jqXHR.responseText;
+          document.getElementById("allowed_actions_output").style.color = "red";
+        }
+      });
+    });
+    
+    
+  });
+</script>
