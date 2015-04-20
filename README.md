@@ -39,7 +39,7 @@ En caso de no encontrar un servidor OSRM, se utilizará la [API de MapQuest Dire
 
 También se puede deshabilitar el servicio de rutas usando la variable de entorno ```progrezz_disable_routing``` a ```true```.
 
-## 6.  Uso ##
+## 4.  Uso ##
 #### Instalación ####
 Una vez instalada e iniciada la base de datos, se puede preparar el servidor con el siguiente comando, desde la carpeta raíz del proyecto:
 

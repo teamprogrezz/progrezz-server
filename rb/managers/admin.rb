@@ -120,7 +120,7 @@ module Sinatra
           manager.update(data)
           
           # Guardar una copia del anterior
-          FileUtils.cp(manager::DATAFILE, "tmp/" + action + "_" + DateTime.now.to_time.to_i.to_s + ".sav")
+          FileUtils.cp(manager::DATAFILE, "tmp/data/" + action + "_" + DateTime.now.to_time.to_i.to_s + ".sav")
           
           # Y sobrescribir
           File.open(manager::DATAFILE, 'w') { |file| file.write( data ) }

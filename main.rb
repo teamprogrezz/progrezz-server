@@ -75,10 +75,14 @@ module Sinatra
         # Activar loggin
         app.enable :loggin
         app.use Rack::CommonLogger, Logger.new("tmp/app.log")
+        
+        
+        app.set :show_exceptions, false
       end
       
       # Ruta principal del servidor.
       app.get '/' do
+        raise ::GenericException.new "Error :("
         redirect to("/dev")
       end
       
@@ -102,6 +106,16 @@ module Sinatra
       # Página de documentación (doc).
       app.get '/dev/doc' do
         erb :"dev/doc", :locals => { :session => session }, :layout => :"dev/layout"
+      end
+      
+      # Gestión de errores.
+      app.error ::GenericException do
+        e = env['sinatra.error']
+        #env['rack.logger'].error "ERROR!\n" + e.message + "\n\n" + e.backtrace.join("\n")
+        
+        return "<h1 style='color: red;'>Fatal error</h1>" +
+          "<pre><strong>Message: </strong>" + e.message.to_s + "</pre>" +
+          "<pre><strong>Backtrace: </strong>\n" + e.backtrace.join("\n") + "</pre>"
       end
     end
   end
