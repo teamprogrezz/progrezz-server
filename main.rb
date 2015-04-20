@@ -80,6 +80,11 @@ module Sinatra
         app.set :show_exceptions, false
       end
       
+      # Hacer antes de toda petición de ruta
+      error_log = ::File.new("tmp/app_errors.log","a+")
+      error_log.sync = true
+      app.before { env["rack.errors"] = error_log } if ::production?
+      
       # Ruta principal del servidor.
       app.get '/' do
         raise ::GenericException.new "Error :("
