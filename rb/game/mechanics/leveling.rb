@@ -113,6 +113,5 @@ module Game
       
     end
     
-    LevelingManagement.setup()
   end
 end

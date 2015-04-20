@@ -12,6 +12,15 @@ module Game
       def self.setup()
         # Requerir ficheros de mecánicas de juego
         GenericUtils.require_dir("./rb/game/mechanics/**/*.rb", "Leyendo mecánicas:          ")
+        
+        # Inicializar
+        Game::Mechanics.constants.each do |c|
+          c = Game::Mechanics.const_get(c)
+          if Class === c && c != self && c != Game::Mechanics::Management
+            puts "Inicializando mecánica:     ".cyan + c.name.gsub(/^.*::/, '')
+            c.setup()
+          end
+        end
       end
       
     end

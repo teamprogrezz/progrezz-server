@@ -88,6 +88,5 @@ module Game
       
     end
     
-    AllowedActionsManagement.setup()
   end
 end

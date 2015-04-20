@@ -150,4 +150,3 @@ module Game
   end
 end
 
-Game::Mechanics::ItemsManagement.setup()

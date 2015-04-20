@@ -6,6 +6,7 @@ gem 'rake'
 gem 'test-unit'
 gem 'pickup'
 gem 'nesty'
+gem 'colorize'
 
 # Sinatra
 gem 'sinatra'

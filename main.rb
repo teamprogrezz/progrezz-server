@@ -11,6 +11,7 @@ require 'sinatra'
 require 'sinatra/multi_route'
 require 'neo4j'
 require 'logger'
+require 'colorize'
 
 require 'thread'
 
@@ -21,9 +22,9 @@ if development?
   require 'ruby-prof'
   require 'pry'
 
-  puts "--------------------------------------"
-  puts "**   Starting in development mode   **"
-  puts "--------------------------------------"
+  puts "--------------------------------------".red.bold
+  puts "**   Starting in development mode   **".red.bold
+  puts "--------------------------------------".red.bold
   
   # Variable de desarrollo
   ::DEV = true
@@ -35,15 +36,7 @@ module Sinatra
   # Aplicación principal (servidor).
   #
   # Funciona como contenedor de una aplicación Ruby Sinatra.
-  class ProgrezzServer < Sinatra::Base
-
-    # Getter de la sesión de la aplicación.
-    #
-    # @return Sesión actual (objeto session).
-    def self.get_session()
-      return self.session
-    end
-  end
+  class ProgrezzServer < Sinatra::Base; end
   
   # Módulo de páginas webs. Usado para definir los métodos get y post
   # de las distintas páginas webs del servidor.
@@ -120,6 +113,7 @@ class Sinatra::ProgrezzServer
   register Sinatra::Pages
   register Sinatra::MultiRoute
 end
+
 #-- Registrar. #++
 #-- ---------------------------------------------------------------- #++
 
@@ -127,7 +121,7 @@ end
 require './rb/generic_utils'
 
 #-- Cargar Gestores del servidor. #++
-GenericUtils.require_dir("./rb/managers/**/*.rb", "----------------------------------\n    Mánager:                ")
+GenericUtils.require_dir("./rb/managers/**/*.rb", "----------------------------------\n" + "    Mánager:                ".green, false)
 puts "----------------------------------"
 
 # Ejecutar una terminal (si procede)

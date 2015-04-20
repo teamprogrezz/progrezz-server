@@ -74,5 +74,3 @@ module Game
     end
   end
 end
-
-Game::Mechanics::BackpackManagement.setup()

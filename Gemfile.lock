@@ -23,6 +23,7 @@ GEM
     backports (3.6.4)
     builder (3.2.2)
     coderay (1.1.0)
+    colorize (0.7.7)
     daemons (1.2.2)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
@@ -176,6 +177,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   geocoder
   neo4j
   nesty

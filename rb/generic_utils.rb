@@ -11,7 +11,9 @@ class GenericUtils
   # 
   # @param dir_regexp [String] Expresión regular de la carpeta a incluir.
   # @param msg [String] Mensaje que se muestra antes de cargar el fichero. Si es nil, no se muestra nada.
-  def self.require_dir(dir_regexp, msg = nil)
+  # @param colorize [Bool] Dar color por defecto.
+  def self.require_dir(dir_regexp, msg = nil, colorize = true)
+    msg = msg.cyan if colorize
     Dir[dir_regexp].sort.each {|file|
       if msg != nil; puts msg + file.split(/\.rb/)[0] end
       require file.split(/\.rb/)[0]
