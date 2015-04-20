@@ -43,9 +43,8 @@ module REST
         
         messages = []
         
-        begin
-          Game::Database::DatabaseManager.run_nested_transaction do |tx|
-            
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          begin            
             # Usuarios
             puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
               user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 28.4748, longitude: -16.2679})
@@ -138,28 +137,32 @@ module REST
               end
             end).to_s
             
-            result = "<h2>Datos añadidos correctamente.</h2>"
-          end
+            # Generar depósitos cercanos
+            #puts "Tiempo de adición de objetos a inventario: " + (GenericUtils.timer do
+            #  user_Wikiti.backpack.add_item( Game::Database::Item.find_by(item_id: "mineral_iron"), 100 )
+            #end).to_s
           
-        # Banearme 5 minutos ( D': ).
-        # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
-        
-        # Borrar mensaje (prueba).
-        # messages[3].remove
-        
-        # Generar depósitos cercanos
-        #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
-        #  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
-        #end).to_s
-        
-        # Recolectarla
-        #exp = {}
-        #user_Wikiti.collect_item_from_deposit(deposit, exp)
-        
-        rescue Exception => e
-          #puts e.message
-          #puts e.backtrace
-          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
+            # Banearme 5 minutos ( D': ).
+            # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
+            
+            # Borrar mensaje (prueba).
+            # messages[3].remove
+            
+            # Generar depósitos cercanos
+            #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
+            #  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
+            #end).to_s
+            
+            # Recolectarla
+            #exp = {}
+            #user_Wikiti.collect_item_from_deposit(deposit, exp)
+                      
+            result = "<h2>Datos añadidos correctamente.</h2>"
+            
+          rescue Exception => e
+            Game::Database::DatabaseManager.rollback_transaction(tx)
+            result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
+          end
         end
         
         return result

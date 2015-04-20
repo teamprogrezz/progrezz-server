@@ -20,7 +20,8 @@ module Game
     #
     # Se considera un objeto geolocalizado.
     class User < GeolocatedObject
-      include Neo4j::ActiveNode
+      include Neo4j::ActiveNode # Neo4j
+      extend Evented # Eventos.
       
       #-- --------------------------------------------------
       #                      Constantes
@@ -115,11 +116,15 @@ module Game
       # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_item_deposit_instances, rel_class: Game::Database::RelationShips::UserCollected_ItemDepositInstance, model_class: Game::Database::ItemDepositInstance
       
-      
       # @!method :level_profile
-      # Relación con el nivel del usuario (#Game::Database::User). Se puede acceder con el atributo +user+.
-      # @return [Game::Database::User] Usuario que posee este nivel.
+      # Relación con el nivel del usuario (#Game::Database::LevelProfile). Se puede acceder con el atributo +leel_profile+.
+      # @return [Game::Database::LevelProfile] Nivel del usuario.
       has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
+      
+      # @!method backpack
+      # Relación con el inventario del usuario (#Game::Database::Backpack). Se puede acceder con el atributo +backpack+.
+      # @return [Game::Database::Backpack] Inventario del usuario.
+      has_one :out, :backpack, model_class: Game::Database::Backpack, type: "has_a", dependent: :destroy
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -135,12 +140,16 @@ module Game
         begin          
           user = create( { alias: al, user_id: uid } ) do |usr|
             usr.set_geolocation( position[:latitude], position[:longitude] )
+            
             # Crear perfil
-            usr.level_profile = Game::Database::LevelProfile.create( )
+            usr.level_profile = Game::Database::LevelProfile.create_level_profile( )
+            
+            # Crear el inventario
+            usr.backpack = Game::Database::Backpack.create_backpack( usr.level_profile.level )
           end
 
         rescue Exception => e
-          raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': \n\t" + e.message + "\n\t\t" + e.backtrace.to_s + "\n" )
+          raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': " + e.message, e )
         end
 
         return user
@@ -389,6 +398,7 @@ module Game
         
         return output
       end
+
       
     end
   end

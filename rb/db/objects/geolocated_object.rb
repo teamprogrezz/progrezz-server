@@ -81,7 +81,7 @@ module Game
       # Ajustar posición a valores reales (véase las constantes de la clase #Game::Database::GeolocatedObject).
       # @return [Game::Database::GeolocatedObject] Referencia al objeto ajustado.
       def clamp()
-        self.update( User.clamp!(geolocation) )
+        self.update( GeolocatedObject.clamp!(geolocation) )
         return self
       end
       

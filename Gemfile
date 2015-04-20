@@ -31,6 +31,7 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
+gem 'omniauth-steam'
 
 # Documentation
 gem 'yard'

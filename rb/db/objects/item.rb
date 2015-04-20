@@ -1,9 +1,12 @@
 # encoding: UTF-8
 
+require_relative "../relations/backpack_items"
+
 module Game
   module Database
     
     class ItemDeposit; end
+    class Backpack; end
     class ItemDepositInstance < GeolocatedObject; end
     # Forward declaration.
     
@@ -76,6 +79,11 @@ module Game
       # Relación con el depósito del objeto. Puede no existir.
       # @return [Game::Database::ItemDeposit] Depósito que encapsula a este objeto..
       has_one :out, :deposit, model_class: Game::Database::ItemDeposit, type: "deposited_in", dependent: :destroy
+      
+      # @!method backpack_owners
+      # Relación con la mochila de cada uno de los usuarios, formando stacks. Se puede acceder con el atributo +backpack_owners+.
+      # @return [Game::Database::Backpack] Propietarios de este objeto.
+      has_many :in, :backpack_owners, rel_class: Game::Database::RelationShips::BackpackItemStacks, model_class: Game::Database::Backpack
       
       #-- --------------------------------------------------
       #                    Métodos de clase

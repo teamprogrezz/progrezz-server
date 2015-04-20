@@ -117,3 +117,75 @@ end
 class GenericException < StandardError
   include ::Nesty::NestedError
 end
+
+# Módulo de eventos (dispatchers y listeners).
+# 
+# Para usarlo en la clase, deberá incluirse en la clase usando el método +extend*:
+#
+#   class Foo
+#     extend Evented
+#     ...
+#   end
+#
+# Luego, se añade un listener (callback o lambda), y se llama cuando sea necesario:
+#
+#   Foo.add_event_listener :onWhatever, lambda { |a| puts "Hello, #{a.to_s}" }
+#   Foo.add_event_listener :onWhatever, lambda { |a| puts "How are you?" }
+#   Foo.dispatch_event :onWhatever, "foo"
+#   # "Hello, foo"
+#   # "How are you?"
+module Evented
+  # Conjunto de callbacks de un mismo evento (array).
+  class Dispatcher < Array
+    # Llamar a los callbacks del dispatcher.
+    # @param args [Object] Argumentos (opcional).
+    def call(*args)
+      self.each { |e| e.call(*args) }
+    end
+  end
+  
+  # Conjunto de distintos callbacks (Hash). Cada valor se corresponderá con un #Dispatcher.
+  class Dispatchers < Hash
+    # Llamar a los callbacks del dispatcher +name+.
+    # @param name [Object] Nombre del dispatcher.
+    # @param args [Object] Argumentos (opcional).
+    def call(name, *args)
+      self[name].call(*args) if self[name]
+    end
+  end
+  
+  # Getter de la lista de dispatchers. Si no existe, se creará uno nuevo.
+  # @return [Dispatchers] Referencia al objeto Dispatchers.
+  private def dispatchers
+    @dispatchers ||= Dispatchers.new
+  end
+  
+  # Getter de un dispatcher. Si no existe, se creará uno nuevo.
+  # @param name [Object] Nombre del dispatcher.
+  # @return [Dispatcher] Referencia al objeto Dispatcher con nombre +name+.
+  private def dispatcher(name)
+    dispatchers[name] ||= Dispatcher.new
+  end
+  
+  # Lanzar un evento.
+  # @param name [Object] Nombre del dispatcher a activar.
+  # @param args [Object] Parámetros adicionales que se pasarán a los callbacks del dispatcher. 
+  def dispatch_event(name, *args)
+    dispatcher(name).call(*args)
+  end
+  
+  # Añadir un callback.
+  # Se pueden añadir todas las funciones deseadas a un mismo evento.
+  # @param name [Object] Nombre del evento (dispatcher) al que se le añadirá el callback o handler.
+  # @param handler [Lambda] Función handler del evento.
+  def add_event_listener(name, handler)
+    dispatcher(name) << handler unless dispatcher(name).include? handler
+  end
+  
+  # Eliminar un callback.
+  # @param name [Object] Nombre del evento (dispatcher) al que se le quitará el callback o handler.
+  # @param handler [Lambda] Función handler del evento.
+  def remove_event_listener( name, handler )
+    dispatcher(name).delete(handler) if dispatcher(name).include? handler
+  end
+end

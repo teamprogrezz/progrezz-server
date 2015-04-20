@@ -115,19 +115,19 @@ module Game
       #   -------------------------------------------------- #++
       
       # Recoger recursos.
+      # @param user [Game::Database::User] Usuario para la recolección.
       # @return [Integer] Recursos recogidos.
-      # TODO: Usar esta función.
-      def collect()
+      def gather(user)
         raise ::GenericException.new("Invalid deposit (caducated).") if caducated?
         
-        resources = Random.new.rand(self.deposit.user_min_amount ... self.deposit.user_max_amount)
-        if (resources >= self.current_amount)
-          resources = self.current_amount
-        end
+        # Escoger una cantidad aleatoria de recursos
+        resources = [self.current_amount, Random.new.rand(self.deposit.user_min_amount ... self.deposit.user_max_amount)].min
         
-        self.update( current_amount: self.current_amount - resources )
+        output = user.backpack.add_item( self.deposit.item, resources )
+
+        self.update( current_amount: self.current_amount - output[:added_amount] ) if output[:added_amount] > 0
         
-        return resources
+        return output
       end
       
       # Comprobar si un depósito ha caducado (por tiempo o por falta de recursos).
@@ -164,7 +164,7 @@ module Game
           current_amount: self.current_amount,
           created_at:  self.created_at.to_time.to_i,
           duration: self.duration,
-          remaining_seconds: duration - (DateTime.now - self.created_at).to_i
+          remaining_seconds: (duration * 86400) - (DateTime.now.to_time.to_i - self.created_at.to_time.to_i)
         }
         
         if user_rel == nil

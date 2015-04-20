@@ -95,7 +95,7 @@ module Database
           "uuid" => node.uuid,
           "labels" => node.labels,
           "attributes" => node.attributes
-        } 
+        } if node != nil
         
         output["relations"] = []
         

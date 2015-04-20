@@ -93,7 +93,7 @@ module Game
       
       # Generar depósitos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.
-      # @param deposits [Hash<Symbol, Object>] Depósitos cercanos a +user+.
+      # @param deposits_output [Hash<Symbol, Object>] Depósitos cercanos a +user+.
       # @return [Integer] Número de depósitos generados.
       def self.generate_nearby_deposits(user, deposits_output)
         # El radio se obtiene directamente del usuario

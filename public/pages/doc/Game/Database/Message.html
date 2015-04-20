@@ -970,22 +970,22 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
       <pre class="lines">
 
 
+190
 191
 192
 193
 194
 195
 196
-197
-198</pre>
+197</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 191</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author_messages'>author_messages</span><span class='lparen'>(</span><span class='id identifier rubyid_author_id'>author_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='id identifier rubyid_author_id'>author_id</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_auth'>auth</span> <span class='op'>==</span> <span class='kw'>nil</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User does not exist.</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User does not exist.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_auth'>auth</span><span class='period'>.</span><span class='id identifier rubyid_written_messages'>written_messages</span>
@@ -1039,12 +1039,12 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
       <pre class="lines">
 
 
+201
 202
-203
-204</pre>
+203</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 202</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 201</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_authored_messages'>authored_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>()-[:has_written]-&gt;msg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_return'>return</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span>
@@ -1098,6 +1098,7 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
       <pre class="lines">
 
 
+207
 208
 209
 210
@@ -1116,11 +1117,10 @@ principalmente con un autor y una serie de fragmentos geolocalizados.</p>
 223
 224
 225
-226
-227</pre>
+226</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 207</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clear_caducated'>clear_caducated</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -1278,8 +1278,7 @@ Game::Database::Message.</p>
 142
 143
 144
-145
-146</pre>
+145</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 113</span>
@@ -1312,8 +1311,7 @@ Game::Database::Message.</p>
     <span class='kw'>end</span>
 
   <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
-    <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\t\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='semicolon'>;</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_message'>message</span>
@@ -1422,6 +1420,7 @@ Game::Database::Message.</p>
       <pre class="lines">
 
 
+154
 155
 156
 157
@@ -1436,11 +1435,10 @@ Game::Database::Message.</p>
 166
 167
 168
-169
-170</pre>
+169</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_system_message'>create_system_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_content'>content</span><span class='comma'>,</span> <span class='id identifier rubyid_n_fragments'>n_fragments</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
@@ -1453,7 +1451,7 @@ Game::Database::Message.</p>
 
   <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\t\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='semicolon'>;</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create message: \n\t</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_message'>message</span>
@@ -1511,12 +1509,12 @@ Game::Database::Message.</p>
       <pre class="lines">
 
 
+173
 174
-175
-176</pre>
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 174</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_unauthored_messages'>unauthored_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NOT ()-[:has_written]-&gt;msg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_return'>return</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span>
@@ -1570,12 +1568,12 @@ Game::Database::Message.</p>
       <pre class="lines">
 
 
+183
 184
-185
-186</pre>
+185</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 184</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 183</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_unauthored_replicable_messages'>unauthored_replicable_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_query_as'>query_as</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>msg.replicable = true AND NOT ()-[:has_written]-&gt;msg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_return'>return</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:msg</span><span class='rparen'>)</span>
@@ -1686,12 +1684,12 @@ atributo <code>author</code>.</p>
       <pre class="lines">
 
 
+367
 368
-369
-370</pre>
+369</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 368</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 367</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_authored?'>authored?</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>!=</span> <span class='kw'>nil</span>
@@ -1745,6 +1743,7 @@ atributo <code>author</code>.</p>
       <pre class="lines">
 
 
+353
 354
 355
 356
@@ -1754,11 +1753,10 @@ atributo <code>author</code>.</p>
 360
 361
 362
-363
-364</pre>
+363</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 354</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 353</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_caducated?'>caducated?</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_duration'>duration</span> <span class='op'>==</span> <span class='int'>0</span>
@@ -2045,13 +2043,13 @@ Game::Database::Message.NO_AUTHOR</p>
       <pre class="lines">
 
 
+235
 236
 237
-238
-239</pre>
+238</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 236</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 235</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_author'>get_author</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_AUTHOR</span> <span class='kw'>end</span>
@@ -2107,13 +2105,13 @@ Game::Database::Message.NO_AUTHOR</p>
       <pre class="lines">
 
 
+243
 244
 245
-246
-247</pre>
+246</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 244</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 243</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_AUTHOR</span> <span class='kw'>end</span>
@@ -2169,13 +2167,13 @@ Game::Database::Message.NO_RESOURCE</p>
       <pre class="lines">
 
 
+251
 252
 253
-254
-255</pre>
+254</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 252</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 251</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>if</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_link'>resource_link</span> <span class='op'>==</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>return</span> <span class='const'>NO_RESOURCE</span> <span class='kw'>end</span>
@@ -2254,6 +2252,7 @@ Game::Database::Message.NO_RESOURCE</p>
       <pre class="lines">
 
 
+339
 340
 341
 342
@@ -2263,11 +2262,10 @@ Game::Database::Message.NO_RESOURCE</p>
 346
 347
 348
-349
-350</pre>
+349</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 340</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 339</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_user_message'>get_user_message</span><span class='lparen'>(</span><span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -2362,6 +2360,7 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
+308
 309
 310
 311
@@ -2372,11 +2371,10 @@ con el atributo #owners.</p>
 316
 317
 318
-319
-320</pre>
+319</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 309</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 308</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Exportar el nodo
@@ -2421,6 +2419,7 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
+322
 323
 324
 325
@@ -2428,11 +2427,10 @@ con el atributo #owners.</p>
 327
 328
 329
-330
-331</pre>
+330</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 323</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 322</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove_keep_msg'>remove_keep_msg</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Exportar y destruir fragmentos
@@ -2605,6 +2603,7 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
+261
 262
 263
 264
@@ -2648,16 +2647,15 @@ con el atributo #owners.</p>
 302
 303
 304
-305
-306</pre>
+305</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 262</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 261</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replicate'>replicate</span><span class='lparen'>(</span> <span class='id identifier rubyid_new_location'>new_location</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='int'>0</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_deltas'>deltas</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>latitude:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='int'>0</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_ignore_replicable_flag'>ignore_replicable_flag</span> <span class='op'>=</span> <span class='kw'>false</span> <span class='rparen'>)</span>
   <span class='comment'># Comprobar replicación
 </span>  <span class='kw'>if</span> <span class='id identifier rubyid_ignore_replicable_flag'>ignore_replicable_flag</span> <span class='op'>!=</span> <span class='kw'>true</span> <span class='op'>&amp;&amp;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_replicable'>replicable</span> <span class='op'>==</span> <span class='kw'>false</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Trying to generate fragments of a irreplicable message.</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Trying to generate fragments of a irreplicable message.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
   
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -2936,6 +2934,7 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
+374
 375
 376
 377
@@ -2968,11 +2967,10 @@ con el atributo #owners.</p>
 404
 405
 406
-407
-408</pre>
+407</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 375</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 374</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:fragments</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -3058,12 +3056,12 @@ con el atributo #owners.</p>
       <pre class="lines">
 
 
+412
 413
-414
-415</pre>
+414</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 413</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/message.rb', line 412</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;Message: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_author_alias'>get_author_alias</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_fragments'>total_fragments</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_get_resource'>get_resource</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
@@ -3133,7 +3131,7 @@ con el atributo #owners.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Apr 10 10:43:47 2015 by
+  Generated on Fri Apr 17 14:07:42 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

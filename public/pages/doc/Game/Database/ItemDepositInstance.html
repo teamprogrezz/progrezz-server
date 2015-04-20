@@ -101,7 +101,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">rb/db/objects/item_deposit_instance.rb<span class="defines">,<br />
-  rb/db/objects/item_deposit.rb,<br /> rb/db/relations/user-collected_item-deposit-instance.rb</span>
+  rb/db/objects/item.rb,<br /> rb/db/objects/item_deposit.rb,<br /> rb/db/relations/user-collected_item-deposit-instance.rb</span>
 </dd>
   
 </dl>
@@ -140,7 +140,7 @@ están geolocalizados.</p>
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='int'>1</span></pre></dd>
+        <dd><pre class="code"><span class='int'>7</span></pre></dd>
       
     </dl>
   
@@ -230,30 +230,6 @@ están geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#ammount-instance_method" title="#ammount (instance method)">- (Integer) <strong>ammount</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Usos totales del depósito.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#caducated%3F-instance_method" title="#caducated? (instance method)">- (Boolean) <strong>caducated?</strong> </a>
     
 
@@ -269,7 +245,7 @@ están geolocalizados.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Comprobar si un depósito ha caducado.</p>
+<p>Comprobar si un depósito ha caducado (por tiempo o por falta de recursos).</p>
 </div></span>
   
 </li>
@@ -326,6 +302,54 @@ están geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#current_amount-instance_method" title="#current_amount (instance method)">- (Integer) <strong>current_amount</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recursos actuales del depósito.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deposit-instance_method" title="#deposit (instance method)">- (Game::Database::ItemDeposit) <strong>deposit</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con el depósito (#Game::Database::ItemDeposit).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#duration-instance_method" title="#duration (instance method)">- (Integer) <strong>duration</strong> </a>
     
 
@@ -350,7 +374,7 @@ están geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#item-instance_method" title="#item (instance method)">- (Game::Database::Item) <strong>item</strong> </a>
+      <a href="#gather-instance_method" title="#gather (instance method)">- (Integer) <strong>gather</strong>(user) </a>
     
 
     
@@ -365,7 +389,31 @@ están geolocalizados.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Relación con el objeto (#Game::Database::Item).</p>
+<p>Recoger recursos.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#item_id_shortcut-instance_method" title="#item_id_shortcut (instance method)">- (String) <strong>item_id_shortcut</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Acceso directo al identificador del objeto relacionado con este depósito.</p>
 </div></span>
   
 </li>
@@ -398,7 +446,7 @@ están geolocalizados.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = []) </a>
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">- (Hash&lt;Symbol, Object&gt;) <strong>to_hash</strong>(exclusion_list = [], user_rel = nil) </a>
     
 
     
@@ -414,6 +462,30 @@ están geolocalizados.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Retornar objeto como hash.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#total_amount-instance_method" title="#total_amount (instance method)">- (Integer) <strong>total_amount</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recursos totales del depósito.</p>
 </div></span>
   
 </li>
@@ -485,23 +557,23 @@ están geolocalizados.</p>
       <pre class="lines">
 
 
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95</pre>
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clear_caducated'>clear_caducated</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -602,33 +674,43 @@ están geolocalizados.</p>
       <pre class="lines">
 
 
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
 77
-78</pre>
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit_instance'>create_item_deposit_instance</span><span class='lparen'>(</span><span class='id identifier rubyid_deposit_ref'>deposit_ref</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_deposit_ref'>deposit_ref</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='kw'>or</span> <span class='op'>!</span><span class='id identifier rubyid_deposit_ref'>deposit_ref</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid deposit.</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid deposit.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
-  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:ammount</span><span class='comma'>,</span> <span class='symbol'>:geolocation</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:total_amount</span><span class='comma'>,</span> <span class='symbol'>:geolocation</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='id identifier rubyid_deposit_instance'>deposit_instance</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>deposit:</span> <span class='id identifier rubyid_deposit_ref'>deposit_ref</span><span class='comma'>,</span> <span class='label'>ammount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:ammount</span><span class='rbracket'>]</span> <span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
-    <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_set_geolocation'>set_geolocation</span><span class='lparen'>(</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_deposit_instance'>deposit_instance</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+    <span class='label'>deposit:</span> <span class='id identifier rubyid_deposit_ref'>deposit_ref</span><span class='comma'>,</span>
+    <span class='label'>item_id_shortcut:</span> <span class='id identifier rubyid_deposit_ref'>deposit_ref</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_item_id'>item_id</span><span class='comma'>,</span>
+    <span class='label'>total_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:total_amount</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>current_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:total_amount</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>latitude:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>longitude:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:geolocation</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span><span class='rparen'>)</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span>
 <span class='kw'>end</span></pre>
@@ -644,62 +726,7 @@ están geolocalizados.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="ammount-instance_method">
-  
-    - (<tt>Integer</tt>) <strong>ammount</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Usos totales del depósito.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Usos totales del depósito.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-33</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 33</span>
-
-<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:ammount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="caducated?-instance_method">
+  <h3 class="signature first" id="caducated?-instance_method">
   
     - (<tt>Boolean</tt>) <strong>caducated?</strong> 
   
@@ -710,7 +737,7 @@ están geolocalizados.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Comprobar si un depósito ha caducado.</p>
+<p>Comprobar si un depósito ha caducado (por tiempo o por falta de recursos).</p>
 
 
   </div>
@@ -742,29 +769,21 @@ están geolocalizados.</p>
       <pre class="lines">
 
 
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113</pre>
+135
+136
+137
+138
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_caducated?'>caducated?</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_duration'>duration</span> <span class='op'>==</span> <span class='int'>0</span>
-    <span class='kw'>return</span> <span class='kw'>false</span>
-  <span class='kw'>end</span>
-  
-  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span> <span class='op'>+</span> <span class='id identifier rubyid_duration'>duration</span> <span class='op'>&lt;=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span>
-    <span class='kw'>return</span> <span class='kw'>true</span>
-  <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='kw'>true</span>  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_duration'>duration</span> <span class='op'>==</span> <span class='int'>0</span>
+  <span class='kw'>return</span> <span class='kw'>true</span>  <span class='kw'>if</span> <span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>&gt;=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_duration'>duration</span>
   
   <span class='kw'>return</span> <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
@@ -813,10 +832,10 @@ con el atributo #collectors.</p>
       <pre class="lines">
 
 
-55</pre>
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 67</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:collectors</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserCollected_ItemDepositInstance</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span></pre>
     </td>
@@ -868,12 +887,123 @@ con el atributo #collectors.</p>
       <pre class="lines">
 
 
-37</pre>
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 44</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:created_at</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="current_amount-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>current_amount</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Recursos actuales del depósito.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Recursos actuales del depósito.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 40</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:current_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deposit-instance_method">
+  
+    - (<tt><span class='object_link'><a href="ItemDeposit.html" title="Game::Database::ItemDeposit (class)">Game::Database::ItemDeposit</a></span></tt>) <strong>deposit</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con el depósito (#Game::Database::ItemDeposit). Se puede acceder
+con el atributo <code>deposit</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="ItemDeposit.html" title="Game::Database::ItemDeposit (class)">Game::Database::ItemDeposit</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Depósito relacionado con la estancia.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 62</span>
+
+<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:deposit</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='comma'>,</span> <span class='label'>origin:</span> <span class='symbol'>:instances</span></pre>
     </td>
   </tr>
 </table>
@@ -923,10 +1053,10 @@ con el atributo #collectors.</p>
       <pre class="lines">
 
 
-41</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 48</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:duration</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_DURATION</span></pre>
     </td>
@@ -935,9 +1065,9 @@ con el atributo #collectors.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="item-instance_method">
+  <h3 class="signature " id="gather-instance_method">
   
-    - (<tt><span class='object_link'><a href="Item.html" title="Game::Database::Item (class)">Game::Database::Item</a></span></tt>) <strong>item</strong> 
+    - (<tt>Integer</tt>) <strong>gather</strong>(user) 
   
 
   
@@ -946,8 +1076,117 @@ con el atributo #collectors.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Relación con el objeto (#Game::Database::Item). Se puede acceder con el
-atributo <code>item</code>.</p>
+<p>Recoger recursos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Usuario para la recolección.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Recursos recogidos.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 120</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_gather'>gather</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid deposit (caducated).</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_caducated?'>caducated?</span>
+  
+  <span class='comment'># Escoger una cantidad aleatoria de recursos
+</span>  <span class='id identifier rubyid_resources'>resources</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span><span class='comma'>,</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_min_amount'>user_min_amount</span> <span class='op'>...</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_max_amount'>user_max_amount</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span>
+  
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_add_item'>add_item</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span><span class='comma'>,</span> <span class='id identifier rubyid_resources'>resources</span> <span class='rparen'>)</span>
+
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>current_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span> <span class='op'>-</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:added_amount</span><span class='rbracket'>]</span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:added_amount</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+  
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="item_id_shortcut-instance_method">
+  
+    - (<tt>String</tt>) <strong>item_id_shortcut</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Acceso directo al identificador del objeto relacionado con este depósito.</p>
 
 
   </div>
@@ -960,13 +1199,13 @@ atributo <code>item</code>.</p>
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="Item.html" title="Game::Database::Item (class)">Game::Database::Item</a></span></tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>Objeto contenido en el depósito.</p>
+<p>item_id del objeto en sí.</p>
 </div>
       
     </li>
@@ -979,12 +1218,12 @@ atributo <code>item</code>.</p>
       <pre class="lines">
 
 
-50</pre>
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 53</span>
 
-<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:deposit</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='comma'>,</span> <span class='label'>origin:</span> <span class='symbol'>:instances</span></pre>
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:item_id_shortcut</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
     </td>
   </tr>
 </table>
@@ -1016,16 +1255,16 @@ atributo <code>item</code>.</p>
       <pre class="lines">
 
 
-116
-117
-118
-119
-120
-121
-122</pre>
+144
+145
+146
+147
+148
+149
+150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Exportar el nodo
@@ -1042,7 +1281,7 @@ atributo <code>item</code>.</p>
       <div class="method_details ">
   <h3 class="signature " id="to_hash-instance_method">
   
-    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = []) 
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&lt;Symbol, Object&gt;</tt>) <strong>to_hash</strong>(exclusion_list = [], user_rel = nil) 
   
 
   
@@ -1105,26 +1344,111 @@ atributo <code>item</code>.</p>
       <pre class="lines">
 
 
-127
-128
-129
-130
-131
-132
-133
-134</pre>
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 155</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   
-  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:item</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exlusion_list'>exlusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:item</span>
-  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:instance</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exlusion_list'>exlusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:item</span>
+  <span class='comment'># TODO: Acomodar para el cliente.
+</span>  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_id_shortcut'>item_id_shortcut</span> <span class='kw'>unless</span> <span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:item_id</span>
+
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:instance</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>uuid:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span>
+    <span class='label'>total_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_amount'>total_amount</span><span class='comma'>,</span>
+    <span class='label'>current_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_amount'>current_amount</span><span class='comma'>,</span>
+    <span class='label'>created_at:</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span>
+    <span class='label'>duration:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_duration'>duration</span><span class='comma'>,</span>
+    <span class='label'>remaining_seconds:</span> <span class='lparen'>(</span><span class='id identifier rubyid_duration'>duration</span> <span class='op'>*</span> <span class='int'>86400</span><span class='rparen'>)</span> <span class='op'>-</span> <span class='lparen'>(</span><span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>-</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_created_at'>created_at</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
+  <span class='rbrace'>}</span>
+  
+  <span class='kw'>if</span> <span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>==</span> <span class='kw'>nil</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>in_cooldown:</span> <span class='kw'>false</span> <span class='rbrace'>}</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_user_rel'>user_rel</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span>
+  <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
 <span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="total_amount-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>total_amount</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Recursos totales del depósito.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Recursos totales del depósito.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+35</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 35</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:total_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span></pre>
     </td>
   </tr>
 </table>
@@ -1135,7 +1459,7 @@ atributo <code>item</code>.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Apr 10 10:43:49 2015 by
+  Generated on Fri Apr 17 14:07:43 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

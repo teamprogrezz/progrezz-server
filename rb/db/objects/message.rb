@@ -138,8 +138,7 @@ module Game
           end
 
         rescue Exception => e
-          puts e.to_s
-          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s)
+          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message, e)
         end
         
         return message
@@ -163,7 +162,7 @@ module Game
 
         rescue Exception => e
           puts e.to_s
-          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s)
+          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message, e)
         end
         
         return message
