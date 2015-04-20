@@ -2,121 +2,96 @@
 <script src="/lib/codemirror/mode/javascript/javascript.js"></script>
 
 <h1>Game parameters</h1>
+
 <h2>Items list editor</h2>
-<form id="items">
+<a href="javascript:toggle_spoiler('items');"><strong>Show / Hide</strong></span></a>
+<form id="items" class="spoiler">
   <textarea id="items_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
   <button type="submit">Save</button>
+  <pre id="items_output"></pre>
 </form>
-<pre id="items_output"></pre>
-
-<script type="text/javascript">
-  // Cambiar editor de objetos 
-  var editor_items  = CodeMirror.fromTextArea(document.getElementById("items_editor"), {
-    matchBrackets: true,
-    autoCloseBrackets: true,
-    mode: "application/ld+json",
-    lineWrapping: true,
-    lineNumbers: true,
-    smartIndent: true,
-    tabSize: 2
-  });
-
-  editor_items.setValue( <%= file = File.open( Game::Mechanics::ItemsManagement::DATAFILE ).read.to_json %> );
-  
-  // Enviar al servidor lista de objetos
-  $(document).ready(function(){
-    $('#items').submit(function(evento){
-      evento.preventDefault();
-
-      var data;
-      try {
-        data = editor_items.getValue();
-        document.getElementById("items_output").innerHTML = "";
-      }
-      catch(error) {
-        document.getElementById("items_output").innerHTML = "Error: " + error;
-        document.getElementById("items_output").style.color = "red";
-        
-        return;
-      }
-
-      $.ajax({
-        url: '/admin/game_parameters/items',
-        type: 'post',
-        dataType: 'json',
-        data: { data: data },
-        success: function(datos){
-          document.getElementById("items_output").innerHTML = "Ok."
-          document.getElementById("items_output").style.color = "green";
-        },
-        error: function( jqXHR, textStatus, errorThrown ) {
-          console.log(jqXHR);
-          document.getElementById("items_output").innerHTML = "Error " + jqXHR.status + ": " + jqXHR.responseText;
-          document.getElementById("items_output").style.color = "red";
-        }
-      });
-    });
-    
-    
-  });
-</script>
 
 
-<h2>Allowed actions</h2>
-<form id="allowed_actions">
+<h2>Allowed actions editor</h2>
+<a href="javascript:toggle_spoiler('allowed_actions');"><strong>Show / Hide</strong></span></a>
+<form id="allowed_actions" class="spoiler">
   <textarea id="allowed_actions_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
   <button type="submit">Save</button>
+  <pre id="allowed_actions_output"></pre>
 </form>
-<pre id="allowed_actions_output"></pre>
+
+
+<h2>Backpack editor</h2>
+<a href="javascript:toggle_spoiler('backpack');"><strong>Show / Hide</strong></span></a>
+<form id="backpack" class="spoiler">
+  <textarea id="backpack_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
+  <button type="submit">Save</button>
+  <pre id="backpack_output"></pre>
+</form>
+
+<h2>Leveling editor</h2>
+<a href="javascript:toggle_spoiler('leveling');"><strong>Show / Hide</strong></span></a>
+<form id="leveling" class="spoiler">
+  <textarea id="leveling_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
+  <button type="submit">Save</button>
+  <pre id="backpack_output"></pre>
+</form>
 
 <script type="text/javascript">
-  // Cambiar editor de objetos 
-  var editor_allowed_actions  = CodeMirror.fromTextArea(document.getElementById("allowed_actions_editor"), {
-    matchBrackets: true,
-    autoCloseBrackets: true,
-    mode: "application/ld+json",
-    lineWrapping: true,
-    lineNumbers: true,
-    smartIndent: true,
-    tabSize: 2
-  });
+  editor = {}
 
-  editor_allowed_actions.setValue( <%= file = File.open( Game::Mechanics::AllowedActionsManagement::DATAFILE ).read.to_json %> );
+  function generic_setup(name, content) {
+    // Cambiar editor de objetos 
+    editor[name] = CodeMirror.fromTextArea(document.getElementById(name + "_editor"), {
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      mode: "application/ld+json",
+      lineWrapping: true,
+      lineNumbers: true,
+      smartIndent: true,
+      tabSize: 2
+    });
   
-  // Enviar al servidor lista de objetos
-  $(document).ready(function(){
-    $('#allowed_actions').submit(function(evento){
-      evento.preventDefault();
-
-      var data;
-      try {
-        data = editor_allowed_actions.getValue();
-        document.getElementById("allowed_actions_output").innerHTML = "";
-      }
-      catch(error) {
-        document.getElementById("allowed_actions_output").innerHTML = "Error: " + error;
-        document.getElementById("allowed_actions_output").style.color = "red";
-        
-        return;
-      }
-
-      $.ajax({
-        url: '/admin/game_parameters/allowed_actions',
-        type: 'post',
-        dataType: 'json',
-        data: { data: data },
-        success: function(datos){
-          document.getElementById("allowed_actions_output").innerHTML = "Ok."
-          document.getElementById("allowed_actions_output").style.color = "green";
-        },
-        error: function( jqXHR, textStatus, errorThrown ) {
-          console.log(jqXHR);
-          document.getElementById("allowed_actions_output").innerHTML = "Error " + jqXHR.status + ": " + jqXHR.responseText;
-          document.getElementById("allowed_actions_output").style.color = "red";
+    editor[name].setValue( content );
+    
+    // Enviar al servidor lista de objetos
+    $(document).ready(function(){
+      $('#' + name).submit(function(evento){
+        evento.preventDefault();
+  
+        var data;
+        try {
+          data = editor[name].getValue();
+          document.getElementById(name + "_output").innerHTML = "";
         }
+        catch(error) {
+          document.getElementById(name + "_output").innerHTML = "Error: " + error;
+          document.getElementById(name + "_output").style.color = "red";
+          
+          return;
+        }
+  
+        $.ajax({
+          url: '/admin/game_parameters/' + name,
+          type: 'post',
+          dataType: 'json',
+          data: { data: data },
+          success: function(datos){
+            document.getElementById(name + "_output").innerHTML = "Ok."
+            document.getElementById(name + "_output").style.color = "green";
+          },
+          error: function( jqXHR, textStatus, errorThrown ) {
+            console.log(jqXHR);
+            document.getElementById(name + "_output").innerHTML = "Error " + jqXHR.status + ": " + jqXHR.responseText;
+            document.getElementById(name + "_output").style.color = "red";
+          }
+        });
       });
     });
-    
-    
-  });
+  }
+
+  generic_setup("items", <%= file = File.open( Game::Mechanics::ItemsManagement::DATAFILE ).read.to_json %>);
+  generic_setup("allowed_actions", <%= file = File.open( Game::Mechanics::AllowedActionsManagement::DATAFILE ).read.to_json %>);
+  generic_setup("backpack", <%= file = File.open( Game::Mechanics::BackpackManagement::DATAFILE ).read.to_json %>);
+  generic_setup("leveling", <%= file = File.open( Game::Mechanics::LevelingManagement::DATAFILE ).read.to_json %>);
 </script>

@@ -1,15 +1,10 @@
-
-div.admin_content {
+.admin_content {
   margin: 15px;
 }
 
 table tr td, th {
   padding: 5px;
   border: 1px solid black;
-}
-
-div.spoiler {
-  display: none;
 }
 
 /* OSM */
