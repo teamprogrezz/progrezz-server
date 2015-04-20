@@ -16,7 +16,7 @@ module Game
         # Inicializar
         Game::Mechanics.constants.each do |c|
           c = Game::Mechanics.const_get(c)
-          if Class === c && c != self && c != Game::Mechanics::Management
+          if Class === c && c != self && c != Game::Mechanics::Mechanic
             puts "Inicializando mecánica:     ".cyan + c.name.gsub(/^.*::/, '')
             c.setup()
           end

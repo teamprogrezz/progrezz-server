@@ -7,7 +7,7 @@ module Game
 
     # Clase gestora de las mecánicas de juego referente al
     # inventario o mochila de los diferentes usuarios.
-    class Management
+    class Mechanic
       
       # Inicializar módulo.
       # @param data [Object] Datos de entrada.

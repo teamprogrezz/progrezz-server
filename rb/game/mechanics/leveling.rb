@@ -1,12 +1,12 @@
 # encoding: UTF-8
 
-require_relative './management'
+require_relative './mechanic'
 
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente al leveo.
-    class LevelingManagement < Management
+    class LevelingMechanics < Mechanic
       
       # Fichero que contiene la información relativa al leveo.
       DATAFILE = "data/leveling.json"
@@ -17,9 +17,11 @@ module Game
       
       # Inicializar mecánica.
       # Cargará los datos de leveo desde el fichero #DATAFILE.
-      def self.setup()
+      def self.setup(data = nil)
+        super(data)
+        
         begin
-          @@leveling_data = JSON.parse( File.read(DATAFILE) )
+          @@leveling_data = JSON.parse( data || File.read(DATAFILE) )
           
           # Parsear funciones y añadirlas aquí.
           for function in @@leveling_data["functions"].values

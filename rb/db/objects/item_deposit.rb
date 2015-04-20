@@ -124,7 +124,7 @@ module Game
       def instantiate(geolocation = {latitude: 0.0, longitude: 0.0}, snap_to_road = true)
         amount = Random.new.rand(self.min_amount..self.max_amount)
         
-        Game::Mechanics::GeolocationManagement.snap_geolocation!(geolocation) if snap_to_road
+        Game::Mechanics::GeolocationMechanics.snap_geolocation!(geolocation) if snap_to_road
         
         return Game::Database::ItemDepositInstance.create_item_deposit_instance( self, {geolocation: geolocation, total_amount: amount} )
       end

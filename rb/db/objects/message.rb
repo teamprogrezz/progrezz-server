@@ -161,7 +161,6 @@ module Game
           message = create( {content: content, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: true, snap_to_roads: true, duration: params[:duration]})
 
         rescue Exception => e
-          puts e.to_s
           raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message, e)
         end
         
@@ -283,7 +282,7 @@ module Game
             
             # Ajustar a carretera
             if self.snap_to_roads
-              Game::Mechanics::GeolocationManagement.snap_geolocation!(locations[i])
+              Game::Mechanics::GeolocationMechanics.snap_geolocation!(locations[i])
             end
           }
         end

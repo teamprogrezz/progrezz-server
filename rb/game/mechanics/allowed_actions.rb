@@ -3,7 +3,7 @@
 require 'rest-client'
 require 'progrezz/geolocation'
 
-require_relative './management'
+require_relative './mechanic'
 require_relative './leveling'
 
 module Game
@@ -11,7 +11,7 @@ module Game
 
     # Clase gestora de las mecánicas de juego referente a
     # las acciones permitidas por los usuario según el nivel.
-    class AllowedActionsManagement < Management
+    class AllowedActionsMechanics < Mechanic
       # Hash que contiene los datos de DATAFILE
       @@data = {}
       
@@ -25,6 +25,8 @@ module Game
       # Cargará los datos desde el fichero #DATAFILE.
       # @param str_data [String] Datos de entrada (si existiesen).
       def self.setup(str_data = nil)
+        super(str_data)
+          
         begin
           str_data ||= File.read(DATAFILE)
           @@data = JSON.parse( str_data )
@@ -34,8 +36,8 @@ module Game
         end
         
         # Calcular acciones de cada usuario
-        @@precomputed_allowed_actions << @@data[LevelingManagement.min_level.to_s]
-        for i in (LevelingManagement.min_level)..(LevelingManagement.max_level)
+        @@precomputed_allowed_actions << @@data[LevelingMechanics.min_level.to_s]
+        for i in (LevelingMechanics.min_level)..(LevelingMechanics.max_level)
           # Crear de anera apilada (con los datos del anterior).
           @@precomputed_allowed_actions[i] = (@@precomputed_allowed_actions[i - 1].deep_merge(@@data[i.to_s])  )
           
@@ -49,7 +51,7 @@ module Game
       # @param level [Integer] Nivel dado.
       # @raise [Exception] Si no es válido, genera una excepción.
       def self.check_level(level)
-        if !level.is_a? Fixnum || level < LevelingManagement.min_level || level > LevelingManagement.max_level
+        if !level.is_a? Fixnum || level < LevelingMechanics.min_level || level > LevelingMechanics.max_level
           raise ::GenericException.new( "Invalid level '" + level.to_s + "'.")
         end
       end

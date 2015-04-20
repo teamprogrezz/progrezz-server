@@ -10,7 +10,7 @@ require 'cgi'
 # Prueba de ajuste geolocalizado
 #location = {latitude: 28.26807, longitude: -16.43555}
 #puts location
-#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationManagement.snap_geolocation!(location) }).to_s
+#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationMechanics.snap_geolocation!(location) }).to_s
 #puts location
 
 module Sinatra
@@ -55,8 +55,8 @@ module REST
             puts "Tiempo de leveo de usuarios: " + (GenericUtils.timer do
               Game::Database::DatabaseManager.run_nested_transaction do
                 for i in 0...80
-                  Game::Mechanics::LevelingManagement.gain_exp( user_Wikiti, "collect_fragment" )
-                  Game::Mechanics::LevelingManagement.gain_exp( user_Shylpx, "collect_fragment" )
+                  Game::Mechanics::LevelingMechanics.gain_exp( user_Wikiti, "collect_fragment" )
+                  Game::Mechanics::LevelingMechanics.gain_exp( user_Shylpx, "collect_fragment" )
                 end
               end
             end).to_s
@@ -150,7 +150,7 @@ module REST
             
             # Generar depósitos cercanos
             #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
-            #  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
+            #  Game::Mechanics::ItemsMechanics.generate_nearby_deposits(user_Wikiti, [])
             #end).to_s
             
             # Recolectarla

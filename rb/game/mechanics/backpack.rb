@@ -2,14 +2,14 @@
 
 require 'pickup'
 
-require_relative './management'
+require_relative './mechanic'
 
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente al
     # inventario o mochila de los diferentes usuarios.
-    class BackpackManagement < Management
+    class BackpackMechanics < Mechanic
       
       # Datos referentes a este gestor.
       DATAFILE = "data/backpack.json"
@@ -20,6 +20,8 @@ module Game
       # Inicializar gestor de mecánicas de objetos.
       # @param str_data [String] Datos de entrada (si existiesen).
       def self.setup(str_data = nil)
+        super(str_data)
+        
         begin
           str_data ||= File.read(DATAFILE)
           @@data = JSON.parse( str_data )

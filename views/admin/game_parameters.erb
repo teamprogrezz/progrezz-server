@@ -34,7 +34,7 @@
 <form id="leveling" class="spoiler">
   <textarea id="leveling_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
   <button type="submit">Save</button>
-  <pre id="backpack_output"></pre>
+  <pre id="leveling_output"></pre>
 </form>
 
 <script type="text/javascript">
@@ -90,8 +90,8 @@
     });
   }
 
-  generic_setup("items", <%= file = File.open( Game::Mechanics::ItemsManagement::DATAFILE ).read.to_json %>);
-  generic_setup("allowed_actions", <%= file = File.open( Game::Mechanics::AllowedActionsManagement::DATAFILE ).read.to_json %>);
-  generic_setup("backpack", <%= file = File.open( Game::Mechanics::BackpackManagement::DATAFILE ).read.to_json %>);
-  generic_setup("leveling", <%= file = File.open( Game::Mechanics::LevelingManagement::DATAFILE ).read.to_json %>);
+  generic_setup("items", <%= file = File.open( Game::Mechanics::ItemsMechanics::DATAFILE ).read.to_json %>);
+  generic_setup("allowed_actions", <%= file = File.open( Game::Mechanics::AllowedActionsMechanics::DATAFILE ).read.to_json %>);
+  generic_setup("backpack", <%= file = File.open( Game::Mechanics::BackpackMechanics::DATAFILE ).read.to_json %>);
+  generic_setup("leveling", <%= file = File.open( Game::Mechanics::LevelingMechanics::DATAFILE ).read.to_json %>);
 </script>

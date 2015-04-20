@@ -79,7 +79,7 @@
       },
       {
         "name": "Exchange stack of items.",
-        "example": {"_comment":"Use this method to remove or exchange an amount of items for user <user_id>'s backpack. ","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_exchange_backpack_stack","data":{"user_id":"yourmail@example.com", "stack_id": "Numeric value. Retrieve it from the backpack rest call.", amount: "Numeric value. Total resources to remove from the given stack."}}}
+        "example": {"_comment":"Use this method to remove or exchange an amount of items for user <user_id>'s backpack. ","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_exchange_backpack_stack","data":{"user_id":"yourmail@example.com", "stack_id": "Numeric value. Retrieve it from the backpack rest call.", "amount": "Numeric value. Total resources to remove from the given stack."}}}
       }
     ]
   ],

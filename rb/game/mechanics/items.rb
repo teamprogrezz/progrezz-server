@@ -2,14 +2,14 @@
 
 require 'pickup'
 
-require_relative './management'
+require_relative './mechanic'
 
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente a
     # los objetos del juego (recursos, básicamente).
-    class ItemsManagement < Management
+    class ItemsMechanics < Mechanic
       # Cantidad de fragmentos a generar por kilómetro cuadrado
       DEPOSIT_REPLICATION_PER_RADIUS_KM = 4
 
@@ -23,8 +23,10 @@ module Game
       @@items = nil
       
       # Inicializar gestor de mecánicas de objetos.
-      # @param str_data [String] Datos de entrada (si existiesen).
+      # @param str_content [String] Datos de entrada (si existiesen).
       def self.setup(str_content = nil)
+        super(str_content)
+        
         init_items(str_content)
       end
       

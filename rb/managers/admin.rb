@@ -105,10 +105,10 @@ module Sinatra
         admin_protected!
         
         @@action_list ||= {
-          "allowed_actions" => Game::Mechanics::AllowedActionsManagement,
-          "backpack" => Game::Mechanics::BackpackManagement,
-          "items" => Game::Mechanics::ItemsManagement,
-          "leveling" => Game::Mechanics::LevelingManagement
+          "allowed_actions" => Game::Mechanics::AllowedActionsMechanics,
+          "backpack" => Game::Mechanics::BackpackMechanics,
+          "items" => Game::Mechanics::ItemsMechanics,
+          "leveling" => Game::Mechanics::LevelingMechanics
         }
         
         begin
@@ -125,13 +125,10 @@ module Sinatra
           # Y sobrescribir
           File.open(manager::DATAFILE, 'w') { |file| file.write( data ) }
           
-          
         rescue Exception => e
           halt 400, {'Content-Type' => 'text/plain'}, e.message + "\n" + e.backtrace.to_s
         end
         
-        puts "->", @@action_list[ params['action'] ]
-
         return {status: "ok"}.to_json
       end
       

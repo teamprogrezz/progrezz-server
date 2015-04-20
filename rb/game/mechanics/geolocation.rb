@@ -3,13 +3,13 @@
 require 'rest-client'
 require 'progrezz/geolocation'
 
-require_relative './management'
+require_relative './mechanic'
 
 module Game
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente a posiciones geolocalizadas.
-    class GeolocationManagement < Management
+    class GeolocationMechanics < Mechanic
       
       # Distancia o ruio a añadir a los puntos ajustados, en km
       NOISE_KM        = 0.001

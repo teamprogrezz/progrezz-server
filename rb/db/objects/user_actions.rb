@@ -35,14 +35,14 @@ module Game
       # @return [Game::Database::Message] Referencia al nuevo mensaje escrito.
       def write_message(content, extra_params = {})
         # Lanzará una excepción si no se permite al usuario realizar la acción.
-        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         # Parámetros extra
         params = GenericUtils.default_params(default_params = {
           resource_link: nil
         }, extra_params)
         
-        level_params = Game::Mechanics::AllowedActionsManagement.action_params_by_level( self.level_profile.level, __callee__.to_s )
+        level_params = Game::Mechanics::AllowedActionsMechanics.action_params_by_level( self.level_profile.level, __callee__.to_s )
         
         min_lenght = level_params["min_length"]
         max_lenght = level_params["max_length"]
@@ -83,7 +83,7 @@ module Game
       # @return [Game::Database::RelationShips::UserFragmentMessage, Game::Database::RelationShips::UserCompletedMessage, nil] Si añade el fragmento, devuelve la referencia al enlace del fragmento añadido. Si se ha completado el mensaje, devuelve la referencia al enlace de dicho mensaje. En cualquier otro caso, generará excepciones.
       def collect_fragment(fragment_message, out = {})
         # Lanzará una excepción si no se permite al usuario realizar la acción.
-        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         if fragment_message != nil
           
@@ -107,7 +107,7 @@ module Game
                     
           # Añadir experiencia al usuario
           method_name = (__callee__).to_s
-          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, method_name)
+          out[:exp] = Game::Mechanics::LevelingMechanics.gain_exp(self, method_name)
           
           # Añadir al contador
           self.update( { count_collected_fragments: count_collected_fragments + 1 } )
@@ -156,7 +156,7 @@ module Game
       # @return [Game::Database::Relations::UserCompletedMessage] Referencia al *enlace* del mensaje completado. Si no, se retornará nil o se generará una excepción.
       def unlock_message(msg_uuid, out = {} )
         # Lanzará una excepción si no se permite al usuario realizar la acción.
-        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         output = nil
         
@@ -177,7 +177,7 @@ module Game
         
         # Añadir experiencia al usuario
         method_name = (__callee__).to_s
-        out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, method_name)
+        out[:exp] = Game::Mechanics::LevelingMechanics.gain_exp(self, method_name)
         
         return output
       end
@@ -188,7 +188,7 @@ module Game
       # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
       def search_nearby_fragments( ignore_user_written_messages = true )
         # Lanzará una excepción si no se permite al usuario realizar la acción.
-        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         # El radio dependerá del nivel del usuario.
         radius = self.get_current_search_radius(:fragments)
@@ -229,7 +229,7 @@ module Game
       # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
       def search_nearby_deposits()
         # Lanzará una excepción si no se permite al usuario realizar la acción.
-        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, __callee__.to_s)
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         # El radio dependerá del nivel del usuario.
         radius = self.get_current_search_radius(:deposits)
@@ -270,7 +270,7 @@ module Game
         action_name = (__callee__).to_s + "_" + deposit_instance.deposit.item.quality
         
         # Lanzará una excepción si no se permite al usuario realizar la acción.
-        Game::Mechanics::AllowedActionsManagement.action_allowed?(self.level_profile.level, action_name)
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, action_name)
 
         # Si ya lo ha recolectado y está en cooldown, lanzar un error
         current_rel = self.collected_item_deposit_instances(:d, :rel).where(uuid: deposit_instance.uuid).pluck(:rel).first
@@ -285,7 +285,7 @@ module Game
         # Si realmente ha recolectado algo, hacer lo que sigue
         if out[:mining][:added_amount] > 0
           # Añadir experiencia al usuario en función de lo recolectado (calidad).
-          out[:exp] = Game::Mechanics::LevelingManagement.gain_exp(self, action_name)
+          out[:exp] = Game::Mechanics::LevelingMechanics.gain_exp(self, action_name)
           
           # Añadir al contador
           self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )

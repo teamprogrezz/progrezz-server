@@ -48,7 +48,7 @@ module Game
       # @param level [Integer] Nivel del usuario para crear los slots del inventario.
       # @return [Game::Mechanics::Backpack] Objeto creado (no enlazado a un usuario).
       def self.create_backpack( level )
-        return self.create( slots: Game::Mechanics::BackpackManagement.slots(level) ) # TODO: Rellenar.
+        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) ) # TODO: Rellenar.
       end
       
       #-- --------------------------------------------------
@@ -59,7 +59,10 @@ module Game
       # @param new_level [Integer] Nuevo nivel. Si es nil, se cogerá el nivel actual del usuario.
       def recalculate_slots( new_level = nil )
         new_level = new_level || user.level_profile.level
-        self.update( slots: Game::Mechanics::BackpackManagement.slots( new_level ) )
+        self.update( slots: Game::Mechanics::BackpackMechanics.slots( new_level ) )
+
+        raise ::GenericException.new("Invalid slots recalculation: too small.") if self.stacks.count > self.slots
+        
         return self
       end
       

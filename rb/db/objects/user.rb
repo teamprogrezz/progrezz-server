@@ -268,9 +268,9 @@ module Game
       # @return [Float] Radio de búsqueda, en km.
       def get_current_search_radius( element = :fragments)
         if element == :fragments
-          return Game::Mechanics::AllowedActionsManagement.get_allowed_actions(self.level_profile.level)["search_nearby_fragments"]["radius"]
+          return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_fragments"]["radius"]
         elsif element == :deposits
-          return Game::Mechanics::AllowedActionsManagement.get_allowed_actions(self.level_profile.level)["search_nearby_deposits"]["radius"]
+          return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_deposits"]["radius"]
         end
         
         # ...
@@ -362,7 +362,7 @@ module Game
           level: {
             current_level:  self.level_profile.level,
             current_exp:    self.level_profile.level_exp,
-            next_level_exp: Game::Mechanics::LevelingManagement.exp_to_next_level(self.level_profile.level + 1)
+            next_level_exp: Game::Mechanics::LevelingMechanics.exp_to_next_level(self.level_profile.level + 1)
           },
           
           # Estadísticas de mensajes
