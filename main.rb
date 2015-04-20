@@ -7,14 +7,15 @@ $LOAD_PATH << File.dirname(__FILE__) + "\n"
 require 'oj'
 require 'oj_mimic_json'
 
+# Cargar cosas genéricas
 require 'sinatra'
 require 'sinatra/multi_route'
 require 'neo4j'
 require 'logger'
 require 'colorize'
-
 require 'thread'
 
+# Cargar utilidades personalizadas.
 require './rb/generic_utils'
 
 if development?
@@ -76,18 +77,17 @@ module Sinatra
         app.enable :loggin
         app.use Rack::CommonLogger, Logger.new("tmp/app.log")
         
-        
+        # Deshabilitar la muestra de excepciones.
         app.set :show_exceptions, false
       end
       
       # Hacer antes de toda petición de ruta
       error_log = ::File.new("tmp/app_errors.log","a+")
       error_log.sync = true
-      app.before { env["rack.errors"] = error_log } if ::production?
+      app.before { env["rack.errors"] = error_log } if ProgrezzServer.production?
       
       # Ruta principal del servidor.
       app.get '/' do
-        raise ::GenericException.new "Error :("
         redirect to("/dev")
       end
       
@@ -116,8 +116,7 @@ module Sinatra
       # Gestión de errores.
       app.error ::GenericException do
         e = env['sinatra.error']
-        #env['rack.logger'].error "ERROR!\n" + e.message + "\n\n" + e.backtrace.join("\n")
-        
+
         return "<h1 style='color: red;'>Fatal error</h1>" +
           "<pre><strong>Message: </strong>" + e.message.to_s + "</pre>" +
           "<pre><strong>Backtrace: </strong>\n" + e.backtrace.join("\n") + "</pre>"
