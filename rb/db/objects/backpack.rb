@@ -48,7 +48,7 @@ module Game
       # @param level [Integer] Nivel del usuario para crear los slots del inventario.
       # @return [Game::Mechanics::Backpack] Objeto creado (no enlazado a un usuario).
       def self.create_backpack( level )
-        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) ) # TODO: Rellenar.
+        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) ) # TODO: Rellenar. (?)
       end
       
       #-- --------------------------------------------------
@@ -65,10 +65,26 @@ module Game
         
         return self
       end
+
+      # Añadir un nuevo stack (de manera forzada).
+      # @param item [Game::Database::Item] Tipo de objeto a añadir.
+      # @param amount [Integer] Cantidad a añadir.
+      private def force_add_item(item, amount)
+        stack = Game::Database::RelationShips::BackpackItemStacks.create({
+          from_node: self,
+          to_node:   item,
+          amount:    amount,
+          stack_id:  self.last_stack_id
+        })
+
+        self.update(last_stack_id: self.last_stack_id + 1)
+
+        return stack
+      end
       
       # Añadir objetos de un tipo al inventario.
       # @param item [Game::Database::Item] Tipo de objeto a añadir.
-      # @param amount [Integer] Tipo de objetos a añadir.
+      # @param amount [Integer] Cantidad a añadir.
       # @return [Hash] Propiedades de la adición.
       # @raise [GenericException] Si algo falla estrepitosamente, genera una excepción.
       def add_item(item, amount)
@@ -82,54 +98,61 @@ module Game
           desired_add_amout: amount,
           info: ""
         }
-        
-        # Comprobar si se puede añadir a un stack existente, y añadir la cantidad que se pueda a cada uno
-        self.stacks.match_to(item).each_with_rel do |it, rel|
-          if (empty_space = rel.empty_space()) >= 0
-            add_amount = [empty_space, amount].min
-            
-            rel.force_add_item( add_amount )
-            amount -= add_amount
-            output[:added_amount] += add_amount
-          end
-         
-          break if ( amount <= 0 )
-        end
-        
-        # Si aún queda cantidad, se añade otro stack
-        if amount > 0
-          # En otro caso, se añadirña otro stack. Se comprueba si queda espacio para añadir un nuevo stack.
-          if self.stacks.count == self.slots
-             output[:info] = "Could not add all items: backpack is full."
-          else
-            # Finalmente, se añade el/los nuevo/s stack/s.
-            output[:added_amount] += amount
 
-            Game::Database::RelationShips::BackpackItemStacks.create({
-              from_node: self,
-              to_node:   item,
-              amount:    amount,
-              stack_id:  self.last_stack_id
-            })
-            
-            self.update(last_stack_id: self.last_stack_id + 1)
+        # Operación atómica.
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          # Comprobar si se puede añadir a un stack existente, y añadir la cantidad que se pueda a cada uno
+          self.stacks.match_to(item).each_with_rel do |it, rel|
+            if (empty_space = rel.empty_space()) >= 0
+              add_amount = [empty_space, amount].min
+
+              rel.force_add_item( add_amount )
+              amount -= add_amount
+              output[:added_amount] += add_amount
+            end
+
+            break if ( amount <= 0 )
+          end
+
+          # Si aún queda cantidad, se añade otro stack
+          if amount > 0
+            # En otro caso, se añadirña otro stack. Se comprueba si queda espacio para añadir un nuevo stack.
+            if self.stacks.count == self.slots
+              output[:info] = "Could not add all items: backpack is full."
+            else
+              # Finalmente, se añade el/los nuevo/s stack/s.
+              output[:added_amount] += amount
+
+              self.force_add_item( item, amount )
+            end
           end
         end
-        
+
         return output
+      end
+
+      # Getter de un stack dado su identificador.
+      # @param stack_id [Integer] Identificador del stack (numérico).
+      # @return [Game::Database::RelationShips::BackpackItemStacks] Stack o relación del nodo.
+      def get_stack(stack_id)
+        stack = self.stacks(:s, :r).where("r.stack_id = " + stack_id.to_s).pluck(:r).first
+        raise ::GenericException.new( "Stack not found." ) if stack == nil
+
+        return stack
       end
       
       # Borra una cantidad de un stack de objetos.
-      # @param stack_id [Integer] Identificador neo4j de la relación (stack).
+      # @param stack_id [Integer] Identificador del stack.
+      # @return [Hash] Información del proceso de borrado.
       def exchange_stack_amount(stack_id, amount)
         raise ::GenericException.new( "Invalid stack id." ) if stack_id == nil || amount.to_i < 0
         raise ::GenericException.new( "Invalid amount (null)." ) if amount == nil || amount.to_i <= 0
-        
-        stack = self.stacks(:s, :r).where("r.stack_id = " + stack_id.to_s).pluck(:r).first 
-        raise ::GenericException.new( "Stack not found." ) if stack == nil
-        
-        item = stack.to_node
-        count = stack.remove_amount( amount.to_i )
+
+        count = nil
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          # item = stack.to_node
+          count = get_stack(stack_id).remove_amount( amount.to_i )
+        end
         
         # TODO: Cambiar el contenido borrado por energía, o algo así.
         # ...
@@ -139,9 +162,35 @@ module Game
         }
       end
       
-      # ...
+      # Particionar una pila de objetos.
+      # @param stack_id [Integer] Identificador del stack.
+      # @param restack_amount [Integer] Cantidad a añadir al nuevo stack, eliminándolo del viejo.
+      # @return [Hash] Información de la partición.
       def split_stack(stack_id, restack_amount)
-        # TODO: IMPLEMENTAME!
+        # Comprobar si queda espacio para partir un stack.
+        raise ::GenericException.new("There is no free space to split a stack.") if self.stacks.count >= self.slots
+
+        stack = nil
+        new_stack = nil
+
+        # Operación atómica.
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          # Buscar el stack a partir del identificador
+          stack = get_stack(stack_id)
+
+          # Comprobar que hay cantidad suficiente para particionar
+          raise ::GenericException.new("Invalid restack amount") if (restack_amount <= 0) || (restack_amount >= stack.amount)
+
+          # Realizar la partición
+          stack.update( amount: stack.amount - restack_amount )
+          new_stack = self.force_add( stack.item, restack_amount )
+        end
+
+        # Retornar lo que sea.
+        return {
+          old_stack: stack.to_hash,
+          new_stack: new_stack.to_hash
+        }
       end
       
       # Transformar objeto a un hash

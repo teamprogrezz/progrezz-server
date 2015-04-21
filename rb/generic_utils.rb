@@ -19,6 +19,39 @@ class GenericUtils
       require file.split(/\.rb/)[0]
     }
   end
+
+  # Comprobar parámetro o variable (usado en funciones).
+  # @param param_name [String] Nombre del argumento (contexto).
+  # @param param_value [Object] Objeto a comprobar.
+  # @param type [Class] Clase al que debería pertenecer el objeto.
+  # @param strict_type [Boolean] Si es true, deberá ser exactamente de ese tipo, y no una subclase. Si no, basta con que sea una subclase.
+  # @raise [ArgumentError] Será lanzado si un parámetro no es válido.
+  def self.check_param(param_name, param_value, type, strict_type = false)
+    raise ::ArgumentError.new("Invalid call.") if param_name == nil or param_value == nil or !type.is_a? Class
+    strict_type = false unless param_value.respond_to? :instace_of?
+
+    if strict_type
+      raise ::ArgumentError.new( "Invalid argument type for '" + param_name.to_s + "'. " + "Must be strictly a " + type.name + " instead of " + param_value.class.name + "." ) unless param_value.instace_of? type
+    else
+      raise ::ArgumentError.new( "Invalid argument type for '" + param_name.to_s + "'. " + "Must be a " + type.name + " or a child of it instead of " + param_value.class.name + "." ) unless param_value.is_a? type
+    end
+  end
+
+  # Comprobar varios parámetros a la vez.
+  #
+  # Puede invocarse de la siguiente manera:
+  #   GenericUtils.check_params "user_param" => [user, Game::Database::User], "item_param" => [item, Game::Database::Item]
+  #
+  # @param hash_data [Hash] Deberá tener el formato especificado en la descripción de este método.
+  # @raise [ArgumentError] Será lanzado si algún parámetro no es válido.
+  def self.check_params( hash_data, strict_type = false )
+    raise ::ArgumentError.new("Invalid call.") if hash_data == nil or !hash_data.is_a? Hash
+
+    hash_data.each do |k, v|
+      raise ::ArgumentError.new("Invalid call.") if !v.is_a? Array or v.length != 2
+      check_param( k, v[0], v[1], strict_type )
+    end
+  end
   
   # Medir el tiempo que tarda en ejecutar un bloque de código.
   #

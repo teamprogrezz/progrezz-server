@@ -63,7 +63,6 @@ module Game
           return {
             stack_id:        self.stack_id,
             created_at:      self.created_at.to_i,
-            #backpack_index:  self.backpack_index,
             amount:          self.amount,
             max_amount:      self.to_node.max_amount
           }
