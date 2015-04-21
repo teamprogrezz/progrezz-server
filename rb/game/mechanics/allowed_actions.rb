@@ -36,6 +36,7 @@ module Game
         end
         
         # Calcular acciones de cada usuario
+        @@precomputed_allowed_actions = []
         @@precomputed_allowed_actions << @@data[LevelingMechanics.min_level.to_s]
         for i in (LevelingMechanics.min_level)..(LevelingMechanics.max_level)
           # Crear de anera apilada (con los datos del anterior).

@@ -114,7 +114,7 @@ module Sinatra
       end
       
       # Gestión de errores.
-      app.error ::GenericException do
+      app.error Exception do
         e = env['sinatra.error']
 
         return "<h1 style='color: red;'>Fatal error</h1>" +

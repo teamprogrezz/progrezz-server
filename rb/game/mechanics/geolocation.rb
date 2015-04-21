@@ -28,7 +28,6 @@ module Game
           if ENV['progrezz_disable_routing'] != "true"
             new_loc = {}
             
-            
             # Usar servidor OSRM
             if ENV['progrezz_matching_osrm'] != nil
               url      = ENV['progrezz_matching_osrm']
