@@ -34,6 +34,8 @@ class RESTTest < Test::Unit::TestCase
   def ok?
     if @exec_ok == false
       $EXIT_ERROR = ($EXIT_ERROR || 0) + 1
+
+      puts JSON.pretty_generate(@response)
     end
   end
   
@@ -389,6 +391,25 @@ class RESTTest < Test::Unit::TestCase
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:removed], 10
+
+    ok
+  end
+
+  # Probar "user_split_backpack_stack"
+  def test_user_split_backpack_stack
+    authenticate()
+
+    # Añadir objeto al inventario
+    @users[0].backpack.add_item(@deposit_instances[0].deposit.item, 20)
+
+    # Eliminar
+    @request[:request][:type] = "user_split_backpack_stack"
+    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: (@users[0].backpack.last_stack_id - 1), restack_amount: 9  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:old_stack][:amount], 11
+    assert_equal @response[:response][:data][:new_stack][:amount], 9
 
     ok
   end

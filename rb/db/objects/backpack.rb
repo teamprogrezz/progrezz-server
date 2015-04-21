@@ -183,7 +183,8 @@ module Game
 
           # Realizar la partición
           stack.update( amount: stack.amount - restack_amount )
-          new_stack = self.force_add( stack.item, restack_amount )
+          item = stack.to_node
+          new_stack = force_add_item( item, restack_amount )
         end
 
         # Retornar lo que sea.

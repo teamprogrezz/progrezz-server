@@ -87,6 +87,22 @@ module Sinatra; module API ;module REST
         removed: output[:removed]
       })
     end
+
+    # Particionar un stack de objetos del usuario dado.
+    def self.user_split_backpack_stack( app, response, session)
+      user_id        = response[:request][:request][:data][:user_id]
+      stack_id       = response[:request][:request][:data][:stack_id].to_i
+      restack_amount = response[:request][:request][:data][:restack_amount].to_i
+
+      user   = Game::AuthManager.search_auth_user( user_id, session )
+      output = user.backpack.split_stack( stack_id, restack_amount )
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        old_stack: output[:old_stack],
+        new_stack: output[:new_stack]
+      })
+    end
     
   end
   
