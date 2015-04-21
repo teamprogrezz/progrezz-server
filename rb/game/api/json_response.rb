@@ -68,6 +68,16 @@ module Game
         response[:response][:status]  = "ok"
         response[:response][:data]    = data
       end
+
+      # Validar petición de usuario.
+      # @param request [Hash] Comprobar petición.
+      # @raise [GenericException] Lanza un error si no es válida.
+      def self.validate_request(request)
+        raise ::GenericException.new("Invalid request") unless request.is_a? Hash
+
+        request[:request] ||= { }
+        request[:request][:data] ||= { }
+      end
       
     end
     

@@ -65,6 +65,9 @@ module Sinatra
         request = params
         response[:request] = request
 
+        # Comprobar que tiene la estructura correcta.
+        Game::API::JSONResponse.validate_request( request )
+
         # Activar gestor de transacciones.
         Game::Database::DatabaseManager.run_nested_transaction do |tx|
           # Tipo de petición

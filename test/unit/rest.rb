@@ -54,7 +54,10 @@ class RESTTest < Test::Unit::TestCase
     # Setup other things.
     @request = {
       metada: { },
-      request: { }
+      request: {
+        type: "",
+        data: { }
+      }
     }
     
     @response = {
@@ -112,7 +115,6 @@ class RESTTest < Test::Unit::TestCase
     authenticate()
     
     @request[:request][:type] = "user_who_am_i"
-    @request[:request][:data] = { }
     rest_request()
 
     assert_equal @response[:response][:status], "ok"
@@ -382,7 +384,7 @@ class RESTTest < Test::Unit::TestCase
     
     # Eliminar
     @request[:request][:type] = "user_exchange_backpack_stack"
-    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: @users[0].backpack.last_stack_id - 1, amount: 10  }
+    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: (@users[0].backpack.last_stack_id - 1), amount: 10  }
     rest_request()
 
     assert_equal @response[:response][:status], "ok"

@@ -153,6 +153,13 @@ class GenericException < StandardError
   include ::Nesty::NestedError
 end
 
+# Módulo booleano. Hack.
+module Boolean; end
+# Clase TrueClass. Hack.
+class TrueClass; include Boolean; end
+# Clase FalseClass. Hack.
+class FalseClass; include Boolean; end
+
 # Módulo de eventos (dispatchers y listeners).
 # 
 # Para usarlo en la clase, deberá incluirse en la clase usando el método +extend*:

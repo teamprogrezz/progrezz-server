@@ -8,8 +8,10 @@ module Sinatra; module API ;module REST
     
     # Recolectar objetos de un depósito.
     def self.user_collect_item_from_deposit( app, response, session )
-      user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
-      deposit  = Game::Database::ItemDepositInstance.find_by( uuid: response[:request][:request][:data][:deposit_uuid] )
+      user_id      = response[:request][:request][:data][:user_id]
+      deposit_uuid = response[:request][:request][:data][:deposit_uuid]
+      user     = Game::AuthManager.search_auth_user( user_id, session )
+      deposit  = Game::Database::ItemDepositInstance.find_by( uuid: deposit_uuid)
       
       extra = {}
       relation = nil
@@ -30,6 +32,7 @@ module Sinatra; module API ;module REST
     
     # Recibir depósitos de objetos cercanos al usuario.
     def self.user_get_nearby_item_deposits( app, response, session )
+      user_id      = response[:request][:request][:data][:user_id]
       user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
 
       # Geolocalizaciones (como arrays).
@@ -60,6 +63,7 @@ module Sinatra; module API ;module REST
     
     # Ver los datos de la mochila del usuario
     def self.user_get_backpack( app, response, session )
+      user_id      = response[:request][:request][:data][:user_id]
       user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
       Game::API::JSONResponse.ok_response!( response, {
@@ -70,9 +74,11 @@ module Sinatra; module API ;module REST
     
     # Eliminar una cantidad de objetos del inventario.
     def self.user_exchange_backpack_stack( app, response, session )
-      user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
-      stack_id = response[:request][:request][:data][:stack_id]
-      amount   = response[:request][:request][:data][:amount]
+      user_id      = response[:request][:request][:data][:user_id]
+      stack_id     = response[:request][:request][:data][:stack_id]
+      amount       = response[:request][:request][:data][:amount]
+
+      user     = Game::AuthManager.search_auth_user( user_id, session )
       
       output = user.backpack.exchange_stack_amount(stack_id, amount)
       

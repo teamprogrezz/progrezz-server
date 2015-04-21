@@ -10,7 +10,8 @@ module Sinatra; module API ;module REST
   
     # Getter de la información de un mensaje.
     def self.message_get( app, response, session)
-      msg = Game::Database::Message.find_by( uuid: response[:request][:request][:data][:msg_uuid] )
+      msg_uuid = response[:request][:request][:data][:msg_uuid]
+      msg = Game::Database::Message.find_by( uuid: msg_uuid )
       
       if msg == nil
         raise ::GenericException.new( "Message with uuid '" + response[:request][:request][:data][:msg_uuid].to_s + "' not found.", e)
@@ -39,7 +40,8 @@ module Sinatra; module API ;module REST
     
     # Getter de un mensaje dado un fragmento.
     def self.message_get_from_fragment( app, response, session)
-      fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:frag_uuid] )
+      frag_uuid = response[:request][:request][:data][:frag_uuid]
+      fragment = Game::Database::MessageFragment.find_by( uuid: frag_uuid )
 
       if fragment == nil
         raise ::GenericException.new( "Fragment with uuid '" + response[:request][:request][:data][:frag_uuid].to_s + "' not found.", e)

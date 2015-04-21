@@ -123,7 +123,7 @@ module Game
               # Finalmente, se añade el/los nuevo/s stack/s.
               output[:added_amount] += amount
 
-              self.force_add_item( item, amount )
+              force_add_item( item, amount )
             end
           end
         end

@@ -10,7 +10,7 @@ module Sinatra
         begin
           item_id = response[:request][:request][:data][:item_id]
           item = Game::Database::Item.find_by(item_id: item_id)
-          
+
           raise ::GenericException.new( "Item not found in database." ) if item == nil
           
         rescue Exception => e
