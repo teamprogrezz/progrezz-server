@@ -20,7 +20,7 @@ module Game
       DATAFILE = "data/items.json"
       
       # Lista de objetos (guardado por si hace falta usarlo).
-      @@items = nil
+      @data = nil
       
       # Inicializar gestor de mecánicas de objetos.
       # @param str_content [String] Datos de entrada (si existiesen).
@@ -34,16 +34,12 @@ module Game
       # @param content [String] Datos de entrada (si existiesen).
       def self.init_items(content = nil)
         # Leer de fichero
-        begin
-          @@items = JSON.parse( content || File.read(DATAFILE) )
-          GenericUtils.symbolize_keys_deep!(@@items)
-        rescue Exception => e
-          raise ::GenericException.new( "Error reading json: " + e.message, e)
-        end
+        self.parse_JSON( content || File.read(DATAFILE) )
+        GenericUtils.symbolize_keys_deep!(@data)
         
         # Para cada objeto
         item_id_list = []
-        @@items.each do |i|
+        @data.each do |i|
           item_id_list << i[:item_id]
           item = Game::Database::Item.find_by( item_id: i[:item_id] )
 
@@ -82,19 +78,19 @@ module Game
         end
         
         # Preparar lista de objetos (referencias)
-        @@deposit_list = {}
-        Game::Database::ItemDeposit.all.each { |id| @@deposit_list[id.item.item_id] = id }
-        raise ::GenericException.new( "There are no deposits in the database to intantiate.") if @@deposit_list.empty?
+        @deposit_list = {}
+        Game::Database::ItemDeposit.all.each { |id| @deposit_list[id.item.item_id] = id }
+        raise ::GenericException.new( "There are no deposits in the database to intantiate.") if @deposit_list.empty?
         
         # Preparar lista de objetos (acceso rápido)
-        @@items = Hash[@@items.map { |i| [i[:item_id], i ] } ]
+        @data = Hash[@data.map { |i| [i[:item_id], i ] } ]
       end
       
       # Getter de un objeto (más rápido que buscarlo en la base de datos).
       # @param item_id [String] Identificador del objeto.
       # @return [Hash, nil] Información del objeto. Si no encuentra nada, retornará +nil+.
       def self.find_item(item_id)
-        return @@items[item_id].deep_clone
+        return @data[item_id].deep_clone
       end
       
       # Generar depósitos cercanos al usuario.
@@ -117,7 +113,7 @@ module Game
         max_deposits = (radius * DEPOSIT_REPLICATION_PER_RADIUS_KM).round
         
         # Preparar selector de objetos según su peso.
-        ponderation = @@deposit_list.map { |key, value| [key, value.weight] }
+        ponderation = @deposit_list.map { |key, value| [key, value.weight] }
         deposit_picker = Pickup.new(ponderation)
         
         # TODO: Aumentar probabilidad de generación si hay balizas cercanas
@@ -135,7 +131,7 @@ module Game
             random_geolocation[:longitude] = user_geo[:longitude] + Progrezz::Geolocation.distance_to_longitude( radius, :km )
             
             # Elegir un depósito aleatoriamente según su peso y replicarlo
-            new_instance = @@deposit_list[deposit_picker.pick].instantiate( random_geolocation )
+            new_instance = @deposit_list[deposit_picker.pick].instantiate( random_geolocation )
             
             # Añadir a la salida
             deposits_output[new_instance.uuid] = new_instance

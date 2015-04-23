@@ -13,10 +13,10 @@ module Game
     # las acciones permitidas por los usuario según el nivel.
     class AllowedActionsMechanics < Mechanic
       # Hash que contiene los datos de DATAFILE
-      @@data = {}
+      @data = {}
       
       # Acciones por nivel ya preparadas (no es necesario computarlas cada vez que se piden).
-      @@precomputed_allowed_actions = []
+      @precomputed_allowed_actions = []
       
       # Datos referentes a este módulo
       DATAFILE = "data/allowed_actions.json"
@@ -26,24 +26,17 @@ module Game
       # @param str_data [String] Datos de entrada (si existiesen).
       def self.setup(str_data = nil)
         super(str_data)
-          
-        begin
-          str_data ||= File.read(DATAFILE)
-          @@data = JSON.parse( str_data )
-          
-        rescue Exception => e
-          raise ::GenericException.new( "Error reading json: " + e.message, e)
-        end
+        self.parse_JSON( str_data || File.read(DATAFILE) )
         
         # Calcular acciones de cada usuario
-        @@precomputed_allowed_actions = []
-        @@precomputed_allowed_actions << @@data[LevelingMechanics.min_level.to_s]
+        @precomputed_allowed_actions = []
+        @precomputed_allowed_actions << @data[LevelingMechanics.min_level.to_s]
         for i in (LevelingMechanics.min_level)..(LevelingMechanics.max_level)
           # Crear de anera apilada (con los datos del anterior).
-          @@precomputed_allowed_actions[i] = (@@precomputed_allowed_actions[i - 1].deep_merge(@@data[i.to_s])  )
+          @precomputed_allowed_actions[i] = (@precomputed_allowed_actions[i - 1].deep_merge(@data[i.to_s])  )
           
           # Previsualizar
-          # puts i.to_s, JSON.pretty_generate(@@precomputed_allowed_actions[i])
+          # puts i.to_s, JSON.pretty_generate(@precomputed_allowed_actions[i])
         end
         
       end
@@ -63,7 +56,7 @@ module Game
       def self.get_allowed_actions(level)
         check_level(level)
         
-        return @@precomputed_allowed_actions[level]
+        return @precomputed_allowed_actions[level]
       end
       
       # Comprobar si una acción se permite.
@@ -73,7 +66,7 @@ module Game
       def self.action_allowed?(level, action_name)
         check_level(level)
         
-        if !@@precomputed_allowed_actions[level].keys.include? action_name
+        if !@precomputed_allowed_actions[level].keys.include? action_name
           raise ::GenericException.new( "Action '" + action_name + "' not allowed at level '" + level.to_s + "'.")
         end
         
@@ -86,7 +79,7 @@ module Game
       def self.action_params_by_level(level, action_name)
         check_level(level)
         
-        return @@precomputed_allowed_actions[level][action_name]
+        return @precomputed_allowed_actions[level][action_name]
       end
       
     end

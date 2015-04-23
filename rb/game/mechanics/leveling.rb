@@ -12,24 +12,23 @@ module Game
       DATAFILE = "data/leveling.json"
       
       # Datos de leveo (hash)
-      @@leveling_data = {}
+      @data = {}
       
       
       # Inicializar mecánica.
       # Cargará los datos de leveo desde el fichero #DATAFILE.
       def self.setup(data = nil)
         super(data)
+        self.parse_JSON( data || File.read(DATAFILE) )
         
         begin
-          @@leveling_data = JSON.parse( data || File.read(DATAFILE) )
-          
           # Parsear funciones y añadirlas aquí.
-          for function in @@leveling_data["functions"].values
+          for function in @data["functions"].values
             eval(function)
           end
           
         rescue Exception => e
-          raise ::GenericException.new( "Error reading '" + DATAFILE + "': " + e.message, e)
+          raise ::GenericException.new( "Error occurred while reading json: " + e.message, e)
         end
       end
       
@@ -44,13 +43,13 @@ module Game
       # Nivel mínimo (incluido).
       # @return [Integer] Nivel mínimo.
       def self.min_level
-        return @@leveling_data["levels"]["start"]
+        return @data["levels"]["start"]
       end
       
       # Nivel máximo (incluido).
       # @return [Integer] Nivel máximo.
       def self.max_level
-        return @@leveling_data["levels"]["end"]
+        return @data["levels"]["end"]
       end
       
       # Dar experiencia a un usuario.
@@ -71,12 +70,12 @@ module Game
         output = { }
         
         # Si tiene el nivel máximo, no ganar experiencia.
-        if current_level >= @@leveling_data["levels"]["end"]
+        if current_level >= self.max_level
           return output
         end
         
         # Recoger cantidad de experiencia por la acción.
-        action_exp = @@leveling_data["exp"]["exp_per_action"][action_str]
+        action_exp = @data["exp"]["exp_per_action"][action_str]
         if action_exp == nil
           raise ::GenericException.new( "Invalid action: there is no exp related to '" + action_str + "'" )
         end
@@ -93,7 +92,7 @@ module Game
           output[:new_level] = current_level
           
           # Si no es el nivel máximo, reajustar experiencia y calcular experiencia para el próximo nivel.
-          if current_level < @@leveling_data["levels"]["end"]
+          if current_level < self.max_level
             current_exp -= exp_for_next_level
             exp_for_next_level = _next_level_required_exp( current_level + 1 )
           else

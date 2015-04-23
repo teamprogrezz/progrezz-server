@@ -15,34 +15,27 @@ module Game
       DATAFILE = "data/backpack.json"
       
       # Datos cargados
-      @@data = nil
+      @data = nil
       
       # Inicializar gestor de mecánicas de objetos.
       # @param str_data [String] Datos de entrada (si existiesen).
       def self.setup(str_data = nil)
         super(str_data)
+        self.parse_JSON( str_data || File.read(DATAFILE) )
         
-        begin
-          str_data ||= File.read(DATAFILE)
-          @@data = JSON.parse( str_data )
-          
-        rescue Exception => e
-          raise ::GenericException.new( "Error reading json: " + e.message, e)
-        end
-        
-        GenericUtils.symbolize_keys_deep!(@@data)
+        GenericUtils.symbolize_keys_deep!(@data)
       end
       
       # Tamaño del inventario base.
       # @return [Integer] Tamaño del inventario base.
       def self.base_slots()
-        return @@data[:backpack][:base_slots]
+        return @data[:backpack][:base_slots]
       end
       
       # Incremento del inventario por nivel.
       # @return [Integer, Float] Incremento del inventario por nivel.
       def self.slots_per_level()
-        return @@data[:backpack][:slots_per_level]
+        return @data[:backpack][:slots_per_level]
       end
       
       # Tamaño de un inventario dado un nivel.
