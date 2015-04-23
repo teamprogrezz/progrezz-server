@@ -53,8 +53,18 @@ module Game
         # Cantidad de objetos en este stack.
         # @return [Integer] No puede superar el límite según el objeto.
         property :amount, type: Integer, default: 0
-        
-        # TODO: Rellenar.
+
+        # -------------------------
+        #      Alias de métodos
+        # -------------------------
+
+
+        alias_method :item, :to_node
+        alias_method :backpack, :from_node
+
+        # -------------------------
+        #       Métodos
+        # -------------------------
 
         # Retornar objeto como hash.
         # @param exclusion_list [Array<Symbol>] Lista de elementos a excluir.
@@ -64,7 +74,7 @@ module Game
             stack_id:        self.stack_id,
             created_at:      self.created_at.to_i,
             amount:          self.amount,
-            max_amount:      self.to_node.max_amount
+            max_amount:      self.item.max_amount
           }
         end
         
@@ -72,7 +82,7 @@ module Game
         # @param add_amount [Integer] Cantidad supuesta a añadir.
         # @return [Boolean] True si cabe. False en caso contrario.
         def fits?(add_amount)
-          return (self.amount + add_amount) <= to_node.max_amount
+          return (self.amount + add_amount) <= item.max_amount
         end
         
         
@@ -111,10 +121,21 @@ module Game
           
           return am
         end
+
+        # Saber si el stack vacío
+        # @return [Boolean] Si está vacío (0 recursos), retorna true. En otro caso, retorna false.
+        def empty?
+          return amount == 0
+        end
+
+        # Borra el objeto de la base de datos si está vacío.
+        def remove_if_empty()
+          self.remove if empty?
+        end
         
         # Cantidad de objetos que caben en el 
         def empty_space()
-          return to_node.max_amount - self.amount
+          return item.max_amount - self.amount
         end
         
         # Borrar enlace.

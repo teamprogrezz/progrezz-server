@@ -165,10 +165,13 @@ module Game
       # Particionar una pila de objetos.
       # @param stack_id [Integer] Identificador del stack.
       # @param restack_amount [Integer] Cantidad a añadir al nuevo stack, eliminándolo del viejo.
+      # @param target_stack_id [Integer] Nuevo stack sobre el que apilar los objetos. Si es nil, se apilará sobre un hueco vacío.
       # @return [Hash] Información de la partición.
-      def split_stack(stack_id, restack_amount)
+      def split_stack(stack_id, restack_amount, target_stack_id = nil)
+        # TODO: Añadir opción para insertar la nueva cantidad en un stack no vacío.
+
         # Comprobar si queda espacio para partir un stack.
-        raise ::GenericException.new("There is no free space to split a stack.") if self.stacks.count >= self.slots
+        raise ::GenericException.new("There is no free space to split a stack.") if target_stack_id == nil && self.stacks.count >= self.slots
 
         stack = nil
         new_stack = nil
@@ -179,19 +182,39 @@ module Game
           stack = get_stack(stack_id)
 
           # Comprobar que hay cantidad suficiente para particionar
-          raise ::GenericException.new("Invalid restack amount") if (restack_amount <= 0) || (restack_amount >= stack.amount)
+          raise ::GenericException.new("Invalid restack amount") if (restack_amount <= 0) || (restack_amount > stack.amount)
 
           # Realizar la partición
-          stack.update( amount: stack.amount - restack_amount )
-          item = stack.to_node
-          new_stack = force_add_item( item, restack_amount )
+          if target_stack_id == nil
+            stack.update( amount: stack.amount - restack_amount )
+            new_stack = force_add_item( stack.item, restack_amount )
+          else
+            stack_to = get_stack(target_stack_id)
+
+            # Comprobar que el objeto es compatible.
+            raise ::GenericException.new("Incompatible stacks (" + stack_id.to_s + " - " + stack.item.item_id.to_s + ") and (" + new_stack.to_s + " - " + stack_to.item.item_id.to_s + ")." ) if stack_to.item.item_id != stack.item.item_id
+
+            # Comprobar que hay espacio.
+            raise ::GenericException.new("Target stack is too big to fit the resources.") unless stack_to.fits? restack_amount
+
+             # Realizar cambios
+            stack.update( amount: stack.amount - restack_amount )
+            stack_to.update( amount: stack_to.amount + restack_amount )
+
+            new_stack = stack_to
+          end
         end
 
-        # Retornar lo que sea.
-        return {
+        # Preparar la salida.
+        output = {
           old_stack: stack.to_hash,
           new_stack: new_stack.to_hash
         }
+
+        # Si el el viejo stack quedan 0 recursos, eliminarlo
+        stack.remove_if_empty
+
+        return output
       end
       
       # Transformar objeto a un hash

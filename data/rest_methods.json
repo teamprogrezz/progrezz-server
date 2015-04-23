@@ -83,7 +83,7 @@
       },
       {
         "name": "Split stack of items.",
-        "example": {"_comment":"Use this method to split an amount of items for user <user_id>'s backpack into another stack. ","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_split_backpack_stack","data":{"user_id":"yourmail@example.com", "stack_id": "Numeric value. Retrieve it from the backpack rest call.", "restack_amount": "Numeric value. Total resources to restack (new stack)."}}}
+        "example": {"_comment":"Use this method to split an amount of items for user <user_id>'s backpack into another stack. ","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_split_backpack_stack","data":{"user_id":"yourmail@example.com", "stack_id": "Numeric value. Retrieve it from the backpack rest call.", "restack_amount": "Numeric value. Total resources to restack (new stack).", "target_stack_id": "[Optional] Numeric value. Target stack identifier to add the splitted amount. Retrieve it from the backpack rest call."}}}
       }
     ]
   ],

@@ -402,14 +402,37 @@ class RESTTest < Test::Unit::TestCase
     # Añadir objeto al inventario
     @users[0].backpack.add_item(@deposit_instances[0].deposit.item, 20)
 
-    # Eliminar
+    # Dividir
+    stack_id = 1
+
     @request[:request][:type] = "user_split_backpack_stack"
-    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: (@users[0].backpack.last_stack_id - 1), restack_amount: 9  }
+    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: stack_id - 1, restack_amount: 9  }
     rest_request()
 
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:old_stack][:amount], 11
     assert_equal @response[:response][:data][:new_stack][:amount], 9
+
+    # Dividir a otro stack
+    stack_id = 2
+
+    @request[:request][:type] = "user_split_backpack_stack"
+    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: stack_id - 1, target_stack_id: stack_id - 2, restack_amount: 5  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:old_stack][:amount], 4
+    assert_equal @response[:response][:data][:new_stack][:amount], 16
+
+    # Traspasar todo
+    @request[:request][:type] = "user_split_backpack_stack"
+    @request[:request][:data] = { user_id: @users[0].user_id, stack_id: stack_id - 2, target_stack_id: stack_id - 1, restack_amount: 16  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:old_stack][:amount], 0
+    assert_equal @response[:response][:data][:new_stack][:amount], 20
+    assert_equal @users[0].backpack.to_hash.length, 1
 
     ok
   end
