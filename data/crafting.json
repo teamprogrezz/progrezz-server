@@ -10,7 +10,7 @@
             "quantity": 10
           },
           {
-            "item_id": "mineral_charcoal",
+            "item_id": "mineral_coal",
             "quantity": 10
           }
         ],
@@ -22,13 +22,16 @@
     }
   },
   "rank_b": {
-    "name": "Rango B"
+    "name": "Rango B",
+    "recipes": {}
   },
   "rank_a": {
-    "name": "Rango A"
+    "name": "Rango A",
+    "recipes": {}
   },
   "rank_s": {
-    "name": "Rango S"
+    "name": "Rango S",
+    "recipes": {}
   }
 
 }

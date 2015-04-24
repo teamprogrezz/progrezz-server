@@ -19,7 +19,7 @@ module Sinatra
         
         Game::API::JSONResponse.ok_response!( response, {
           type: "json",
-          item: item.to_hash
+          item: item.to_hash([])
         })
       end
       

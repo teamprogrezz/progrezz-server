@@ -40,6 +40,11 @@ module Game
         # Para cada objeto
         item_id_list = []
         @data.each do |i|
+          if i.empty? || i[:item_id] == nil
+           i.delete :item_id
+            next
+          end
+
           item_id_list << i[:item_id]
           item = Game::Database::Item.find_by( item_id: i[:item_id] )
 
