@@ -29,6 +29,10 @@
     "collect_item_from_deposit_<q>": {
       "_desc": "Collect an item with <q> quality from a deposit."
     },
+
+    "craft_item_<r>": {
+      "_desc": "Craft item of rank <r>."
+    },
     
     "search_nearby_deposits": {
       "_desc": "Search nearby items's deposits.",
@@ -55,7 +59,7 @@
     "unlock_message": true
   },
   "1": {
-
+    "craft_item_rank_c": {}
   },
   "2": {
     "collect_fragment": {
@@ -79,7 +83,8 @@
       "max_length": 80,
       "allow_resources": false
     },
-    "collect_item_from_deposit_Rare": {}
+    "collect_item_from_deposit_Rare": {},
+    "craft_item_rank_b": {}
   },
   "4": {
     "collect_fragment": {
@@ -101,7 +106,8 @@
       "duration": 14,
       "max_length": 140
     },
-    "collect_item_from_deposit_Epic": {}
+    "collect_item_from_deposit_Epic": {},
+    "craft_item_rank_a": {}
   },
   "6": {
     "collect_fragment": {
@@ -123,7 +129,8 @@
       "duration": 30,
       "max_length": 200,
       "allow_resources": true
-    }
+    },
+    "craft_item_rank_s": {}
   },
   "8": {
     "collect_fragment": {

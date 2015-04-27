@@ -321,11 +321,15 @@ module Game
         Game::Database::DatabaseManager.run_nested_transaction do |tx|
           # Comprobar que tiene los objetos, y quitarlos
           craft_recipe["recipe"]["input"].each do |obj|
-            self.backpack.remove_item_amount Game::Database::Item.find(obj["item_id"]), obj["quantity"]
+
+            raise ::GenericException.new("Invalid item id '" + obj["item_id"] + "'.") unless input_item = Game::Database::Item.find_by(item_id: obj["item_id"])
+            raise ::GenericException.new("Invalid amount " + obj["quantity"].to_s + " of " + obj["item_id"] + ".") unless input_item_quantity = obj["quantity"]
+
+            self.backpack.remove_item_amount input_item, input_item_quantity
           end
 
           # Comprobar que cabe la cantidad de objetos de salida
-          output_item        = Game::Database::Item.find(craft_recipe["recipe"]["output"]["item_id"])
+          output_item        = Game::Database::Item.find_by(item_id: craft_recipe["recipe"]["output"]["item_id"])
           output_item_amount = craft_recipe["recipe"]["output"]["quantity"]
           raise ::GenericException.new("User does not own space to add " + output_item_amount.to_s + " of " + output_item.name) unless self.backpack.fits? output_item, output_item_amount
 
@@ -333,7 +337,8 @@ module Game
           self.backpack.add_item output_item, output_item_amount
         end
 
-        # Si ha ido bien, añadir experiencia al usuario.
+        # Añadir experiencia al usuario en función de lo crafteado
+        out[:exp] = Game::Mechanics::LevelingMechanics.gain_exp(self, action_name)
 
       end
 
