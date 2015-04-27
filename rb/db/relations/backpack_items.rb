@@ -84,6 +84,13 @@ module Game
         def fits?(add_amount)
           return (self.amount + add_amount) <= item.max_amount
         end
+
+        # Comprobar si el stack tiene al menos una cantidad.
+        # @param amount [Integer] Cantidad de objetos a comprobar.
+        # @return [Boolean] True si existen los recursos. False en caso contrario.
+        def has?(amount)
+          return self.amount >= amount
+        end
         
         
         # Añadir una cantidad al stack (forzado).
@@ -106,7 +113,8 @@ module Game
         
         # Borrar una cantidad de objetos del stack.
         #
-        # Si es demasiado grande, se borrará el stack completo.
+        # Si es lo suficientemente grande, se borrará el stack completo.
+        # Si es demasiado grande, lanzará una excepción.
         #
         # @param am [Integer] Cantidad de objetos a borrar del stack.
         # @return [Integer] Cantidad de objetos borrados.
@@ -114,9 +122,11 @@ module Game
           if am < self.amount      
             self.update( amount: self.amount - am )
             am = self.amount
-          else
+          elsif am == self.amount
             am = self.amount
             self.remove()
+          else
+            raise "Invalid amount (too big)."
           end
           
           return am

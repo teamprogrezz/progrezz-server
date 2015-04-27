@@ -303,7 +303,40 @@ module Game
         end
         
       end
+
+      # Craftear un objeto.
+      def craft_item(craft_recipe_id, out = {})
+        craft_recipe = Game::Mechanics::CraftingMechanics.get_recipe(craft_recipe_id)
+        raise ::GenericException.new("Invalid craft recipe (null).") if craft_recipe == nil
+
+        # Nótese que se añade la calidad del objeto como parte de la acción. Esto se hace para
+        # diferenciar claramente unas acciones de otras.
+        action_name = (__callee__).to_s + "_" + craft_recipe["rank"]
+
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, action_name)
+
+        # Empezar transacción (atómica)
+        # IMPORTANTE: Si algo falla, se deshará cualquier cambio.
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          # Comprobar que tiene los objetos, y quitarlos
+          craft_recipe["recipe"]["input"].each do |obj|
+            self.backpack.remove_item_amount Game::Database::Item.find(obj["item_id"]), obj["quantity"]
+          end
+
+          # Comprobar que cabe la cantidad de objetos de salida
+          output_item        = Game::Database::Item.find(craft_recipe["recipe"]["output"]["item_id"])
+          output_item_amount = craft_recipe["recipe"]["output"]["quantity"]
+          raise ::GenericException.new("User does not own space to add " + output_item_amount.to_s + " of " + output_item.name) unless self.backpack.fits? output_item, output_item_amount
+
+          # Añadir el objeto al inventario
+          self.backpack.add_item output_item, output_item_amount
+        end
+
+        # Si ha ido bien, añadir experiencia al usuario.
+
+      end
+
     end
-    
   end
 end

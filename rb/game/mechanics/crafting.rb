@@ -67,7 +67,10 @@ module Game
         output = nil
         @data.each do |rank, value|
           if value["recipes"][recipe_id] != nil
-            output = value["recipes"][recipe_id]
+            output = {
+              "recipes" => value["recipes"][recipe_id],
+              "rank" => rank
+            }
             break
           end
         end
