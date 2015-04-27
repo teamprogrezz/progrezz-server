@@ -84,7 +84,11 @@ module Game
       # Contador de objetos recolectados por el usuario.
       # @return [Integer] Cantidad de objetos recolectados por el usuario.
       property :count_collected_item_deposits, type: Integer, default: 0
-      
+
+      # Contador de objetos crafteados por el usuario.
+      # @return [Integer] Cantidad de objetos crafteados por el usuario.
+      property :count_crafted_items, type: Integer, default: 0
+
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -261,6 +265,17 @@ module Game
         end
         
         return output
+      end
+
+      # Obtener recetas del usuario.
+      # @return [Hash] Recetas del usuario.
+      def get_craft_recipes()
+        recipes         = Game::Mechanics::CraftingMechanics.recipes()
+        allowed_actions = Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)
+
+        recipes.delete_if { |rank_id, rank| !allowed_actions.keys.include? "craft_item_" + rank_id.to_s }
+
+        return recipes
       end
       
       # Getter del radio de búsqueda de un determinado objeto

@@ -52,13 +52,13 @@ module Game
       # @param rank [String] Identificador del rango.
       # @return [Hash] Recetas de dicho rango.
       def self.recipes_by_rank(rank)
-        return @data[rank]
+        return @data[rank].deep_clone
       end
 
       # Getter de todas las recetas.
       # @return [Hash] Lista de recetas.
       def self.recipes()
-        return @data
+        return @data.deep_clone
       end
 
       # Getter de una receta dada su id.
@@ -71,14 +71,14 @@ module Game
         @data.each do |rank, value|
           if value[:recipes][recipe_id] != nil
             output = {
-              recipe: value[:recipes][recipe_id],
+              recipe: value[:recipes][recipe_id].deep_clone,
               rank: rank
             }
             break
           end
         end
 
-        return output
+        return output.deep_clone
       end
 
     end

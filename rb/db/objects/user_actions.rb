@@ -306,14 +306,13 @@ module Game
 
       # Craftear un objeto.
       def craft_item(craft_recipe_id, out = {})
-        raise ::GenericException.new("Invalid 'craft time' number.") if craft_recipe == nil || times <= 0 || times >= 100
 
         craft_recipe = Game::Mechanics::CraftingMechanics.get_recipe(craft_recipe_id)
         raise ::GenericException.new("Invalid craft recipe (null).") if craft_recipe == nil
 
         # Nótese que se añade la calidad del objeto como parte de la acción. Esto se hace para
         # diferenciar claramente unas acciones de otras.
-        action_name = (__callee__).to_s + "_" + craft_recipe[:rank]
+        action_name = (__callee__).to_s + "_" + craft_recipe[:rank].to_s
 
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, action_name)
@@ -341,6 +340,9 @@ module Game
 
         # Añadir experiencia al usuario en función de lo crafteado
         out[:exp] = Game::Mechanics::LevelingMechanics.gain_exp(self, action_name)
+
+        # Añadir al contador
+        self.update( { count_crafted_items: count_crafted_items + 1 } )
 
       end
 

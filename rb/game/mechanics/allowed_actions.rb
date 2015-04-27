@@ -56,7 +56,7 @@ module Game
       def self.get_allowed_actions(level)
         check_level(level)
         
-        return @precomputed_allowed_actions[level]
+        return @precomputed_allowed_actions[level].deep_clone
       end
       
       # Comprobar si una acción se permite.

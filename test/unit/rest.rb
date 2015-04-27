@@ -395,6 +395,46 @@ class RESTTest < Test::Unit::TestCase
     ok
   end
 
+  # Probar "user_craft_item"
+  def test_user_craft_item
+    authenticate()
+
+    # Añadir objetos al inventario
+    @users[0].backpack.add_item(Game::Database::Item.find_by(item_id: "mineral_iron"), 10)
+    @users[0].backpack.add_item(Game::Database::Item.find_by(item_id: "mineral_coal"), 12)
+
+    # Craftear objeto
+
+    @request[:request][:type] = "user_craft_item"
+    @request[:request][:data] = { user_id: @users[0].user_id, recipe_id: "craft_steel"  }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @users[0].backpack.to_hash.count, 2
+    assert @users[0].backpack.to_hash.any? { |i| i[:item_id] == "mineral_coal" and i[:stack][:amount] = 2 }
+    assert @users[0].backpack.to_hash.any? { |i| i[:item_id] == "metal_steel" and i[:stack][:amount] = 10 }
+
+    ok
+  end
+
+
+  # Probar "user_get_craft_recipes"
+  def test_user_get_craft_recipes
+    authenticate()
+
+    # Obtener recetas
+    @request[:request][:type] = "user_get_craft_recipes"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert @response[:response][:data][:recipes].keys.include? :rank_d
+    assert @response[:response][:data][:recipes].keys.include? :rank_c
+    assert @response[:response][:data][:recipes].keys.include? :rank_b
+
+    ok
+  end
+
   # Probar "user_split_backpack_stack"
   def test_user_split_backpack_stack
     authenticate()

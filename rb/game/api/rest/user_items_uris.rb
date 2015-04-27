@@ -104,6 +104,32 @@ module Sinatra; module API ;module REST
         new_stack: output[:new_stack]
       })
     end
+
+    # Intentar craftear un objeto dada una receta.
+    def self.rest__user_craft_item( app, response, session)
+      user_id   = response[:request][:request][:data][:user_id]
+      recipe_id = response[:request][:request][:data][:recipe_id]
+
+      user   = Game::AuthManager.search_auth_user( user_id, session )
+      user.craft_item(recipe_id)
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Item crafted successfully."
+       })
+    end
+
+    # Obtener recetas permitidas de un usuario.
+    def self.rest__user_get_craft_recipes( app, response, session)
+      user_id   = response[:request][:request][:data][:user_id]
+
+      user   = Game::AuthManager.search_auth_user( user_id, session )
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        recipes: user.get_craft_recipes()
+       })
+    end
     
   end
   
