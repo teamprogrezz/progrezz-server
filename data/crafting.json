@@ -23,15 +23,21 @@
   },
   "rank_b": {
     "name": "Rango B",
-    "recipes": {}
+    "recipes": { }
   },
   "rank_a": {
     "name": "Rango A",
-    "recipes": {}
+    "recipes": { }
   },
   "rank_s": {
     "name": "Rango S",
-    "recipes": {}
+    "recipes": {
+      "craft_test_s": {
+        "input": [],
+        "output": {}
+      }
+
+    }
   }
 
 }

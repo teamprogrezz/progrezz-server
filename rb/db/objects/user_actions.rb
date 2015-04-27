@@ -331,7 +331,7 @@ module Game
           # Comprobar que cabe la cantidad de objetos de salida
           output_item        = Game::Database::Item.find_by(item_id: craft_recipe["recipe"]["output"]["item_id"])
           output_item_amount = craft_recipe["recipe"]["output"]["quantity"]
-          raise ::GenericException.new("User does not own space to add " + output_item_amount.to_s + " of " + output_item.name) unless self.backpack.fits? output_item, output_item_amount
+          raise ::GenericException.new("User does not own a free slot to add " + output_item_amount.to_s + " of " + output_item.name) unless self.backpack.fits? output_item, output_item_amount
 
           # Añadir el objeto al inventario
           self.backpack.add_item output_item, output_item_amount
