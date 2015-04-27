@@ -11,10 +11,10 @@
       "collect_item_from_deposit_Common": 10,
       "collect_item_from_deposit_Rare":   30,
       "collect_item_from_deposit_Epic":   120,
-      "craft_item_rank_c": 18,
-      "craft_item_rank_b": 36,
-      "craft_item_rank_a": 150,
-      "craft_item_rank_s": 400
+      "craft_item_rank_d": 18,
+      "craft_item_rank_c": 36,
+      "craft_item_rank_b": 150,
+      "craft_item_rank_a": 400
     }
   },
   "functions": {

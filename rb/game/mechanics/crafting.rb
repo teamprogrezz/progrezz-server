@@ -24,6 +24,7 @@ module Game
       def self.setup(str_data = nil)
         super(str_data)
         self.parse_JSON( str_data || File.read(DATAFILE) )
+        GenericUtils.symbolize_keys_deep! @data
 
         # ...
       end
@@ -35,9 +36,9 @@ module Game
         output = {}
 
         @data.each do |rank, value|
-          value["recipes"].each do |recipe_id, recipe|
+          value[:recipes].each do |recipe_id, recipe|
             # Relacionar si está en la salida o en la entrada.
-            if recipe["output"]["item_id"] == item_id or recipe["input"].any? { |input| input["item_id"] == item_id }
+            if recipe[:output][:item_id] == item_id or recipe[:input].any? { |input| input[:item_id] == item_id }
               output[rank] ||= { }
               output[rank][recipe_id] = recipe
             end
@@ -64,12 +65,14 @@ module Game
       # @param recipe_id [String] Identificador de la receta.
       # @return [Hash] Información sobre la receta.
       def self.get_recipe(recipe_id)
+        recipe_id = recipe_id.to_sym
+
         output = nil
         @data.each do |rank, value|
-          if value["recipes"][recipe_id] != nil
+          if value[:recipes][recipe_id] != nil
             output = {
-              "recipe" => value["recipes"][recipe_id],
-              "rank" => rank
+              recipe: value[:recipes][recipe_id],
+              rank: rank
             }
             break
           end

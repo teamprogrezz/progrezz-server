@@ -5,12 +5,12 @@ module Sinatra
   module REST
     class Methods
       # Redireccionar a página interactiva
-      def self.test(app, response, session)
+      def self.rest__test(app, response, session)
         app.redirect to("/dev/api/rest/interactive")
       end
 
       # Método de prueba (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo(app, response, session)
+      def self.rest__echo(app, response, session)
         begin
           name = (response[:request][:request][:data][:name] || 'world').to_s
           
@@ -24,7 +24,7 @@ module Sinatra
       end
 
       # Método de prueba usando python (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo_py(app, response, session)
+      def self.rest__echo_py(app, response, session)
         begin
           name = (response[:request][:request][:data][:name] || 'world').to_s
           

@@ -59,7 +59,7 @@
     "unlock_message": true
   },
   "1": {
-    "craft_item_rank_c": {}
+    "craft_item_rank_d": {}
   },
   "2": {
     "collect_fragment": {
@@ -84,7 +84,7 @@
       "allow_resources": false
     },
     "collect_item_from_deposit_Rare": {},
-    "craft_item_rank_b": {}
+    "craft_item_rank_c": {}
   },
   "4": {
     "collect_fragment": {
@@ -107,7 +107,7 @@
       "max_length": 140
     },
     "collect_item_from_deposit_Epic": {},
-    "craft_item_rank_a": {}
+    "craft_item_rank_b": {}
   },
   "6": {
     "collect_fragment": {
@@ -130,7 +130,7 @@
       "max_length": 200,
       "allow_resources": true
     },
-    "craft_item_rank_s": {}
+    "craft_item_rank_a": {}
   },
   "8": {
     "collect_fragment": {

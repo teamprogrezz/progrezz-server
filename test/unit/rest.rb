@@ -503,5 +503,35 @@ class RESTTest < Test::Unit::TestCase
     
     ok
   end
+
+  # Probar "item_craft_list"
+  def test_item_craft_list
+    @request[:request][:type] = "item_craft_list"
+    @request[:request][:data] = { }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert !@response[:response][:data][:recipes].empty?
+
+    ok
+  end
+
+  # Probar "item_craft_related"
+  def test_item_craft_related
+    @request[:request][:type] = "item_craft_related"
+    @request[:request][:data] = { item_id: "mineral_iron" }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    @response[:response][:data][:recipes].each do |rank_id, rank|
+      rank.each do |r_id, r|
+        assert (r[:input].any? { |i| i[:item_id] == "mineral_iron" }) || r[:output][:item_id] == "mineral_iron"
+      end
+    end
+
+    ok
+  end
+
+
   
 end

@@ -1,7 +1,10 @@
 {
-  "_comment": "Recipes are divided in ranks. Each rank of recipes can be obtained by gaining exp (aka leveling). Each recipe must have a input (multiple items and them quantity) and only one output (and its quantity).",
-  "rank_c": {
-    "name": "Rango C",
+  "_comment": "Recipes are divided in ranks. Each rank of recipes can be obtained by gaining exp (aka leveling).",
+  "_comment": "Each recipe must have a input (multiple items and them quantity) and only one output (and its quantity).",
+  "_comment": "Make sure that the item_id's are correct!!",
+  
+  "rank_d": {
+    "name": "Rango D",
     "recipes": {
       "craft_steel": {
         "input": [
@@ -21,16 +24,16 @@
       }
     }
   },
+  "rank_c": {
+    "name": "Rango C",
+    "recipes": { }
+  },
   "rank_b": {
     "name": "Rango B",
     "recipes": { }
   },
   "rank_a": {
     "name": "Rango A",
-    "recipes": { }
-  },
-  "rank_s": {
-    "name": "Rango S",
     "recipes": {
       "craft_test_s": {
         "input": [],
