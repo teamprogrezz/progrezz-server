@@ -162,11 +162,13 @@ Si desea usar otro puerto, modifique el fichero *rakefile* de manera oportuna, o
 $ docker run -i -t -d --name neo4j --cap-add=SYS_RESOURCE -p 7474:<PUERTO_AQUÍ> tpires/neo4j
 ```
 
-Para que el contenedor de progrezz pueda acceder a la base de datos, la dirección ip de acceso a la misma debe ser ```neo4j``` (tal cual).
+Asegúrese de configurar correctamente la variable ````PROGREZZ_NEO4J_URL```` (a un valor parecido a ````http://<usuario neo4j>:<password neo4j>@neo4j:7474/db/data/````) para que el contenedor de progrezz pueda acceder a la base de datos.
 
-**Nota:** Si prefiere ejecutar un servidor de neo4j externo y un servidor docker de progrezz, deberá ejecutar progrezz sin linkear, de la siguiente manera:
+**Nota:** Si prefiere ejecutar un servidor de neo4j externo (que no sea un contenedor) y un servidor docker de progrezz, deberá ejecutar progrezz sin linkear al contenedor de neo4j, de la siguiente manera:
 
-
+```sh
+$ rake docker:start_unlinked["<comando rake>"]
+```
 
 #### Progrezz back-end ####
 
