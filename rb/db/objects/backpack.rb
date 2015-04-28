@@ -131,6 +131,29 @@ module Game
         return output
       end
 
+      # Eliminar una cantidad de objetos.
+      # @param item [Game::Database::Item] Objeto a borrar.
+      # @param amount [Integer] Cantidad de objetos a borrar.
+      # @raise [GenericException] En caso de no poder borrar, generará una excepción.
+      def remove_item_amount(item, amount)
+
+        raise ::GenericException.new "Invalid item." if item == nil
+        raise ::GenericException.new "Invalid amount." if amount == nil || amount <= 0
+        raise ::GenericException.new "Amount is too big for one stack." if amount > item.max_amount
+
+        # Comprobar que el usuario tengo espacio para el objeto.
+        correct = false
+        self.stacks().match_to(item).each_rel do |r|
+          if r.has? amount
+            r.remove_amount( amount  )
+            correct = true
+            break
+          end
+        end
+
+        raise ::GenericException.new( "User does not own " + amount.to_s + " of " + item.name ) unless correct
+      end
+
       # Getter de un stack dado su identificador.
       # @param stack_id [Integer] Identificador del stack (numérico).
       # @return [Game::Database::RelationShips::BackpackItemStacks] Stack o relación del nodo.
@@ -168,8 +191,6 @@ module Game
       # @param target_stack_id [Integer] Nuevo stack sobre el que apilar los objetos. Si es nil, se apilará sobre un hueco vacío.
       # @return [Hash] Información de la partición.
       def split_stack(stack_id, restack_amount, target_stack_id = nil)
-        # TODO: Añadir opción para insertar la nueva cantidad en un stack no vacío.
-
         # Comprobar si queda espacio para partir un stack.
         raise ::GenericException.new("There is no free space to split a stack.") if target_stack_id == nil && self.stacks.count >= self.slots
 
@@ -213,6 +234,51 @@ module Game
 
         # Si el el viejo stack quedan 0 recursos, eliminarlo
         stack.remove_if_empty
+
+        return output
+      end
+
+      # Comprobar si un objeto cabe en la mochila.
+      # @param item [Game::Database::Item] Referencia al objeto.
+      # @param amount [Integer] Cantidad a comprobar si caben.
+      # @return [Boolean] True si cabe. False en caso contrario.
+      def fits?(item, amount)
+        raise ::GenericException.new "Invalid item." if item == nil
+        raise ::GenericException.new "Invalid amount." if amount == nil || amount <= 0
+        raise ::GenericException.new "Amount is too big for one stack." if amount > item.max_amount
+
+        # Stacks de sobra?
+        return true if self.stacks.count < self.slots
+
+        # Espacio en algún stack?
+        output = false
+        self.stacks().match_to(item).each_rel do |r|
+          if r.fits? amount
+            output = true
+            break
+          end
+        end
+
+        return output
+      end
+
+      # Comprobar si el inventario tiene una cantidad de un objeto.
+      # @param item [Game::Database::Item] Referencia al objeto.
+      # @param amount [Integer] Cantidad a comprobar si existen.
+      # @return [Boolean] True si existe la cantidad. False en caso contrario.
+      def has?(item, amount)
+        raise ::GenericException.new "Invalid item." if item == nil
+        raise ::GenericException.new "Invalid amount." if amount == nil || amount <= 0
+        raise ::GenericException.new "Amount is too big for one stack." if amount > item.max_amount
+
+        output = false
+        self.stacks().match_to(item).each_rel do |r|
+          if r.has? amount
+            output = true
+            break
+          end
+        end
+
 
         return output
       end

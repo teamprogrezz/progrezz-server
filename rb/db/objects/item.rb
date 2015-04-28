@@ -150,6 +150,7 @@ module Game
         output[:item_id]     = self.item_id      if !exclusion_list.include? :item_id
         output[:name]        = self.name         if !exclusion_list.include? :name
         output[:description] = self.description  if !exclusion_list.include? :description
+        output[:quality]     = self.quality      if !exclusion_list.include? :quality
         output[:image]       = self.image        if !exclusion_list.include? :image
         output[:max_amount]  = self.max_amount   if !exclusion_list.include? :max_amount
         

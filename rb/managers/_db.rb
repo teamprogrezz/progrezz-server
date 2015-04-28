@@ -145,9 +145,14 @@ module Database
       raise ArgumentError.new("Expected a block to run in DatabaseManager.run_transaction_anidated") unless block_given?
       
       Neo4j::Transaction.run do |tx|
-        @@transactions << tx
-        block.call(tx)
-        @@transactions.delete(tx)
+        begin
+          @@transactions << tx
+          block.call(tx)
+          @@transactions.delete(tx)
+        rescue
+          @@transactions.delete(tx)
+          raise
+        end
       end
     end
     

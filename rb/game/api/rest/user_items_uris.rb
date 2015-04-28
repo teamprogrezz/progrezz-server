@@ -7,7 +7,7 @@ module Sinatra; module API ;module REST
   class Methods
     
     # Recolectar objetos de un depósito.
-    def self.user_collect_item_from_deposit( app, response, session )
+    def self.rest__user_collect_item_from_deposit( app, response, session )
       user_id      = response[:request][:request][:data][:user_id]
       deposit_uuid = response[:request][:request][:data][:deposit_uuid]
       user     = Game::AuthManager.search_auth_user( user_id, session )
@@ -31,7 +31,7 @@ module Sinatra; module API ;module REST
     end
     
     # Recibir depósitos de objetos cercanos al usuario.
-    def self.user_get_nearby_item_deposits( app, response, session )
+    def self.rest__user_get_nearby_item_deposits( app, response, session )
       user_id      = response[:request][:request][:data][:user_id]
       user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
 
@@ -62,7 +62,7 @@ module Sinatra; module API ;module REST
     end
     
     # Ver los datos de la mochila del usuario
-    def self.user_get_backpack( app, response, session )
+    def self.rest__user_get_backpack( app, response, session )
       user_id      = response[:request][:request][:data][:user_id]
       user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       
@@ -73,7 +73,7 @@ module Sinatra; module API ;module REST
     end
     
     # Eliminar una cantidad de objetos del inventario.
-    def self.user_exchange_backpack_stack( app, response, session )
+    def self.rest__user_exchange_backpack_stack( app, response, session )
       user_id      = response[:request][:request][:data][:user_id]
       stack_id     = response[:request][:request][:data][:stack_id]
       amount       = response[:request][:request][:data][:amount]
@@ -89,7 +89,7 @@ module Sinatra; module API ;module REST
     end
 
     # Particionar un stack de objetos del usuario dado.
-    def self.user_split_backpack_stack( app, response, session)
+    def self.rest__user_split_backpack_stack( app, response, session)
       user_id         = response[:request][:request][:data][:user_id]
       stack_id        = response[:request][:request][:data][:stack_id].to_i
       target_stack_id = response[:request][:request][:data][:target_stack_id].to_i unless response[:request][:request][:data][:target_stack_id] == nil
@@ -103,6 +103,32 @@ module Sinatra; module API ;module REST
         old_stack: output[:old_stack],
         new_stack: output[:new_stack]
       })
+    end
+
+    # Intentar craftear un objeto dada una receta.
+    def self.rest__user_craft_item( app, response, session)
+      user_id   = response[:request][:request][:data][:user_id]
+      recipe_id = response[:request][:request][:data][:recipe_id]
+
+      user   = Game::AuthManager.search_auth_user( user_id, session )
+      user.craft_item(recipe_id)
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Item crafted successfully."
+       })
+    end
+
+    # Obtener recetas permitidas de un usuario.
+    def self.rest__user_get_craft_recipes( app, response, session)
+      user_id   = response[:request][:request][:data][:user_id]
+
+      user   = Game::AuthManager.search_auth_user( user_id, session )
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        recipes: user.get_craft_recipes()
+       })
     end
     
   end

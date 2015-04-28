@@ -23,6 +23,7 @@ module Sinatra
     # - response: Referencia a la respuesta JSON proporcionada por el servidor.
     # - session: Objeto de la sesión sinatra actual.
     #
+    # @note ¿Posible falla de seguridad?
     # @see http://progrezz-server.heroku.com/dev/rest
     class Methods
       
@@ -72,13 +73,10 @@ module Sinatra
         Game::Database::DatabaseManager.run_nested_transaction do |tx|
           # Tipo de petición
           begin
-            method = request[:request][:type].to_s
-  
-            if method == ""
-              raise ::GenericException.new( "Invalid request type '" + method + "'")
-            else
-              Methods.send( method, app, response, session )
-            end
+            method = request[:request][:type]
+
+            raise ::GenericException.new( "Invalid request type '" + method + "'") if method == ""
+            Methods.send( "rest__" + method, app, response, session )
             
             response[:metadata][:type] = "response"
             
