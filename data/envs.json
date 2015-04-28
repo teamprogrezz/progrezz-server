@@ -1,0 +1,13 @@
+{
+  "progrezz_interactive_shell" : "true ",
+  "progrezz_google_id"         : "...",
+  "progrezz_google_secret"     : "...",
+  "progrezz_twitter_id"        : "...",
+  "progrezz_twitter_secret"    : "...",
+  "progrezz_github_id"         : "...",
+  "progrezz_github_secret"     : "...",
+  "progrezz_steam_id"          : "...",
+  "progrezz_secret"            : "...",
+  "progrezz_mapquest_key"      : "...",
+  "progrezz_matching_osrm"     : "..."
+}
