@@ -1,4 +1,5 @@
 {
+  "whatever_ENV"               : "whatever_value",
   "progrezz_interactive_shell" : "true ",
   "progrezz_google_id"         : "...",
   "progrezz_google_secret"     : "...",
@@ -9,5 +10,6 @@
   "progrezz_steam_id"          : "...",
   "progrezz_secret"            : "...",
   "progrezz_mapquest_key"      : "...",
-  "progrezz_matching_osrm"     : "..."
+  "progrezz_matching_osrm"     : "...",
+  "..."                        : "..."
 }
