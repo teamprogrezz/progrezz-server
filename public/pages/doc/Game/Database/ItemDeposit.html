@@ -649,7 +649,7 @@ saltar el cooldown.</p>
         <span class='name'>snap_to_road</span>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>true</tt>)</em>
@@ -703,7 +703,7 @@ saltar el cooldown.</p>
 <span class='kw'>def</span> <span class='id identifier rubyid_instantiate'>instantiate</span><span class='lparen'>(</span><span class='id identifier rubyid_geolocation'>geolocation</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>latitude:</span> <span class='float'>0.0</span><span class='comma'>,</span> <span class='label'>longitude:</span> <span class='float'>0.0</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_snap_to_road'>snap_to_road</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_amount'>amount</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_min_amount'>min_amount</span><span class='op'>..</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_amount'>max_amount</span><span class='rparen'>)</span>
   
-  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>GeolocationManagement</span><span class='period'>.</span><span class='id identifier rubyid_snap_geolocation!'>snap_geolocation!</span><span class='lparen'>(</span><span class='id identifier rubyid_geolocation'>geolocation</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_snap_to_road'>snap_to_road</span>
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>GeolocationMechanics</span><span class='period'>.</span><span class='id identifier rubyid_snap_geolocation!'>snap_geolocation!</span><span class='lparen'>(</span><span class='id identifier rubyid_geolocation'>geolocation</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_snap_to_road'>snap_to_road</span>
   
   <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit_instance'>create_item_deposit_instance</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>geolocation:</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='label'>total_amount:</span> <span class='id identifier rubyid_amount'>amount</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1177,7 +1177,7 @@ así un sistema sencillo de “rareza”.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Apr 20 12:37:50 2015 by
+  Generated on Tue Apr 28 13:37:12 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

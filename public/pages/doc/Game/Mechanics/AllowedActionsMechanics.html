@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>
-  Class: Game::Mechanics::AllowedActionsManagement
+  Class: Game::Mechanics::AllowedActionsMechanics
   
     &mdash; Documentation by YARD 0.8.7.6
   
@@ -17,7 +17,7 @@
 <script type="text/javascript" charset="utf-8">
   hasFrames = window.top.frames.main ? true : false;
   relpath = '../../';
-  framesUrl = "../../frames.html#!Game/Mechanics/AllowedActionsManagement.html";
+  framesUrl = "../../frames.html#!Game/Mechanics/AllowedActionsMechanics.html";
 </script>
 
 
@@ -34,7 +34,7 @@
     <a href="../../_index.html">Index (A)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Mechanics.html" title="Game::Mechanics (module)">Mechanics</a></span></span>
      &raquo; 
-    <span class="title">AllowedActionsManagement</span>
+    <span class="title">AllowedActionsMechanics</span>
   
 
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -63,7 +63,7 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><h1>Class: Game::Mechanics::AllowedActionsManagement
+    <div id="content"><h1>Class: Game::Mechanics::AllowedActionsMechanics
   
   
   
@@ -80,7 +80,7 @@
           
             <li class="next"><span class='object_link'><a href="Mechanic.html" title="Game::Mechanics::Mechanic (class)">Mechanic</a></span></li>
           
-            <li class="next">Game::Mechanics::AllowedActionsManagement</li>
+            <li class="next">Game::Mechanics::AllowedActionsMechanics</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -134,43 +134,16 @@ por los usuario según el nivel.</p>
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data/allowed_actions.json</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
-        <dt id="data-classvariable" class="">@@data =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Hash que contiene los datos de DATAFILE</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='lbrace'>{</span><span class='rbrace'>}</span></pre></dd>
-      
-        <dt id="precomputed_allowed_actions-classvariable" class="">@@precomputed_allowed_actions =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Acciones por nivel ya preparadas (no es necesario computarlas cada vez que
-se piden).</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span><span class='rbracket'>]</span></pre></dd>
-      
     </dl>
   
 
 
+
+  
+  
+  <h3 class="inherited">Constants inherited
+     from <span class='object_link'><a href="Mechanic.html" title="Game::Mechanics::Mechanic (class)">Mechanic</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Mechanic.html#COMMENT_KEY-constant" title="Game::Mechanics::Mechanic::COMMENT_KEY (constant)">Mechanic::COMMENT_KEY</a></span></p>
 
 
 
@@ -317,7 +290,7 @@ se piden).</p>
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Mechanic.html" title="Game::Mechanics::Mechanic (class)">Mechanic</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Mechanic.html#update-class_method" title="Game::Mechanics::Mechanic.update (method)">update</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Mechanic.html#parse_JSON-class_method" title="Game::Mechanics::Mechanic.parse_JSON (method)">parse_JSON</a></span>, <span class='object_link'><a href="Mechanic.html#remove_comment%21-class_method" title="Game::Mechanics::Mechanic.remove_comment! (method)">remove_comment!</a></span>, <span class='object_link'><a href="Mechanic.html#update-class_method" title="Game::Mechanics::Mechanic.update (method)">update</a></span></p>
 
 
   <div id="class_method_details" class="method_details_list">
@@ -327,7 +300,7 @@ se piden).</p>
       <div class="method_details first">
   <h3 class="signature first" id="action_allowed?-class_method">
   
-    + (<tt>Boolean</tt>) <strong>action_allowed?</strong>(level, action_name) 
+    + (<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>action_allowed?</strong>(level, action_name) 
   
 
   
@@ -385,7 +358,7 @@ se piden).</p>
     <li>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
       
@@ -417,23 +390,23 @@ se piden).</p>
       <pre class="lines">
 
 
+66
+67
+68
+69
+70
+71
 72
 73
-74
-75
-76
-77
-78
-79
-80</pre>
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_action_allowed?'>action_allowed?</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_action_name'>action_name</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
   
-  <span class='kw'>if</span> <span class='op'>!</span><span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_level'>level</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_action_name'>action_name</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_level'>level</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_action_name'>action_name</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Action &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_action_name'>action_name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; not allowed at level &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
@@ -506,19 +479,19 @@ se piden).</p>
       <pre class="lines">
 
 
-85
-86
-87
-88
-89</pre>
+79
+80
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_action_params_by_level'>action_params_by_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_action_name'>action_name</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
   
-  <span class='kw'>return</span> <span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_level'>level</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_action_name'>action_name</span><span class='rbracket'>]</span>
+  <span class='kw'>return</span> <span class='ivar'>@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_level'>level</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_action_name'>action_name</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -589,17 +562,17 @@ se piden).</p>
       <pre class="lines">
 
 
-53
-54
-55
-56
-57</pre>
+47
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Fixnum</span> <span class='op'>||</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>&lt;</span> <span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span> <span class='op'>||</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>&gt;</span> <span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Fixnum</span> <span class='op'>||</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>&lt;</span> <span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span> <span class='op'>||</span> <span class='id identifier rubyid_level'>level</span> <span class='op'>&gt;</span> <span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid level &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
@@ -672,19 +645,19 @@ se piden).</p>
       <pre class="lines">
 
 
-62
-63
-64
-65
-66</pre>
+56
+57
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_check_level'>check_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
   
-  <span class='kw'>return</span> <span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_level'>level</span><span class='rbracket'>]</span>
+  <span class='kw'>return</span> <span class='ivar'>@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_level'>level</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_deep_clone'>deep_clone</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -754,36 +727,24 @@ se piden).</p>
 39
 40
 41
-42
-43
-44
-45
-46
-47
-48</pre>
+42</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/mechanics/allowed_actions.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_str_data'>str_data</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_str_data'>str_data</span><span class='rparen'>)</span>
-    
-  <span class='kw'>begin</span>
-    <span class='id identifier rubyid_str_data'>str_data</span> <span class='op'>||=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='const'>DATAFILE</span><span class='rparen'>)</span>
-    <span class='cvar'>@@data</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span> <span class='id identifier rubyid_str_data'>str_data</span> <span class='rparen'>)</span>
-    
-  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error reading json: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_JSON'>parse_JSON</span><span class='lparen'>(</span> <span class='id identifier rubyid_str_data'>str_data</span> <span class='op'>||</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='const'>DATAFILE</span><span class='rparen'>)</span> <span class='rparen'>)</span>
   
   <span class='comment'># Calcular acciones de cada usuario
-</span>  <span class='cvar'>@@precomputed_allowed_actions</span> <span class='op'>&lt;&lt;</span> <span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span>
-  <span class='kw'>for</span> <span class='id identifier rubyid_i'>i</span> <span class='kw'>in</span> <span class='lparen'>(</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span><span class='rparen'>)</span><span class='op'>..</span><span class='lparen'>(</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@precomputed_allowed_actions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@precomputed_allowed_actions</span> <span class='op'>&lt;&lt;</span> <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span>
+  <span class='kw'>for</span> <span class='id identifier rubyid_i'>i</span> <span class='kw'>in</span> <span class='lparen'>(</span><span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span><span class='rparen'>)</span><span class='op'>..</span><span class='lparen'>(</span><span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span><span class='rparen'>)</span>
     <span class='comment'># Crear de anera apilada (con los datos del anterior).
-</span>    <span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='cvar'>@@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_deep_merge'>deep_merge</span><span class='lparen'>(</span><span class='cvar'>@@data</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='rparen'>)</span>  <span class='rparen'>)</span>
+</span>    <span class='ivar'>@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@precomputed_allowed_actions</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_deep_merge'>deep_merge</span><span class='lparen'>(</span><span class='ivar'>@data</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='rparen'>)</span>  <span class='rparen'>)</span>
     
     <span class='comment'># Previsualizar
-</span>    <span class='comment'># puts i.to_s, JSON.pretty_generate(@@precomputed_allowed_actions[i])
+</span>    <span class='comment'># puts i.to_s, JSON.pretty_generate(@precomputed_allowed_actions[i])
 </span>  <span class='kw'>end</span>
   
 <span class='kw'>end</span></pre>
@@ -797,7 +758,7 @@ se piden).</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Apr 20 12:37:52 2015 by
+  Generated on Tue Apr 28 13:37:14 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

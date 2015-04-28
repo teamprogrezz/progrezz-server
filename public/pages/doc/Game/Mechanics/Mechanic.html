@@ -113,8 +113,31 @@ de los diferentes usuarios.</p>
 
 </div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="AllowedActionsManagement.html" title="Game::Mechanics::AllowedActionsManagement (class)">AllowedActionsManagement</a></span>, <span class='object_link'><a href="BackpackManagement.html" title="Game::Mechanics::BackpackManagement (class)">BackpackManagement</a></span>, <span class='object_link'><a href="GeolocationManagement.html" title="Game::Mechanics::GeolocationManagement (class)">GeolocationManagement</a></span>, <span class='object_link'><a href="ItemsManagement.html" title="Game::Mechanics::ItemsManagement (class)">ItemsManagement</a></span>, <span class='object_link'><a href="LevelingManagement.html" title="Game::Mechanics::LevelingManagement (class)">LevelingManagement</a></span>, <span class='object_link'><a href="MessageManagement.html" title="Game::Mechanics::MessageManagement (class)">MessageManagement</a></span></p>
+  <p class="children"><span class='object_link'><a href="AllowedActionsMechanics.html" title="Game::Mechanics::AllowedActionsMechanics (class)">AllowedActionsMechanics</a></span>, <span class='object_link'><a href="BackpackMechanics.html" title="Game::Mechanics::BackpackMechanics (class)">BackpackMechanics</a></span>, <span class='object_link'><a href="CraftingMechanics.html" title="Game::Mechanics::CraftingMechanics (class)">CraftingMechanics</a></span>, <span class='object_link'><a href="GeolocationMechanics.html" title="Game::Mechanics::GeolocationMechanics (class)">GeolocationMechanics</a></span>, <span class='object_link'><a href="ItemsMechanics.html" title="Game::Mechanics::ItemsMechanics (class)">ItemsMechanics</a></span>, <span class='object_link'><a href="LevelingMechanics.html" title="Game::Mechanics::LevelingMechanics (class)">LevelingMechanics</a></span>, <span class='object_link'><a href="MessageMechanics.html" title="Game::Mechanics::MessageMechanics (class)">MessageMechanics</a></span></p>
 </div>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="COMMENT_KEY-constant" class="">COMMENT_KEY =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Palabra clave de comentario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_comment</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
 
 
 
@@ -129,6 +152,54 @@ de los diferentes usuarios.</p>
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse_JSON-class_method" title="parse_JSON (class method)">+ (Object) <strong>parse_JSON</strong>(data) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Parsear json.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#remove_comment%21-class_method" title="remove_comment! (class method)">+ (Object) <strong>remove_comment!</strong>(hash_data) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Borrar comentarios de un hash de datos.</p>
+</div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -188,7 +259,163 @@ de los diferentes usuarios.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="setup-class_method">
+  <h3 class="signature first" id="parse_JSON-class_method">
+  
+    + (<tt>Object</tt>) <strong>parse_JSON</strong>(data) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Parsear json.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>data</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cadena de entrada (json).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/mechanic.rb', line 47</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_JSON'>parse_JSON</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_remove_comment!'>remove_comment!</span><span class='lparen'>(</span><span class='ivar'>@data</span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error occurred while reading json: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>return</span> <span class='ivar'>@data</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="remove_comment!-class_method">
+  
+    + (<tt>Object</tt>) <strong>remove_comment!</strong>(hash_data) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Borrar comentarios de un hash de datos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>hash_data</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash a limpiar.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/mechanic.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_remove_comment!'>remove_comment!</span><span class='lparen'>(</span><span class='id identifier rubyid_hash_data'>hash_data</span><span class='rparen'>)</span>
+   <span class='kw'>if</span> <span class='id identifier rubyid_hash_data'>hash_data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Hash</span>
+     <span class='id identifier rubyid_hash_data'>hash_data</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_val'>val</span><span class='op'>|</span>
+       <span class='kw'>if</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>==</span> <span class='const'>COMMENT_KEY</span>
+         <span class='id identifier rubyid_hash_data'>hash_data</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
+       <span class='kw'>elsif</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Hash</span>
+         <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_remove_comment!'>remove_comment!</span> <span class='id identifier rubyid_val'>val</span>
+       <span class='kw'>end</span>
+     <span class='kw'>end</span>
+   <span class='kw'>end</span>
+
+   <span class='kw'>return</span> <span class='id identifier rubyid_hash_data'>hash_data</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="setup-class_method">
   
     + (<tt>Object</tt>) <strong>setup</strong>(data = nil) 
   
@@ -235,12 +462,12 @@ de los diferentes usuarios.</p>
       <pre class="lines">
 
 
-14
-15
-16</pre>
+20
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/mechanic.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/mechanic.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='comment'># ...
@@ -276,12 +503,12 @@ de los diferentes usuarios.</p>
       <pre class="lines">
 
 
-19
-20
-21</pre>
+25
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/mechanic.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/mechanic.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
@@ -296,7 +523,7 @@ de los diferentes usuarios.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Apr 20 12:37:51 2015 by
+  Generated on Tue Apr 28 13:37:13 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
