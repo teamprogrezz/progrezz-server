@@ -143,24 +143,24 @@ $ rake docker:setup
 
 Ejecutar un comando rake de la imagen:
 ```sh
-$ rake docker <comando rake>
+$ rake docker:start["<comando rake>"]
 ```
 
 Por ejemplo:
 ```sh
-$ rake docker development
+$ rake docker:start["development"]
 ```
 ó
 
 ```sh
-$ rake docker development:start
+$ rake docker:start["development:start"]
 ```
 
 
 Si cambia un fichero, deberá reconstruirse el contenedor de docker con el comando
 
 ```sh
-$ rake docker <comando rake>
+$ rake docker:setup
 ```
 
 En caso de no disponer de *rake*, use los comandos correspondientes:
@@ -168,6 +168,7 @@ En caso de no disponer de *rake*, use los comandos correspondientes:
 ```sh
 $ docker build -t progrezz/server .
 $ docker run -i -t --net host progrezz/server [comando rake]
+...
 ```
 
 
