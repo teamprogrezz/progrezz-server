@@ -1,4 +1,4 @@
-# Servidor proyecto PROGREZZ #
+# Servidor del proyecto PROGREZZ #
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)  [![Build Status](https://travis-ci.org/teamprogrezz/progrezz-server.svg)](https://travis-ci.org/teamprogrezz/progrezz-server)
 
@@ -40,14 +40,14 @@ En caso de no encontrar un servidor OSRM, se utilizará la [API de MapQuest Dire
 También se puede deshabilitar el servicio de rutas usando la variable de entorno ```progrezz_disable_routing``` a ```true```.
 
 ## 4.  Uso ##
-#### Instalación ####
+### 4.1. Instalación ###
 Una vez instalada e iniciada la base de datos, se puede preparar el servidor con el siguiente comando, desde la carpeta raíz del proyecto:
 
 ```sh
 $ rake setup
 ```
 
-#### Ejecución ####
+### 4.2. Ejecución ###
 
 El servidor puede ser iniciado en modo prueba con
 
@@ -66,7 +66,7 @@ Para subir el proyecto a heroku, teniendo definida el repositorio remoto ```hero
 $ rake heroku
 ```
 
-#### Otros ####
+### 4.3. Otros ###
 
 Para generar la documentación, use
 
@@ -107,7 +107,6 @@ Wikiti
 Para cerrar la terminar y la aplicación, basta con ejecutar el comando ```exit```:
 
 ```ruby
-... 
 [2] pry(main)> exit()
 --------------------------------------
 **        Forced saving DB          **
@@ -116,9 +115,9 @@ Progrezz server ended. Crowd applause.
 ```
 
 ## 5. Portabilidad ##
-Con la finalidad de hacer facilmente *portable* el servidor, se ha decidido hacer que éste sea compatible con docker. Para ello, hace falta recalcar algunos puntos:
+Con la finalidad de hacer facilmente *portable* el servidor, se ha decidido hacer que éste sea compatible con docker, siendo completamente opcional su uso. Para ello, hace falta recalcar algunos puntos:
 
-#### Variables de entorno ####
+### 5.1. Variables de entorno ###
 Las variables de entorno pueden ser cargadas también desde el fichero *data/envs.json*. Está estructurado en un *.json* de manera clara:
 
 ```json
@@ -131,8 +130,45 @@ Las variables de entorno pueden ser cargadas también desde el fichero *data/env
 
 Nótese que el contenido de estas sobrescribirá a las variables de entorno del sistema.
 
-#### Docker ####
+### 5.2. Docker ###
 Para usar *docker*, el usuario deberá tener instalado la herramienta, y deberá ser accesible por el usuario actual sin necesidad de usar el prefijo ```sudo```.
+
+**IMPORTANTE:** No modifique  el fichero *Dockerfile* a menos que sepa lo que está haciendo.
+
+#### Contenedor neo4j ####
+Si utiliza docker, es conveniente usar un contenedor para encapsular la base de datos neo4j requerida por el back-end de progrezz.
+
+Para ello, use el comando siguiente:
+```sh
+$ rake docker:neo4j:setup
+...
+$ rake docker:neo4j:start
+...
+$ rake docker:neo4j:stop
+...
+```
+
+El servidor deberá ser accesible desde el host (linux) por medio de la dirección ````http://localhost:7474````. En caso de usar otro sistema operativo que utilice la herramienta *boot2docker*, deberá acceder a la *ip* de la máquina virtual. Dicha *ip* puede obtenerse con el comando siguiente:
+
+````sh
+$ boot2docker ip
+````
+
+Una vez tenga la dirección *ip*, tal vez deba modificar la redirección de puertos de la máquina virtual (desde *VirtualBox*) para poder acceder al servicio de neo4j desde su explorador.
+
+Si desea usar otro puerto, modifique el fichero *rakefile* de manera oportuna, o ejecute el comando:
+
+```sh
+$ docker run -i -t -d --name neo4j --cap-add=SYS_RESOURCE -p 7474:<PUERTO_AQUÍ> tpires/neo4j
+```
+
+Para que el contenedor de progrezz pueda acceder a la base de datos, la dirección ip de acceso a la misma debe ser ```neo4j``` (tal cual).
+
+**Nota:** Si prefiere ejecutar un servidor de neo4j externo y un servidor docker de progrezz, deberá ejecutar progrezz sin linkear, de la siguiente manera:
+
+
+
+#### Progrezz back-end ####
 
 Con el fin de facilitar su instalación y uso, se han creado una serie de tareas *rake* para realizar tanto la instalación de la imagen como la ejecución del mismo.
 
@@ -156,6 +192,10 @@ $ rake docker:start["development"]
 $ rake docker:start["development:start"]
 ```
 
+Puede terminar el proceso (si se está ejecutando de fondo) con el comando:
+```sh
+$ rake docker:stop
+```
 
 Si cambia un fichero, deberá reconstruirse el contenedor de docker con el comando
 
@@ -170,9 +210,6 @@ $ docker build -t progrezz/server .
 $ docker run -i -t --net host progrezz/server [comando rake]
 ...
 ```
-
-
-**IMPORTANTE:** No modifique  el fichero *Dockerfile* a menos que sepa lo que está haciendo.
 
 ## 6. Contacto ##
 Envíe cualquier duda, comentario u opinión a cualquier correo de la siguiente lista:

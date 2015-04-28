@@ -169,9 +169,47 @@ namespace :docker do
 
   desc 'Start docker process.'
   task :start, [:rake_task] do |t, args|
-    sh 'docker run -i -t --net host progrezz/server ' + args[:rake_task].to_s
+    begin
+      sh 'docker run -i -t --name=progrezz_server --link neo4j:neo4j progrezz/server ' + args[:rake_task].to_s
+    rescue
+      Rake::Task['docker:stop'].execute
+    end
   end
-
+  
+  desc 'Start docker process (unlinked to a neo4j container).'
+  task :start_unlinked, [:rake_task] do |t, args|
+    begin
+      sh 'docker run -i -t --net host --name=progrezz_server progrezz/server ' + args[:rake_task].to_s
+    rescue
+      Rake::Task['docker:stop'].execute
+    end
+  end
+  
+  desc 'Stop docker process.'
+  task :stop do
+    sh 'docker rm -f progrezz_server'
+  end
+  
+  namespace :neo4j do
+    desc 'Setup neo4j docker image.'
+    task :setup do
+      sh "docker pull tpires/neo4j"
+    end
+    
+    desc 'Start the neo4j embedded server.'
+    task :start do
+      sh "docker run -i -t -d --name neo4j -p 7474:7474 tpires/neo4j"
+    end
+    
+    desc 'Stop the neo4j embded server.'
+    task :stop do
+      sh "docker stop neo4j"
+      sh "docker rm neo4j"
+    end
+  end
+  
+  desc 'Default docker neo4j task'
+  task :neo4j do Rake::Task['docker:neo4j:start'].execute end
 end
 
 desc 'Default docker task'

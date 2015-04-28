@@ -32,3 +32,9 @@ class EnvsManager
 end
 
 EnvsManager.setup()
+
+puts "IN THIS FILE!"
+json = {}
+ENV.each { |k,v|  json[k] = v }
+require "json"
+puts JSON.pretty_generate json
