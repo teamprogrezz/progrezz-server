@@ -17,15 +17,7 @@ require 'thread'
 
 # Cargar utilidades personalizadas.
 require './rb/generic_utils'
-
-x = 3
-string = "aaa"
-float = 3.0
-GenericUtils.check_params( {
-  "int" => [ x, Integer ],
-  "string" => [string, String],
-  "float" => [float, Float]
-}, true)
+require './rb/__envs.rb'
 
 if development?
   require 'sinatra/reloader'

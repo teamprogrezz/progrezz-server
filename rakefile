@@ -154,3 +154,22 @@ end
 
 desc 'Default heroku task'
 task :heroku do Rake::Task['heroku:start'].execute end
+
+# --------------------------------------------------------------
+
+namespace :docker do
+  desc 'Setup docker image.'
+  task :setup do
+    sh "docker build -t progrezz/server ."
+  end
+
+  desc 'Start docker process.'
+  task :start, [:rake_task] do |t, args|
+    sh 'docker run -i -t --net host progrezz/server ' + args[:rake_task].to_s
+  end
+
+end
+
+desc 'Default docker task'
+task :docker do Rake::Task['docker:start'].execute end
+

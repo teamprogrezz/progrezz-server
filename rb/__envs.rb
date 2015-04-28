@@ -20,10 +20,12 @@ class EnvsManager
   @data = {}
 
   def self.setup()
-    @data = JSON.parse( File.read( ENV_FILE ) )
+    begin
+      @data = JSON.parse( File.read( ENV_FILE ) )
+      @data.each { |k,v| ENVS[k] = v }
 
-    @data.each do |k,v|
-      ENVS[k] = v
+    rescue Exception => e
+      puts "Warning: Could not read envs.json file: " + e.message.to_s + "\n" + e.backtrace.to_s
     end
   end
 

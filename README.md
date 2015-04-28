@@ -43,7 +43,7 @@ También se puede deshabilitar el servicio de rutas usando la variable de entorn
 #### Instalación ####
 Una vez instalada e iniciada la base de datos, se puede preparar el servidor con el siguiente comando, desde la carpeta raíz del proyecto:
 
-```
+```sh
 $ rake setup
 ```
 
@@ -51,18 +51,18 @@ $ rake setup
 
 El servidor puede ser iniciado en modo prueba con
 
-```
+```sh
 $ rake development
 ```
 
 Para iniciar en modo producción, use
-```
+```sh
 $ rake production
 ```
 
 Para subir el proyecto a heroku, teniendo definida el repositorio remoto ```heroku```,  utilice
 
-```
+```sh
 $ rake heroku
 ```
 
@@ -70,7 +70,7 @@ $ rake heroku
 
 Para generar la documentación, use
 
-```
+```sh
 $ rake doc
 ```
 
@@ -80,7 +80,7 @@ Se activará automáticamente cuando se ejecute el proyecto en modo *development
 
 Un ejemplo de ejecución podría ser el siguiente:
 
-```ruby
+```sh
 Thin web server (v1.6.3 codename Protein Powder)
 Maximum connections set to 1024
 Listening on localhost:9292, CTRL+C to stop
@@ -115,10 +115,68 @@ Para cerrar la terminar y la aplicación, basta con ejecutar el comando ```exit`
 Progrezz server ended. Crowd applause.
 ```
 
-## 5. Contacto ##
+## 5. Portabilidad ##
+Con la finalidad de hacer facilmente *portable* el servidor, se ha decidido hacer que éste sea compatible con docker. Para ello, hace falta recalcar algunos puntos:
+
+#### Variables de entorno ####
+Las variables de entorno pueden ser cargadas también desde el fichero *data/envs.json*. Está estructurado en un *.json* de manera clara:
+
+```json
+{
+  "env_key":         "env_key_value",
+  "progrezz_secret": "my_super_secret",
+  "...":             "..."
+}
+```
+
+Nótese que el contenido de estas sobrescribirá a las variables de entorno del sistema.
+
+#### Docker ####
+Para usar *docker*, el usuario deberá tener instalado la herramienta, y deberá ser accesible por el usuario actual sin necesidad de usar el prefijo ```sudo```.
+
+Con el fin de facilitar su instalación y uso, se han creado una serie de tareas *rake* para realizar tanto la instalación de la imagen como la ejecución del mismo.
+
+Instalar la imagen:
+```sh
+$ rake docker:setup
+```
+
+Ejecutar un comando rake de la imagen:
+```sh
+$ rake docker <comando rake>
+```
+
+Por ejemplo:
+```sh
+$ rake docker development
+```
+ó
+
+```sh
+$ rake docker development:start
+```
+
+
+Si cambia un fichero, deberá reconstruirse el contenedor de docker con el comando
+
+```sh
+$ rake docker <comando rake>
+```
+
+En caso de no disponer de *rake*, use los comandos correspondientes:
+
+```sh
+$ docker build -t progrezz/server .
+$ docker run -i -t --net host progrezz/server [comando rake]
+```
+
+
+**IMPORTANTE:** No modifique  el fichero *Dockerfile* a menos que sepa lo que está haciendo.
+
+## 6. Contacto ##
 Envíe cualquier duda, comentario u opinión a cualquier correo de la siguiente lista:
 
 - Proyecto progrezz: [proyecto.progrezz@gmail.com](mailto:proyecto.progrezz@gmail.com)
 
-## 6. Agradecimientos / Referencias ##
+## 7. Agradecimientos / Referencias ##
 - <p>Directions Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>
