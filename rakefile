@@ -182,16 +182,16 @@ namespace :docker do
   end
   
   desc 'Start all.'
-  task :unsetup do
+  task :start do
     Rake::Task['docker:neo4j:start'].execute
     # OSRM
-    Rake::Task['docker:progrezz:start'].execute
+    sleep(5); Rake::Task['docker:progrezz:start'].execute
   end
   
   desc 'Stop all.'
-  task :unsetup do
-    Rake::Task['docker:progrezz:start'].execute
-    Rake::Task['docker:neo4j:start'].execute
+  task :stop do
+    Rake::Task['docker:progrezz:stop'].execute
+    Rake::Task['docker:neo4j:stop'].execute
     # OSRM
   end
 
@@ -222,11 +222,7 @@ namespace :docker do
 
     desc 'Start progrezz docker process (linked to a neo4j container).'
     task :start, [:rake_task] do |t, args|
-      begin
-        sh 'docker start -a -i progrezz_server' + args[:rake_task].to_s
-      ensure
-        Rake::Task['docker:progrezz:stop'].execute
-      end
+      sh 'docker start -a -i progrezz_server' + args[:rake_task].to_s
     end
     
      desc 'Start progrezz docker process in the background.'
@@ -246,7 +242,7 @@ namespace :docker do
   namespace :neo4j do
     desc 'Setup neo4j docker image.'
     task :setup do
-      sh "docker create  -i -t --name neo4j -p 7474:7474 tpires/neo4j" #  -d
+      sh "docker create  -i -t --name neo4j tpires/neo4j" #  -d
     end
     
     desc 'Unsetup neo4j docker image.'
