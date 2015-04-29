@@ -1,5 +1,3 @@
-require 'yard'
-require 'rake/testtask'
 
 task :default => ["development:start"]
 
@@ -41,37 +39,48 @@ task :setup do Rake::Task['setup:bundle'].execute end
 # --------------------------------------------------------------
 
 #  ----------- TEST MUST NEVER BE RUN IN PRODUCTION MODE -----------
-namespace :test do
-  task :unit => :development do
-    ruby 'test/unit/all.rb'
+begin 
+  require 'rake/testtask'
+  namespace :test do
+    task :unit => :development do
+      ruby 'test/unit/all.rb'
+    end
   end
+
+  desc 'Default test task. TEST MUST NEVER BE RUN IN PRODUCTION MODE'
+  task :test do Rake::Task['test:unit'].execute end
+rescue Exception => e
+  puts " ** TEST ERROR ** " + e.message
 end
 
-desc 'Default test task'
-task :test do Rake::Task['test:unit'].execute end
 
 # --------------------------------------------------------------
 
-namespace :doc do
-  YARD::Rake::YardocTask.new(:generate) do |t|
-    t.files   = [ 'rb/**/*.rb', 'main.rb' ]
-    t.options = ['-opublic/pages/doc', '--no-stats']
+begin
+  require 'yard'
+  namespace :doc do
+    YARD::Rake::YardocTask.new(:generate) do |t|
+      t.files   = [ 'rb/**/*.rb', 'main.rb' ]
+      t.options = ['-opublic/pages/doc', '--no-stats']
+      
+      t.after = Proc.new {
+        Rake::Task['doc:stats'].execute
+      }
+    end
     
-    t.after = Proc.new {
-      Rake::Task['doc:stats'].execute
-    }
+    desc "Shows stats for YARD Documentation including listing undocumented modules, classes, constants, and methods"
+    task :stats do
+      stats = YARD::CLI::Stats.new
+      stats.files   = [ 'rb/**/*.rb', 'main.rb' ]
+      stats.run('main.rb', 'rb/**/*.rb', '--list-undoc')
+    end
   end
-  
-  desc "Shows stats for YARD Documentation including listing undocumented modules, classes, constants, and methods"
-  task :stats do
-    stats = YARD::CLI::Stats.new
-    stats.files   = [ 'rb/**/*.rb', 'main.rb' ]
-    stats.run('main.rb', 'rb/**/*.rb', '--list-undoc')
-  end
-end
 
-desc 'Default doc task'
-task :doc do Rake::Task['doc:generate'].execute end
+  desc 'Default doc task'
+  task :doc do Rake::Task['doc:generate'].execute end
+rescue Exception => e
+  puts " ** YARD ERROR ** " + e.message
+end
 
 # --------------------------------------------------------------
 
@@ -158,18 +167,104 @@ task :heroku do Rake::Task['heroku:start'].execute end
 # --------------------------------------------------------------
 
 namespace :docker do
-  desc 'Setup docker image.'
+  desc 'Setup all.'
   task :setup do
-    sh "docker build -t progrezz/server ."
+    Rake::Task['docker:neo4j:setup'].execute
+    # OSRM
+    sleep(5); Rake::Task['docker:progrezz:setup'].execute
+  end
+  
+  desc 'Unsetup all.'
+  task :unsetup do
+    Rake::Task['docker:neo4j:unsetup'].execute
+    # OSRM
+    Rake::Task['docker:progrezz:unsetup'].execute
+  end
+  
+  desc 'Start all.'
+  task :start do
+    Rake::Task['docker:neo4j:start'].execute
+    # OSRM
+    sleep(5); Rake::Task['docker:progrezz:start'].execute
+  end
+  
+  desc 'Stop all.'
+  task :stop do
+    Rake::Task['docker:progrezz:stop'].execute
+    Rake::Task['docker:neo4j:stop'].execute
+    # OSRM
   end
 
-  desc 'Start docker process.'
-  task :start, [:rake_task] do |t, args|
-    sh 'docker run -i -t --net host progrezz/server ' + args[:rake_task].to_s
-  end
+  
+  namespace :progrezz do
+    desc 'Setup progrezz docker image.'
+    task :setup do
+      Rake::Task['docker:progrezz:build'].execute
+      sh "docker create -i -t --name=progrezz_server --link neo4j:neo4j progrezz/server" #  -d
+    end
+    
+    desc 'Setup progrezz docker image (unlinked to other containers).'
+    task :setup_unlinked do
+      Rake::Task['docker:progrezz:build'].execute
+      sh "docker create -i -t --name=progrezz_server progrezz/server" #  -d
+    end
+    
+    desc 'Unsetup progrezz docker image.'
+    task :unsetup do
+      sh "docker rm progrezz_server"
+      sh "docker rmi progrezz/server"
+    end
+      
+    desc 'Build (or rebuild) progrezz docker image.'
+    task :build do
+      sh "docker build -t progrezz/server ."
+    end
 
+    desc 'Start progrezz docker process (linked to a neo4j container).'
+    task :start, [:rake_task] do |t, args|
+      sh 'docker start -a -i progrezz_server' + args[:rake_task].to_s
+    end
+    
+     desc 'Start progrezz docker process in the background.'
+    task :start, [:rake_task] do |t, args|
+      sh 'docker start progrezz_server' + args[:rake_task].to_s
+    end
+    
+    desc 'Stop progrezz docker process.'
+    task :stop do
+      sh 'docker stop progrezz_server'
+    end
+  end
+  
+  desc 'Default progrezz docker task'
+  task :progrezz do Rake::Task['docker:progrezz:start'].execute end
+  
+  namespace :neo4j do
+    desc 'Setup neo4j docker image.'
+    task :setup do
+      sh "docker create -i -t --name neo4j tpires/neo4j" #  -d
+    end
+    
+    desc 'Unsetup neo4j docker image.'
+    task :unsetup do
+      sh "docker rm neo4j"
+    end
+    
+    desc 'Start the neo4j embedded server.'
+    task :start do
+      sh "docker start neo4j"
+    end
+    
+    desc 'Stop the neo4j embded server.'
+    task :stop do
+      sh "docker stop neo4j"
+    end
+  end
+  
+  desc 'Default neo4j docker task'
+  task :neo4j do Rake::Task['docker:neo4j:start'].execute end
 end
 
 desc 'Default docker task'
-task :docker do Rake::Task['docker:start'].execute end
+task :docker do Rake::Task['docker:progrezz'].execute end
 

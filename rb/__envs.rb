@@ -2,6 +2,8 @@
 
 require 'json'
 
+puts "IN HERE!"
+
 # Clase gestora de las variables env.
 #
 # Usando el fichero data/envs.json, se pueden cargar las variables
@@ -22,8 +24,7 @@ class EnvsManager
   def self.setup()
     begin
       @data = JSON.parse( File.read( ENV_FILE ) )
-      @data.each { |k,v| ENVS[k] = v }
-
+      @data.each { |k,v| ENVS[k] = eval('"' + v + '"') }
     rescue Exception => e
       puts "Warning: Could not read envs.json file: " + e.message.to_s + "\n" + e.backtrace.to_s
     end
@@ -32,3 +33,7 @@ class EnvsManager
 end
 
 EnvsManager.setup()
+
+envs = {}
+ENV.each { |k, v| envs[k] = v }
+puts JSON.pretty_generate envs

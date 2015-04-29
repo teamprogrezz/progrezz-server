@@ -16,8 +16,8 @@ require 'colorize'
 require 'thread'
 
 # Cargar utilidades personalizadas.
-require './rb/generic_utils'
 require './rb/__envs.rb'
+require './rb/generic_utils'
 
 if development?
   require 'sinatra/reloader'

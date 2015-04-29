@@ -1,6 +1,7 @@
 {
   "whatever_ENV"               : "whatever_value",
-  "progrezz_interactive_shell" : "true ",
+  "PROGREZZ_NEO4J_URL"         : "http://neo4j:admin@neo4j:7474/db/data/",
+  "progrezz_interactive_shell" : "true",
   "progrezz_google_id"         : "...",
   "progrezz_google_secret"     : "...",
   "progrezz_twitter_id"        : "...",
