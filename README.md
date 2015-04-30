@@ -61,24 +61,7 @@ Para usar *docker*, el usuario deberá tener instalado la herramienta, y deberá
 
 **IMPORTANTE:** No modifique  el fichero *Dockerfile* a menos que sepa lo que está haciendo.
 
-#### A. Instalación rápida ####
-
-Use los siguientes comandos ```rake``` para iniciar los contenedores de progrezz:
-
-```sh
-...
-```
-
-Una vez instalado todo, ejecute el servidor con el siguiente comando:
-
-```sh
-...
-```
-
-Vea el contenido del *rakefile* para saber cómo son los comandos docker usados.
-
-
-#### B. Contenedor neo4j ####
+#### A. Contenedor neo4j ####
 Si utiliza docker, es conveniente usar un contenedor para encapsular la base de datos neo4j requerida por el back-end de progrezz.
 
 Para ello, use el comando siguiente:
@@ -110,7 +93,34 @@ Asegúrese de configurar correctamente la variable ````PROGREZZ_NEO4J_URL```` (a
 **Nota:** Si prefiere ejecutar un servidor de neo4j externo (que no sea un contenedor) y un servidor docker de progrezz, deberá inicializar progrezz sin linkear al contenedor de neo4j, de la siguiente manera:
 
 ```sh
-$ rake docker:progrezz:setup_unlinked
+$ rake docker:progrezz:setup["osrm"] # Sin neo4j
+```
+
+ó
+
+```sh
+$ rake docker:progrezz:setup[] # Si ningún contenedor
+```
+
+#### B. OSRM (opcional) ####
+Tal como se especifica en el apartado *3.3. Servicio de rutas*, el servicio de rutas es meramente opcional. Si se desea, se puede instalar un contenedor con el servidor de rutas dentro.
+
+Para ello, se recomienda leer el siguiente enlace sobre la instalación del contenedor:
+
+- https://registry.hub.docker.com/u/xcgd/osrm-backend/
+
+Una vez instalado, se puede acceder a su ejecución mediante el comando rake siguiente:
+
+**Nota:** Si prefiere ejecutar un servidor de osrm externo (o no ejecutarlo) y un servidor docker de progrezz, deberá inicializar progrezz sin linkear al contenedor de osrm, de la siguiente manera:
+
+```sh
+$ rake docker:progrezz:setup["neo4j"] # Sin osrm
+```
+
+ó
+
+```sh
+$ rake docker:progrezz:setup[] # Si ningún contenedor
 ```
 
 #### C. Progrezz back-end ####
@@ -119,12 +129,18 @@ Con el fin de facilitar su instalación y uso, se han creado una serie de tareas
 
 Instalar la imagen:
 ```sh
-$ rake docker:setup
+$ rake docker:progrezz:setup["neo4j osrm_server"]
+```
+
+Hay que ajustar la configuración inicial para ejecutar un comando personalizo:
+
+```sh
+$ rake docker:progrezz:setup["neo4j osrm_server","rake development:start"]
 ```
 
 Ejecutar un comando rake de la imagen:
 ```sh
-$ rake docker:progrezz:start["<comando rake>"]
+$ rake docker:progrezz:start
 ```
 
 Puede terminar el proceso (si se está ejecutando de fondo) con el comando:
@@ -142,7 +158,7 @@ En caso de no disponer de *rake*, use los comandos correspondientes:
 
 ```sh
 $ docker build -t progrezz/server .
-$ docker run -i -t --net host progrezz/server [comando rake]
+$ docker run -i -t --net host progrezz/server
 ...
 ```
 

@@ -80,6 +80,9 @@ module Sinatra
         
         # Deshabilitar la muestra de excepciones.
         app.set :show_exceptions, false
+
+        # Habilitar escucha desde fuera
+        app.set :bind, '0.0.0.0'
       end
       
       # Hacer antes de toda petición de ruta

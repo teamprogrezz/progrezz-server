@@ -2,8 +2,6 @@
 
 require 'json'
 
-puts "IN HERE!"
-
 # Clase gestora de las variables env.
 #
 # Usando el fichero data/envs.json, se pueden cargar las variables

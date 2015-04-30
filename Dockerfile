@@ -19,7 +19,8 @@ COPY . /usr/progrezz/
 # Set extra enviroment vars
 # ...
 
-# By default, exec "rake run".
-CMD rake development
+# Setup port
+EXPOSE 9292
 
-# To run this app, just build it with
+# By default, exec a rake task.
+CMD rake production:start

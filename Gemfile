@@ -41,7 +41,6 @@ gem 'yard-sinatra'
 # Desarrollo
 group :development do
   gem 'sinatra-reloader'
-  gem 'racksh'
   gem 'ruby-prof'
   gem 'pry'
 end
