@@ -16,7 +16,7 @@ Actualmente, el servidor está hosteado en los siguientes servidores o servicios
 
 ## 3. Dependencias ##
 ### 3.1. Ruby  ###
-Las dependecias de ruby se pueden encontrar en el Gemfile del repositorio. Pueden ser instaladas cómodamente con ```bundle```, tal como se muestra en el punto **4. Uso**.
+Las dependecias de ruby se pueden encontrar en el Gemfile del repositorio. Pueden ser instaladas cómodamente con ```bundle```, tal como se muestra en los apartados de **Uso**.
 
 ### 3.2. Base de datos ###
 Será necesario un servidor funcional [neo4j](http://neo4j.com), junto son su dirección de acceso en una de las siguientes variables de entorno:
@@ -39,11 +39,27 @@ En caso de no encontrar un servidor OSRM, se utilizará la [API de MapQuest Dire
 
 También se puede deshabilitar el servicio de rutas usando la variable de entorno ```progrezz_disable_routing``` a ```true```.
 
+## 4. Instalación ##
 
-## 4. Uso (vía [docker](https://www.docker.com/ "https://www.docker.com/")) ##
+Descargue el código fuente de este repositorio:
+
+```sh
+$ git clone https://github.com/teamprogrezz/progrezz-server
+```
+
+E inicie todos los submódulos del repositorio:
+
+```sh
+$ cd progrezz-server
+$ git submodule update --init --recursive
+```
+
+Véase el apartado **5. Uso (vía docker)** o **6. Uso (sin docker)** para saber como ejecutar el servidor
+
+## 5. Uso (vía [docker](https://www.docker.com/ "https://www.docker.com/")) ##
 Con la finalidad de hacer facilmente *portable* el servidor, se ha decidido hacer que éste sea compatible con docker, siendo completamente opcional su uso. Para ello, hace falta recalcar algunos puntos:
 
-### 4.1. Variables de entorno ###
+### 5.1. Variables de entorno ###
 Las variables de entorno pueden ser cargadas también desde el fichero *data/envs.json*. Está estructurado en un *.json* de manera clara:
 
 ```json
@@ -56,7 +72,7 @@ Las variables de entorno pueden ser cargadas también desde el fichero *data/env
 
 Nótese que el contenido de estas sobrescribirá a las variables de entorno del sistema.
 
-### 4.2. Docker ###
+### 5.2. Docker ###
 Para usar *docker*, el usuario deberá tener instalado la herramienta, y deberá ser accesible por el usuario actual sin necesidad de usar el prefijo ```sudo```.
 
 **IMPORTANTE:** No modifique  el fichero *Dockerfile* a menos que sepa lo que está haciendo.
@@ -165,15 +181,15 @@ $ docker run -i -t --net host progrezz/server
 Use el comando ```$ rake -T docker``` para ver todos los comandos disponibles.
 
 
-## 5.  Uso (sin docker) ##
-### 5.1. Instalación ###
+## 6.  Uso (sin docker) ##
+### 6.1. Instalación ###
 Una vez instalada e iniciada la base de datos, se puede preparar el servidor con el siguiente comando, desde la carpeta raíz del proyecto:
 
 ```sh
 $ rake setup
 ```
 
-### 5.2. Ejecución ###
+### 6.2. Ejecución ###
 
 El servidor puede ser iniciado en modo prueba con
 
@@ -192,7 +208,7 @@ Para subir el proyecto a heroku, teniendo definida el repositorio remoto ```hero
 $ rake heroku
 ```
 
-### 5.3. Otros ###
+### 6.3. Otros ###
 
 Para generar la documentación, use
 
@@ -240,10 +256,10 @@ Para cerrar la terminar y la aplicación, basta con ejecutar el comando ```exit`
 Progrezz server ended. Crowd applause.
 ```
 
-## 6. Contacto ##
+## 7. Contacto ##
 Envíe cualquier duda, comentario u opinión a cualquier correo de la siguiente lista:
 
 - Proyecto progrezz: [proyecto.progrezz@gmail.com](mailto:proyecto.progrezz@gmail.com)
 
-## 7. Agradecimientos / Referencias ##
+## 8. Agradecimientos / Referencias ##
 - <p>Directions Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>
