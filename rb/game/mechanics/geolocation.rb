@@ -34,7 +34,8 @@ module Game
             # Usar servidor OSRM
             if ENV['progrezz_matching_osrm'] != nil
               url      = ENV['progrezz_matching_osrm']
-              request_uri = url + "/nearest?loc=" + geolocation[:latitude].to_s + "," + geolocation[:longitude].to_s
+              command  = "/nearest?loc="
+              request_uri = url + command + geolocation[:latitude].to_s + "," + geolocation[:longitude].to_s
               
               result = RestClient.get(request_uri)
               new_loc = JSON[result]["mapped_coordinate"]
