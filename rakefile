@@ -177,8 +177,9 @@ namespace :docker do
     end
 
     desc 'Start progrezz docker process in the background.'
-    task :start, [:rake_task] do |t, args|
-      sh 'docker start -i progrezz_server ' + args[:rake_task].to_s
+    task :start, [:interactive] do |t, args|
+      interactive = "-i" if args[:interactive] == "true"
+      sh 'docker start ' + interactive.to_s + ' progrezz_server ' + args[:rake_task].to_s
     end
     
     desc 'Stop progrezz docker process.'
