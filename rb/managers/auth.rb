@@ -6,6 +6,7 @@ require 'omniauth-google-oauth2'
 require 'omniauth-twitter'
 require 'omniauth-github'
 require 'omniauth-steam'
+require 'omniauth-facebook'
 
 require 'date'
 
@@ -21,7 +22,7 @@ module Game
     BAN_FILE = "tmp/ban.log"
     
     # Servicios disponibles.
-    SERVICES = [:google_oauth2, :twitter, :github, :steam]
+    SERVICES = [:google_oauth2, :twitter, :github, :steam, :facebook]
     
     # Servicios cargados con OmniAuth.
     @@loaded_services
@@ -214,19 +215,17 @@ module Sinatra
             provider :steam, ENV['progrezz_steam_id']
           end
           
+          # Configurar Facebook
+          if Game::AuthManager.get_loaded_services.include? :facebook
+            provider :facebook, ENV['progrezz_facebook_id'], ENV['progrezz_facebook_secret'], :scope => 'email,read_stream'
+          end
+
           # ...
         end
       end
-      
-      ##
-      # @method get_js
+    
       # URL para cerrar la sesión.
       # @return [Object]
-      
-      # @!method foo(opts = {})
-      # The foo method!
-      # @!scope AuthManager
-      # @!visibility public
       app.get '/auth/logout' do
         session[:user_id] = session[:name] = session[:alias] = session[:url] = nil
         
