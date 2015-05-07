@@ -1,4 +1,4 @@
-
+#!/bin/ruby
 task :default => ["development:start"]
 
 # --------------------------------------------------------------
@@ -156,17 +156,22 @@ namespace :docker do
   
   namespace :progrezz do
     desc 'Setup progrezz docker image.'
-    task :setup, [:linked, :command] do |t, args|
+    task :setup, [:linked, :command, :client_folder] do |t, args|
       Rake::Task['docker:progrezz:build'].execute
 
       links = ""
       args[:linked].to_s.split(" ").each { |l| links += " --link " + l + ":" + l }
+
+      if args[:client_folder] != nil
+        links += " -v " + args[:client_folder] + ":/usr/progrezz/public/pages/client "
+      end
 
       sh "docker create -i -t -p 9292:9292 -h progrezz --name=progrezz_server" + links + " progrezz/server " + args[:command].to_s
     end
     
     desc 'Unsetup progrezz docker image.'
     task :unsetup do
+      sh "docker stop progrezz_server"
       sh "docker rm progrezz_server"
       #sh "docker rmi progrezz/server"
     end

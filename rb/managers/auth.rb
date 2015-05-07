@@ -5,7 +5,7 @@ require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 require 'omniauth-twitter'
 require 'omniauth-github'
-# require 'omniauth-steam'
+require 'omniauth-steam'
 
 require 'date'
 
@@ -175,7 +175,7 @@ module Game
 end
 
 # Inicializar.
-Game::AuthManager.setup( [:steam] )
+Game::AuthManager.setup( [] )
 
 module Sinatra
   
@@ -209,7 +209,7 @@ module Sinatra
             provider :github, ENV['progrezz_github_id'], ENV['progrezz_github_secret'], scope: "user"
           end
           
-          # Configurar GitHub
+          # Configurar Steam
           if Game::AuthManager.get_loaded_services.include? :steam
             provider :steam, ENV['progrezz_steam_id']
           end

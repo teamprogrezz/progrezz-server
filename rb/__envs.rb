@@ -32,6 +32,6 @@ end
 
 EnvsManager.setup()
 
-envs = {}
-ENV.each { |k, v| envs[k] = v }
-puts JSON.pretty_generate envs
+#envs = {}
+#ENV.each { |k, v| envs[k] = v }
+#puts JSON.pretty_generate envs
