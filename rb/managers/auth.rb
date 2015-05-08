@@ -261,8 +261,14 @@ module Sinatra
         begin
           Game::AuthManager.login( session[:user_id], session[:alias] )
         rescue Exception => e
-          session[:auth_error] = e.message
-          redirect to("/auth/failure" + request.query_string )
+          session[:user_id] = session[:name] = session[:alias] = nil
+          redirect_page = params["error_redirect"] || request.env["omniauth.origin"] || "/"
+
+          if redirect_page.include? "?"
+            redirect to(redirect_page + "&error_message=" + URI.escape(e.message, /\W/))
+          else
+            redirect to(redirect_page + "?error_message=" + URI.escape(e.message, /\W/))
+          end
         end
         
         redirect_page = params["redirect"] || request.env["omniauth.origin"] || "/"
@@ -277,11 +283,6 @@ module Sinatra
 
         error_message = nil
 
-        if session[:auth_error] != nil
-          error_message = session[:auth_error]
-          session[:auth_error] = nil
-        end
-        
         error_message ||= params["message"] || ""
         redirect_page = params["error_redirect"] || params["origin"] || "/"
         
