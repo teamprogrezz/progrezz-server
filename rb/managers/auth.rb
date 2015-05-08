@@ -194,7 +194,6 @@ module Sinatra
         app.set :session_secret, ENV['progrezz_secret']
 
         ::OmniAuth.config.on_failure do |env|
-          #::OmniAuth::FailureEndpoint.new(env).redirect_to_failure
           message_key = env['omniauth.error.type']
           origin_query_param = env['omniauth.origin'] ? "&origin=#{CGI.escape(env['omniauth.origin'])}" : ""
           strategy_name_query_param = env['omniauth.error.strategy'] ? "&strategy=#{env['omniauth.error.strategy'].name}" : ""
@@ -203,11 +202,10 @@ module Sinatra
           
           puts "----->", new_path, "<-----"
           Rack::Response.new(["302 Moved"], 302, 'Location' => new_path).finish
-          #::OmniAuth::FailureEndpoint.new(env).redirect_to_failure
-          #app.redirect( new_path )
         end
         
         app.use OmniAuth::Builder do
+
           # Configurar Google Auth.
           if Game::AuthManager.get_loaded_services.include? :google_oauth2
             provider :google_oauth2, ENV['progrezz_google_id'], ENV['progrezz_google_secret'], 
@@ -258,7 +256,6 @@ module Sinatra
         session[:user_id] = auth['info'].email || params['provider'].to_s + "-" + auth['uid'].to_s  # ID -> correo (salvo steam)
         session[:name]    = auth['info'].name                  # Nombre completo
         session[:alias]   = auth['info'].nick || auth['info'].alias || auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
-        #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
         
         # Registrar el usuario en la base de datos.
         begin
@@ -268,37 +265,30 @@ module Sinatra
           redirect to("/auth/failure" + request.query_string )
         end
         
+        redirect_page = params["redirect"] || request.env["omniauth.origin"] || "/"
+        
         # Redireccionar al usuario.
-        oparams = request.env["omniauth.params"]
-        origin  = request.env['omniauth.origin']
-
-        if (oparams["redirect"] != nil)
-          redirect to(oparams["redirect"])
-        elsif origin != nil
-          redirect to(request.env['omniauth.origin'])
-        else
-          redirect to("/")
-        end
+        redirect to(redirect_page)
         
       end
       
       # URL o callback de inicion de sesión fallido.
       app.get '/auth/failure' do
-        oparams = request.env["omniauth.params"] || { }
-        
+
+        error_message = nil
+
         if session[:auth_error] != nil
-          params["error_message"] = session[:auth_error]
+          error_message = session[:auth_error]
           session[:auth_error] = nil
         end
         
-        params["error_message"] = "Cannot login: " + (params["error_message"] || params["message"]).to_s
-        oparams["error_redirect"] = oparams["error_redirect"] || params["error_redirect"] || session[:error_redirect]
-        oparams["error_redirect"] = URI.unescape( oparams["error_redirect"] ) if oparams["error_redirect"] != nil
-                
-        if (oparams["error_redirect"] != nil)
-          redirect to(oparams["error_redirect"] + "?error=" + URI.escape(params["error_message"], /\W/) )
+        error_message ||= params["message"] || ""
+        redirect_page = params["error_redirect"] || params["origin"] || "/"
+        
+        if redirect_page.include? "?"
+          redirect to(redirect_page + "&error_message=" + URI.escape(error_message, /\W/))
         else
-          return params["error_message"]
+          redirect to(redirect_page + "?error_message=" + URI.escape(error_message, /\W/))
         end
       end
       
