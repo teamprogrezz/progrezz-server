@@ -16,16 +16,8 @@ require 'colorize'
 require 'thread'
 
 # Cargar utilidades personalizadas.
+require './rb/__envs.rb'
 require './rb/generic_utils'
-
-x = 3
-string = "aaa"
-float = 3.0
-GenericUtils.check_params( {
-  "int" => [ x, Integer ],
-  "string" => [string, String],
-  "float" => [float, Float]
-}, true)
 
 if development?
   require 'sinatra/reloader'
@@ -88,6 +80,9 @@ module Sinatra
         
         # Deshabilitar la muestra de excepciones.
         app.set :show_exceptions, false
+
+        # Habilitar escucha desde fuera
+        app.set :bind, '0.0.0.0'
       end
       
       # Hacer antes de toda petición de ruta

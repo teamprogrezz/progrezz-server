@@ -373,8 +373,8 @@
 </span>      <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Tiempo de leveo de usuarios: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_timer'>timer</span> <span class='kw'>do</span>
         <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span> <span class='kw'>do</span>
           <span class='kw'>for</span> <span class='id identifier rubyid_i'>i</span> <span class='kw'>in</span> <span class='int'>0</span><span class='op'>...</span><span class='int'>80</span>
-            <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_Wikiti'>user_Wikiti</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collect_fragment</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
-            <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingManagement</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_Shylpx'>user_Shylpx</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collect_fragment</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
+            <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_Wikiti'>user_Wikiti</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collect_fragment</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
+            <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_gain_exp'>gain_exp</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_Shylpx'>user_Shylpx</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collect_fragment</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
           <span class='kw'>end</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -468,7 +468,7 @@
 </span>      
       <span class='comment'># Generar depósitos cercanos
 </span>      <span class='comment'>#puts &quot;Tiempo de generación de depósitos: &quot; + (GenericUtils.timer do
-</span>      <span class='comment'>#  Game::Mechanics::ItemsManagement.generate_nearby_deposits(user_Wikiti, [])
+</span>      <span class='comment'>#  Game::Mechanics::ItemsMechanics.generate_nearby_deposits(user_Wikiti, [])
 </span>      <span class='comment'>#end).to_s
 </span>      
       <span class='comment'># Recolectarla
@@ -591,7 +591,7 @@
 </div>
 
     <div id="footer">
-  Generated on Mon Apr 20 12:37:48 2015 by
+  Generated on Tue Apr 28 13:37:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

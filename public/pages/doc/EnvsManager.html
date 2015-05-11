@@ -4,26 +4,26 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>
-  Class: Game::API::REST::RESTManager
+  Class: EnvsManager
   
     &mdash; Documentation by YARD 0.8.7.6
   
 </title>
 
-  <link rel="stylesheet" href="../../../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../../../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   hasFrames = window.top.frames.main ? true : false;
-  relpath = '../../../';
-  framesUrl = "../../../frames.html#!Game/API/REST/RESTManager.html";
+  relpath = '';
+  framesUrl = "frames.html#!EnvsManager.html";
 </script>
 
 
-  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
 
-  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
 
 
   </head>
@@ -31,10 +31,10 @@
     <div id="header">
       <div id="menu">
   
-    <a href="../../../_index.html">Index (R)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../API.html" title="Game::API (module)">API</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../REST.html" title="Game::API::REST (module)">REST</a></span></span>
-     &raquo; 
-    <span class="title">RESTManager</span>
+    <a href="_index.html">Index (E)</a> &raquo;
+    
+    
+    <span class="title">EnvsManager</span>
   
 
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -43,17 +43,17 @@
       <div id="search">
   
     <a class="full_list_link" id="class_list_link"
-        href="../../../class_list.html">
+        href="class_list.html">
       Class List
     </a>
   
     <a class="full_list_link" id="method_list_link"
-        href="../../../method_list.html">
+        href="method_list.html">
       Method List
     </a>
   
     <a class="full_list_link" id="file_list_link"
-        href="../../../file_list.html">
+        href="file_list.html">
       File List
     </a>
   
@@ -63,7 +63,7 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><h1>Class: Game::API::REST::RESTManager
+    <div id="content"><h1>Class: EnvsManager
   
   
   
@@ -78,7 +78,7 @@
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next">Game::API::REST::RESTManager</li>
+            <li class="next">EnvsManager</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -94,7 +94,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">rb/managers/rest.rb</dd>
+    <dd class="r2 last">rb/managers/envs.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -102,10 +102,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Clase gestora de la API REST.</p>
-
-<p>Se encarga de realizar tareas sencillas, como inicializar el acceso a los
-métodos REST HTML (Sinatra).</p>
+<p>Clase gestora de las variables env.</p>
 
 
   </div>
@@ -114,6 +111,45 @@ métodos REST HTML (Sinatra).</p>
   
 
 </div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="ENVS-constant" class="">ENVS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Estructura de datos a modificar.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='op'>::</span><span class='const'>ENV</span></pre></dd>
+      
+        <dt id="ENV_FILE-constant" class="">ENV_FILE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Fichero de las variables a cargar.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data/envs.json</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
@@ -145,9 +181,7 @@ métodos REST HTML (Sinatra).</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Inicializa la API REST.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -170,37 +204,25 @@ métodos REST HTML (Sinatra).</p>
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Inicializa la API REST.</p>
-
-<p>Principalmente, carga todos los ficheros fuente (.rb) contenidos en el
-directorio <strong>game/api/rest</strong>.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-20
-21
-22
-23</pre>
+16
+17
+18
+19
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/rest.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/envs.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='comment'>#-- Metodos HTTP (GET y POST) de la API REST #++
-</span>  <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_require_dir'>require_dir</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>./rb/game/api/rest/**/*.rb</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Leyendo URIs de API REST:   </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@data</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span> <span class='const'>ENV_FILE</span> <span class='rparen'>)</span> <span class='rparen'>)</span>
+
+  <span class='const'>ENVS</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@data</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>

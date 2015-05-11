@@ -104,6 +104,14 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'>
+<p>¿Posible falla de seguridad?</p>
+</div>
+  </div>
+
+
 <p>Clase contenedora de los métodos diversos de la API REST.</p>
 
 <p>Las peticiones REST se caracterizan por enviar como petición un objeto
@@ -153,7 +161,7 @@ los mismos parámetros:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#echo-class_method" title="echo (class method)">+ (Object) <strong>echo</strong>(app, response, session) </a>
+      <a href="#rest__echo-class_method" title="rest__echo (class method)">+ (Object) <strong>rest__echo</strong>(app, response, session) </a>
     
 
     
@@ -178,7 +186,7 @@ realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#echo_py-class_method" title="echo_py (class method)">+ (Object) <strong>echo_py</strong>(app, response, session) </a>
+      <a href="#rest__echo_py-class_method" title="rest__echo_py (class method)">+ (Object) <strong>rest__echo_py</strong>(app, response, session) </a>
     
 
     
@@ -203,7 +211,55 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#item_get-class_method" title="item_get (class method)">+ (Object) <strong>item_get</strong>(app, response, session) </a>
+      <a href="#rest__item_craft_list-class_method" title="rest__item_craft_list (class method)">+ (Object) <strong>rest__item_craft_list</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de todas las recetas de crafteo.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__item_craft_related-class_method" title="rest__item_craft_related (class method)">+ (Object) <strong>rest__item_craft_related</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de todas las recetas de crafteo relacionadas con un objeto..</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__item_get-class_method" title="rest__item_get (class method)">+ (Object) <strong>rest__item_get</strong>(app, response, session) </a>
     
 
     
@@ -227,7 +283,7 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#item_list-class_method" title="item_list (class method)">+ (Object) <strong>item_list</strong>(app, response, session) </a>
+      <a href="#rest__item_list-class_method" title="rest__item_list (class method)">+ (Object) <strong>rest__item_list</strong>(app, response, session) </a>
     
 
     
@@ -251,7 +307,7 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#message_get-class_method" title="message_get (class method)">+ (Object) <strong>message_get</strong>(app, response, session) </a>
+      <a href="#rest__message_get-class_method" title="rest__message_get (class method)">+ (Object) <strong>rest__message_get</strong>(app, response, session) </a>
     
 
     
@@ -275,7 +331,7 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#message_get_from_fragment-class_method" title="message_get_from_fragment (class method)">+ (Object) <strong>message_get_from_fragment</strong>(app, response, session) </a>
+      <a href="#rest__message_get_from_fragment-class_method" title="rest__message_get_from_fragment (class method)">+ (Object) <strong>rest__message_get_from_fragment</strong>(app, response, session) </a>
     
 
     
@@ -299,7 +355,7 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#message_get_unauthored-class_method" title="message_get_unauthored (class method)">+ (Object) <strong>message_get_unauthored</strong>(app, response, session) </a>
+      <a href="#rest__message_get_unauthored-class_method" title="rest__message_get_unauthored (class method)">+ (Object) <strong>rest__message_get_unauthored</strong>(app, response, session) </a>
     
 
     
@@ -315,6 +371,462 @@ petición realizada).</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Getter de los mensajes sin autor.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__test-class_method" title="rest__test (class method)">+ (Object) <strong>rest__test</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Redireccionar a página interactiva.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_allowed_actions-class_method" title="rest__user_allowed_actions (class method)">+ (Object) <strong>rest__user_allowed_actions</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener las acciones permitidas por un jugador.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_change_message_status-class_method" title="rest__user_change_message_status (class method)">+ (Object) <strong>rest__user_change_message_status</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Cambiar el estatus o estado de un mensaje completado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_collect_item_from_deposit-class_method" title="rest__user_collect_item_from_deposit (class method)">+ (Object) <strong>rest__user_collect_item_from_deposit</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recolectar objetos de un depósito.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_collect_message_fragment-class_method" title="rest__user_collect_message_fragment (class method)">+ (Object) <strong>rest__user_collect_message_fragment</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recoger un fragmento de mensaje cercano.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_craft_item-class_method" title="rest__user_craft_item (class method)">+ (Object) <strong>rest__user_craft_item</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Intentar craftear un objeto dada una receta.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_exchange_backpack_stack-class_method" title="rest__user_exchange_backpack_stack (class method)">+ (Object) <strong>rest__user_exchange_backpack_stack</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Eliminar una cantidad de objetos del inventario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_backpack-class_method" title="rest__user_get_backpack (class method)">+ (Object) <strong>rest__user_get_backpack</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Ver los datos de la mochila del usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_collected_message_fragments-class_method" title="rest__user_get_collected_message_fragments (class method)">+ (Object) <strong>rest__user_get_collected_message_fragments</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Listar fragmentos recolectados de un mensaje determinado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_craft_recipes-class_method" title="rest__user_get_craft_recipes (class method)">+ (Object) <strong>rest__user_get_craft_recipes</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener recetas permitidas de un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_messages-class_method" title="rest__user_get_messages (class method)">+ (Object) <strong>rest__user_get_messages</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Listar mensajes de un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_nearby_item_deposits-class_method" title="rest__user_get_nearby_item_deposits (class method)">+ (Object) <strong>rest__user_get_nearby_item_deposits</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recibir depósitos de objetos cercanos al usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_nearby_message_fragments-class_method" title="rest__user_get_nearby_message_fragments (class method)">+ (Object) <strong>rest__user_get_nearby_message_fragments</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recibir fragmentos de mensajes cercanos al usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_profile-class_method" title="rest__user_profile (class method)">+ (Object) <strong>rest__user_profile</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener el perfil del jugador.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_read_message-class_method" title="rest__user_read_message (class method)">+ (Object) <strong>rest__user_read_message</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Marcar un mensaje como leído.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_split_backpack_stack-class_method" title="rest__user_split_backpack_stack (class method)">+ (Object) <strong>rest__user_split_backpack_stack</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Particionar un stack de objetos del usuario dado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_unlock_message-class_method" title="rest__user_unlock_message (class method)">+ (Object) <strong>rest__user_unlock_message</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Desbloquear un mensaje completado por el usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_who_am_i-class_method" title="rest__user_who_am_i (class method)">+ (Object) <strong>rest__user_who_am_i</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener usuario actualmente conectado.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_write_message-class_method" title="rest__user_write_message (class method)">+ (Object) <strong>rest__user_write_message</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Escribir mensaje de un usuario.</p>
 </div></span>
   
 </li>
@@ -344,366 +856,6 @@ petición realizada).</p>
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_allowed_actions-class_method" title="user_allowed_actions (class method)">+ (Object) <strong>user_allowed_actions</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Obtener las acciones permitidas por un jugador.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_change_message_status-class_method" title="user_change_message_status (class method)">+ (Object) <strong>user_change_message_status</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Cambiar el estatus o estado de un mensaje completado.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_collect_item_from_deposit-class_method" title="user_collect_item_from_deposit (class method)">+ (Object) <strong>user_collect_item_from_deposit</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recolectar objetos de un depósito.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_collect_message_fragment-class_method" title="user_collect_message_fragment (class method)">+ (Object) <strong>user_collect_message_fragment</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recoger un fragmento de mensaje cercano.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_exchange_backpack_stack-class_method" title="user_exchange_backpack_stack (class method)">+ (Object) <strong>user_exchange_backpack_stack</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Eliminar una cantidad de objetos del inventario.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_get_backpack-class_method" title="user_get_backpack (class method)">+ (Object) <strong>user_get_backpack</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Ver los datos de la mochila del usuario.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_get_collected_message_fragments-class_method" title="user_get_collected_message_fragments (class method)">+ (Object) <strong>user_get_collected_message_fragments</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Listar fragmentos recolectados de un mensaje determinado.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_get_messages-class_method" title="user_get_messages (class method)">+ (Object) <strong>user_get_messages</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Listar mensajes de un usuario.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_get_nearby_item_deposits-class_method" title="user_get_nearby_item_deposits (class method)">+ (Object) <strong>user_get_nearby_item_deposits</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recibir depósitos de objetos cercanos al usuario.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_get_nearby_message_fragments-class_method" title="user_get_nearby_message_fragments (class method)">+ (Object) <strong>user_get_nearby_message_fragments</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recibir fragmentos de mensajes cercanos al usuario.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_profile-class_method" title="user_profile (class method)">+ (Object) <strong>user_profile</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Obtener el perfil del jugador.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_read_message-class_method" title="user_read_message (class method)">+ (Object) <strong>user_read_message</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Marcar un mensaje como leído.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_unlock_message-class_method" title="user_unlock_message (class method)">+ (Object) <strong>user_unlock_message</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Desbloquear un mensaje completado por el usuario.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_who_am_i-class_method" title="user_who_am_i (class method)">+ (Object) <strong>user_who_am_i</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Obtener usuario actualmente conectado.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_write_message-class_method" title="user_write_message (class method)">+ (Object) <strong>user_write_message</strong>(app, response, session) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Escribir mensaje de un usuario.</p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -714,9 +866,9 @@ petición realizada).</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="echo-class_method">
+  <h3 class="signature first" id="rest__echo-class_method">
   
-    + (<tt>Object</tt>) <strong>echo</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__echo</strong>(app, response, session) 
   
 
   
@@ -751,22 +903,14 @@ realizada).</p>
 21
 22
 23
-24
-25
-26
-27
-28</pre>
+24</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/echo_uris.rb', line 13</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__echo'>rest__echo</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
-      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>world</span><span class='tstring_end'>&#39;</span></span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>world</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
     
     <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
       <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
@@ -782,9 +926,9 @@ realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="echo_py-class_method">
+  <h3 class="signature " id="rest__echo_py-class_method">
   
-    + (<tt>Object</tt>) <strong>echo_py</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__echo_py</strong>(app, response, session) 
   
 
   
@@ -808,6 +952,10 @@ petición realizada).</p>
       <pre class="lines">
 
 
+27
+28
+29
+30
 31
 32
 33
@@ -819,26 +967,14 @@ petición realizada).</p>
 39
 40
 41
-42
-43
-44
-45
-46
-47
-48
-49
-50</pre>
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/echo_uris.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/echo_uris.rb', line 27</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_echo_py'>echo_py</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__echo_py'>rest__echo_py</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
-      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>world</span><span class='tstring_end'>&#39;</span></span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>world</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
     
     <span class='id identifier rubyid_input_json'>input_json</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>{&quot;name&quot;: &quot;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&quot;}</span><span class='tstring_end'>&#39;</span></span>
     
@@ -858,9 +994,107 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="item_get-class_method">
+  <h3 class="signature " id="rest__item_craft_list-class_method">
   
-    + (<tt>Object</tt>) <strong>item_get</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__item_craft_list</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de todas las recetas de crafteo.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/items_uris.rb', line 40</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__item_craft_list'>rest__item_craft_list</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>recipes:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>CraftingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_recipes'>recipes</span><span class='lparen'>(</span><span class='rparen'>)</span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__item_craft_related-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__item_craft_related</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de todas las recetas de crafteo relacionadas con un objeto..</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50
+51
+52
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/items_uris.rb', line 48</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__item_craft_related'>rest__item_craft_related</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_item_id'>item_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>recipes:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>CraftingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_related_recipes'>related_recipes</span><span class='lparen'>(</span><span class='id identifier rubyid_item_id'>item_id</span><span class='rparen'>)</span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__item_get-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__item_get</strong>(app, response, session) 
   
 
   
@@ -903,11 +1137,11 @@ petición realizada).</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/items_uris.rb', line 9</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_get'>item_get</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__item_get'>rest__item_get</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
     <span class='id identifier rubyid_item_id'>item_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>item_id:</span> <span class='id identifier rubyid_item_id'>item_id</span><span class='rparen'>)</span>
-    
+
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Item not found in database.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_item'>item</span> <span class='op'>==</span> <span class='kw'>nil</span>
     
   <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
@@ -916,7 +1150,7 @@ petición realizada).</p>
   
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
     <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='label'>item:</span> <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span>
+    <span class='label'>item:</span> <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -925,9 +1159,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="item_list-class_method">
+  <h3 class="signature " id="rest__item_list-class_method">
   
-    + (<tt>Object</tt>) <strong>item_list</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__item_list</strong>(app, response, session) 
   
 
   
@@ -965,7 +1199,7 @@ petición realizada).</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/items_uris.rb', line 27</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_list'>item_list</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__item_list'>rest__item_list</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='period'>.</span><span class='id identifier rubyid_as'>as</span><span class='lparen'>(</span><span class='symbol'>:i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>i.quality &lt;&gt; {q}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='label'>q:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='op'>::</span><span class='const'>NULL_QUALITY</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
     <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_item_id'>item_id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -982,9 +1216,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="message_get-class_method">
+  <h3 class="signature " id="rest__message_get-class_method">
   
-    + (<tt>Object</tt>) <strong>message_get</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__message_get</strong>(app, response, session) 
   
 
   
@@ -1018,13 +1252,15 @@ petición realizada).</p>
 20
 21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/messages_uris.rb', line 12</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message_get'>message_get</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_msg'>msg</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:msg_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__message_get'>rest__message_get</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_msg_uuid'>msg_uuid</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:msg_uuid</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_msg'>msg</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_msg_uuid'>msg_uuid</span> <span class='rparen'>)</span>
   
   <span class='kw'>if</span> <span class='id identifier rubyid_msg'>msg</span> <span class='op'>==</span> <span class='kw'>nil</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Message with uuid &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:msg_uuid</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; not found.</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
@@ -1041,9 +1277,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="message_get_from_fragment-class_method">
+  <h3 class="signature " id="rest__message_get_from_fragment-class_method">
   
-    + (<tt>Object</tt>) <strong>message_get_from_fragment</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__message_get_from_fragment</strong>(app, response, session) 
   
 
   
@@ -1066,7 +1302,6 @@ petición realizada).</p>
       <pre class="lines">
 
 
-41
 42
 43
 44
@@ -1077,13 +1312,16 @@ petición realizada).</p>
 49
 50
 51
-52</pre>
+52
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/messages_uris.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/messages_uris.rb', line 42</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message_get_from_fragment'>message_get_from_fragment</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_fragment'>fragment</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:frag_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__message_get_from_fragment'>rest__message_get_from_fragment</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_frag_uuid'>frag_uuid</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:frag_uuid</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_fragment'>fragment</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_frag_uuid'>frag_uuid</span> <span class='rparen'>)</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_fragment'>fragment</span> <span class='op'>==</span> <span class='kw'>nil</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Fragment with uuid &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:frag_uuid</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; not found.</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
@@ -1100,9 +1338,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="message_get_unauthored-class_method">
+  <h3 class="signature " id="rest__message_get_unauthored-class_method">
   
-    + (<tt>Object</tt>) <strong>message_get_unauthored</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__message_get_unauthored</strong>(app, response, session) 
   
 
   
@@ -1125,7 +1363,6 @@ petición realizada).</p>
       <pre class="lines">
 
 
-26
 27
 28
 29
@@ -1137,12 +1374,13 @@ petición realizada).</p>
 35
 36
 37
-38</pre>
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/messages_uris.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/messages_uris.rb', line 27</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_message_get_unauthored'>message_get_unauthored</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__message_get_unauthored'>rest__message_get_unauthored</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_msg_list'>msg_list</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_unauthored_messages'>unauthored_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   
   <span class='id identifier rubyid_messages'>messages</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1161,9 +1399,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="test-class_method">
+  <h3 class="signature " id="rest__test-class_method">
   
-    + (<tt>Object</tt>) <strong>test</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__test</strong>(app, response, session) 
   
 
   
@@ -1186,15 +1424,15 @@ petición realizada).</p>
       <pre class="lines">
 
 
-30
-31
-32</pre>
+8
+9
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/rest.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/echo_uris.rb', line 8</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_test'>test</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_redirect'>redirect</span> <span class='id identifier rubyid_to'>to</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/dev/rest</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__test'>rest__test</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_redirect'>redirect</span> <span class='id identifier rubyid_to'>to</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/dev/api/rest/interactive</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1202,9 +1440,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_allowed_actions-class_method">
+  <h3 class="signature " id="rest__user_allowed_actions-class_method">
   
-    + (<tt>Object</tt>) <strong>user_allowed_actions</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_allowed_actions</strong>(app, response, session) 
   
 
   
@@ -1238,10 +1476,10 @@ petición realizada).</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_uris.rb', line 17</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_allowed_actions'>user_allowed_actions</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_allowed_actions'>rest__user_allowed_actions</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
-  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsManagement</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='rparen'>)</span>
 
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>allowed_actions:</span> <span class='id identifier rubyid_output'>output</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1251,9 +1489,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_change_message_status-class_method">
+  <h3 class="signature " id="rest__user_change_message_status-class_method">
   
-    + (<tt>Object</tt>) <strong>user_change_message_status</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_change_message_status</strong>(app, response, session) 
   
 
   
@@ -1294,7 +1532,7 @@ petición realizada).</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 38</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_change_message_status'>user_change_message_status</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_change_message_status'>rest__user_change_message_status</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_change_message_status'>change_message_status</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:msg_uuid</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:new_status</span><span class='rbracket'>]</span> <span class='rparen'>)</span> <span class='op'>==</span> <span class='kw'>nil</span>
@@ -1314,9 +1552,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_collect_item_from_deposit-class_method">
+  <h3 class="signature " id="rest__user_collect_item_from_deposit-class_method">
   
-    + (<tt>Object</tt>) <strong>user_collect_item_from_deposit</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_collect_item_from_deposit</strong>(app, response, session) 
   
 
   
@@ -1358,14 +1596,18 @@ petición realizada).</p>
 26
 27
 28
-29</pre>
+29
+30
+31</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 10</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_collect_item_from_deposit'>user_collect_item_from_deposit</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
-  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
-  <span class='id identifier rubyid_deposit'>deposit</span>  <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:deposit_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_collect_item_from_deposit'>rest__user_collect_item_from_deposit</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>      <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_deposit_uuid'>deposit_uuid</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:deposit_uuid</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_deposit'>deposit</span>  <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDepositInstance</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_deposit_uuid'>deposit_uuid</span><span class='rparen'>)</span>
   
   <span class='id identifier rubyid_extra'>extra</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='id identifier rubyid_relation'>relation</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -1389,9 +1631,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_collect_message_fragment-class_method">
+  <h3 class="signature " id="rest__user_collect_message_fragment-class_method">
   
-    + (<tt>Object</tt>) <strong>user_collect_message_fragment</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_collect_message_fragment</strong>(app, response, session) 
   
 
   
@@ -1445,7 +1687,7 @@ petición realizada).</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 54</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_collect_message_fragment'>user_collect_message_fragment</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_collect_message_fragment'>rest__user_collect_message_fragment</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_fragment'>fragment</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:frag_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
   
@@ -1478,9 +1720,68 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_exchange_backpack_stack-class_method">
+  <h3 class="signature " id="rest__user_craft_item-class_method">
   
-    + (<tt>Object</tt>) <strong>user_exchange_backpack_stack</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_craft_item</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Intentar craftear un objeto dada una receta.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 109</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_craft_item'>rest__user_craft_item</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>   <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_recipe_id'>recipe_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:recipe_id</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_user'>user</span>   <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_craft_item'>craft_item</span><span class='lparen'>(</span><span class='id identifier rubyid_recipe_id'>recipe_id</span><span class='rparen'>)</span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Item crafted successfully.</span><span class='tstring_end'>&quot;</span></span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__user_exchange_backpack_stack-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_exchange_backpack_stack</strong>(app, response, session) 
   
 
   
@@ -1503,10 +1804,6 @@ petición realizada).</p>
       <pre class="lines">
 
 
-72
-73
-74
-75
 76
 77
 78
@@ -1514,15 +1811,23 @@ petición realizada).</p>
 80
 81
 82
-83</pre>
+83
+84
+85
+86
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 76</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_exchange_backpack_stack'>user_exchange_backpack_stack</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
-  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
-  <span class='id identifier rubyid_stack_id'>stack_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:stack_id</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_amount'>amount</span>   <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:amount</span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_exchange_backpack_stack'>rest__user_exchange_backpack_stack</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>      <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_stack_id'>stack_id</span>     <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:stack_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_amount'>amount</span>       <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:amount</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_exchange_stack_amount'>exchange_stack_amount</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_id'>stack_id</span><span class='comma'>,</span> <span class='id identifier rubyid_amount'>amount</span><span class='rparen'>)</span>
   
@@ -1537,9 +1842,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_get_backpack-class_method">
+  <h3 class="signature " id="rest__user_get_backpack-class_method">
   
-    + (<tt>Object</tt>) <strong>user_get_backpack</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_get_backpack</strong>(app, response, session) 
   
 
   
@@ -1562,19 +1867,21 @@ petición realizada).</p>
       <pre class="lines">
 
 
-62
-63
-64
 65
 66
 67
 68
-69</pre>
+69
+70
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 65</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_get_backpack'>user_get_backpack</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_backpack'>rest__user_get_backpack</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>      <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
@@ -1588,9 +1895,9 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_get_collected_message_fragments-class_method">
+  <h3 class="signature " id="rest__user_get_collected_message_fragments-class_method">
   
-    + (<tt>Object</tt>) <strong>user_get_collected_message_fragments</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_get_collected_message_fragments</strong>(app, response, session) 
   
 
   
@@ -1630,7 +1937,7 @@ petición realizada).</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 134</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_get_collected_message_fragments'>user_get_collected_message_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_collected_message_fragments'>rest__user_get_collected_message_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_message'>message</span>  <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:msg_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
   
@@ -1649,9 +1956,64 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_get_messages-class_method">
+  <h3 class="signature " id="rest__user_get_craft_recipes-class_method">
   
-    + (<tt>Object</tt>) <strong>user_get_messages</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_get_craft_recipes</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Obtener recetas permitidas de un usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 123</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_craft_recipes'>rest__user_get_craft_recipes</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>   <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_user'>user</span>   <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>recipes:</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_get_craft_recipes'>get_craft_recipes</span><span class='lparen'>(</span><span class='rparen'>)</span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__user_get_messages-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_get_messages</strong>(app, response, session) 
   
 
   
@@ -1688,7 +2050,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 123</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_get_messages'>user_get_messages</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_messages'>rest__user_get_messages</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
@@ -1703,9 +2065,9 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_get_nearby_item_deposits-class_method">
+  <h3 class="signature " id="rest__user_get_nearby_item_deposits-class_method">
   
-    + (<tt>Object</tt>) <strong>user_get_nearby_item_deposits</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_get_nearby_item_deposits</strong>(app, response, session) 
   
 
   
@@ -1728,8 +2090,6 @@ mensajes completados y sin completar del usuario.</p>
       <pre class="lines">
 
 
-32
-33
 34
 35
 36
@@ -1755,19 +2115,23 @@ mensajes completados y sin completar del usuario.</p>
 56
 57
 58
-59</pre>
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 34</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_get_nearby_item_deposits'>user_get_nearby_item_deposits</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_nearby_item_deposits'>rest__user_get_nearby_item_deposits</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>      <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
 
   <span class='comment'># Geolocalizaciones (como arrays).
 </span>  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_search_nearby_deposits'>search_nearby_deposits</span><span class='lparen'>(</span><span class='rparen'>)</span>
 
   <span class='comment'># Añadir nuevos depósitos (si fuese necesario)
-</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>ItemsManagement</span><span class='period'>.</span><span class='id identifier rubyid_generate_nearby_deposits'>generate_nearby_deposits</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
+</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>ItemsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_generate_nearby_deposits'>generate_nearby_deposits</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
   
   <span class='comment'># Eliminar mensajes caducados
 </span>  <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_delete_if'>delete_if</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_caducated?'>caducated?</span> <span class='rbrace'>}</span>
@@ -1794,9 +2158,9 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_get_nearby_message_fragments-class_method">
+  <h3 class="signature " id="rest__user_get_nearby_message_fragments-class_method">
   
-    + (<tt>Object</tt>) <strong>user_get_nearby_message_fragments</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_get_nearby_message_fragments</strong>(app, response, session) 
   
 
   
@@ -1844,7 +2208,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 98</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_get_nearby_message_fragments'>user_get_nearby_message_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_nearby_message_fragments'>rest__user_get_nearby_message_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_default_ignore'>default_ignore</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
   
   <span class='id identifier rubyid_ignore'>ignore</span>  <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:ignore_user_written_messages</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_default_ignore'>default_ignore</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
@@ -1855,7 +2219,7 @@ mensajes completados y sin completar del usuario.</p>
 
   <span class='comment'># Comprobar si es necesario añadir nuevos fragmentos
 </span>  <span class='kw'>if</span> <span class='id identifier rubyid_ignore'>ignore</span> <span class='op'>==</span> <span class='kw'>true</span>
-    <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>MessageManagement</span><span class='period'>.</span><span class='id identifier rubyid_generate_nearby_fragments'>generate_nearby_fragments</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:system_fragments</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>MessageMechanics</span><span class='period'>.</span><span class='id identifier rubyid_generate_nearby_fragments'>generate_nearby_fragments</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:system_fragments</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
   <span class='comment'># formatear output
@@ -1871,9 +2235,9 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_profile-class_method">
+  <h3 class="signature " id="rest__user_profile-class_method">
   
-    + (<tt>Object</tt>) <strong>user_profile</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_profile</strong>(app, response, session) 
   
 
   
@@ -1907,7 +2271,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_uris.rb', line 8</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_profile'>user_profile</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_profile'>rest__user_profile</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_get_stats'>get_stats</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -1920,9 +2284,9 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_read_message-class_method">
+  <h3 class="signature " id="rest__user_read_message-class_method">
   
-    + (<tt>Object</tt>) <strong>user_read_message</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_read_message</strong>(app, response, session) 
   
 
   
@@ -1959,7 +2323,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 26</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_read_message'>user_read_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_read_message'>rest__user_read_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_read_message'>read_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:msg_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span> 
@@ -1975,9 +2339,74 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_unlock_message-class_method">
+  <h3 class="signature " id="rest__user_split_backpack_stack-class_method">
   
-    + (<tt>Object</tt>) <strong>user_unlock_message</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_split_backpack_stack</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Particionar un stack de objetos del usuario dado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_items_uris.rb', line 92</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_split_backpack_stack'>rest__user_split_backpack_stack</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>         <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_stack_id'>stack_id</span>        <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:stack_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='id identifier rubyid_target_stack_id'>target_stack_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:target_stack_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='kw'>unless</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:target_stack_id</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_restack_amount'>restack_amount</span>  <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:restack_amount</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+
+  <span class='id identifier rubyid_user'>user</span>   <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_split_stack'>split_stack</span><span class='lparen'>(</span> <span class='id identifier rubyid_stack_id'>stack_id</span><span class='comma'>,</span> <span class='id identifier rubyid_restack_amount'>restack_amount</span><span class='comma'>,</span> <span class='id identifier rubyid_target_stack_id'>target_stack_id</span> <span class='rparen'>)</span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>old_stack:</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:old_stack</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>new_stack:</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:new_stack</span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__user_unlock_message-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_unlock_message</strong>(app, response, session) 
   
 
   
@@ -2016,7 +2445,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 12</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_unlock_message'>user_unlock_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_unlock_message'>rest__user_unlock_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='id identifier rubyid_extra'>extra</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -2034,9 +2463,9 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_who_am_i-class_method">
+  <h3 class="signature " id="rest__user_who_am_i-class_method">
   
-    + (<tt>Object</tt>) <strong>user_who_am_i</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_who_am_i</strong>(app, response, session) 
   
 
   
@@ -2073,7 +2502,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_uris.rb', line 26</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_who_am_i'>user_who_am_i</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_who_am_i'>rest__user_who_am_i</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_current_user'>current_user</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   
   <span class='kw'>if</span> <span class='id identifier rubyid_output'>output</span> <span class='op'>!=</span> <span class='kw'>nil</span>
@@ -2089,9 +2518,9 @@ mensajes completados y sin completar del usuario.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="user_write_message-class_method">
+  <h3 class="signature " id="rest__user_write_message-class_method">
   
-    + (<tt>Object</tt>) <strong>user_write_message</strong>(app, response, session) 
+    + (<tt>Object</tt>) <strong>rest__user_write_message</strong>(app, response, session) 
   
 
   
@@ -2131,7 +2560,7 @@ mensajes completados y sin completar del usuario.</p>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 83</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_write_message'>user_write_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_write_message'>rest__user_write_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   
   <span class='id identifier rubyid_msg_content'>msg_content</span>  <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:content</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -2149,12 +2578,53 @@ mensajes completados y sin completar del usuario.</p>
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="test-class_method">
+  
+    + (<tt>Object</tt>) <strong>test</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Redireccionar a página interactiva.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/rest.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_test'>test</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_redirect'>redirect</span> <span class='id identifier rubyid_to'>to</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/dev/rest</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Mon Apr 20 12:37:51 2015 by
+  Generated on Tue Apr 28 13:37:13 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
