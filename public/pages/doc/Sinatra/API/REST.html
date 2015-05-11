@@ -80,7 +80,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">rb/game/api/rest/rest.rb<span class="defines">,<br />
-  rb/game/api/rest/user_uris.rb,<br /> rb/game/api/rest/echo_uris.rb,<br /> rb/game/api/rest/trash_test.rb,<br /> rb/game/api/rest/messages_uris.rb,<br /> rb/game/api/rest/user_messages_uris.rb</span>
+  rb/game/api/rest/user_uris.rb,<br /> rb/game/api/rest/echo_uris.rb,<br /> rb/game/api/rest/items_uris.rb,<br /> rb/game/api/rest/trash_test.rb,<br /> rb/game/api/rest/messages_uris.rb,<br /> rb/game/api/rest/user_items_uris.rb,<br /> rb/game/api/rest/user_messages_uris.rb</span>
 </dd>
   
 </dl>
@@ -206,7 +206,6 @@ Sinatra::API::REST::Methods.</p>
       <pre class="lines">
 
 
-41
 42
 43
 44
@@ -288,10 +287,11 @@ Sinatra::API::REST::Methods.</p>
 120
 121
 122
-123</pre>
+123
+124</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/rest.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/rest.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_registered'>registered</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='rparen'>)</span>
   <span class='comment'># Clase contenedora de métodos
@@ -320,21 +320,21 @@ Sinatra::API::REST::Methods.</p>
     <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span>
     <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span>
 
+    <span class='comment'># Comprobar que tiene la estructura correcta.
+</span>    <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_validate_request'>validate_request</span><span class='lparen'>(</span> <span class='id identifier rubyid_request'>request</span> <span class='rparen'>)</span>
+
     <span class='comment'># Activar gestor de transacciones.
 </span>    <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tx'>tx</span><span class='op'>|</span>
       <span class='comment'># Tipo de petición
 </span>      <span class='kw'>begin</span>
-        <span class='id identifier rubyid_method'>method</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-  
-        <span class='kw'>if</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
-          <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid request type &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
-        <span class='kw'>else</span>
-          <span class='const'>Methods</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span> <span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
-        <span class='kw'>end</span>
+        <span class='id identifier rubyid_method'>method</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span>
+
+        <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid request type &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+        <span class='const'>Methods</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rest__</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
         
         <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:metadata</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>response</span><span class='tstring_end'>&quot;</span></span>
         
-      <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>  
+      <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
         <span class='comment'># Deshacer transacción.
 </span>        <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
         
@@ -386,7 +386,7 @@ Sinatra::API::REST::Methods.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:04 2015 by
+  Generated on Tue Apr 28 13:37:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

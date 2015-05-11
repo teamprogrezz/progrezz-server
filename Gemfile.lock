@@ -19,11 +19,13 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.3.7)
+    addressable (2.3.8)
     backports (3.6.4)
     builder (3.2.2)
+    coderay (1.1.0)
+    colorize (0.7.7)
     daemons (1.2.2)
-    domain_name (0.5.23)
+    domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     em-websocket (0.3.8)
       addressable (>= 2.1.1)
@@ -34,7 +36,7 @@ GEM
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
     geocoder (1.2.8)
-    hashie (3.4.0)
+    hashie (3.4.1)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     httparty (0.13.3)
@@ -44,8 +46,9 @@ GEM
     i18n (0.7.0)
     json (1.8.2)
     jwt (1.4.1)
-    mime-types (2.4.3)
-    minitest (5.5.1)
+    method_source (0.8.2)
+    mime-types (2.5)
+    minitest (5.6.1)
     multi_json (1.11.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -55,7 +58,7 @@ GEM
       activesupport (~> 4)
       neo4j-core (~> 4.0.0)
       orm_adapter (~> 0.5.0)
-    neo4j-core (4.0.5)
+    neo4j-core (4.0.7)
       activesupport
       faraday (~> 0.9.0)
       faraday_middleware (~> 0.9.1)
@@ -65,6 +68,7 @@ GEM
       net-http-persistent
       os
       zip
+    nesty (1.0.2)
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     oauth (0.4.7)
@@ -74,7 +78,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    oj (2.12.1)
+    oj (2.12.5)
     oj_mimic_json (1.0.1)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
@@ -85,34 +89,45 @@ GEM
     omniauth-google-oauth2 (0.2.6)
       omniauth (> 1.0)
       omniauth-oauth2 (~> 1.1)
-    omniauth-oauth (1.0.1)
+    omniauth-oauth (1.1.0)
       oauth
       omniauth (~> 1.0)
-    omniauth-oauth2 (1.2.0)
-      faraday (>= 0.8, < 0.10)
-      multi_json (~> 1.3)
+    omniauth-oauth2 (1.3.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    omniauth-twitter (1.1.0)
-      multi_json (~> 1.3)
-      omniauth-oauth (~> 1.0)
+    omniauth-openid (1.0.1)
+      omniauth (~> 1.0)
+      rack-openid (~> 1.3.1)
+    omniauth-steam (1.0.3)
+      multi_json
+      omniauth-openid
+    omniauth-twitter (1.2.0)
+      json (~> 1.3)
+      omniauth-oauth (~> 1.1)
     orm_adapter (0.5.0)
     os (0.9.6)
+    pickup (0.0.11)
+    power_assert (0.2.3)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.6.0)
+    rack-openid (1.3.1)
+      rack (>= 1.1.0)
+      ruby-openid (>= 2.1.8)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    racksh (1.0.0)
-      rack (>= 1.0)
-      rack-test (>= 0.5)
+    rake (10.4.2)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    ruby-prof (0.15.6)
-    rufus-scheduler (3.0.9)
-      tzinfo
+    ruby-openid (2.7.0)
+    ruby-prof (0.15.8)
+    rufus-scheduler (3.1.1)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -133,6 +148,9 @@ GEM
       em-websocket (~> 0.3.6)
       eventmachine
       thin (>= 1.3.1, < 2.0.0)
+    slop (3.6.0)
+    test-unit (3.0.9)
+      power_assert
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -143,7 +161,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.6)
+    unf_ext (0.0.7.1)
     yard (0.8.7.6)
     yard-sinatra (1.0.0)
       yard (~> 0.7)
@@ -153,16 +171,21 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   geocoder
   neo4j
+  nesty
   oj
   oj_mimic_json
   omniauth
   omniauth-github
   omniauth-google-oauth2
+  omniauth-steam
   omniauth-twitter
+  pickup
   progrezz-geolocation!
-  racksh
+  pry
+  rake
   rest-client
   ruby-prof
   rufus-scheduler
@@ -170,6 +193,7 @@ DEPENDENCIES
   sinatra-jsonp
   sinatra-reloader
   sinatra-websocket
+  test-unit
   thin
   yard
   yard-sinatra

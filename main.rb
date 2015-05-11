@@ -7,21 +7,29 @@ $LOAD_PATH << File.dirname(__FILE__) + "\n"
 require 'oj'
 require 'oj_mimic_json'
 
+# Cargar cosas genéricas
 require 'sinatra'
+require 'sinatra/multi_route'
 require 'neo4j'
-
+require 'logger'
+require 'colorize'
 require 'thread'
+
+# Cargar utilidades personalizadas.
+require './rb/__envs.rb'
+require './rb/generic_utils'
 
 if development?
   require 'sinatra/reloader'
   require 'ruby-prof'
+  require 'pry'
 
-  puts "--------------------------------------"
-  puts "**   Starting in development mode   **"
-  puts "--------------------------------------"
+  puts "--------------------------------------".red.bold
+  puts "**   Starting in development mode   **".red.bold
+  puts "--------------------------------------".red.bold
   
   # Variable de desarrollo
-  DEV = true
+  ::DEV = true
 end
 
 # Módulo Sinatra (predefinido).
@@ -30,16 +38,7 @@ module Sinatra
   # Aplicación principal (servidor).
   #
   # Funciona como contenedor de una aplicación Ruby Sinatra.
-  class ProgrezzServer < Sinatra::Base
-
-    
-    # Getter de la sesión de la aplicación.
-    #
-    # @return Sesión actual (objeto session).
-    def self.get_session()
-      return self.session
-    end
-  end
+  class ProgrezzServer < Sinatra::Base; end
   
   # Módulo de páginas webs. Usado para definir los métodos get y post
   # de las distintas páginas webs del servidor.
@@ -74,7 +73,22 @@ module Sinatra
         
         # Añadir multihilos. 
         app.set :threaded, true # TODO: Probar con Thin y no con rackup.
+        
+        # Activar loggin
+        app.enable :loggin
+        app.use Rack::CommonLogger, Logger.new("tmp/app.log")
+        
+        # Deshabilitar la muestra de excepciones.
+        app.set :show_exceptions, false
+
+        # Habilitar escucha desde fuera
+        app.set :bind, '0.0.0.0'
       end
+      
+      # Hacer antes de toda petición de ruta
+      error_log = ::File.new("tmp/app_errors.log","a+")
+      error_log.sync = true
+      app.before { env["rack.errors"] = error_log } if ProgrezzServer.production?
       
       # Ruta principal del servidor.
       app.get '/' do
@@ -102,13 +116,26 @@ module Sinatra
       app.get '/dev/doc' do
         erb :"dev/doc", :locals => { :session => session }, :layout => :"dev/layout"
       end
+      
+      # Gestión de errores.
+      app.error Exception do
+        e = env['sinatra.error']
+
+        return "<h1 style='color: red;'>Fatal error</h1>" +
+          "<pre><strong>Message: </strong>" + e.message.to_s + "</pre>" +
+          "<pre><strong>Backtrace: </strong>\n" + e.backtrace.join("\n") + "</pre>"
+      end
     end
   end
   
   register Pages
 end
 
-class Sinatra::ProgrezzServer; register Sinatra::Pages; end
+class Sinatra::ProgrezzServer
+  register Sinatra::Pages
+  register Sinatra::MultiRoute
+end
+
 #-- Registrar. #++
 #-- ---------------------------------------------------------------- #++
 
@@ -116,17 +143,26 @@ class Sinatra::ProgrezzServer; register Sinatra::Pages; end
 require './rb/generic_utils'
 
 #-- Cargar Gestores del servidor. #++
-GenericUtils.require_dir("./rb/managers/**/*.rb", "----------------------------------\n    Mánager:                ")
+GenericUtils.require_dir("./rb/managers/**/*.rb", "----------------------------------\n" + "    Mánager:                ".green, false)
 puts "----------------------------------"
+
+# Ejecutar una terminal (si procede)
+if development? && ENV['progrezz_interactive_shell'] == "true"
+
+  Thread.new do |t|
+    binding.pry
+    exit()
+  end
+end
 
 # Cosas a ejecutar cuando se cierre la app.
 at_exit do
-  Thread.list.each do |thread|
-    thread.exit unless thread == Thread.current
-  end
-  
   Game::Database::DatabaseManager.force_save()
   puts "Progrezz server ended. Crowd applause."
+
+  Thread.list.each do |thread|
+    thread.exit
+  end
 end
 
 #-- ---------------------------------------------------------------- #++

@@ -148,7 +148,7 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:google_oauth2</span><span class='comma'>,</span> <span class='symbol'>:twitter</span><span class='comma'>,</span> <span class='symbol'>:github</span><span class='rbracket'>]</span></pre></dd>
+        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:google_oauth2</span><span class='comma'>,</span> <span class='symbol'>:twitter</span><span class='comma'>,</span> <span class='symbol'>:github</span><span class='comma'>,</span> <span class='symbol'>:steam</span><span class='rbracket'>]</span></pre></dd>
       
     </dl>
   
@@ -419,7 +419,7 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <div class="method_details first">
   <h3 class="signature first" id="auth?-class_method">
   
-    + (<tt>Boolean</tt>) <strong>auth?</strong>(session) 
+    + (<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>auth?</strong>(session) 
   
 
   
@@ -441,7 +441,7 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
     <li>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
       
@@ -460,8 +460,6 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <pre class="lines">
 
 
-155
-156
 157
 158
 159
@@ -469,10 +467,12 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
 161
 162
 163
-164</pre>
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_auth?'>auth?</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>users_auth_disabled</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
@@ -569,8 +569,6 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <pre class="lines">
 
 
-122
-123
 124
 125
 126
@@ -580,10 +578,12 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
 130
 131
 132
-133</pre>
+133
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 124</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_ban_user'>ban_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_ban_time_seconds'>ban_time_seconds</span><span class='comma'>,</span> <span class='id identifier rubyid_ban_reason'>ban_reason</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
@@ -605,7 +605,7 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <div class="method_details ">
   <h3 class="signature " id="banned?-class_method">
   
-    + (<tt>Boolean</tt>) <strong>banned?</strong>(user) 
+    + (<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>banned?</strong>(user) 
   
 
   
@@ -647,7 +647,7 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
     <li>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
       
@@ -666,16 +666,16 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <pre class="lines">
 
 
-57
-58
 59
 60
 61
 62
-63</pre>
+63
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_banned?'>banned?</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>&amp;&amp;</span> <span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span>
@@ -733,12 +733,12 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <pre class="lines">
 
 
-148
-149
-150</pre>
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 148</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 150</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_banned_users'>banned_users</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_as'>as</span><span class='lparen'>(</span><span class='symbol'>:u</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>u.banned_until &gt; {tnow}</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='label'>tnow:</span> <span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%s</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span>
@@ -774,12 +774,12 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <pre class="lines">
 
 
-167
-168
-169</pre>
+169
+170
+171</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 167</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_user'>current_user</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>user_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
@@ -834,12 +834,12 @@ datos de la sesión en las cookies de las sesiones de Ruby Sinatra.</p>
       <pre class="lines">
 
 
-50
-51
-52</pre>
+52
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 52</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_loaded_services'>get_loaded_services</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='cvar'>@@loaded_services</span>
@@ -914,8 +914,6 @@ usuario ya existe, no se añadirá nada.</p>
       <pre class="lines">
 
 
-101
-102
 103
 104
 105
@@ -929,10 +927,12 @@ usuario ya existe, no se añadirá nada.</p>
 113
 114
 115
-116</pre>
+116
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_login'>login</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_user_alias'>user_alias</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -947,7 +947,7 @@ usuario ya existe, no se añadirá nada.</p>
   <span class='kw'>end</span>
   
    <span class='kw'>if</span> <span class='id identifier rubyid_banned?'>banned?</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Current &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; is banned until </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Current &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; is banned until </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1036,8 +1036,6 @@ referencia al mismo. Si no, genera una excepción.</p>
       <pre class="lines">
 
 
-71
-72
 73
 74
 75
@@ -1057,16 +1055,18 @@ referencia al mismo. Si no, genera una excepción.</p>
 89
 90
 91
-92</pre>
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 73</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='rparen'>)</span>
   
   <span class='kw'>if</span> <span class='id identifier rubyid_banned?'>banned?</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Current user &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; is banned until </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Current user &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; is banned until </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_banned_until'>banned_until</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
 
   <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>users_auth_disabled</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
@@ -1078,7 +1078,7 @@ referencia al mismo. Si no, genera una excepción.</p>
         <span class='id identifier rubyid_error_msg'>error_msg</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> You are authenticated as &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span>
       <span class='kw'>end</span>
       
-      <span class='id identifier rubyid_raise'>raise</span> <span class='id identifier rubyid_error_msg'>error_msg</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='id identifier rubyid_error_msg'>error_msg</span> <span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
   
@@ -1151,8 +1151,6 @@ todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
       <pre class="lines">
 
 
-35
-36
 37
 38
 39
@@ -1161,10 +1159,12 @@ todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
 42
 43
 44
-45</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_service_exceptions'>service_exceptions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
   <span class='cvar'>@@loaded_services</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1228,17 +1228,17 @@ todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
       <pre class="lines">
 
 
-137
-138
 139
 140
 141
 142
 143
-144</pre>
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/auth.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_unban_user'>unban_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span> <span class='rparen'>)</span>
@@ -1258,7 +1258,7 @@ todos los posibles. La lista de servicios se encuentra en SERVICES.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:04 2015 by
+  Generated on Tue Apr 28 13:37:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

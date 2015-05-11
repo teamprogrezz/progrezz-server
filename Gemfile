@@ -1,6 +1,13 @@
 source 'https://rubygems.org'
 ruby '2.2.0'
 
+# General
+gem 'rake'
+gem 'test-unit'
+gem 'pickup'
+gem 'nesty'
+gem 'colorize'
+
 # Sinatra
 gem 'sinatra'
 gem 'sinatra-jsonp'
@@ -25,6 +32,8 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
+gem 'omniauth-steam'
+gem 'omniauth-facebook'
 
 # Documentation
 gem 'yard'
@@ -33,8 +42,8 @@ gem 'yard-sinatra'
 # Desarrollo
 group :development do
   gem 'sinatra-reloader'
-  gem 'racksh'
   gem 'ruby-prof'
+  gem 'pry'
 end
 
 # Producción

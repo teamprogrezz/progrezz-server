@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'open3'
+require 'nesty'
 
 # Clase de utilidades genéricas.
 class GenericUtils
@@ -10,11 +11,46 @@ class GenericUtils
   # 
   # @param dir_regexp [String] Expresión regular de la carpeta a incluir.
   # @param msg [String] Mensaje que se muestra antes de cargar el fichero. Si es nil, no se muestra nada.
-  def self.require_dir(dir_regexp, msg = nil)
-    Dir[dir_regexp].each {|file|
+  # @param colorize [Bool] Dar color por defecto.
+  def self.require_dir(dir_regexp, msg = nil, colorize = true)
+    msg = msg.cyan if colorize
+    Dir[dir_regexp].sort.each {|file|
       if msg != nil; puts msg + file.split(/\.rb/)[0] end
       require file.split(/\.rb/)[0]
     }
+  end
+
+  # Comprobar parámetro o variable (usado en funciones).
+  # @param param_name [String] Nombre del argumento (contexto).
+  # @param param_value [Object] Objeto a comprobar.
+  # @param type [Class] Clase al que debería pertenecer el objeto.
+  # @param strict_type [Boolean] Si es true, deberá ser exactamente de ese tipo, y no una subclase. Si no, basta con que sea una subclase.
+  # @raise [ArgumentError] Será lanzado si un parámetro no es válido.
+  def self.check_param(param_name, param_value, type, strict_type = false)
+    raise ::ArgumentError.new("Invalid call.") if param_name == nil or param_value == nil or !type.is_a? Class
+    strict_type = false unless param_value.respond_to? :instace_of?
+
+    if strict_type
+      raise ::ArgumentError.new( "Invalid argument type for '" + param_name.to_s + "'. " + "Must be strictly a " + type.name + " instead of " + param_value.class.name + "." ) unless param_value.instace_of? type
+    else
+      raise ::ArgumentError.new( "Invalid argument type for '" + param_name.to_s + "'. " + "Must be a " + type.name + " or a child of it instead of " + param_value.class.name + "." ) unless param_value.is_a? type
+    end
+  end
+
+  # Comprobar varios parámetros a la vez.
+  #
+  # Puede invocarse de la siguiente manera:
+  #   GenericUtils.check_params "user_param" => [user, Game::Database::User], "item_param" => [item, Game::Database::Item]
+  #
+  # @param hash_data [Hash] Deberá tener el formato especificado en la descripción de este método.
+  # @raise [ArgumentError] Será lanzado si algún parámetro no es válido.
+  def self.check_params( hash_data, strict_type = false )
+    raise ::ArgumentError.new("Invalid call.") if hash_data == nil or !hash_data.is_a? Hash
+
+    hash_data.each do |k, v|
+      raise ::ArgumentError.new("Invalid call.") if !v.is_a? Array or v.length != 2
+      check_param( k, v[0], v[1], strict_type )
+    end
   end
   
   # Medir el tiempo que tarda en ejecutar un bloque de código.
@@ -64,10 +100,16 @@ class GenericUtils
   # @param h [Hash] Hash a modificar.
   # @return [Hash] Hash convertido.
   def self.symbolize_keys_deep!(h)
-    h.keys.each do |k|
-      ks    = k.respond_to?(:to_sym) ? k.to_sym : k
-      h[ks] = h.delete k # Preserve order even when k == ks
-      symbolize_keys_deep! h[ks] if h[ks].kind_of? Hash
+    if h.is_a? Array
+      h.each do |hash|
+        symbolize_keys_deep!(hash)
+      end
+    elsif h.respond_to? :keys
+      h.keys.each do |k|
+        ks    = k.respond_to?(:to_sym) ? k.to_sym : k
+        h[ks] = h.delete k # Preserve order even when k == ks
+        symbolize_keys_deep! h[ks] if (h[ks].kind_of? Hash or h[ks].kind_of? Array)
+      end
     end
 
     return h
@@ -82,7 +124,7 @@ class GenericUtils
     keys = user_params.keys
     for r in required_params
       if !keys.include? r
-        raise "Parameter '" + r.to_s + "' (not provided) is required"
+        raise ::GenericException.new( "Parameter '" + r.to_s + "' (not provided) is required" )
       end
     end
     
@@ -98,5 +140,94 @@ class ::Hash
   def deep_merge(second)
     merger = proc { |key, v1, v2| Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
     self.merge(second, &merger)
+  end
+  
+  # Clone current hash.
+  def deep_clone()
+    return Marshal.load(Marshal.dump(self))
+  end
+end
+
+# Clase de excepción personalizada.
+class GenericException < StandardError
+  include ::Nesty::NestedError
+end
+
+# Módulo booleano. Hack.
+module Boolean; end
+# Clase TrueClass. Hack.
+class TrueClass; include Boolean; end
+# Clase FalseClass. Hack.
+class FalseClass; include Boolean; end
+
+# Módulo de eventos (dispatchers y listeners).
+# 
+# Para usarlo en la clase, deberá incluirse en la clase usando el método +extend*:
+#
+#   class Foo
+#     extend Evented
+#     ...
+#   end
+#
+# Luego, se añade un listener (callback o lambda), y se llama cuando sea necesario:
+#
+#   Foo.add_event_listener :onWhatever, lambda { |a| puts "Hello, #{a.to_s}" }
+#   Foo.add_event_listener :onWhatever, lambda { |a| puts "How are you?" }
+#   Foo.dispatch_event :onWhatever, "foo"
+#   # "Hello, foo"
+#   # "How are you?"
+module Evented
+  # Conjunto de callbacks de un mismo evento (array).
+  class Dispatcher < Array
+    # Llamar a los callbacks del dispatcher.
+    # @param args [Object] Argumentos (opcional).
+    def call(*args)
+      self.each { |e| e.call(*args) }
+    end
+  end
+  
+  # Conjunto de distintos callbacks (Hash). Cada valor se corresponderá con un #Dispatcher.
+  class Dispatchers < Hash
+    # Llamar a los callbacks del dispatcher +name+.
+    # @param name [Object] Nombre del dispatcher.
+    # @param args [Object] Argumentos (opcional).
+    def call(name, *args)
+      self[name].call(*args) if self[name]
+    end
+  end
+  
+  # Getter de la lista de dispatchers. Si no existe, se creará uno nuevo.
+  # @return [Dispatchers] Referencia al objeto Dispatchers.
+  private def dispatchers
+    @dispatchers ||= Dispatchers.new
+  end
+  
+  # Getter de un dispatcher. Si no existe, se creará uno nuevo.
+  # @param name [Object] Nombre del dispatcher.
+  # @return [Dispatcher] Referencia al objeto Dispatcher con nombre +name+.
+  private def dispatcher(name)
+    dispatchers[name] ||= Dispatcher.new
+  end
+  
+  # Lanzar un evento.
+  # @param name [Object] Nombre del dispatcher a activar.
+  # @param args [Object] Parámetros adicionales que se pasarán a los callbacks del dispatcher. 
+  def dispatch_event(name, *args)
+    dispatcher(name).call(*args)
+  end
+  
+  # Añadir un callback.
+  # Se pueden añadir todas las funciones deseadas a un mismo evento.
+  # @param name [Object] Nombre del evento (dispatcher) al que se le añadirá el callback o handler.
+  # @param handler [Lambda] Función handler del evento.
+  def add_event_listener(name, handler)
+    dispatcher(name) << handler unless dispatcher(name).include? handler
+  end
+  
+  # Eliminar un callback.
+  # @param name [Object] Nombre del evento (dispatcher) al que se le quitará el callback o handler.
+  # @param handler [Lambda] Función handler del evento.
+  def remove_event_listener( name, handler )
+    dispatcher(name).delete(handler) if dispatcher(name).include? handler
   end
 end

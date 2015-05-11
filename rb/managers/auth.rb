@@ -4,8 +4,11 @@ require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 require 'omniauth-twitter'
 require 'omniauth-github'
+require 'omniauth-steam'
+require 'omniauth-facebook'
 
 require 'date'
+require 'uri'
 
 module Game
   
@@ -19,7 +22,7 @@ module Game
     BAN_FILE = "tmp/ban.log"
     
     # Servicios disponibles.
-    SERVICES = [:google_oauth2, :twitter, :github]
+    SERVICES = [:google_oauth2, :twitter, :github, :steam, :facebook]
     
     # Servicios cargados con OmniAuth.
     @@loaded_services
@@ -72,7 +75,7 @@ module Game
       user = Game::Database::User.search_user(user_id)
       
       if banned?(user)
-        raise "Current user '" + user_id + "' is banned until " + user.banned_until.to_s
+        raise ::GenericException.new( "Current user '" + user_id + "' is banned until " + user.banned_until.to_s )
       end
 
       if ENV['users_auth_disabled'] == "true"
@@ -84,7 +87,7 @@ module Game
             error_msg += " You are authenticated as '" + session[:user_id] + "'."
           end
           
-          raise error_msg
+          raise ::GenericException.new( error_msg )
         end
       end
       
@@ -111,7 +114,7 @@ module Game
       end
       
        if banned?(user)
-        raise "Current '" + user_id + "' is banned until " + user.banned_until.to_s
+        raise ::GenericException.new( "Current '" + user_id + "' is banned until " + user.banned_until.to_s )
       end
     end
     
@@ -173,7 +176,7 @@ module Game
 end
 
 # Inicializar.
-Game::AuthManager.setup( [:twitter] )
+Game::AuthManager.setup( [] )
 
 module Sinatra
   
@@ -189,8 +192,20 @@ module Sinatra
       app.configure do
         app.enable :sessions
         app.set :session_secret, ENV['progrezz_secret']
+
+        ::OmniAuth.config.on_failure do |env|
+          message_key = env['omniauth.error.type']
+          origin_query_param = env['omniauth.origin'] ? "&origin=#{CGI.escape(env['omniauth.origin'])}" : ""
+          strategy_name_query_param = env['omniauth.error.strategy'] ? "&strategy=#{env['omniauth.error.strategy'].name}" : ""
+          extra_params = env['omniauth.params'] ? "&#{env['omniauth.params'].to_query}" : ""
+          new_path = "/auth/failure?message=#{message_key}#{origin_query_param}#{strategy_name_query_param}#{extra_params}"
+          
+          puts "----->", new_path, "<-----"
+          Rack::Response.new(["302 Moved"], 302, 'Location' => new_path).finish
+        end
         
         app.use OmniAuth::Builder do
+
           # Configurar Google Auth.
           if Game::AuthManager.get_loaded_services.include? :google_oauth2
             provider :google_oauth2, ENV['progrezz_google_id'], ENV['progrezz_google_secret'], 
@@ -207,19 +222,22 @@ module Sinatra
             provider :github, ENV['progrezz_github_id'], ENV['progrezz_github_secret'], scope: "user"
           end
           
+          # Configurar Steam
+          if Game::AuthManager.get_loaded_services.include? :steam
+            provider :steam, ENV['progrezz_steam_id']
+          end
+          
+          # Configurar Facebook
+          if Game::AuthManager.get_loaded_services.include? :facebook
+            provider :facebook, ENV['progrezz_facebook_id'], ENV['progrezz_facebook_secret'], :scope => 'email,read_stream'
+          end
+
           # ...
         end
       end
-      
-      ##
-      # @method get_js
+    
       # URL para cerrar la sesión.
       # @return [Object]
-      
-      # @!method foo(opts = {})
-      # The foo method!
-      # @!scope AuthManager
-      # @!visibility public
       app.get '/auth/logout' do
         session[:user_id] = session[:name] = session[:alias] = session[:url] = nil
         
@@ -229,52 +247,49 @@ module Sinatra
           redirect back
         end
       end
-      
+
       # Callback que será llamado por el servicio.
       # Se puede acceder a cualquier servicio con la URI "/auth/<servicio>" (ej: /auth/twitter o /auth/google_oauth2).
-      app.get '/auth/:provider/callback' do
+      app.route :get, :post, '/auth/:provider/callback' do
+        # Recoger datos de auth.
         auth = request.env['omniauth.auth']
+        session[:user_id] = auth['info'].email || params['provider'].to_s + "-" + auth['uid'].to_s  # ID -> correo (salvo steam)
+        session[:name]    = auth['info'].name                  # Nombre completo
+        session[:alias]   = auth['info'].nick || auth['info'].alias || auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
         
-        session[:user_id] = auth['info'].email              # ID -> correo
-        session[:name]    = auth['info'].name               # Nombre completo
-        session[:alias]   = auth['info'].name.split(' ')[0] # Coger como Alias la primera palabra.
-        #session[:url]     = auth['info'].urls.values[0]     # Url del usuario (opcional).
-
         # Registrar el usuario en la base de datos.
         begin
           Game::AuthManager.login( session[:user_id], session[:alias] )
         rescue Exception => e
-          session[:auth_error] = "Cannot login: " + e.message
-          redirect to("/auth/failure")
+          session[:user_id] = session[:name] = session[:alias] = nil
+          redirect_page = params["error_redirect"] || request.env["omniauth.origin"] || "/"
+
+          if redirect_page.include? "?"
+            redirect to(redirect_page + "&error_message=" + URI.escape(e.message, /\W/))
+          else
+            redirect to(redirect_page + "?error_message=" + URI.escape(e.message, /\W/))
+          end
         end
         
+        redirect_page = params["redirect"] || request.env["omniauth.origin"] || "/"
+        
         # Redireccionar al usuario.
-        oparams = request.env["omniauth.params"]
-        origin  = request.env['omniauth.origin']
-
-        if (oparams["redirect"] != nil)
-          redirect to(oparams["redirect"])
-        elsif origin != nil
-          redirect to(request.env['omniauth.origin'])
-        else
-          redirect to("/")
-        end
+        redirect to(redirect_page)
         
       end
       
       # URL o callback de inicion de sesión fallido.
-      app.get '/auth/failure' do        
-        oparams = request.env["omniauth.params"] || { }
+      app.get '/auth/failure' do
+
+        error_message = nil
+
+        error_message ||= params["message"] || ""
+        redirect_page = params["error_redirect"] || params["origin"] || "/"
         
-        if session[:auth_error] != nil
-          params["error_message"] = session[:auth_error]
-          session[:auth_error] = nil
-        end
-        
-        if (oparams["error_redirect"] != nil)
-          redirect to(oparams["error_redirect"] + "?error=" + params["error_message"])
+        if redirect_page.include? "?"
+          redirect to(redirect_page + "&error_message=" + URI.escape(error_message, /\W/))
         else
-          return params["error_message"]
+          redirect to(redirect_page + "?error_message=" + URI.escape(error_message, /\W/))
         end
       end
       

@@ -13,7 +13,6 @@
         <h1><%= social_title %></h1>
       </div>
       <% if (defined? session) && (session[:alias] == nil) %>
-        <% puts defined? session, session[:alias] %>
         <div class="menu">
           <ul>
             <li><a href="/auth/google_oauth2"><img src ="/img/social/googlep.png" width="100px" height="100px"></a>
@@ -21,7 +20,6 @@
           </ul>
         </div>
       <% elsif defined? session %>
-      <% puts "IN", session[:alias] %>
         <div class="menu">
           <ul>
             <li class="text">Welcome, <strong><%= session[:alias] %></strong>

@@ -2,5 +2,5 @@
 .project
 .pydevproject
 .yardoc/
-
-/tmp
+.idea/
+data/envs.json

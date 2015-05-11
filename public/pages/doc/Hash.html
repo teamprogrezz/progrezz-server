@@ -110,7 +110,11 @@
 <div class="tags">
   
 
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="Evented/Dispatchers.html" title="Evented::Dispatchers (class)">Evented::Dispatchers</a></span></p>
 </div>
+
 
 
 
@@ -124,6 +128,30 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deep_clone-instance_method" title="#deep_clone (instance method)">- (Object) <strong>deep_clone</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Clone current hash.</p>
+</div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -159,7 +187,48 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="deep_merge-instance_method">
+  <h3 class="signature first" id="deep_clone-instance_method">
+  
+    - (<tt>Object</tt>) <strong>deep_clone</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Clone current hash.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+146
+147
+148</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/generic_utils.rb', line 146</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_deep_clone'>deep_clone</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='const'>Marshal</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>Marshal</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deep_merge-instance_method">
   
     - (<tt><span class='object_link'><a href="" title="Hash (class)">Hash</a></span></tt>) <strong>deep_merge</strong>(second) 
   
@@ -222,13 +291,13 @@
       <pre class="lines">
 
 
-98
-99
-100
-101</pre>
+140
+141
+142
+143</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/generic_utils.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'rb/generic_utils.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_deep_merge'>deep_merge</span><span class='lparen'>(</span><span class='id identifier rubyid_second'>second</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_merger'>merger</span> <span class='op'>=</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_v1'>v1</span><span class='comma'>,</span> <span class='id identifier rubyid_v2'>v2</span><span class='op'>|</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id identifier rubyid_v1'>v1</span> <span class='op'>&amp;&amp;</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id identifier rubyid_v2'>v2</span> <span class='op'>?</span> <span class='id identifier rubyid_v1'>v1</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_v2'>v2</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_merger'>merger</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_v2'>v2</span> <span class='rbrace'>}</span>
@@ -244,7 +313,7 @@
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:04 2015 by
+  Generated on Tue Apr 28 13:37:11 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

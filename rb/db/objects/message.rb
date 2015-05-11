@@ -138,8 +138,7 @@ module Game
           end
 
         rescue Exception => e
-          puts e.to_s
-          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
+          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message, e)
         end
         
         return message
@@ -162,8 +161,7 @@ module Game
           message = create( {content: content, total_fragments: n_fragments, resource_link: params[:resource_link], replicable: true, snap_to_roads: true, duration: params[:duration]})
 
         rescue Exception => e
-          puts e.to_s
-          raise "DB ERROR: Cannot create message: \n\t" + e.message + "\n\t\t" + e.backtrace.to_s;
+          raise ::GenericException.new("DB ERROR: Cannot create message: \n\t" + e.message, e)
         end
         
         return message
@@ -191,7 +189,7 @@ module Game
       def self.author_messages(author_id)
         auth = Game::Database::User.search(author_id)
         if auth == nil
-          raise "User does not exist."
+          raise ::GenericException.new( "User does not exist." )
         end
         
         return auth.written_messages
@@ -205,7 +203,7 @@ module Game
       
       # Limpiar mensajes caducados de la base de datos.
       # @return [Integer] Retorna el número de mensajes que han sido borrados.
-      def self.clear_caducated_messages()
+      def self.clear_caducated()
         count = 0
         
         Game::Database::DatabaseManager.run_nested_transaction do |t|
@@ -262,7 +260,7 @@ module Game
       def replicate( new_location = { latitude: 0, longitude: 0 }, deltas = { latitude: 0, longitude: 0 }, ignore_replicable_flag = false )
         # Comprobar replicación
         if ignore_replicable_flag != true && self.replicable == false
-          raise "Trying to generate fragments of a irreplicable message."
+          raise ::GenericException.new( "Trying to generate fragments of a irreplicable message." )
         end
         
         output = []
@@ -284,7 +282,7 @@ module Game
             
             # Ajustar a carretera
             if self.snap_to_roads
-              Game::Mechanics::GeolocationManagement.snap_geolocation!(locations[i])
+              Game::Mechanics::GeolocationMechanics.snap_geolocation!(locations[i])
             end
           }
         end

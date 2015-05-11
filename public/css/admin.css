@@ -1,5 +1,4 @@
-
-div.admin_content {
+.admin_content {
   margin: 15px;
 }
 
@@ -32,9 +31,9 @@ ul.navbar li {
     float: left;
 }
 
-ul.navbar li a:link, ul.navbar li a:visited {
+ul.navbar li a:link, ul.navbar li a {
     display: block;
-    width: 120px;
+    width: 180px;
     font-weight: bold;
     color: #FFFFFF;
     background-color: #4E79F1;

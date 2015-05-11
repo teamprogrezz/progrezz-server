@@ -10,7 +10,7 @@ require 'cgi'
 # Prueba de ajuste geolocalizado
 #location = {latitude: 28.26807, longitude: -16.43555}
 #puts location
-#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationManagement.snap_geolocation!(location) }).to_s
+#puts "Tiempo de geolocalización: " + (GenericUtils.timer { Game::Mechanics::GeolocationMechanics.snap_geolocation!(location) }).to_s
 #puts location
 
 module Sinatra
@@ -25,7 +25,11 @@ module REST
       
       # Eliminar contenido de la base de datos.
       def db_drop()
-        Game::Database::DatabaseManager.drop()
+        # Game::Database::DatabaseManager.drop()
+        Game::Database::User.all.each { |u| u.destroy }
+        Game::Database::Message.all.each { |m| m.destroy }
+        Game::Database::MessageFragment.all.each { |m| m.destroy }
+        Game::Database::ItemDepositInstance.all.each { |m| m.destroy }
         
         return "<h2>Database droped.</h2>"
       end
@@ -39,9 +43,8 @@ module REST
         
         messages = []
         
-        begin
-          Game::Database::DatabaseManager.run_nested_transaction do |tx|
-            
+        Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          begin            
             # Usuarios
             puts "Tiempo de creación de usuarios: " + (GenericUtils.timer do
               user_Wikiti = Game::Database::User.sign_up('Wikiti', 'wikiti.doghound@gmail.com', {latitude: 28.4748, longitude: -16.2679})
@@ -52,8 +55,8 @@ module REST
             puts "Tiempo de leveo de usuarios: " + (GenericUtils.timer do
               Game::Database::DatabaseManager.run_nested_transaction do
                 for i in 0...80
-                  Game::Mechanics::LevelingManagement.gain_exp( user_Wikiti, "collect_fragment" )
-                  Game::Mechanics::LevelingManagement.gain_exp( user_Shylpx, "collect_fragment" )
+                  Game::Mechanics::LevelingMechanics.gain_exp( user_Wikiti, "collect_fragment" )
+                  Game::Mechanics::LevelingMechanics.gain_exp( user_Shylpx, "collect_fragment" )
                 end
               end
             end).to_s
@@ -134,19 +137,32 @@ module REST
               end
             end).to_s
             
-            result = "<h2>Datos añadidos correctamente.</h2>"
-          end
+            # Generar depósitos cercanos
+            #puts "Tiempo de adición de objetos a inventario: " + (GenericUtils.timer do
+            #  user_Wikiti.backpack.add_item( Game::Database::Item.find_by(item_id: "mineral_iron"), 100 )
+            #end).to_s
           
-        # Banearme 5 minutos ( D': ).
-        # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
-        
-        # Borrar mensaje (prueba).
-        # messages[3].remove
-
-        rescue Exception => e
-          #puts e.message
-          #puts e.backtrace
-          result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
+            # Banearme 5 minutos ( D': ).
+            # Game::AuthManager.ban_user(user_Wikiti.user_id, 300 )
+            
+            # Borrar mensaje (prueba).
+            # messages[3].remove
+            
+            # Generar depósitos cercanos
+            #puts "Tiempo de generación de depósitos: " + (GenericUtils.timer do
+            #  Game::Mechanics::ItemsMechanics.generate_nearby_deposits(user_Wikiti, [])
+            #end).to_s
+            
+            # Recolectarla
+            #exp = {}
+            #user_Wikiti.collect_item_from_deposit(deposit, exp)
+                      
+            result = "<h2>Datos añadidos correctamente.</h2>"
+            
+          rescue Exception => e
+            Game::Database::DatabaseManager.rollback_transaction(tx)
+            result = e.class.name + " -> " + e.message + " \n\n" + e.backtrace.to_s
+          end
         end
         
         return result

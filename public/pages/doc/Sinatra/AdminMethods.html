@@ -303,7 +303,51 @@
 181
 182
 183
-184</pre>
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/managers/admin.rb', line 70</span>
@@ -329,6 +373,50 @@
     <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
     <span class='id identifier rubyid_erb'>erb</span> <span class='symbol'>:admin/users</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:layout</span> <span class='op'>=&gt;</span> <span class='symbol'>:admin/layout</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/items</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
+    <span class='id identifier rubyid_erb'>erb</span> <span class='symbol'>:admin/items</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:layout</span> <span class='op'>=&gt;</span> <span class='symbol'>:admin/layout</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/game_parameters</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
+    <span class='id identifier rubyid_erb'>erb</span> <span class='symbol'>:admin/game_parameters</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:layout</span> <span class='op'>=&gt;</span> <span class='symbol'>:admin/layout</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  
+  <span class='comment'># -- Parámetros de juego (parametrizado). # ++
+</span>  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/game_parameters/:action</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>   
+    <span class='id identifier rubyid_content_type'>content_type</span> <span class='symbol'>:json</span>
+    <span class='id identifier rubyid_admin_protected!'>admin_protected!</span>
+    
+    <span class='cvar'>@@action_list</span> <span class='op'>||=</span> <span class='lbrace'>{</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>allowed_actions</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>backpack</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>BackpackMechanics</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>items</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>ItemsMechanics</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>leveling</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>LevelingMechanics</span>
+    <span class='rbrace'>}</span>
+    
+    <span class='kw'>begin</span>
+      <span class='id identifier rubyid_data'>data</span>    <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_action'>action</span>  <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>action</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_manager'>manager</span> <span class='op'>=</span> <span class='cvar'>@@action_list</span><span class='lbracket'>[</span> <span class='id identifier rubyid_action'>action</span> <span class='rbracket'>]</span>
+      
+      <span class='comment'># Reiniciar objetos
+</span>      <span class='id identifier rubyid_manager'>manager</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+      
+      <span class='comment'># Guardar una copia del anterior
+</span>      <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_cp'>cp</span><span class='lparen'>(</span><span class='id identifier rubyid_manager'>manager</span><span class='op'>::</span><span class='const'>DATAFILE</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tmp/data/</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_action'>action</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='const'>DateTime</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_time'>to_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>.sav</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+      
+      <span class='comment'># Y sobrescribir
+</span>      <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='id identifier rubyid_manager'>manager</span><span class='op'>::</span><span class='const'>DATAFILE</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>w</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_file'>file</span><span class='op'>|</span> <span class='id identifier rubyid_file'>file</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span> <span class='id identifier rubyid_data'>data</span> <span class='rparen'>)</span> <span class='rbrace'>}</span>
+      
+    <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='id identifier rubyid_halt'>halt</span> <span class='int'>400</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text/plain</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+    <span class='kw'>end</span>
+    
+    <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ok</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>end</span>
+  
   
   <span class='comment'># -- Mensajes --
 </span>  <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/admin/messages/add</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
@@ -433,7 +521,7 @@
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:04 2015 by
+  Generated on Tue Apr 28 13:37:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

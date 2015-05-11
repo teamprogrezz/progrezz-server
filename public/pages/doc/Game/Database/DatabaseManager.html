@@ -94,7 +94,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">rb/managers/db.rb</dd>
+    <dd class="r2 last">rb/managers/_db.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -338,6 +338,30 @@ base de datos neo4j, reiniciar su estado, etc.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#stop_all_transactions-class_method" title="stop_all_transactions (class method)">+ (Object) <strong>stop_all_transactions</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Forzar el cierre de todas las transacciones.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#stop_transaction-class_method" title="stop_transaction (class method)">+ (Object) <strong>stop_transaction</strong>(tx) </a>
     
 
@@ -408,7 +432,7 @@ base de datos neo4j, reiniciar su estado, etc.</p>
 48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_drop'>drop</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_force_save'>force_save</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -524,6 +548,11 @@ base de datos neo4j, reiniciar su estado, etc.</p>
       <pre class="lines">
 
 
+83
+84
+85
+86
+87
 88
 89
 90
@@ -564,12 +593,10 @@ base de datos neo4j, reiniciar su estado, etc.</p>
 125
 126
 127
-128
-129
-130</pre>
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_export_neo4jnode'>export_neo4jnode</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='id identifier rubyid_node_relations'>node_relations</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
@@ -578,12 +605,15 @@ base de datos neo4j, reiniciar su estado, etc.</p>
   
   <span class='kw'>case</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:export_type</span><span class='rbracket'>]</span>
   <span class='kw'>when</span> <span class='symbol'>:json</span>
+    <span class='comment'># puts &quot;Exporting...&quot;
+</span>    
     <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
     <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>node</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='period'>.</span><span class='id identifier rubyid_neo_id'>neo_id</span><span class='comma'>,</span>
       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>uuid</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>labels</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='period'>.</span><span class='id identifier rubyid_labels'>labels</span><span class='comma'>,</span>
       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attributes</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span>
-    <span class='rbrace'>}</span> 
+    <span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_node'>node</span> <span class='op'>!=</span> <span class='kw'>nil</span>
     
     <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>relations</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
     
@@ -610,7 +640,7 @@ base de datos neo4j, reiniciar su estado, etc.</p>
     <span class='kw'>end</span>
     
   <span class='kw'>else</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unknow export type &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:export_type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unknow export type &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:export_type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
   
 <span class='kw'>end</span></pre>
@@ -656,24 +686,14 @@ base de datos neo4j, reiniciar su estado, etc.</p>
 59
 60
 61
-62
-63
-64
-65
-66
-67</pre>
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_force_save'>force_save</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Borrar y cancelar transacciones actuales.
-</span>  <span class='kw'>for</span> <span class='id identifier rubyid_tx'>tx</span> <span class='kw'>in</span> <span class='cvar'>@@transactions</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-  
-  <span class='cvar'>@@transactions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+</span>  <span class='id identifier rubyid_stop_all_transactions'>stop_all_transactions</span><span class='lparen'>(</span><span class='rparen'>)</span>
   
   <span class='kw'>if</span> <span class='kw'>defined?</span> <span class='const'>DEV</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--------------------------------------</span><span class='tstring_end'>&quot;</span></span>
@@ -732,12 +752,12 @@ base de datos neo4j, reiniciar su estado, etc.</p>
       <pre class="lines">
 
 
-174
-175
-176</pre>
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 174</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 179</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rollback_transaction'>rollback_transaction</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -817,6 +837,8 @@ transacciones anidadas.</p>
       <pre class="lines">
 
 
+143
+144
 145
 146
 147
@@ -824,17 +846,29 @@ transacciones anidadas.</p>
 149
 150
 151
-152</pre>
+152
+153
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='comment'># Si no hay bloque, devolver error.
 </span>  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Expected a block to run in DatabaseManager.run_transaction_anidated</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
   
   <span class='const'>Neo4j</span><span class='op'>::</span><span class='const'>Transaction</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tx'>tx</span><span class='op'>|</span>
-    <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
+    <span class='kw'>begin</span>
+      <span class='cvar'>@@transactions</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_tx'>tx</span>
+      <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
+      <span class='cvar'>@@transactions</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
+    <span class='kw'>rescue</span>
+      <span class='cvar'>@@transactions</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_raise'>raise</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -893,7 +927,7 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
 40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'>#-- Cargar ficheros de objetos de la BD #++
@@ -910,8 +944,8 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
   
     <span class='const'>Neo4j</span><span class='op'>::</span><span class='const'>Session</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='symbol'>:server_db</span><span class='comma'>,</span> <span class='id identifier rubyid_server_url'>server_url</span><span class='comma'>,</span> <span class='label'>basic_auth:</span> <span class='lbrace'>{</span> <span class='label'>username:</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='label'>password:</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='cvar'>@@transactions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='kw'>rescue</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Could not connect to database.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Could not connect to database.</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -963,19 +997,70 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
       <pre class="lines">
 
 
-157
-158
-159
-160
-161</pre>
+162
+163
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 157</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 162</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_start_transaction'>start_transaction</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tx'>tx</span> <span class='op'>=</span> <span class='const'>Neo4j</span><span class='op'>::</span><span class='const'>Transaction</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='cvar'>@@transactions</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_tx'>tx</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_tx'>tx</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stop_all_transactions-class_method">
+  
+    + (<tt>Object</tt>) <strong>stop_all_transactions</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Forzar el cierre de todas las transacciones.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+184
+185
+186
+187
+188
+189
+190
+191</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 184</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stop_all_transactions'>stop_all_transactions</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='cvar'>@@transactions</span><span class='period'>.</span><span class='id identifier rubyid_reverse_each'>reverse_each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tx'>tx</span><span class='op'>|</span>
+    <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  
+  <span class='cvar'>@@transactions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1028,13 +1113,13 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
       <pre class="lines">
 
 
-166
-167
-168
-169</pre>
+171
+172
+173
+174</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/db.rb', line 166</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 171</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stop_transaction'>stop_transaction</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
   <span class='cvar'>@@transactions</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
@@ -1050,7 +1135,7 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 27 13:50:04 2015 by
+  Generated on Tue Apr 28 13:37:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

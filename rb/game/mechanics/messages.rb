@@ -2,13 +2,15 @@
 
 require 'progrezz/geolocation'
 
+require_relative './mechanic'
+
 module Game
   
   # Módulo de mecánicas de juego
   module Mechanics
 
     # Clase gestora de las mecánicas de juego referente a los mensajes y sus fragmentos.
-    class MessageManagement
+    class MessageMechanics < Mechanic
       # Cantidad de fragmentos a generar por kilómetro
       FRAGMENT_REPLICATION_PER_RADIUS_KM = 4
 
@@ -25,23 +27,21 @@ module Game
         
         # Fragmentos cercanos al usuario
         fragment_count = system_fragments.length
-        
-        # Fragmentos a generar
-        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
-        
-        #puts "" + fragment_count.to_s + "/" + FRAGMENT_MIN_COUNT.to_s + "? -> " + max_fragments.to_s
-        
+
         # Salir si ya hay suficientes fragmentos generados.
         if fragment_count >= FRAGMENT_MIN_COUNT
           return
         end
+        
+        # Fragmentos a generar
+        max_fragments = (radius * FRAGMENT_REPLICATION_PER_RADIUS_KM).round
         
         random_generator = Random.new
         random_list = Game::Database::Message.unauthored_replicable_messages()
         num_of_msg = random_list.count
         
         if num_of_msg == 0
-          raise "There are no replicable messages to generate."
+          raise ::GenericException.new( "There are no replicable messages to generate." )
         end
         
         offsets = {latitude: 0, longitude: 0}

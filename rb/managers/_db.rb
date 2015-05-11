@@ -34,8 +34,8 @@ module Database
   
         Neo4j::Session.open(:server_db, server_url, basic_auth: { username: uri.user, password: uri.password})
         @@transactions = []
-      rescue
-        raise "Could not connect to database."
+      rescue Exception => e
+        raise ::GenericException.new( "Could not connect to database.", e)
       end
     end
 
@@ -52,12 +52,7 @@ module Database
     # Se ignorará el tiempo mínimo para guardar datos en la DB.
     def self.force_save()
       # Borrar y cancelar transacciones actuales.
-      for tx in @@transactions do
-        tx.failure()
-        tx.close()
-      end
-      
-      @@transactions = []
+      stop_all_transactions()
       
       if defined? DEV
         puts "--------------------------------------"
@@ -92,12 +87,15 @@ module Database
       
       case params[:export_type]
       when :json
+        # puts "Exporting..."
+        
         output = {}
         output["node"] = {
           "id" => node.neo_id,
           "uuid" => node.uuid,
+          "labels" => node.labels,
           "attributes" => node.attributes
-        } 
+        } if node != nil
         
         output["relations"] = []
         
@@ -124,7 +122,7 @@ module Database
         end
         
       else
-        raise "Unknow export type '" + params[:export_type].to_s + "'."
+        raise ::GenericException.new( "Unknow export type '" + params[:export_type].to_s + "'." )
       end
       
     end
@@ -147,7 +145,14 @@ module Database
       raise ArgumentError.new("Expected a block to run in DatabaseManager.run_transaction_anidated") unless block_given?
       
       Neo4j::Transaction.run do |tx|
-        block.call(tx)
+        begin
+          @@transactions << tx
+          block.call(tx)
+          @@transactions.delete(tx)
+        rescue
+          @@transactions.delete(tx)
+          raise
+        end
       end
     end
     
@@ -175,6 +180,15 @@ module Database
       tx.failure()
     end
     
+    # Forzar el cierre de todas las transacciones.
+    def self.stop_all_transactions()
+      @@transactions.reverse_each do |tx|
+        tx.failure()
+        tx.close()
+      end
+      
+      @@transactions = []
+    end
   end
 
   #-- Lanzar el método setup #++

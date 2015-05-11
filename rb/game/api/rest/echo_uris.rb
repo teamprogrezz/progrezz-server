@@ -5,36 +5,28 @@ module Sinatra
   module REST
     class Methods
       # Redireccionar a página interactiva
-      def self.test(app, response)
+      def self.rest__test(app, response, session)
         app.redirect to("/dev/api/rest/interactive")
       end
 
       # Método de prueba (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo(app, response, session)
+      def self.rest__echo(app, response, session)
         begin
-          if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
-            name = 'world'
-          else
-            name = response[:request][:request][:data][:name].to_s
-          end
+          name = (response[:request][:request][:data][:name] || 'world').to_s
           
           Game::API::JSONResponse.ok_response!( response, {
             type: "plain",
             message: "Hello, " + name + "!"
           })
         rescue Exception => e
-          raise "Invalid request: " + e.message
+          raise ::GenericException.new( "Invalid request: " + e.message, e )
         end
       end
 
       # Método de prueba usando python (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo_py(app, response, session)
+      def self.rest__echo_py(app, response, session)
         begin
-          if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
-            name = 'world'
-          else
-            name = response[:request][:request][:data][:name].to_s
-          end
+          name = (response[:request][:request][:data][:name] || 'world').to_s
           
           input_json = '{"name": "' + name + '"}'
           
@@ -44,7 +36,7 @@ module Sinatra
           })
 
         rescue Exception => e
-          raise "Invalid request: " + e.message
+          raise ::GenericException.new( "Invalid request: " + e.message, e)
         end
 
       end

@@ -30,6 +30,12 @@ module Game
       # @return [Game::Database::User] Usuario que posee este nivel.
       has_one :in, :user, model_class: Game::Database::User, origin: :level_profile
       
+      # Crear un perfil de leveo para un usuario.
+      # @return [Game::Mechanics::LevelingMechanics] Inventario creado.
+      def self.create_level_profile()
+        return self.create( level: Game::Mechanics::LevelingMechanics.min_level )
+      end
+      
       #-- -------------------------
       #          Métodos
       #   ------------------------- #++

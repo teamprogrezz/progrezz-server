@@ -89,6 +89,50 @@ module Sinatra
         erb :"admin/users", :layout => :"admin/layout"
       end
       
+      app.get '/admin/items' do
+        admin_protected!
+        erb :"admin/items", :layout => :"admin/layout"
+      end
+      
+      app.get '/admin/game_parameters' do
+        admin_protected!
+        erb :"admin/game_parameters", :layout => :"admin/layout"
+      end
+      
+      # -- Parámetros de juego (parametrizado). # ++
+      app.post '/admin/game_parameters/:action' do   
+        content_type :json
+        admin_protected!
+        
+        @@action_list ||= {
+          "allowed_actions" => Game::Mechanics::AllowedActionsMechanics,
+          "backpack" => Game::Mechanics::BackpackMechanics,
+          "items" => Game::Mechanics::ItemsMechanics,
+          "leveling" => Game::Mechanics::LevelingMechanics
+        }
+        
+        begin
+          data    = params["data"]
+          action  = params['action']
+          manager = @@action_list[ action ]
+          
+          # Reiniciar objetos
+          manager.update(data)
+          
+          # Guardar una copia del anterior
+          FileUtils.cp(manager::DATAFILE, "tmp/data/" + action + "_" + DateTime.now.to_time.to_i.to_s + ".sav")
+          
+          # Y sobrescribir
+          File.open(manager::DATAFILE, 'w') { |file| file.write( data ) }
+          
+        rescue Exception => e
+          halt 400, {'Content-Type' => 'text/plain'}, e.message + "\n" + e.backtrace.to_s
+        end
+        
+        return {status: "ok"}.to_json
+      end
+      
+      
       # -- Mensajes --
       app.post '/admin/messages/add' do
         content_type :json
