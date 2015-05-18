@@ -3,8 +3,10 @@
 require 'progrezz/geolocation'
 
 require_relative 'geolocated_object'
+require_relative 'item_geo'
 require_relative '../relations/user-message_fragment'
 require_relative '../relations/user-completed_message'
+require_relative '../relations/user-placed_item-geo'
 
 module Game
   module Database
@@ -118,7 +120,7 @@ module Game
       # Se puede acceder con el atributo +collected_completed_messages+.
       # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
-      
+
       # @!method collected_item_deposit_instances
       # Relación de depósitos recolectados por el usuario.
       # Se puede acceder con el atributo +collected_item_deposit_instances+.
@@ -134,6 +136,13 @@ module Game
       # Relación con el inventario del usuario (#Game::Database::Backpack). Se puede acceder con el atributo +backpack+.
       # @return [Game::Database::Backpack] Inventario del usuario.
       has_one :out, :backpack, model_class: Game::Database::Backpack, type: "has_a", dependent: :destroy
+
+
+      # @!method placed_items_geo
+      # Relación de objetos geolocalizados que ha colocado el usuario.
+      # Se puede acceder con el atributo +placed_items_geo+.
+      # @return [Game::Database::RelationShips::UserPlaced_ItemsGeo]
+      has_many :out, :placed_items_geo, rel_class: Game::Database::RelationShips::UserPlaced_ItemsGeo, model_class: Game::Database::ItemGeolocatedObject, dependent: :destroy
       
       #-- --------------------------------------------------
       #                    Métodos de clase

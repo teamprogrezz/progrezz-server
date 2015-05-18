@@ -3,6 +3,7 @@
 require 'neo4j'
 
 require_relative './geolocated_object'
+require_relative '../relations/user-placed_item-geo'
 
 module Game
   module Database
@@ -23,8 +24,27 @@ module Game
       # @return [Integer] Días que durará la baliza.
       property :duration, type: Float, default: DEFAULT_DURATION
 
+      # @!method owner
+      # Relación con el usuario que ha colocado este objeto.
+      # Se puede acceder con el atributo #owner.
+      #
+      # @return [Game::Database::RelationShips::UserPlaced_ItemsGeo]
+      has_one :in, :owner, rel_class: Game::Database::RelationShips::UserPlaced_ItemsGeo, model_class: Game::Database::User
+
       def self.create_item(*args)
         raise ::GenericException.new("Method 'create_item' is not defined.")
+      end
+
+      # Asociar objeto a usuario.
+      # @param user [Game::Database::User] Usuario a asociar.
+      def link_owner(user, type = nil)
+        raise ::GenericException.new( "Invalid user reference." ) if user == nil
+        raise ::GenericException.new( "Item already linked." ) unless self.owner == nil
+
+        type ||= "UNK"
+        puts "WARNING! Item type is " + type.to_s + "!" if type == "UNK"
+
+        Game::Database::RelationShips::UserPlaced_ItemsGeo.create( from_node: user, to_node: self, item_type: type )
       end
 
       # ...

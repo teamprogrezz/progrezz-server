@@ -21,6 +21,8 @@ module Game
       # Mensaje por defecto.
       DEFAULT_MESSAGE = "Progrezz's beacon."
 
+      # Identificador del objeto geolocalizado.
+      ITEM_TYPE = "beacon"
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
@@ -44,6 +46,8 @@ module Game
       #   -------------------------------------------------- #++
 
       # Crear un objeto.
+      # @param *args [Array] Array de argumentos. args[0] es el usuario que ha colocado el objeto. args[1] es el hash de datos extra.
+      # @return [Game::Database::Beacon] Objeto creado y asociado.
       def self.create_item(*args)
         user         = args[0]
         extra_params = args[1]
@@ -56,7 +60,7 @@ module Game
         beacon = self.create( params )
 
         # Asociar al usuario.
-        # ...
+        beacon.link_owner( user, ITEM_TYPE )
 
         # Crear nivel de baliza.
         beacon.level_profile = Game::Database::LevelProfile.create_level_profile( )
