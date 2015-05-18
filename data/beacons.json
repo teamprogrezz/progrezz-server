@@ -1,4 +1,14 @@
 {
+  "levels": {
+    "start": 0,
+    "end": 3
+  },
 
+  "leveling": {
+    "exp_per_energy": 1
+  },
 
+  "functions": {
+    "next_level_required_exp": "def self._next_level_required_exp(next_level, exp_base = 1000, exp_factor = 5); (exp_base + (next_level ** exp_factor)).round; end"
+  }
 }

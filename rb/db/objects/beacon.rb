@@ -75,7 +75,32 @@ module Game
       #-- --------------------------------------------------
       #                      Métodos
       #   -------------------------------------------------- #++
-      
+
+
+      #-- --------------------------------------------------
+      #                    Callbacks (juego)
+      #   -------------------------------------------------- #++
+
+      # Callback de subida de nivel.
+      add_event_listener :OnLevelUp, lambda { |beacon, new_level|
+         raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
+
+         new_level ||= beacon.level_profile.level
+
+         # TODO: Ajustar parámetros de la baliza con el nuevo nivel.
+         puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
+       }
+
+      # Lanzar un evento desde la baliza actual.
+      #
+      # Lista de eventos registrados:
+      # - +:OnLevelUp (user, new_level)+: Al subir de nivel.
+      #
+      # @param event_name [Object] Nombre del evento a lanzar.
+      # @param args [Object] Argumentos a pasar a los callbacks (además de +self+).
+      def dispatch(event_name, *args)
+        self.class.dispatch_event(event_name, self, *args)
+      end
     end
   end
 end
