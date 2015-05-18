@@ -31,6 +31,9 @@ module Game
       
       # Calidad por defecto.
       NULL_QUALITY = "Null"
+
+      # Energía por defecto.
+      DEFAULT_ENERGY = 0
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
@@ -54,6 +57,10 @@ module Game
       #
       # @return [String] Calidad.
       property :quality, type: String, default: NULL_QUALITY
+
+      # Energía o valor del objeto.
+      # @return [Integer] Valor del ojeto.
+      property :energy, type: Integer, default: 0
       
       # Descripción del objeto (narrativa).
       #
@@ -98,10 +105,11 @@ module Game
           description: "",
           max_amount: DEFAULT_MAX_ITEM,
           quality: NULL_QUALITY,
+          energy: DEFAULT_ENERGY,
           image: DEFAULT_IMAGE
         }, extra_params, [:item_id])
         
-        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], image: params[:image] )
+        return self.create( item_id: params[:item_id], name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], energy: params[:energy], image: params[:image] )
       end
       
       #-- --------------------------------------------------
@@ -116,16 +124,17 @@ module Game
           description: self.description,
           image: self.image,
           quality: self.quality,
+          energy: self.energy,
           max_amount: self.max_amount
         }, extra_params, [:item_id])
         
-        self.update( name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], image: params[:image] )
+        self.update( name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], energy: params[:energy], image: params[:image] )
       end
 
       # Valor energético del objeto.
       # @return [Integer] Valor energético del objeto.
       def energy_value()
-        return Game::Mechanics::ItemsMechanics.get_item_energy(self.item_id)
+        return self.energy
       end
       
       # Crear un depósito del objeto.
