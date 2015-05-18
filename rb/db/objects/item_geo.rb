@@ -31,8 +31,16 @@ module Game
       # @return [Game::Database::RelationShips::UserPlaced_ItemsGeo]
       has_one :in, :owner, rel_class: Game::Database::RelationShips::UserPlaced_ItemsGeo, model_class: Game::Database::User
 
+      # Crear objeto.
+      # @note Sin implementar.
       def self.create_item(*args)
         raise ::GenericException.new("Method 'create_item' is not defined.")
+      end
+
+      # Lista de descendientes.
+      # @return [Array<Class>] Lista de descendientes.
+      def self.descendants
+        ObjectSpace.each_object(Class).select { |klass| klass < self }
       end
 
       # Asociar objeto a usuario.

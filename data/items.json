@@ -60,5 +60,13 @@
     "quality": "Rare",
     "energy": 6,
     "image": "/img/game/items/metal_steel.png"
+  },
+  {
+    "item_id": "geo_beacon",
+    "name": "Energy beacon",
+    "description": "<Description here>",
+    "quality": "Epic",
+    "energy": 200,
+    "image": "/img/game/items/geo_beacon.png"
   }
 ]

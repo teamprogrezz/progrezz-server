@@ -22,7 +22,7 @@ module Game
       DEFAULT_MESSAGE = "Progrezz's beacon."
 
       # Identificador del objeto geolocalizado.
-      ITEM_TYPE = "beacon"
+      RELATED_ITEM = "geo_beacon"
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
@@ -54,16 +54,19 @@ module Game
 
         params = GenericUtils.default_params( {
           message: DEFAULT_MESSAGE
-        }, extra_params)
+        }, extra_params, [:geolocation] )
 
         # Crear baliza.
-        beacon = self.create( params )
+        beacon = self.create( message: params[:message] )
 
         # Asociar al usuario.
-        beacon.link_owner( user, ITEM_TYPE )
+        beacon.link_owner( user, RELATED_ITEM )
 
         # Crear nivel de baliza.
         beacon.level_profile = Game::Database::LevelProfile.create_level_profile( )
+
+        # Ajustar geolocalización
+        beacon.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
 
         # Retornar baliza.
         return beacon
