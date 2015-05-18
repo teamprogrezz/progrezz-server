@@ -1,11 +1,6 @@
 # encoding: UTF-8
 
 require 'omniauth-oauth2'
-require 'omniauth-google-oauth2'
-require 'omniauth-twitter'
-require 'omniauth-github'
-require 'omniauth-steam'
-require 'omniauth-facebook'
 
 require 'date'
 require 'uri'
@@ -176,7 +171,7 @@ module Game
 end
 
 # Inicializar.
-Game::AuthManager.setup( [] )
+Game::AuthManager.setup( [:steam] )
 
 module Sinatra
   
@@ -208,27 +203,32 @@ module Sinatra
 
           # Configurar Google Auth.
           if Game::AuthManager.get_loaded_services.include? :google_oauth2
+            require 'omniauth-google-oauth2'
             provider :google_oauth2, ENV['progrezz_google_id'], ENV['progrezz_google_secret'], 
               :scope => "userinfo.email,userinfo.profile", :provider_ignores_state => true
           end
           
           # Configurar Twitter
           if Game::AuthManager.get_loaded_services.include? :twitter
+            require 'omniauth-twitter'
             provider :twitter, ENV['progrezz_twitter_id'], ENV['progrezz_twitter_secret']
           end
           
           # Configurar GitHub
           if Game::AuthManager.get_loaded_services.include? :github
+            require 'omniauth-github'
             provider :github, ENV['progrezz_github_id'], ENV['progrezz_github_secret'], scope: "user"
           end
           
           # Configurar Steam
           if Game::AuthManager.get_loaded_services.include? :steam
+            require 'omniauth-steam'
             provider :steam, ENV['progrezz_steam_id']
           end
           
           # Configurar Facebook
           if Game::AuthManager.get_loaded_services.include? :facebook
+            require 'omniauth-facebook'
             provider :facebook, ENV['progrezz_facebook_id'], ENV['progrezz_facebook_secret'], :scope => 'email,read_stream'
           end
 

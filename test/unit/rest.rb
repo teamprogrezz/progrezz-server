@@ -389,8 +389,11 @@ class RESTTest < Test::Unit::TestCase
     @request[:request][:data] = { user_id: @users[0].user_id, stack_id: (@users[0].backpack.last_stack_id - 1), amount: 10  }
     rest_request()
 
+    @users[0].reload
+
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:removed], 10
+    assert_equal @users[0].energy, Game::Mechanics::ItemsMechanics.get_item_energy( @deposit_instances[0].deposit.item.item_id ) * 10
 
     ok
   end

@@ -180,7 +180,7 @@ module Game
           count = stack.remove_amount( amount.to_i )
 
           # Cambiar el contenido borrado por energía.
-          self.user.add_energy( item.energy_value() * count )
+          self.user.add_energy(item.energy_value() * count )
         end
         
         return {

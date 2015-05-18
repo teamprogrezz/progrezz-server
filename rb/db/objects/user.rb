@@ -383,7 +383,8 @@ module Game
           info: {
             user_id:    self.user_id,
             alias:      self.alias,
-            created_at: self.created_at.strftime('%Q').to_i
+            created_at: self.created_at.strftime('%Q').to_i,
+            energy:     self.energy
           },
           
           # Nivel y experiencia
@@ -400,7 +401,6 @@ module Game
             unlocked_messages:   self.count_unlocked_messages,
             written_messages:    self.count_written_messages
           }
-
           
           # Otras estadísticas
           # ...
@@ -423,7 +423,8 @@ module Game
         if !exclusion_list.include? :user_id;     output[:user_id]     = self.user_id end
         if !exclusion_list.include? :alias;       output[:alias]       = self.alias end
         if !exclusion_list.include? :geolocation; output[:geolocation] = self.geolocation end
-        
+        if !exclusion_list.include? :energy;      output[:energy]      = self.energy end
+
         return output
       end
 
