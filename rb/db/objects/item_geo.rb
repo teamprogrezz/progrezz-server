@@ -23,8 +23,8 @@ module Game
       # @return [Integer] Días que durará la baliza.
       property :duration, type: Float, default: DEFAULT_DURATION
 
-      def self.create_item(data)
-        raise ::GenericException.new("Undefined method 'create_item'.")
+      def self.create_item(*args)
+        raise ::GenericException.new("Method 'create_item' is not defined.")
       end
 
       # ...

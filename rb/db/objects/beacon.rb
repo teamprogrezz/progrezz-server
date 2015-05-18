@@ -17,13 +17,18 @@ module Game
       #-- --------------------------------------------------
       #                      Constantes
       #   -------------------------------------------------- #++
-      
+
+      # Mensaje por defecto.
+      DEFAULT_MESSAGE = "Progrezz's beacon."
 
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
 
+      # Mensaje del usuario que ha dejado la baliza.
+      # @return [String] Contenido del mensaje.
+      property :message, type: String, default: DEFAULT_MESSAGE
 
       #-- --------------------------------------------------
       #                     Relaciones (DB)
@@ -37,6 +42,28 @@ module Game
       #-- --------------------------------------------------
       #                    Métodos de clase
       #   -------------------------------------------------- #++
+
+      # Crear un objeto.
+      def self.create_item(*args)
+        user         = args[0]
+        extra_params = args[1]
+
+        params = GenericUtils.default_params( {
+          message: DEFAULT_MESSAGE
+        }, extra_params)
+
+        # Crear baliza.
+        beacon = self.create( params )
+
+        # Asociar al usuario.
+        # ...
+
+        # Crear nivel de baliza.
+        beacon.level_profile = Game::Database::LevelProfile.create_level_profile( )
+
+        # Retornar baliza.
+        return beacon
+      end
       
       #-- --------------------------------------------------
       #                      Métodos
