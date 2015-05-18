@@ -62,6 +62,11 @@ module Game
       # Flag para saber si un usuario está conectado o no (mediante websockets).
       # @return [Boolean] True si está conectado (mediante websockets). False en caso contrario.
       property :is_online, type: Boolean, default: false
+
+      # Energía del usuario (moneda del juego).
+      # Usada para gran variedad de acciones (balizas, principalmente).
+      # @return [Integer] Retorna la cantidad de dinero que tiene el usuario. No puede ser negativa.
+      property :energy, type: Integer, default: 0
       
         # Datos auxiliares para no tener que buscar en la base de datos.
       
@@ -196,8 +201,8 @@ module Game
       # @param attributes [Hash<Symbol, Object>] Lista de atributos a actualizar, con sus respectivos valores (ej: { alias: => "pepio" }).
       def update_profile( attributes = {} )
         changed = false
-        
-        attributes.delete( :user_id )
+
+        attributes.keep_if { |k, v| attributes.include? [:alias] }
         self.update( attributes )
       end
       
@@ -360,6 +365,14 @@ module Game
         end
         
         return output
+      end
+
+      # Añadir energia.
+      # @param quantity [Integer] Cantidad de energia a añadir.
+      def add_energy(quantity)
+        raise ::GenericException.new( "Invalid energy quantity (negative)." ) if quantity <= 0
+
+        self.update( energy: self.energy + quantity )
       end
       
       # Devuelve las estadísticas del jugador.

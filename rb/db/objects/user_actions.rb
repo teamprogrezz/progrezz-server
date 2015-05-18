@@ -279,7 +279,7 @@ module Game
         # TODO: Comprobar si está lo suficientemente cerca
         # ...
         
-        # TODO: Añadir al inventario del usuario (o intentarlo).
+        # Añadir al inventario del usuario (o intentarlo).
         out[:mining] = deposit_instance.gather( self )
                   
         # Si realmente ha recolectado algo, hacer lo que sigue

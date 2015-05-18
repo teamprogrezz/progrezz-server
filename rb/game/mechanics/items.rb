@@ -97,6 +97,13 @@ module Game
       def self.find_item(item_id)
         return @data[item_id].deep_clone
       end
+
+      # Obtener el valor energético de un objeto.
+      # @param item_id [String] Id del objeto.
+      # @return [Integer] Valor energético del objeto.
+      def self.get_item_energy(item_id)
+        return @data[item_id][:energy] if @data[item_id] != nil
+      end
       
       # Generar depósitos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.

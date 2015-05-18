@@ -173,12 +173,15 @@ module Game
 
         count = nil
         Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          stack = get_stack(stack_id)
+          item = stack.item
+
           # item = stack.to_node
-          count = get_stack(stack_id).remove_amount( amount.to_i )
+          count = stack.remove_amount( amount.to_i )
+
+          # Cambiar el contenido borrado por energía.
+          self.user.add_energy( item.energy_value() * count )
         end
-        
-        # TODO: Cambiar el contenido borrado por energía, o algo así.
-        # ...
         
         return {
           removed: count

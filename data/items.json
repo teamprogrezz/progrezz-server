@@ -10,6 +10,7 @@
     "name": "Iron",
     "description": "It is a metal in the first transition series. It is by mass the most common element on Earth, forming much of Earth's outer and inner core. It is the fourth most common element in the Earth's crust. ",
     "quality": "Common",
+    "energy": 2,
     "image": "/img/game/items/mineral_iron.png",
     "deposit": {
       "weight": 75,
@@ -25,6 +26,7 @@
     "name": "Charcoal",
     "description": "Charcoal is a light, black residue, consisting of carbon and any remaining ash, obtained by removing water and other volatile constituents from animal and vegetation substances. Charcoal is usually produced by slow pyrolysis, the heating of wood or other substances in the absence of oxygen (see char and biochar).",
     "quality": "Common",
+    "energy": 2,
     "image": "/img/game/items/mineral_charcoal.png",
     "deposit": {
       "weight": 75,
@@ -40,6 +42,7 @@
     "name": "Gold",
     "description": "In its purest form, it is a bright, slightly reddish yellow, dense, soft, malleable and ductile metal. It is one of the least reactive chemical elements, and is solid under standard conditions. ",
     "quality": "Rare",
+    "energy": 5,
     "image": "/img/game/items/mineral_gold.png",
     "deposit": {
       "weight": 25,
@@ -55,6 +58,7 @@
     "name": "Steel ingot",
     "description": "Steels are alloys of iron and carbon, widely used in construction and other applications because of their high tensile strengths and low costs. Carbon, other elements, and inclusions within iron act as hardening agents that prevent the movement of dislocations that otherwise occur in the crystal lattices of iron atoms.",
     "quality": "Rare",
+    "energy": 6,
     "image": "/img/game/items/metal_steel.png"
   }
 ]

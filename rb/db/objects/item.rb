@@ -121,6 +121,12 @@ module Game
         
         self.update( name: params[:name], description: params[:description], max_amount: params[:max_amount], quality: params[:quality], image: params[:image] )
       end
+
+      # Valor energético del objeto.
+      # @return [Integer] Valor energético del objeto.
+      def energy_value()
+        return Game::Mechanics::ItemsMechanics.get_item_energy(self.item_id)
+      end
       
       # Crear un depósito del objeto.
       # @param extra_params [Hash] Parámetros a cargar. Véase la función #Game::Database::ItemDeposit.create_deposit() .
