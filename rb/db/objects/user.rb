@@ -126,7 +126,7 @@ module Game
       has_many :out, :collected_item_deposit_instances, rel_class: Game::Database::RelationShips::UserCollected_ItemDepositInstance, model_class: Game::Database::ItemDepositInstance
       
       # @!method :level_profile
-      # Relación con el nivel del usuario (#Game::Database::LevelProfile). Se puede acceder con el atributo +leel_profile+.
+      # Relación con el nivel del usuario (#Game::Database::LevelProfile). Se puede acceder con el atributo +level_profile+.
       # @return [Game::Database::LevelProfile] Nivel del usuario.
       has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
       

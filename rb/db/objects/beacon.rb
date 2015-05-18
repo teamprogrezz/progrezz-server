@@ -2,38 +2,37 @@
 
 require 'date'
 
-require_relative './geolocated_object'
+require_relative './item_geo'
 
 module Game
   module Database
+
+    class LevelProfile; end
+    # Forward declaration
     
     # Clase que representa una baliza (beacon) geolocalizado.
-    class Beacon < GeolocatedObject
+    class Beacon < ItemGeolocatedObject
       include Neo4j::ActiveNode
       
       #-- --------------------------------------------------
       #                      Constantes
       #   -------------------------------------------------- #++
       
-      # Duración por defecto de un depósito, especificado en días.
-      DEFAULT_DURATION = 7
+
       
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
 
-      
-      # Timestamp o fecha de creación de la baliza..
-      # @return [DateTime] Fecha de creación.
-      property :created_at
-      
-      # Duración (en días) de una baliza. Si es 0, durará eternamente.
-      # @return [Integer] Días que durará la baliza.
-      property :duration, type: Integer, default: DEFAULT_DURATION
-      
+
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
+
+      # @!method :level_profile
+      # Relación con el nivel de la baliza (#Game::Database::LevelProfile). Se puede acceder con el atributo +level_profile+.
+      # @return [Game::Database::LevelProfile] Nivel de la baliza.
+      has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
 
       #-- --------------------------------------------------
       #                    Métodos de clase
