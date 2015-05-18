@@ -28,7 +28,7 @@ module Game
       # @!method :user
       # Relación con usuario padre (#Game::Database::User). Se puede acceder con el atributo +user+.
       # @return [Game::Database::User] Usuario que posee este nivel.
-      has_one :in, :user, model_class: Game::Database::User, origin: :level_profile
+      has_one :in, :user, model_class: false, origin: :level_profile
       
       # Crear un perfil de leveo para un usuario.
       # @return [Game::Mechanics::LevelingMechanics] Inventario creado.
