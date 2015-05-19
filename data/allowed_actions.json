@@ -37,6 +37,10 @@
     "search_nearby_deposits": {
       "_desc": "Search nearby items's deposits.",
       "radius": "Radius to search nearby deposits."
+    },
+
+    "deploy_beacon": {
+      "_desc": "Deploy an energy beacon in the user's position."
     }
   },
   
@@ -107,7 +111,8 @@
       "max_length": 140
     },
     "collect_item_from_deposit_Epic": {},
-    "craft_item_rank_b": {}
+    "craft_item_rank_b": {},
+    "deploy_beacon": {}
   },
   "6": {
     "collect_fragment": {

@@ -1,17 +1,21 @@
 {
+  "_comment": "Información base (inicial) de la baliza. La duración se especifica en minutos.",
   "base": {
     "duration": 10080
   },
 
+  "_comment": "Información con respecto a los niveles.",
   "levels": {
     "start": 0,
     "end": 3
   },
 
+  "_comment": "La experiencia por unidad de energía debe ser un factor mayor que 1, a ser posible, entero.",
   "leveling": {
     "exp_per_energy": 1
   },
 
+  "_comment": "Funciones de uso genérico.",
   "functions": {
     "next_level_required_exp": "def self._next_level_required_exp(next_level, exp_base = 1500, exp_factor = 5); (exp_base + (next_level ** exp_factor)).round; end",
     "duration_per_energy": "def self._duration_per_energy(level); level + 1; end"

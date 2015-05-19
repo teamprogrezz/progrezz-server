@@ -19,6 +19,7 @@ class EnvsManager
   # Datos cargados.
   @data = {}
 
+  # Inicializar variables de entorno de fichero.
   def self.setup()
     begin
       @data = JSON.parse( File.read( ENV_FILE ) )

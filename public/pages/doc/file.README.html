@@ -62,7 +62,7 @@
     <iframe id="search_frame"></iframe>
 
     <div id="content"><div id='filecontents'>
-<h1 id="label-Servidor+proyecto+PROGREZZ">Servidor proyecto PROGREZZ</h1>
+<h1 id="label-Servidor+del+proyecto+PROGREZZ">Servidor del proyecto PROGREZZ</h1>
 
 <p><a href="LICENSE.txt"><img
 src="https://img.shields.io/badge/license-MIT-blue.svg"></a> <a
@@ -94,13 +94,13 @@ href="http://progrezz-server.herokuapp.com">progrezz-server.herokuapp.com</a>/</
 
 <h2 id="label-3.+Dependencias">3. Dependencias</h2>
 
-<h4 id="label-Ruby">Ruby</h4>
+<h3 id="label-3.1.+Ruby">3.1. Ruby</h3>
 
 <p>Las dependecias de ruby se pueden encontrar en el Gemfile del repositorio.
 Pueden ser instaladas cómodamente con <code>bundle</code>, tal como se
-muestra en el punto <strong>6. Uso</strong>.</p>
+muestra en los apartados de <strong>Uso</strong>.</p>
 
-<h4 id="label-Base+de+datos">Base de datos</h4>
+<h3 id="label-3.2.+Base+de+datos">3.2. Base de datos</h3>
 
 <p>Será necesario un servidor funcional <a href="http://neo4j.com">neo4j</a>,
 junto son su dirección de acceso en una de las siguientes variables de
@@ -119,7 +119,7 @@ entorno:</p>
 href="http:localhost:7474">localhost:7474</a></em> (sin credenciales de
 acceso).</p>
 
-<h4 id="label-Servicio+de+rutas">Servicio de rutas</h4>
+<h3 id="label-3.3.+Servicio+de+rutas">3.3. Servicio de rutas</h3>
 
 <p>Por defecto, el servidor usará un servidor <a
 href="https://github.com/Project-OSRM/osrm-backend">OSRM</a> para realizar
@@ -141,29 +141,177 @@ más próxima. Para ello, se debe definir la variable de entorno
 <p>También se puede deshabilitar el servicio de rutas usando la variable de
 entorno <code>progrezz_disable_routing</code> a <code>true</code>.</p>
 
-<h2 id="label-4.+Uso">4. Uso</h2>
+<h2 id="label-4.+Instalaci-C3-B3n">4. Instalación</h2>
 
-<h4 id="label-Instalaci-C3-B3n">Instalación</h4>
+<p>Descargue el código fuente de este repositorio:</p>
+
+<pre class="code ruby"><code class="ruby">$ git clone https://github.com/teamprogrezz/progrezz-server</code></pre>
+
+<p>E inicie todos los submódulos del repositorio:</p>
+
+<pre class="code ruby"><code class="ruby">$ cd progrezz-server
+$ git submodule update --init --recursive</code></pre>
+
+<p>Véase el apartado <strong>5. Uso (vía docker)</strong> o <strong>6. Uso
+(sin docker)</strong> para saber como ejecutar el servidor</p>
+
+<h2 id="label-5.+Uso+-28v-C3-ADa+docker-29">5. Uso (vía <a href="https://www.docker.com/">docker</a>)</h2>
+
+<p>Con la finalidad de hacer facilmente <em>portable</em> el servidor, se ha
+decidido hacer que éste sea compatible con docker, siendo completamente
+opcional su uso. Para ello, hace falta recalcar algunos puntos:</p>
+
+<h3 id="label-5.1.+Variables+de+entorno">5.1. Variables de entorno</h3>
+
+<p>Las variables de entorno pueden ser cargadas también desde el fichero
+<em>data/envs.json</em>. Está estructurado en un <em>.json</em> de manera
+clara:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='lbrace'>{</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>env_key</span><span class='label_end'>&quot;:</span>         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>env_key_value</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>progrezz_secret</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>my_super_secret</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>...</span><span class='label_end'>&quot;:</span>             <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>...</span><span class='tstring_end'>&quot;</span></span>
+<span class='rbrace'>}</span>
+</code></pre>
+
+<p>Nótese que el contenido de estas sobrescribirá a las variables de entorno
+del sistema.</p>
+
+<h3 id="label-5.2.+Docker">5.2. Docker</h3>
+
+<p>Para usar <em>docker</em>, el usuario deberá tener instalado la
+herramienta, y deberá ser accesible por el usuario actual sin necesidad de
+usar el prefijo <code>sudo</code>.</p>
+
+<p><strong>IMPORTANTE:</strong> No modifique el fichero <em>Dockerfile</em> a
+menos que sepa lo que está haciendo.</p>
+
+<h4 id="label-A.+Contenedor+neo4j">A. Contenedor neo4j</h4>
+
+<p>Si utiliza docker, es conveniente usar un contenedor para encapsular la
+base de datos neo4j requerida por el back-end de progrezz.</p>
+
+<p>Para ello, use el comando siguiente: <code>sh $ rake docker:neo4j:setup #
+Call this only once!! ... $ rake docker:neo4j:start ... $ rake
+docker:neo4j:stop ... </code></p>
+
+<p>El servidor deberá ser accesible desde el host (linux) por medio de la
+dirección <code>http://localhost:7474</code>. En caso de usar otro sistema
+operativo que utilice la herramienta <em>boot2docker</em>, deberá acceder a
+la <em>ip</em> de la máquina virtual. Dicha <em>ip</em> puede obtenerse con
+el comando siguiente:</p>
+
+<p><code>sh $ boot2docker ip </code></p>
+
+<p>Una vez tenga la dirección <em>ip</em>, tal vez deba modificar la
+redirección de puertos de la máquina virtual (desde <em>VirtualBox</em>)
+para poder acceder al servicio de neo4j desde su explorador.</p>
+
+<p>Si desea usar otro puerto, modifique el fichero <em>rakefile</em> de manera
+oportuna, o ejecute el comando:</p>
+
+<pre class="code ruby"><code class="ruby">$ docker run -i -t -d --name neo4j --cap-add=SYS_RESOURCE -p 7474:&lt;PUERTO_AQUÍ&gt; tpires/neo4j</code></pre>
+
+<p>Asegúrese de configurar correctamente la variable
+<code>PROGREZZ_NEO4J_URL</code> (a un valor parecido a
+<code>http://<usuario neo4j&gt;:&lt;password
+neo4j&gt;@neo4j:7474/db/data/</code>) para que el contenedor de progrezz
+pueda acceder a la base de datos.</p>
+
+<p><strong>Nota:</strong> Si prefiere ejecutar un servidor de neo4j externo
+(que no sea un contenedor) y un servidor docker de progrezz, deberá
+inicializar progrezz sin linkear al contenedor de neo4j, de la siguiente
+manera:</p>
+
+<pre class="code ruby"><code class="ruby">$ rake docker:progrezz:setup[&quot;osrm&quot;] # Sin neo4j</code></pre>
+
+<p>ó</p>
+
+<pre class="code ruby"><code class="ruby">$ rake docker:progrezz:setup[] # Si ningún contenedor</code></pre>
+
+<h4 id="label-B.+OSRM+-28opcional-29">B. OSRM (opcional)</h4>
+
+<p>Tal como se especifica en el apartado <em>3.3. Servicio de rutas</em>, el
+servicio de rutas es meramente opcional. Si se desea, se puede instalar un
+contenedor con el servidor de rutas dentro.</p>
+
+<p>Para ello, se recomienda leer el siguiente enlace sobre la instalación del
+contenedor:</p>
+<ul><li>
+<p><a
+href="https://registry.hub.docker.com/u/xcgd/osrm-backend">registry.hub.docker.com/u/xcgd/osrm-backend</a>/</p>
+</li></ul>
+
+<p>Una vez instalado, se puede acceder a su ejecución mediante el comando rake
+siguiente:</p>
+
+<p><strong>Nota:</strong> Si prefiere ejecutar un servidor de osrm externo (o
+no ejecutarlo) y un servidor docker de progrezz, deberá inicializar
+progrezz sin linkear al contenedor de osrm, de la siguiente manera:</p>
+
+<pre class="code ruby"><code class="ruby">$ rake docker:progrezz:setup[&quot;neo4j&quot;] # Sin osrm</code></pre>
+
+<p>ó</p>
+
+<pre class="code ruby"><code class="ruby">$ rake docker:progrezz:setup[] # Si ningún contenedor</code></pre>
+
+<h4 id="label-C.+Progrezz+back-end">C. Progrezz back-end</h4>
+
+<p>Con el fin de facilitar su instalación y uso, se han creado una serie de
+tareas <em>rake</em> para realizar tanto la instalación de la imagen como
+la ejecución del mismo.</p>
+
+<p>Instalar la imagen: <code>sh $ rake docker:progrezz:setup[&quot;neo4j
+osrm_server&quot;] </code></p>
+
+<p>Hay que ajustar la configuración inicial para ejecutar un comando
+personalizo:</p>
+
+<pre class="code ruby"><code class="ruby">$ rake docker:progrezz:setup[&quot;neo4j osrm_server&quot;,&quot;rake development:start&quot;]</code></pre>
+
+<p>Ejecutar un comando rake de la imagen: <code>sh $ rake
+docker:progrezz:start </code></p>
+
+<p>Puede terminar el proceso (si se está ejecutando de fondo) con el comando:
+<code>sh $ rake docker:progrezz:stop </code></p>
+
+<p>Si cambia un fichero, deberá reconstruirse el contenedor de docker con el
+comando</p>
+
+<pre class="code ruby"><code class="ruby">$ rake docker:progrezz:build</code></pre>
+
+<p>En caso de no disponer de <em>rake</em>, use los comandos correspondientes:</p>
+
+<pre class="code ruby"><code class="ruby">$ docker build -t progrezz/server .
+$ docker run -i -t --net host progrezz/server
+...</code></pre>
+
+<p>Use el comando <code>$ rake -T docker</code> para ver todos los comandos
+disponibles.</p>
+
+<h2 id="label-6.+Uso+-28sin+docker-29">6. Uso (sin docker)</h2>
+
+<h3 id="label-6.1.+Instalaci-C3-B3n">6.1. Instalación</h3>
 
 <p>Una vez instalada e iniciada la base de datos, se puede preparar el
 servidor con el siguiente comando, desde la carpeta raíz del proyecto:</p>
 
 <pre class="code ruby"><code class="ruby">$ rake setup</code></pre>
 
-<h4 id="label-Ejecuci-C3-B3n">Ejecución</h4>
+<h3 id="label-6.2.+Ejecuci-C3-B3n">6.2. Ejecución</h3>
 
 <p>El servidor puede ser iniciado en modo prueba con</p>
 
 <pre class="code ruby"><code class="ruby">$ rake development</code></pre>
 
-<p>Para iniciar en modo producción, use <code> $ rake production </code></p>
+<p>Para iniciar en modo producción, use <code>sh $ rake production </code></p>
 
 <p>Para subir el proyecto a heroku, teniendo definida el repositorio remoto
 <code>heroku</code>, utilice</p>
 
 <pre class="code ruby"><code class="ruby">$ rake heroku</code></pre>
 
-<h4 id="label-Otros">Otros</h4>
+<h3 id="label-6.3.+Otros">6.3. Otros</h3>
 
 <p>Para generar la documentación, use</p>
 
@@ -199,21 +347,19 @@ From: /home/daniel/Dev/Proyectos/Progrezz/progrezz-server/main.rb @ line 131 :
 [1] pry(main)&gt; Game::Database::User.all.each {|u| puts u.alias }
 Wikiti
 ... 
-=&gt; [ ... ]
-</code></pre>
+=&gt; [ ... ]</code></pre>
 
 <p>Para cerrar la terminar y la aplicación, basta con ejecutar el comando
 <code>exit</code>:</p>
 
-<pre class="code ruby"><code class="ruby">... 
-[2] pry(main)&gt; exit()
+<pre class="code ruby"><code class="ruby">[2] pry(main)&gt; exit()
 --------------------------------------
 **        Forced saving DB          **
 --------------------------------------
 Progrezz server ended. Crowd applause.
 </code></pre>
 
-<h2 id="label-5.+Contacto">5. Contacto</h2>
+<h2 id="label-7.+Contacto">7. Contacto</h2>
 
 <p>Envíe cualquier duda, comentario u opinión a cualquier correo de la
 siguiente lista:</p>
@@ -222,12 +368,12 @@ siguiente lista:</p>
 href="mailto:proyecto.progrezz@gmail.com">proyecto.progrezz@gmail.com</a></p>
 </li></ul>
 
-<h2 id="label-6.+Agradecimientos+-2F+Referencias">6. Agradecimientos / Referencias</h2>
+<h2 id="label-8.+Agradecimientos+-2F+Referencias">8. Agradecimientos / Referencias</h2>
 <ul><li><p>Directions Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p></li></ul>
 </div></div>
 
     <div id="footer">
-  Generated on Tue Apr 28 13:37:10 2015 by
+  Generated on Tue May 19 13:03:33 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

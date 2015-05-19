@@ -46,15 +46,17 @@ module Game
       #   -------------------------------------------------- #++
 
       # Crear un objeto.
-      # @param *args [Array] Array de argumentos. args[0] es el usuario que ha colocado el objeto. args[1] es el hash de datos extra.
+      # @param args [Array] Array de argumentos. args[0] es el usuario que ha colocado el objeto. args[1] es el hash de datos extra.
       # @return [Game::Database::Beacon] Objeto creado y asociado.
       def self.create_item(*args)
         user         = args[0]
         extra_params = args[1]
 
+        raise ::GenericExceptio.new("Invalid user.") if user == nil
+
         params = GenericUtils.default_params( {
           message: DEFAULT_MESSAGE
-        }, extra_params, [:geolocation] )
+        }, extra_params )
 
         # Crear baliza.
         beacon = self.create( message: params[:message], duration: Game::Mechanics::BeaconMechanics.data[:base][:duration].to_f )
@@ -66,10 +68,20 @@ module Game
         beacon.level_profile = Game::Database::LevelProfile.create_level_profile( )
 
         # Ajustar geolocalización
-        beacon.set_geolocation( params[:geolocation][:latitude], params[:geolocation][:longitude] )
+        geo = user.geolocation()
+        beacon.set_geolocation( geo[:latitude], geo[:longitude] )
 
         # Retornar baliza.
         return beacon
+      end
+
+      # Getter del objeto de la baliza (inventario).
+      # @return [Game::Database::Item] Referencia al objeto en la base de datos.
+      def self.get_item()
+        item = Game::Database::Item.find_by( item_id: RELATED_ITEM )
+        raise ::GenericException.new("Invalid beacon reference for item id '" + RELATED_ITEM.to_s + "'.") if item == nil
+
+        return item
       end
       
       #-- --------------------------------------------------

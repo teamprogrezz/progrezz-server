@@ -96,6 +96,10 @@ module Game
       # @return [Integer] Cantidad de objetos crafteados por el usuario.
       property :count_crafted_items, type: Integer, default: 0
 
+      # Contador de balizas desplegadas por el usuario.
+      # @return [Integer] Cantidad de balizas desplegadas por el usuario.
+      property :count_deployed_beacons, type: Integer, default: 0
+
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -409,6 +413,12 @@ module Game
             collected_fragments: self.count_collected_fragments,
             unlocked_messages:   self.count_unlocked_messages,
             written_messages:    self.count_written_messages
+          },
+
+          # Estadísticas de objetos
+          items: {
+           crafted_items:    self.count_crafted_items,
+           deployed_beacons: self.count_deployed_beacons
           }
           
           # Otras estadísticas

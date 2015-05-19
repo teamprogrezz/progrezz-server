@@ -200,6 +200,14 @@ distintas páginas webs del servidor.</p>
       <pre class="lines">
 
 
+60
+61
+62
+63
+64
+65
+66
+67
 68
 69
 70
@@ -260,15 +268,10 @@ distintas páginas webs del servidor.</p>
 125
 126
 127
-128
-129
-130
-131
-132
-133</pre>
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_registered'>registered</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span> <span class='const'>Pages</span><span class='op'>::</span><span class='const'>WebHelpers</span>
@@ -293,6 +296,9 @@ distintas páginas webs del servidor.</p>
     
     <span class='comment'># Deshabilitar la muestra de excepciones.
 </span>    <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span> <span class='symbol'>:show_exceptions</span><span class='comma'>,</span> <span class='kw'>false</span>
+
+    <span class='comment'># Habilitar escucha desde fuera
+</span>    <span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span> <span class='symbol'>:bind</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.0.0.0</span><span class='tstring_end'>&#39;</span></span>
   <span class='kw'>end</span>
   
   <span class='comment'># Hacer antes de toda petición de ruta
@@ -346,7 +352,7 @@ distintas páginas webs del servidor.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Apr 28 13:37:10 2015 by
+  Generated on Tue May 19 13:03:34 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

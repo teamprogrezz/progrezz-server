@@ -62,8 +62,8 @@ module Game
               raise ::GenericException.new( "The distance between the real point and the snapped is too bing.") if Progrezz::Geolocation.distance(p1, p2, :km) > ALLOWED_SNAP_KM
             end
             
-            geolocation[:latitude]  = new_loc[:latitude]
-            geolocation[:longitude] = new_loc[:longitude]
+            geolocation[:latitude]  = new_loc[:latitude]  || geolocation[:latitude]
+            geolocation[:longitude] = new_loc[:longitude] || geolocation[:longitude]
           end
         rescue Exception => e
           puts "WARNING! Couldn't snap " + geolocation[:latitude].to_s + ", " + geolocation[:longitude].to_s + " to nearest road: " + e.message

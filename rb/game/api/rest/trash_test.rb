@@ -54,7 +54,7 @@ module REST
             # Levear a wikiti
             puts "Tiempo de leveo de usuarios: " + (GenericUtils.timer do
               Game::Database::DatabaseManager.run_nested_transaction do
-                for i in 0...80
+                for i in 0...150
                   Game::Mechanics::LevelingMechanics.gain_exp( user_Wikiti, "collect_fragment" )
                   Game::Mechanics::LevelingMechanics.gain_exp( user_Shylpx, "collect_fragment" )
                 end
