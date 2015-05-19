@@ -347,19 +347,26 @@ module Game
 
       # Desplegar una baliza en la posición actual.
       # En caso de error, se generará la correspondiente excepción.
-      def deploy_beacon()
+      # @param message [String] Mensaje de la baliza.
+      # @return [Game::Database::Beacon] Retorna una referencia a la baliza generada.
+      def deploy_beacon(message)
+
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
 
-        # Comprobar que el usuario tenga al menos una baliza
+        # Comprobar que el usuario tenga al menos una baliza, y quitarsela
         beacon_item = Game::Database::Beacon.get_item()
-        raise ::GenericException.new("User does not own 1x" + beacon_item.name.to_s + ".") unless self.backpack.has?( beacon_item )
+        self.backpack.remove_item_amount(beacon_item, 1)
+        # raise ::GenericException.new("User does not own 1x " + beacon_item.name.to_s + ".") unless self.backpack.has?( beacon_item, 1 )
 
         # Crear y desplegar la baliza
-        Game::Database::Beacon.create_item(self)
+        beacon = Game::Database::Beacon.create_item(self, {message: message})
 
         # Añadir al contador
         self.update( { count_crafted_items: count_deployed_beacons + 1 } )
+
+        # Retornar referencia
+        return beacon
       end
 
     end

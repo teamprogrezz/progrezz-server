@@ -50,7 +50,7 @@ module Game
       # @return [Game::Database::Beacon] Objeto creado y asociado.
       def self.create_item(*args)
         user         = args[0]
-        extra_params = args[1]
+        extra_params = args[1] || {}
 
         raise ::GenericExceptio.new("Invalid user.") if user == nil
 
