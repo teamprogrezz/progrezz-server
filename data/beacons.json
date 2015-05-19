@@ -1,4 +1,8 @@
 {
+  "base": {
+    "duration": 10080
+  },
+
   "levels": {
     "start": 0,
     "end": 3
@@ -9,6 +13,7 @@
   },
 
   "functions": {
-    "next_level_required_exp": "def self._next_level_required_exp(next_level, exp_base = 1000, exp_factor = 5); (exp_base + (next_level ** exp_factor)).round; end"
+    "next_level_required_exp": "def self._next_level_required_exp(next_level, exp_base = 1500, exp_factor = 5); (exp_base + (next_level ** exp_factor)).round; end",
+    "duration_per_energy": "def self._duration_per_energy(level); level + 1; end"
   }
 }

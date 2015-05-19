@@ -52,6 +52,12 @@ module Game
         return @data[:levels][:end]
       end
 
+      # Obtener una copia de los datos.
+      # @return [Hash] Datos guardados por el gestor.
+      def self.data
+        return @data.deep_clone
+      end
+
       # Dar energía a la baliza.
       # @param beacon [Game::Database::Beacon] Referencia a la baliza.
       # @param energy [Integer] Energía que se dará a la baliza.
@@ -61,6 +67,8 @@ module Game
           raise ::GenericException.new( "Invalid beacon." )
         end
 
+        raise ::GenericException.new( "Invalid energy amount." ) if energy == nil || energy <= 0
+
         # Ganar experiencia
         level_profile = beacon.level_profile
         current_level = level_profile.level
@@ -68,42 +76,40 @@ module Game
 
         output = { }
 
-          # -- Añadir tiempo de vida --
-        # TODO: Añadir tiempo de vida a la baliza.
-
           # -- Subir de nivel --
         # Si tiene el nivel máximo, no ganar experiencia.
-        if current_level >= self.max_level
-          return output
-        end
+        if current_level < self.max_level
+          # Añadir a la baliza la experiencia deseada.
+          current_exp += energy * @data[:leveling][:exp_per_energy]
 
-        # Añadir a la baliza la experiencia deseada.
-        current_exp += energy * @data[:leveling][:exp_per_energy]
+          # Calcular cuanta experiencia hace falta para el siguiente nivel (función parseada de DATAFILE)
+          exp_for_next_level = _next_level_required_exp( current_level + 1 )
 
-        # Calcular cuanta experiencia hace falta para el siguiente nivel (función parseada de DATAFILE)
-        exp_for_next_level = _next_level_required_exp( current_level + 1 )
+          # Si es mayor que la experiencia actual, añadir un nuevo nivel, además de darle el exceso de experiencia.
+          while current_exp >= exp_for_next_level
+            current_level += 1
+            output[:new_level] = current_level
 
-        # Si es mayor que la experiencia actual, añadir un nuevo nivel, además de darle el exceso de experiencia.
-        while current_exp >= exp_for_next_level
-          current_level += 1
-          output[:new_level] = current_level
-
-          # Si no es el nivel máximo, reajustar experiencia y calcular experiencia para el próximo nivel.
-          if current_level < self.max_level
-            current_exp -= exp_for_next_level
-            exp_for_next_level = _next_level_required_exp( current_level + 1 )
-          else
-            current_exp = 0
+            # Si no es el nivel máximo, reajustar experiencia y calcular experiencia para el próximo nivel.
+            if current_level < self.max_level
+              current_exp -= exp_for_next_level
+              exp_for_next_level = _next_level_required_exp( current_level + 1 )
+            else
+              current_exp = 0
+            end
           end
+
+          output[:exp_gained] = energy * @data[:leveling][:exp_per_energy]
+
+          # Actualizar datos de la baliza
+          level_profile.update( { level: current_level, level_exp: current_exp } )
+
+          # Llamar al callback del usuario de subida de nivel
+          beacon.dispatch(:OnLevelUp, output[:new_level]) if output[:new_level] != nil
         end
 
-        output[:exp_gained] = energy * @data[:leveling][:exp_per_energy]
-
-        # Actualizar datos del usuario
-        level_profile.update( { level: current_level, level_exp: current_exp } )
-
-        # Llamar al callback del usuario de subida de nivel
-        beacon.dispatch(:OnLevelUp, output[:new_level]) if output[:new_level] != nil
+          # -- Añadir tiempo de vida según su nivel actual --
+        output[:duration_added] = beacon.add_life_time( energy * self._duration_per_energy(level_profile.level) )
 
         # Y retornar estructura
         return output

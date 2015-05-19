@@ -57,7 +57,7 @@ module Game
         }, extra_params, [:geolocation] )
 
         # Crear baliza.
-        beacon = self.create( message: params[:message] )
+        beacon = self.create( message: params[:message], duration: Game::Mechanics::BeaconMechanics.data[:base][:duration].to_f )
 
         # Asociar al usuario.
         beacon.link_owner( user, RELATED_ITEM )
@@ -76,6 +76,16 @@ module Game
       #                      Métodos
       #   -------------------------------------------------- #++
 
+      # Añadir tiempo de vida a la baliza.
+      # @param time [Float] Tiempo de vida a añadir, especificado en minutos.
+      # @return [Float] Tiempo añadido. Debería ser equivalente al parámetro +time+.
+      def add_life_time(time)
+        raise ::GenericException.new("Invalid time value.") if time == nil || time <= 0
+
+        self.update( duration: self.duration + time )
+
+        return time
+      end
 
       #-- --------------------------------------------------
       #                    Callbacks (juego)
