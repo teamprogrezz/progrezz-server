@@ -384,7 +384,7 @@ module Game
         output = {}
 
         beacons.each do |b|
-          output[b.uuid] = b
+          output[b.uuid] = b.to_hash
         end
 
         return output

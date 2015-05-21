@@ -389,7 +389,24 @@ module Game
 
         self.update( energy: self.energy + quantity )
       end
-      
+
+      # Getter de las balizas colocadas por un usuario.
+      def get_beacons()
+        beacons = self.placed_items_geo(:b, :r).where("r.item_type={it}").params(it: Game::Database::Beacon::RELATED_ITEM).pluck(:b).to_a
+
+        # Aprovechar y borrar las balizas caducadas
+        beacons.delete_if do |b|
+          if b.caducated?
+            b.remove()
+            true
+          else
+            false
+          end
+        end
+
+        return beacons
+      end
+
       # Devuelve las estadísticas del jugador.
       # @return [Hash<Symbol, Object>] Hash con todas las estadísticas y datos del usuario.
       def get_stats()

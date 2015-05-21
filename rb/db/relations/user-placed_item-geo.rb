@@ -40,7 +40,7 @@ module Game
         #       Atributos (DB)
         # -------------------------
 
-        # Tipo de objeto (id) colocado por el usuario (ej: "beacon").
+        # Tipo de objeto (id) colocado por el usuario (ej: "geo_beacon").
         # @return [String] Identificador del objeto geolocalizado.
         property :item_type, type: String
         

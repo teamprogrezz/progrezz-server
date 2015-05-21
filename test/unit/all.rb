@@ -35,6 +35,9 @@ class CustomTestSuite < Test::Unit::TestSuite
     
     # Usuarios de prueba
     @@users << Game::Database::User.sign_up( "test11", 'test11', {latitude: 28.46673, longitude: -16.27357} )
+    @@users[1].level_profile.update( {level: 6} )
+    @@users[1].dispatch(:OnLevelUp, @@users[0].level_profile.level)
+
     @@users << Game::Database::User.sign_up( "test22", 'test22', {latitude: 28.3396, longitude: -16.8373} )
     
     @@messages << Game::Database::Message.create_message( "Hello, universe", 2, { position: {latitude: 28.4694, longitude: -16.2738} })

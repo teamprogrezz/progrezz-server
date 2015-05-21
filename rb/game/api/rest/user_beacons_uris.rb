@@ -24,6 +24,33 @@ module Sinatra; module API ;module REST
         message: "Beacon deployed."
       })
     end
+
+    # Obtener lista de balizas colocadas por un usuario.
+    def self.rest__user_get_deployed_beacons( app, response, session )
+      user_id = response[:request][:request][:data][:user_id]
+      user     = Game::AuthManager.search_auth_user( user_id, session )
+
+      beacons = Hash[user.get_beacons().map { |b| [b.uuid, b.to_hash] }]
+      #beacons = user.get_beacons().map { |b| b.to_hash }
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        beacons: beacons
+       })
+    end
+
+    # Obtener lista de balizas cercanas a un usuario.
+    def self.rest__user_get_nearby_beacons( app, response, session )
+      user_id = response[:request][:request][:data][:user_id]
+      user     = Game::AuthManager.search_auth_user( user_id, session )
+
+      beacons = user.search_nearby_beacons()
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "json",
+        beacons: beacons
+       })
+    end
     
   end
   

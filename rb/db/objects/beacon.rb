@@ -131,10 +131,20 @@ module Game
             l2: (geolocation[:latitude] + lat),
             l3: (geolocation[:longitude] - lon),
             l4: (geolocation[:longitude] + lon)
-         ).pluck(:b).to_a
+         ).pluck(:b)
 
-        # Borrar balizas lejanas (fuera del círculo).
-        beacons.delete_if { |b| Progrezz::Geolocation.distance(geolocation, b.geolocation, :km) > radius }
+        # Convertir a una lista
+        beacons = beacons.to_a
+
+        # Borrar balizas lejanas (fuera del círculo) y caducadas.
+        beacons.delete_if do |b|
+          if b.caducated?
+            b.remove()
+            true
+          else
+            Progrezz::Geolocation.distance(geolocation, b.geolocation, :km) > radius
+          end
+        end
 
         # Retornar lista
         return beacons
@@ -203,9 +213,10 @@ module Game
         output = {}
 
         if !exclusion_list.include?(:beacon)
-          output[:beacon] = {
+          output[:info] = {
            uuid:        self.uuid,
-           deploy_date: self.created_at.strftime('%Q'),
+           message:     self.message,
+           deploy_date: self.created_at.strftime('%Q').to_i,
            duration:    self.duration
           }
         end
@@ -215,6 +226,7 @@ module Game
           output[:stats] = {
             level:              lp.level,
             level_exp:          lp.level_exp,
+            exp_to_next_level:  Game::Mechanics::BeaconMechanics.exp_to_next_level(lp.level),
             action_radius:      self.action_radius,
             weight_per_deposit: self.weight_per_deposit
           }
@@ -222,6 +234,7 @@ module Game
 
         if !exclusion_list.include?(:neighbours)
           # TODO: Completar vecionas hash de una baliza
+          output[:neighbours] = {}
         end
 
         if !exclusion_list.include?(:owner)
@@ -239,7 +252,7 @@ module Game
          raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
 
          # TODO: ...
-         puts "Beacon " + beacon.uuid.to_s + " created."
+         #puts "Beacon " + beacon.uuid.to_s + " created."
        }
 
       # Callback de subida de nivel.
@@ -249,14 +262,14 @@ module Game
          new_level ||= beacon.level_profile.level
 
          # TODO: Ajustar parámetros de la baliza con el nuevo nivel.
-         puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
+         #puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
        }
 
       add_event_listener :OnRemove, lambda { |beacon|
          raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
 
          # TODO: ...
-         puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
+         #puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
        }
 
       # Lanzar un evento desde la baliza actual.

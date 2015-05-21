@@ -508,6 +508,62 @@ class RESTTest < Test::Unit::TestCase
 
     ok
   end
+
+  # Probar "user_get_deployed_beacons"
+  def test_user_get_deployed_beacons
+    authenticate()
+
+    # Comprobar balizas del usuario
+    @request[:request][:type] = "user_get_deployed_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 0
+
+    # Añadir y desplegar baliza
+    @users[0].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+    @users[0].deploy_beacon("weeeeeeeee")
+
+    # Comprobar de nuevo
+    @request[:request][:type] = "user_get_deployed_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 1
+    assert_equal @response[:response][:data][:beacons].values.first[:info][:message], "weeeeeeeee"
+
+    ok
+  end
+
+  # Probar "user_get_nearby_beacons"
+  def test_user_get_nearby_beacons
+    authenticate()
+
+    # Comprobar balizas cercanas al usuario
+    @request[:request][:type] = "user_get_nearby_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 0
+
+    # Añadir y desplegar baliza
+    @users[1].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+    @users[1].deploy_beacon("waaaaaa")
+
+    # Comprobar de nuevo
+    @request[:request][:type] = "user_get_nearby_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 1
+    assert_equal @response[:response][:data][:beacons].values.first[:info][:message], "waaaaaa"
+
+    ok
+  end
   
   # ---------------------------
   #         Messages
