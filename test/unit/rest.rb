@@ -479,6 +479,35 @@ class RESTTest < Test::Unit::TestCase
 
     ok
   end
+
+  # ---------------------------
+  #       User beacons
+  # ---------------------------
+
+  # Probar "user_deploy_beacon"
+  def test_user_deploy_beacon
+    authenticate()
+
+    # Añadir baliza
+    @users[0].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+
+    # Desplegar baliza
+    @request[:request][:type] = "user_deploy_beacon"
+    @request[:request][:data] = { user_id: @users[0].user_id, message: "This will deploy correctly." }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+
+    # Intentar desplegarla de nuevo
+    @request[:request][:type] = "user_deploy_beacon"
+    @request[:request][:data] = { user_id: @users[0].user_id, message: "This will not." }
+    rest_request()
+
+    assert_equal @response[:response][:status], "error"
+    assert_equal @response[:response][:message], "Could not deploy beacon: User does not own 1 of Energy beacon"
+
+    ok
+  end
   
   # ---------------------------
   #         Messages

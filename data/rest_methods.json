@@ -96,6 +96,22 @@
     ]
   ],
   [
+    "User beacons", [
+      {
+        "name": "Search nearby beacons",
+        "example": {"_comment":"Search beacons which are near to user <user_id>.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_get_nearby_beacons","data":{"user_id":"yourmail@example.com"}}}
+      },
+      {
+        "name": "Deploy a beacon",
+        "example": {"_comment":"User <user_id> will deploy a beacon at the current position with a given message. The user must own the required items to deploy a beacon.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_deploy_beacon","data":{"user_id":"yourmail@example.com","message":"This place is awesome!!!"}}}
+      },
+      {
+        "name": "Yield energy to a beacon",
+        "example": {"_comment":"User <user_id> will yield a given amount of energy to a beacon.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_yield_energy","data":{"user_id":"yourmail@example.com","beacon_uuid":"Beacon uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)","energy_amount":"Numeric value. Energy amount (>= 0)."}}}
+      }
+    ]
+  ],
+  [
     "Messages", [
       {
         "name": "Get message info",

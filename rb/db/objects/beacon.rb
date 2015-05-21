@@ -24,7 +24,13 @@ module Game
 
       # Identificador del objeto geolocalizado.
       RELATED_ITEM = "geo_beacon"
-      
+
+      # Tamaño mínimo del mensaje.
+      MESSAGE_MIN_LENGHT = 5
+
+      # Tamaño máximo del mensaje.
+      MESSAGE_MAX_LENGHT = 255
+
       #-- --------------------------------------------------
       #                      Atributos (DB)
       #   -------------------------------------------------- #++
@@ -53,11 +59,14 @@ module Game
         user         = args[0]
         extra_params = args[1] || {}
 
-        raise ::GenericExceptio.new("Invalid user.") if user == nil
+        raise ::GenericException.new("Invalid user.") if user == nil
 
         params = GenericUtils.default_params( {
           message: DEFAULT_MESSAGE
         }, extra_params )
+
+        raise ::GenericException.new("Message is too short ( less than " + MESSAGE_MIN_LENGHT.to_s + ").") if params[:message].length < MESSAGE_MIN_LENGHT
+        raise ::GenericException.new("Message is too long ( greather than " + MESSAGE_MAX_LENGHT.to_s + ").") if params[:message].length > MESSAGE_MAX_LENGHT
 
         # Crear baliza.
         beacon = self.create( message: params[:message], duration: Game::Mechanics::BeaconMechanics.data[:base][:duration].to_f )

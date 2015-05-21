@@ -39,7 +39,7 @@ module Database
       end
     end
 
-    # Destruye todo el contenido de la base de datos.
+    # Destruye el contenido de la base de datos.
     #
     # @note ¡No se pueden revertir los cambios!
     def self.drop()

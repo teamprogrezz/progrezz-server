@@ -52,7 +52,7 @@ module Game
             # Si no existe, añadir a la base de datos.
             item = Game::Database::Item.create_item( i )
           else
-            # Si ya existe, actualizar todo
+            # Si ya existe, actualizarlo
             item.update_item( i )
           end
           

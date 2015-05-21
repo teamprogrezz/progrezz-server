@@ -290,7 +290,7 @@ module Game
           # Añadir al contador
           self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
           
-          # TODO: Cooldown en función de su nivel
+          # TODO: Cooldown en función del nivel del usuario
           cooldown = deposit_instance.deposit.user_cooldown
           
           # Marcar depósito como recolectado.

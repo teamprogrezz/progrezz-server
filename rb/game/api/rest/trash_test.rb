@@ -81,6 +81,11 @@ module REST
               # Crear copia de un mensaje replicable
               # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
               
+             end).to_s
+
+            # Buscar mensajes de Wikiti
+            puts "Añadir balizas a Wikiti: " + (GenericUtils.timer do
+              user_Wikiti.backpack.add_item(Game::Database::Item.find_by(item_id: "geo_beacon"), 20)
             end).to_s
             
             # Buscar mensajes de Wikiti
