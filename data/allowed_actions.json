@@ -41,6 +41,10 @@
 
     "deploy_beacon": {
       "_desc": "Deploy an energy beacon in the user's position."
+    },
+
+    "search_nearby_beacons": {
+      "_desc": "Buscar balizas cercanas."
     }
   },
   
@@ -58,6 +62,9 @@
     },
     "search_nearby_deposits": {
       "radius": 0.8
+    },
+    "search_nearby_beacons": {
+      "radius": 5.0
     },
     "collect_item_from_deposit_Common": {},
     "unlock_message": true

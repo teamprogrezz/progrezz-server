@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'progrezz/geolocation'
+
 require_relative '../mechanic'
 
 module Game
@@ -114,7 +116,29 @@ module Game
         # Y retornar estructura
         return output
       end
-    end
 
+      # Aumentar el peso o ponderación según las balizas cercanas a ese punto.
+      # @param ponderation_hash [Hash] Hash de ponderaciones +Tipo=>Peso+.
+      # @param geolocation [Hash] Geolocalización del punto, de tipo {latitude: lat, longitude: lon}
+      def self.add_ponderation(ponderation_hash, geolocation)
+        max_radius = self._radius_per_level( self.max_level )
+
+        # Buscar balizas cercanas
+        beacons = Game::Database::Beacon.search_by_radius(geolocation, max_radius)
+
+        # Para cada baliza, incrementar la ponderación según sea conveniente.
+        ponderation_increment = 0
+        beacons.each do |b|
+          # Si está lo suficientemente cerca, aumentar la ponderación
+          ponderation_increment += b.weight_per_deposit if Progrezz::Geolocation.distance( b.geolocation, geolocation, :km ) <= b.action_radius
+        end
+
+        # Aumentar la ponderación en el hash
+        if ponderation_increment != 0
+          ponderation_hash.each { |k, v| ponderation_hash[k] += ponderation_increment }
+        end
+      end
+
+    end
   end
 end

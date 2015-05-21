@@ -41,7 +41,7 @@ module Game
     # Los métodos deben incluir el prefijo +schtsk+.
     class Tasks
       
-      # Hora por defecto de tareas programadas.
+      # Hora por defecto de tareas programadas (todos los días a las 04:00).
       DEFAULT_CRON_TIME = "0 4 * * *"
       
       # Eliminar mensajes caducados.
@@ -59,6 +59,15 @@ module Game
         # Realizar todos los días, a las 04:00 am
         scheduler.cron DEFAULT_CRON_TIME do
           Game::Schedule::TasksManager.tasks_msg("Removing caducated item deposit instances (" + Game::Database::ItemDepositInstance.clear_caducated().to_s + ").")
+        end
+      end
+
+      # Eliminar balizas caducados.
+      # @param scheduler [Rufus::Scheduler] Gestor de tareas.
+      def self.schtsk_remove_caducated_beacons(scheduler)
+        # Realizar todos los días, a las 04:00 am
+        scheduler.cron DEFAULT_CRON_TIME do
+          Game::Schedule::TasksManager.tasks_msg("Removing caducated beacons (" + Game::Database::Beacon.clear_caducated().to_s + ").")
         end
       end
      

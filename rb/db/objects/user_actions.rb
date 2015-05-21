@@ -226,7 +226,7 @@ module Game
       end
       
       # Buscar depósitos cercanos a un usuario.
-      # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
+      # @return [Hash] Resultado de la búsqueda (depósitos cercanos).
       def search_nearby_deposits()
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
@@ -363,10 +363,31 @@ module Game
         beacon = Game::Database::Beacon.create_item(self, {message: message})
 
         # Añadir al contador
-        self.update( { count_crafted_items: count_deployed_beacons + 1 } )
+        self.update( { count_deployed_beacons: count_deployed_beacons + 1 } )
 
         # Retornar referencia
         return beacon
+      end
+
+
+      # Buscar balizas cercanas a un usuario.
+      # @return [Hash] Resultado de la búsqueda (balizas cercanos).
+      def search_nearby_beacons()
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
+
+        # El radio dependerá del nivel del usuario.
+        radius = self.get_current_search_radius(:beacons)
+
+        # Resultado
+        beacons = Game::Database::Beacon.search_by_radius(self.geolocation, radius)
+        output = {}
+
+        beacons.each do |b|
+          output[b.uuid] = b
+        end
+
+        return output
       end
 
     end

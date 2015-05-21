@@ -18,6 +18,8 @@
   "_comment": "Funciones de uso genérico.",
   "functions": {
     "next_level_required_exp": "def self._next_level_required_exp(next_level, exp_base = 1500, exp_factor = 5); (exp_base + (next_level ** exp_factor)).round; end",
-    "duration_per_energy": "def self._duration_per_energy(level); level + 1; end"
+    "duration_per_energy": "def self._duration_per_energy(level); level + 1; end",
+    "action_radius_per_level": "def self._radius_per_level(level, base_radius = 1.0); (level + 0.25) * base_radius; end",
+    "weight_per_level": "def self._weight_per_level(level, base_weight = 15); (level + 1) * base_weight; end"
   }
 }

@@ -67,6 +67,7 @@
     "description": "<Description here>",
     "quality": "Epic",
     "energy": 200,
+    "max_amount": 20,
     "image": "/img/game/items/geo_beacon.png"
   }
 ]

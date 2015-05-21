@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'date'
+require 'progrezz/geolocation'
 
 require_relative './item_geo'
 
@@ -71,6 +72,9 @@ module Game
         geo = user.geolocation()
         beacon.set_geolocation( geo[:latitude], geo[:longitude] )
 
+        # Lanzar evento de creación
+        beacon.dispatch(:OnCreate)
+
         # Retornar baliza.
         return beacon
       end
@@ -83,7 +87,50 @@ module Game
 
         return item
       end
-      
+
+      # Limpiar balizas caducadas de la base de datos.
+      # @return [Integer] Retorna el número de balizas que han sido borrados.
+      def self.clear_caducated()
+        count = 0
+
+        Game::Database::DatabaseManager.run_nested_transaction do |t|
+          Game::Database::Beacon.as(:b).where("b.duration <> 0").each do |beacon|
+            if beacon.caducated?
+              beacon.remove()
+              count += 1
+            end
+          end
+        end
+
+        return count
+      end
+
+      # Buscar balizas cercanas en un determinado radio de busqueda (circula), especificado en +km+.
+      # @param geolocation [Hash] Punto de búsqueda, de la forma +{latitude: lat, longitude: lon}+
+      # @param radius [Float] Radio de busqueda, especificado en km.
+      # @return [Array] Lista de Balizas cercanas.
+      def self.search_by_radius(geolocation, radius)
+
+        lat = Progrezz::Geolocation.distance_to_latitude(radius, :km)
+        lon = Progrezz::Geolocation.distance_to_longitude(radius, :km)
+
+        # Generar una lista de referencias
+        beacons = self.query_as(:b)
+         .where("b.latitude  > {l1} and b.latitude  < {l2} and b.longitude > {l3} and b.longitude < {l4}")
+         .params(
+            l1: (geolocation[:latitude] - lat),
+            l2: (geolocation[:latitude] + lat),
+            l3: (geolocation[:longitude] - lon),
+            l4: (geolocation[:longitude] + lon)
+         ).pluck(:b).to_a
+
+        # Borrar balizas lejanas (fuera del círculo).
+        beacons.delete_if { |b| Progrezz::Geolocation.distance(geolocation, b.geolocation, :km) > radius }
+
+        # Retornar lista
+        return beacons
+      end
+
       #-- --------------------------------------------------
       #                      Métodos
       #   -------------------------------------------------- #++
@@ -99,9 +146,92 @@ module Game
         return time
       end
 
+      # Borrar baliza.
+      def remove()
+        # Lanzar evento
+        self.dispatch(:OnRemove)
+
+        # Exportar el nodo
+        Game::Database::DatabaseManager.export_neo4jnode(self, self.rels)
+
+        # Destruir nodo
+        self.destroy()
+      end
+
+
+      # Comprobar si una baliza ha caducado (ya no debería existir).
+      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
+      def caducated?
+        if duration == 0
+          return false
+        end
+
+        if self.created_at + (duration / (24 * 60.0) ) <= Time.now
+          return true
+        end
+
+        return false
+      end
+
+      # Peso (o probabilidad) Añadida a balizas cercanas.
+      # Depende principalmente de su nivel.
+      # @return [Float] Valor del peso a añadir.
+      def weight_per_deposit
+        Game::Mechanics::BeaconMechanics._weight_per_level( self.level_profile.level )
+      end
+
+      # Radio de acción de la baliza.
+      # Depende principalmente de su nivel.
+      # @return [Float] Radio de acción de la baliza.
+      def action_radius
+        Game::Mechanics::BeaconMechanics._radius_per_level( self.level_profile.level )
+      end
+
+      # Transformar objeto a un hash
+      # @param exclusion_list [Array<Symbol>] Elementos a omitir en el hash de resultado.
+      # @return [Hash<Symbol, Object>] Objeto como hash.
+      def to_hash(exclusion_list = [:owner] )
+        output = {}
+
+        if !exclusion_list.include?(:beacon)
+          output[:beacon] = {
+           uuid:        self.uuid,
+           deploy_date: self.created_at.strftime('%Q'),
+           duration:    self.duration
+          }
+        end
+
+        if !exclusion_list.include?(:stats)
+          lp = self.level_profile
+          output[:stats] = {
+            level:              lp.level,
+            level_exp:          lp.level_exp,
+            action_radius:      self.action_radius,
+            weight_per_deposit: self.weight_per_deposit
+          }
+        end
+
+        if !exclusion_list.include?(:neighbours)
+          # TODO: Completar vecionas hash de una baliza
+        end
+
+        if !exclusion_list.include?(:owner)
+          output[:owner] = owner.alias if owner != nil || owner.alias != nil
+        end
+
+        return output
+      end
+
       #-- --------------------------------------------------
       #                    Callbacks (juego)
       #   -------------------------------------------------- #++
+
+      add_event_listener :OnCreate, lambda { |beacon|
+         raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
+
+         # TODO: ...
+         puts "Beacon " + beacon.uuid.to_s + " created."
+       }
 
       # Callback de subida de nivel.
       add_event_listener :OnLevelUp, lambda { |beacon, new_level|
@@ -113,10 +243,19 @@ module Game
          puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
        }
 
+      add_event_listener :OnRemove, lambda { |beacon|
+         raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
+
+         # TODO: ...
+         puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
+       }
+
       # Lanzar un evento desde la baliza actual.
       #
       # Lista de eventos registrados:
-      # - +:OnLevelUp (user, new_level)+: Al subir de nivel.
+      # - +:OnCreate (beacon)+: Al crear la baliza.
+      # - +:OnLevelUp (beacon, new_level)+: Al subir de nivel.
+      # - +:OnRemove (breaco)+: Al borrar la baliza.
       #
       # @param event_name [Object] Nombre del evento a lanzar.
       # @param args [Object] Argumentos a pasar a los callbacks (además de +self+).

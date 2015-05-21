@@ -304,6 +304,8 @@ module Game
           return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_fragments"]["radius"]
         elsif element == :deposits
           return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_deposits"]["radius"]
+        elsif element == :beacons
+          return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_beacons"]["radius"]
         end
         
         # ...
