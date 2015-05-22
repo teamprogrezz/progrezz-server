@@ -86,6 +86,9 @@ module Game
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         if fragment_message != nil
+
+          # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
+          # ...
           
           # Si el fragmento es suyo, no recogerlo
           if (fragment_message.message.author != nil && fragment_message.message.author == self)
@@ -226,7 +229,7 @@ module Game
       end
       
       # Buscar depósitos cercanos a un usuario.
-      # @return [Hash] Resultado de la búsqueda (fragmentos cercanos).
+      # @return [Hash] Resultado de la búsqueda (depósitos cercanos).
       def search_nearby_deposits()
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
@@ -290,7 +293,7 @@ module Game
           # Añadir al contador
           self.update( { count_collected_item_deposits: count_collected_item_deposits + 1 } )
           
-          # TODO: Cooldown en función de su nivel
+          # TODO: Cooldown en función del nivel del usuario
           cooldown = deposit_instance.deposit.user_cooldown
           
           # Marcar depósito como recolectado.
@@ -305,6 +308,8 @@ module Game
       end
 
       # Craftear un objeto.
+      # @param craft_recipe_id [String] Identificador de la receta.
+      # @param out [Hash] Salida personalizada (exp, etc).
       def craft_item(craft_recipe_id, out = {})
 
         craft_recipe = Game::Mechanics::CraftingMechanics.get_recipe(craft_recipe_id)
@@ -343,6 +348,70 @@ module Game
 
         # Añadir al contador
         self.update( { count_crafted_items: count_crafted_items + 1 } )
+      end
+
+      # Desplegar una baliza en la posición actual.
+      # En caso de error, se generará la correspondiente excepción.
+      # @param message [String] Mensaje de la baliza.
+      # @param out [Hash] Salida personalizada (exp, etc).
+      # @return [Game::Database::Beacon] Retorna una referencia a la baliza generada.
+      def deploy_beacon(message, out = {})
+
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
+
+        # Comprobar que el usuario tenga al menos una baliza, y quitarsela
+        beacon_item = Game::Database::Beacon.get_item()
+        self.backpack.remove_item_amount(beacon_item, 1)
+        # raise ::GenericException.new("User does not own 1x " + beacon_item.name.to_s + ".") unless self.backpack.has?( beacon_item, 1 )
+
+        # Crear y desplegar la baliza
+        beacon = Game::Database::Beacon.create_item(self, {message: message})
+
+        # Añadir al contador
+        self.update( { count_deployed_beacons: count_deployed_beacons + 1 } )
+
+        # Retornar referencia
+        return beacon
+      end
+
+
+      # Buscar balizas cercanas a un usuario.
+      # @param out [Hash] Salida personalizada (exp, etc).
+      # @return [Hash] Resultado de la búsqueda (balizas cercanos).
+      def search_nearby_beacons(out = {})
+        # Lanzará una excepción si no se permite al usuario realizar la acción.
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
+
+        # El radio dependerá del nivel del usuario.
+        radius = self.get_current_search_radius(:beacons)
+
+        # Resultado
+        beacons = Game::Database::Beacon.search_by_radius(self.geolocation, radius)
+        output = {}
+
+        beacons.each do |b|
+          output[b.uuid] = b.to_hash
+        end
+
+        return output
+      end
+
+      # Ceder energía a una baliza.
+      # @param beacon [Game::Database::Beacon] Referencia a la baliza.
+      # @param energy_amount [Integer] Cantidad de energía a ceder.
+      # @param out [Hash] Salida personalizada (exp, etc).
+      def yield_energy(beacon, energy_amount, out = {})
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
+
+        # Comprobar entrada
+        raise ::GenericException.new( "Invalid beacon." ) if beacon == nil
+
+        # Comprobar que el usuario tiene suficiente energía, y quitársela
+        self.remove_energy(energy_amount)
+
+        # Y cederla al objeto
+        Game::Mechanics::BeaconMechanics.gain_energy(beacon, energy_amount)
 
       end
 

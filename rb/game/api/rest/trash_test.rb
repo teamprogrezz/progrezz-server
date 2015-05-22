@@ -54,7 +54,7 @@ module REST
             # Levear a wikiti
             puts "Tiempo de leveo de usuarios: " + (GenericUtils.timer do
               Game::Database::DatabaseManager.run_nested_transaction do
-                for i in 0...80
+                for i in 0...150
                   Game::Mechanics::LevelingMechanics.gain_exp( user_Wikiti, "collect_fragment" )
                   Game::Mechanics::LevelingMechanics.gain_exp( user_Shylpx, "collect_fragment" )
                 end
@@ -81,6 +81,12 @@ module REST
               # Crear copia de un mensaje replicable
               # messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
               
+             end).to_s
+
+            # Buscar mensajes de Wikiti
+            puts "Tiempo de añadir balizas: " + (GenericUtils.timer do
+              user_Wikiti.backpack.add_item(Game::Database::Item.find_by(item_id: "geo_beacon"), 20)
+              user_Shylpx.backpack.add_item(Game::Database::Item.find_by(item_id: "geo_beacon"), 19)
             end).to_s
             
             # Buscar mensajes de Wikiti
@@ -185,21 +191,29 @@ module REST
       
       # Tirar base de datos
       app.get '/test/drop' do
+        admin_protected!
+
         return db_drop()
       end
 
       # Listar datos de prueba
       app.get '/test/list' do
+        admin_protected!
+
         erb :"test/list", :locals => {:users => Game::Database::User.all(), :messages => Game::Database::Message.all() }
       end
 
       # Añadir datos de prueba
       app.get '/test/add' do
+        admin_protected!
+
         return CGI.escapeHTML( db_add() )
       end
 
       # Reiniciar prueba
       app.get '/test/reset' do
+        admin_protected!
+
         msg = db_reset()
         
         if msg != "<h2>Datos añadidos correctamente.</h2>"; return ("<pre>" + CGI.escapeHTML( msg ) + "</pre>") end

@@ -48,7 +48,7 @@ module Game
       # @param level [Integer] Nivel del usuario para crear los slots del inventario.
       # @return [Game::Mechanics::Backpack] Objeto creado (no enlazado a un usuario).
       def self.create_backpack( level )
-        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) ) # TODO: Rellenar. (?)
+        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) )
       end
       
       #-- --------------------------------------------------

@@ -39,7 +39,7 @@ module Database
       end
     end
 
-    # Destruye todo el contenido de la base de datos.
+    # Destruye el contenido de la base de datos.
     #
     # @note ¡No se pueden revertir los cambios!
     def self.drop()
@@ -79,7 +79,6 @@ module Database
     # @param node [Object] Nodo neo4j a exportar.
     # @param node_relations [Array<Object>] Relaciones de un nodo. Se puede acceder también con +node.rels+.
     # @param extra_params [Hash<Symbol, Object>] Parámetros extra, por si fueran necesario.
-    # @todo Implementar
     def self.export_neo4jnode(node, node_relations, extra_params = {})
       params = GenericUtils.default_params( {
         export_type: :json

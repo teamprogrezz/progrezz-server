@@ -73,30 +73,10 @@ module Sinatra
       app.get '/admin' do
         redirect to("/admin/home")
       end
-      
-      app.get '/admin/home' do
+
+      app.get '/admin/:page' do
         admin_protected!
-        erb :"admin/home", :layout => :"admin/layout"
-      end
-      
-      app.get '/admin/messages' do
-        admin_protected!
-        erb :"admin/messages", :layout => :"admin/layout"
-      end
-      
-      app.get '/admin/users' do
-        admin_protected!
-        erb :"admin/users", :layout => :"admin/layout"
-      end
-      
-      app.get '/admin/items' do
-        admin_protected!
-        erb :"admin/items", :layout => :"admin/layout"
-      end
-      
-      app.get '/admin/game_parameters' do
-        admin_protected!
-        erb :"admin/game_parameters", :layout => :"admin/layout"
+        erb ("admin/" + params["page"]).to_sym, :layout => :"admin/layout"
       end
       
       # -- Parámetros de juego (parametrizado). # ++
@@ -108,7 +88,9 @@ module Sinatra
           "allowed_actions" => Game::Mechanics::AllowedActionsMechanics,
           "backpack" => Game::Mechanics::BackpackMechanics,
           "items" => Game::Mechanics::ItemsMechanics,
-          "leveling" => Game::Mechanics::LevelingMechanics
+          "leveling" => Game::Mechanics::LevelingMechanics,
+          "crafting" => Game::Mechanics::CraftingMechanics,
+          "beacon" => Game::Mechanics::BeaconMechanics
         }
         
         begin

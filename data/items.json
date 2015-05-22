@@ -23,7 +23,7 @@
   },
   {
     "item_id": "mineral_coal",
-    "name": "Charcoal",
+    "name": "Coal",
     "description": "Charcoal is a light, black residue, consisting of carbon and any remaining ash, obtained by removing water and other volatile constituents from animal and vegetation substances. Charcoal is usually produced by slow pyrolysis, the heating of wood or other substances in the absence of oxygen (see char and biochar).",
     "quality": "Common",
     "energy": 2,
@@ -60,5 +60,14 @@
     "quality": "Rare",
     "energy": 6,
     "image": "/img/game/items/metal_steel.png"
+  },
+  {
+    "item_id": "geo_beacon",
+    "name": "Energy beacon",
+    "description": "<Description here>",
+    "quality": "Epic",
+    "energy": 200,
+    "max_amount": 20,
+    "image": "/img/game/items/geo_beacon.png"
   }
 ]

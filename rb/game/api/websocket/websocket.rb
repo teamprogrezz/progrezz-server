@@ -13,7 +13,6 @@ module Sinatra
     # Clase contenedora de los métodos diversos de la API WebSocket.
     #
     # Los websockets se abrirán accediendo a la URI /dev/api/websocket
-    # TODO: ...
     #
     # @see http://progrezz-server.heroku.com/dev/websocket
     class Methods
@@ -134,7 +133,6 @@ module Sinatra
         end
         
         if app.websocket_methods == nil
-          # TODO: ...
           app.websocket_methods = JSON.parse( File.read('data/websocket_methods.json') )
         end
         

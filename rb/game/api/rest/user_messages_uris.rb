@@ -54,10 +54,7 @@ module Sinatra; module API ;module REST
     def self.rest__user_collect_message_fragment( app, response, session )
       user     = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
       fragment = Game::Database::MessageFragment.find_by( uuid: response[:request][:request][:data][:frag_uuid] )
-      
-      # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
-      # ...
-      
+
       extra = {}
       
       relation = nil

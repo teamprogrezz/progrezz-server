@@ -174,6 +174,22 @@ depósitov¡, … mediante relaciones neo4j.</p>
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Null</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
+        <dt id="DEFAULT_ENERGY-constant" class="">DEFAULT_ENERGY =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Energía por defecto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>0</span></pre></dd>
+      
     </dl>
   
 
@@ -315,6 +331,54 @@ depósitov¡, … mediante relaciones neo4j.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Descripción del objeto (narrativa).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#energy-instance_method" title="#energy (instance method)">- (Integer) <strong>energy</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Energía o valor del objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#energy_value-instance_method" title="#energy_value (instance method)">- (Integer) <strong>energy_value</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Valor energético del objeto.</p>
 </div></span>
   
 </li>
@@ -586,20 +650,21 @@ depósitov¡, … mediante relaciones neo4j.</p>
       <pre class="lines">
 
 
-95
-96
-97
-98
-99
-100
-101
 102
 103
 104
-105</pre>
+105
+106
+107
+108
+109
+110
+111
+112
+113</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_item'>create_item</span><span class='lparen'>(</span><span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
@@ -607,10 +672,11 @@ depósitov¡, … mediante relaciones neo4j.</p>
     <span class='label'>description:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
     <span class='label'>max_amount:</span> <span class='const'>DEFAULT_MAX_ITEM</span><span class='comma'>,</span>
     <span class='label'>quality:</span> <span class='const'>NULL_QUALITY</span><span class='comma'>,</span>
+    <span class='label'>energy:</span> <span class='const'>DEFAULT_ENERGY</span><span class='comma'>,</span>
     <span class='label'>image:</span> <span class='const'>DEFAULT_IMAGE</span>
   <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>item_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>item_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>energy:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:energy</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -668,10 +734,10 @@ puede acceder con el atributo <code>backpack_owners</code>.</p>
       <pre class="lines">
 
 
-86</pre>
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 93</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:backpack_owners</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>BackpackItemStacks</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Backpack</span></pre>
     </td>
@@ -744,12 +810,12 @@ puede acceder con el atributo <code>backpack_owners</code>.</p>
       <pre class="lines">
 
 
-128
-129
-130</pre>
+143
+144
+145</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_deposit'>create_deposit</span><span class='lparen'>(</span><span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='period'>.</span><span class='id identifier rubyid_create_item_deposit'>create_item_deposit</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
@@ -803,10 +869,10 @@ puede acceder con el atributo <code>backpack_owners</code>.</p>
       <pre class="lines">
 
 
-81</pre>
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 88</span>
 
 <span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:out</span><span class='comma'>,</span> <span class='symbol'>:deposit</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>ItemDeposit</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>deposited_in</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:destroy</span></pre>
     </td>
@@ -860,12 +926,126 @@ puede acceder con el atributo <code>backpack_owners</code>.</p>
       <pre class="lines">
 
 
-62</pre>
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 69</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:description</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="energy-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>energy</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Energía o valor del objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Valor del ojeto.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 63</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:energy</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="energy_value-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>energy_value</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Valor energético del objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Valor energético del objeto.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+136
+137
+138</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 136</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_energy_value'>energy_value</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_energy'>energy</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -917,10 +1097,10 @@ puede acceder con el atributo <code>backpack_owners</code>.</p>
       <pre class="lines">
 
 
-68</pre>
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 75</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:image</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_IMAGE</span></pre>
     </td>
@@ -975,10 +1155,10 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-45</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 48</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:item_id</span><span class='comma'>,</span> <span class='label'>constraint:</span> <span class='symbol'>:unique</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span></pre>
     </td>
@@ -1030,10 +1210,10 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-72</pre>
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 79</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:max_amount</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_MAX_ITEM</span></pre>
     </td>
@@ -1087,10 +1267,10 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-51</pre>
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 54</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span></pre>
     </td>
@@ -1142,10 +1322,10 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-56</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 59</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:quality</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>NULL_QUALITY</span></pre>
     </td>
@@ -1179,19 +1359,19 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142</pre>
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Exportar el nodo
@@ -1274,21 +1454,21 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158</pre>
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 162</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:description</span><span class='comma'>,</span> <span class='symbol'>:max_ammount</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -1353,20 +1533,21 @@ id coherente para todos los objetos.</p>
       <pre class="lines">
 
 
-113
-114
-115
-116
-117
-118
-119
-120
 121
 122
-123</pre>
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update_item'>update_item</span><span class='lparen'>(</span><span class='id identifier rubyid_extra_params'>extra_params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
@@ -1374,10 +1555,11 @@ id coherente para todos los objetos.</p>
     <span class='label'>description:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span><span class='comma'>,</span>
     <span class='label'>image:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='comma'>,</span>
     <span class='label'>quality:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_quality'>quality</span><span class='comma'>,</span>
+    <span class='label'>energy:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_energy'>energy</span><span class='comma'>,</span>
     <span class='label'>max_amount:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_amount'>max_amount</span>
   <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>description:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>max_amount:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:max_amount</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>quality:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:quality</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>energy:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:energy</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>image:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:image</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1389,7 +1571,7 @@ id coherente para todos los objetos.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Apr 28 13:37:13 2015 by
+  Generated on Tue May 19 13:03:36 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

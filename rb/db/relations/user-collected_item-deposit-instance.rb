@@ -32,7 +32,7 @@ module Game
         
         # @!method type
         # Tipo o nombrel del enlace.
-        # @return [String] 'owns_completed_message'
+        # @return [String] 'has_mined'
         type 'has_mined'
         
         # -------------------------

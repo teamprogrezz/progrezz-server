@@ -1,0 +1,749 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Game::Database::ItemGeolocatedObject
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Game/Database/ItemGeolocatedObject.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (I)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Game.html" title="Game (module)">Game</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Database.html" title="Game::Database (module)">Database</a></span></span>
+     &raquo; 
+    <span class="title">ItemGeolocatedObject</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Game::Database::ItemGeolocatedObject
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></li>
+          
+            <li class="next">Game::Database::ItemGeolocatedObject</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+      <dt class="r2">Extended by:</dt>
+      <dd class="r2"><span class='object_link'><a href="../../Evented.html" title="Evented (module)">Evented</a></span></dd>
+      
+    
+  
+    
+      <dt class="r1">Includes:</dt>
+      <dd class="r1">Neo4j::ActiveNode</dd>
+      
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rb/db/objects/item_geo.rb<span class="defines">,<br />
+  rb/db/relations/user-placed_item-geo.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Clase abstracta que representa un objeto geolocalizado.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="Beacon.html" title="Game::Database::Beacon (class)">Beacon</a></span></p>
+</div>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="DEFAULT_DURATION-constant" class="">DEFAULT_DURATION =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Duración por defecto de una baliza, especificado en minutos.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>0</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+  
+  
+  <h3 class="inherited">Constants inherited
+     from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#MAX_LATITUDE-constant" title="Game::Database::GeolocatedObject::MAX_LATITUDE (constant)">GeolocatedObject::MAX_LATITUDE</a></span>, <span class='object_link'><a href="GeolocatedObject.html#MAX_LONGITUDE-constant" title="Game::Database::GeolocatedObject::MAX_LONGITUDE (constant)">GeolocatedObject::MAX_LONGITUDE</a></span>, <span class='object_link'><a href="GeolocatedObject.html#MIN_LATITUDE-constant" title="Game::Database::GeolocatedObject::MIN_LATITUDE (constant)">GeolocatedObject::MIN_LATITUDE</a></span>, <span class='object_link'><a href="GeolocatedObject.html#MIN_LONGITUDE-constant" title="Game::Database::GeolocatedObject::MIN_LONGITUDE (constant)">GeolocatedObject::MIN_LONGITUDE</a></span></p>
+
+
+
+
+  <h2>Instance Attribute Summary</h2>
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#is_updating-instance_method" title="Game::Database::GeolocatedObject#is_updating (method)">#is_updating</a></span></p>
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_item-class_method" title="create_item (class method)">+ (Object) <strong>create_item</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Crear objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#descendants-class_method" title="descendants (class method)">+ (Array&lt;Class&gt;) <strong>descendants</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Lista de descendientes.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#created_at-instance_method" title="#created_at (instance method)">- (DateTime) <strong>created_at</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Timestamp o fecha de creación del objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#duration-instance_method" title="#duration (instance method)">- (Integer) <strong>duration</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Duración (en días) de un objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#link_owner-instance_method" title="#link_owner (instance method)">- (Object) <strong>link_owner</strong>(user, type = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Asociar objeto a usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#owner-instance_method" title="#owner (instance method)">- (Game::Database::RelationShips::UserPlaced_ItemsGeo) <strong>owner</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Relación con el usuario que ha colocado este objeto.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../Evented.html" title="Evented (module)">Evented</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../Evented.html#add_event_listener-instance_method" title="Evented#add_event_listener (method)">add_event_listener</a></span>, <span class='object_link'><a href="../../Evented.html#dispatch_event-instance_method" title="Evented#dispatch_event (method)">dispatch_event</a></span>, <span class='object_link'><a href="../../Evented.html#remove_event_listener-instance_method" title="Evented#remove_event_listener (method)">remove_event_listener</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="GeolocatedObject.html" title="Game::Database::GeolocatedObject (class)">GeolocatedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="GeolocatedObject.html#clamp-instance_method" title="Game::Database::GeolocatedObject#clamp (method)">#clamp</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp%21-class_method" title="Game::Database::GeolocatedObject.clamp! (method)">clamp!</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp_latitude-class_method" title="Game::Database::GeolocatedObject.clamp_latitude (method)">clamp_latitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#clamp_longitude-class_method" title="Game::Database::GeolocatedObject.clamp_longitude (method)">clamp_longitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#geolocation-instance_method" title="Game::Database::GeolocatedObject#geolocation (method)">#geolocation</a></span>, <span class='object_link'><a href="GeolocatedObject.html#latitude-instance_method" title="Game::Database::GeolocatedObject#latitude (method)">#latitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#longitude-instance_method" title="Game::Database::GeolocatedObject#longitude (method)">#longitude</a></span>, <span class='object_link'><a href="GeolocatedObject.html#set_geolocation-instance_method" title="Game::Database::GeolocatedObject#set_geolocation (method)">#set_geolocation</a></span>, <span class='object_link'><a href="GeolocatedObject.html#to_s-instance_method" title="Game::Database::GeolocatedObject#to_s (method)">#to_s</a></span></p>
+
+  
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="create_item-class_method">
+  
+    + (<tt>Object</tt>) <strong>create_item</strong>(*args) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'>
+<p>Sin implementar.</p>
+</div>
+  </div>
+
+
+<p>Crear objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_geo.rb', line 36</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_item'>create_item</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Method &#39;create_item&#39; is not defined.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="descendants-class_method">
+  
+    + (<tt>Array&lt;Class&gt;</tt>) <strong>descendants</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Lista de descendientes.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Class&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Lista de descendientes.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_geo.rb', line 42</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_descendants'>descendants</span>
+  <span class='const'>ObjectSpace</span><span class='period'>.</span><span class='id identifier rubyid_each_object'>each_object</span><span class='lparen'>(</span><span class='const'>Class</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_klass'>klass</span><span class='op'>|</span> <span class='id identifier rubyid_klass'>klass</span> <span class='op'>&lt;</span> <span class='kw'>self</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="created_at-instance_method">
+  
+    - (<tt>DateTime</tt>) <strong>created_at</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Timestamp o fecha de creación del objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>DateTime</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Fecha de creación.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_geo.rb', line 21</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:created_at</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="duration-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>duration</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Duración (en días) de un objeto. Si es 0, durará eternamente.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Días que durará la baliza.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_geo.rb', line 25</span>
+
+<span class='id identifier rubyid_property'>property</span> <span class='symbol'>:duration</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Float</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='const'>DEFAULT_DURATION</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="link_owner-instance_method">
+  
+    - (<tt>Object</tt>) <strong>link_owner</strong>(user, type = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Asociar objeto a usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="Game::Database::User (class)">Game::Database::User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Usuario a asociar.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_geo.rb', line 48</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_link_owner'>link_owner</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid user reference.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span> <span class='op'>==</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Item already linked.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_owner'>owner</span> <span class='op'>==</span> <span class='kw'>nil</span>
+
+  <span class='id identifier rubyid_type'>type</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UNK</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING! Item type is </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_type'>type</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>!</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UNK</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserPlaced_ItemsGeo</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span> <span class='label'>from_node:</span> <span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='label'>to_node:</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='label'>item_type:</span> <span class='id identifier rubyid_type'>type</span> <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="owner-instance_method">
+  
+    - (<tt><span class='object_link'><a href="RelationShips/UserPlaced_ItemsGeo.html" title="Game::Database::RelationShips::UserPlaced_ItemsGeo (class)">Game::Database::RelationShips::UserPlaced_ItemsGeo</a></span></tt>) <strong>owner</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Relación con el usuario que ha colocado este objeto. Se puede acceder con
+el atributo #owner.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="RelationShips/UserPlaced_ItemsGeo.html" title="Game::Database::RelationShips::UserPlaced_ItemsGeo (class)">Game::Database::RelationShips::UserPlaced_ItemsGeo</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/item_geo.rb', line 32</span>
+
+<span class='id identifier rubyid_has_one'>has_one</span> <span class='symbol'>:in</span><span class='comma'>,</span> <span class='symbol'>:owner</span><span class='comma'>,</span> <span class='label'>rel_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>RelationShips</span><span class='op'>::</span><span class='const'>UserPlaced_ItemsGeo</span><span class='comma'>,</span> <span class='label'>model_class:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Tue May 19 13:03:37 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.0).
+</div>
+
+  </body>
+</html>

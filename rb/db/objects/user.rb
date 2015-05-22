@@ -3,8 +3,10 @@
 require 'progrezz/geolocation'
 
 require_relative 'geolocated_object'
+require_relative 'item_geo'
 require_relative '../relations/user-message_fragment'
 require_relative '../relations/user-completed_message'
+require_relative '../relations/user-placed_item-geo'
 
 module Game
   module Database
@@ -94,6 +96,10 @@ module Game
       # @return [Integer] Cantidad de objetos crafteados por el usuario.
       property :count_crafted_items, type: Integer, default: 0
 
+      # Contador de balizas desplegadas por el usuario.
+      # @return [Integer] Cantidad de balizas desplegadas por el usuario.
+      property :count_deployed_beacons, type: Integer, default: 0
+
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -118,7 +124,7 @@ module Game
       # Se puede acceder con el atributo +collected_completed_messages+.
       # @return [Game::Database::RelationShips::UserCompletedMessage] 
       has_many :out, :collected_completed_messages, rel_class: Game::Database::RelationShips::UserCompletedMessage, model_class: Game::Database::Message
-      
+
       # @!method collected_item_deposit_instances
       # Relación de depósitos recolectados por el usuario.
       # Se puede acceder con el atributo +collected_item_deposit_instances+.
@@ -126,7 +132,7 @@ module Game
       has_many :out, :collected_item_deposit_instances, rel_class: Game::Database::RelationShips::UserCollected_ItemDepositInstance, model_class: Game::Database::ItemDepositInstance
       
       # @!method :level_profile
-      # Relación con el nivel del usuario (#Game::Database::LevelProfile). Se puede acceder con el atributo +leel_profile+.
+      # Relación con el nivel del usuario (#Game::Database::LevelProfile). Se puede acceder con el atributo +level_profile+.
       # @return [Game::Database::LevelProfile] Nivel del usuario.
       has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
       
@@ -134,6 +140,13 @@ module Game
       # Relación con el inventario del usuario (#Game::Database::Backpack). Se puede acceder con el atributo +backpack+.
       # @return [Game::Database::Backpack] Inventario del usuario.
       has_one :out, :backpack, model_class: Game::Database::Backpack, type: "has_a", dependent: :destroy
+
+
+      # @!method placed_items_geo
+      # Relación de objetos geolocalizados que ha colocado el usuario.
+      # Se puede acceder con el atributo +placed_items_geo+.
+      # @return [Game::Database::RelationShips::UserPlaced_ItemsGeo]
+      has_many :out, :placed_items_geo, rel_class: Game::Database::RelationShips::UserPlaced_ItemsGeo, model_class: Game::Database::ItemGeolocatedObject, dependent: :destroy
       
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -160,6 +173,8 @@ module Game
         rescue Exception => e
           raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': " + e.message, e )
         end
+
+        user.dispatch(:OnCreate)
 
         return user
       end
@@ -291,6 +306,8 @@ module Game
           return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_fragments"]["radius"]
         elsif element == :deposits
           return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_deposits"]["radius"]
+        elsif element == :beacons
+          return Game::Mechanics::AllowedActionsMechanics.get_allowed_actions(self.level_profile.level)["search_nearby_beacons"]["radius"]
         end
         
         # ...
@@ -370,11 +387,40 @@ module Game
       # Añadir energia.
       # @param quantity [Integer] Cantidad de energia a añadir.
       def add_energy(quantity)
+        raise ::GenericException.new( "Invalid energy amount." ) if quantity == nil
         raise ::GenericException.new( "Invalid energy quantity (negative)." ) if quantity <= 0
 
         self.update( energy: self.energy + quantity )
       end
-      
+
+      # Comprobar si el usuario tiene una cantidad válida de energía, y quitársela.
+      # @param energy_amount [Integer] Cantidad a eliminar.
+      # @raise [GenericException] Si no tiene suficiente, se generará una excepción.
+      def remove_energy(energy_amount)
+        raise ::GenericException.new( "Invalid energy amount." ) if energy_amount == nil || energy_amount <= 0
+        raise ::GenericException.new( "User does not own " + energy_amount.to_s + " of energy." ) if energy_amount > self.energy
+
+        # Actualizar datos en neo4j
+        self.update( energy: self.energy - energy_amount )
+      end
+
+      # Getter de las balizas colocadas por un usuario.
+      def get_beacons()
+        beacons = self.placed_items_geo(:b, :r).where("r.item_type={it}").params(it: Game::Database::Beacon::RELATED_ITEM).pluck(:b).to_a
+
+        # Aprovechar y borrar las balizas caducadas
+        beacons.delete_if do |b|
+          if b.caducated?
+            b.remove()
+            true
+          else
+            false
+          end
+        end
+
+        return beacons
+      end
+
       # Devuelve las estadísticas del jugador.
       # @return [Hash<Symbol, Object>] Hash con todas las estadísticas y datos del usuario.
       def get_stats()
@@ -400,6 +446,12 @@ module Game
             collected_fragments: self.count_collected_fragments,
             unlocked_messages:   self.count_unlocked_messages,
             written_messages:    self.count_written_messages
+          },
+
+          # Estadísticas de objetos
+          items: {
+           crafted_items:    self.count_crafted_items,
+           deployed_beacons: self.count_deployed_beacons
           }
           
           # Otras estadísticas

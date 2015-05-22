@@ -171,7 +171,7 @@ module Game
 end
 
 # Inicializar.
-Game::AuthManager.setup( [:steam] )
+Game::AuthManager.setup( eval(ENV["progrezz_auth_disabled"].to_s) || [] )
 
 module Sinatra
   
