@@ -550,17 +550,25 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:data][:beacons].count, 0
 
     # Añadir y desplegar baliza
-    @users[1].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
-    @users[1].deploy_beacon("waaaaaa")
+    @users[1].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 2)
+    b1 = @users[1].deploy_beacon("waaaaaa")
+    b2 = @users[1].deploy_beacon("weeeeeee")
 
     # Comprobar de nuevo
     @request[:request][:type] = "user_get_nearby_beacons"
     @request[:request][:data] = { user_id: @users[0].user_id }
     rest_request()
 
+    b1.reload
+    b2.reload
+
     assert_equal @response[:response][:status], "ok"
-    assert_equal @response[:response][:data][:beacons].count, 1
-    assert_equal @response[:response][:data][:beacons].values.first[:info][:message], "waaaaaa"
+    assert_equal @response[:response][:data][:beacons].count, 2
+    assert_equal @response[:response][:data][:beacons][b1.uuid.to_sym][:info][:message], "waaaaaa"
+    assert_equal @response[:response][:data][:beacons][b2.uuid.to_sym][:info][:message], "weeeeeee"
+
+    assert_equal b1.neighbours.count, 1
+    assert_equal b2.neighbours.count, 1
 
     ok
   end

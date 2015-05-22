@@ -344,7 +344,7 @@ module Game
          # Actualizar conexiones
          beacon.update_neighbours
 
-         puts "Beacon " + beacon.uuid.to_s + " created."
+         # puts "Beacon " + beacon.uuid.to_s + " created."
        }
 
       # Callback de subida de nivel.
@@ -356,7 +356,7 @@ module Game
          # Actualizar conexiones
          beacon.update_neighbours
 
-         puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
+         #puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
        }
 
       add_event_listener :OnRemove, lambda { |beacon|
@@ -375,7 +375,7 @@ module Game
          nearby_beacons.delete(beacon)
          nearby_beacons.each { |b| b.update_neighbours }
 
-         puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
+         # puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
        }
 
       # Lanzar un evento desde la baliza actual.

@@ -174,6 +174,8 @@ module Game
           raise ::GenericException.new( "DB ERROR: Cannot create user '" + al + " with unique id '" + uid + "': " + e.message, e )
         end
 
+        user.dispatch(:OnCreate)
+
         return user
       end
       

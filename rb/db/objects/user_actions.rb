@@ -86,6 +86,9 @@ module Game
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
         
         if fragment_message != nil
+
+          # TODO: Comprobar que el mensaje esté lo suficientemente cerca.
+          # ...
           
           # Si el fragmento es suyo, no recogerlo
           if (fragment_message.message.author != nil && fragment_message.message.author == self)
