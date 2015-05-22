@@ -61,7 +61,8 @@
       "radius": 0.8,
       "noise": {
         "latitude":  0.0009013305367642798,
-        "longitude": 0.0008983204952678041
+        "longitude": 0.0008983204952678041,
+        "distance": 0.1
       }
     },
     "search_nearby_deposits": {
@@ -85,7 +86,8 @@
       "radius": 1.0,
       "noise": {
         "latitude":  0.0007210644294114238,
-        "longitude": 0.0007186563962142432
+        "longitude": 0.0007186563962142432,
+        "distance": 0.08
       }
     },
     "search_nearby_deposits": {
@@ -110,7 +112,8 @@
       "radius": 1.3,
       "noise": {
         "latitude":  0.0005407983220585678,
-        "longitude": 0.0005389922971606824
+        "longitude": 0.0005389922971606824,
+        "distance": 0.06
       }
     },
     "search_nearby_deposits": {
@@ -134,7 +137,8 @@
       "radius": 1.7,
       "noise": {
         "latitude":  0.00036053221470571193,
-        "longitude": 0.00035932819810712163
+        "longitude": 0.00035932819810712163,
+        "distance": 0.04
       }
     },
     "search_nearby_deposits": {
@@ -157,7 +161,8 @@
       "radius": 2.0,
       "noise": {
         "latitude":  0.0002703991610292839,
-        "longitude": 0.0002694961485803412
+        "longitude": 0.0002694961485803412,
+        "distance": 0.03
       }
     },
     "search_nearby_deposits": {

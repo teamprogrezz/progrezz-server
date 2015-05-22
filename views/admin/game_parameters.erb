@@ -20,7 +20,6 @@
   <pre id="allowed_actions_output"></pre>
 </form>
 
-
 <h2>Backpack editor</h2>
 <a href="javascript:toggle_spoiler('backpack');"><strong>Show / Hide</strong></span></a>
 <form id="backpack" class="spoiler">
@@ -35,6 +34,22 @@
   <textarea id="leveling_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
   <button type="submit">Save</button>
   <pre id="leveling_output"></pre>
+</form>
+
+<h2>Crafting editor</h2>
+<a href="javascript:toggle_spoiler('crafting');"><strong>Show / Hide</strong></span></a>
+<form id="crafting" class="spoiler">
+  <textarea id="crafting_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
+  <button type="submit">Save</button>
+  <pre id="crafting_output"></pre>
+</form>
+
+<h2>Beacon's editor</h2>
+<a href="javascript:toggle_spoiler('beacon');"><strong>Show / Hide</strong></span></a>
+<form id="beacon" class="spoiler">
+  <textarea id="beacon_editor" rows="14" cols="50" border="1" style="resize: none;"></textarea><br>
+  <button type="submit">Save</button>
+  <pre id="beacon_output"></pre>
 </form>
 
 <script type="text/javascript">
@@ -94,4 +109,6 @@
   generic_setup("allowed_actions", <%= file = File.open( Game::Mechanics::AllowedActionsMechanics::DATAFILE ).read.to_json %>);
   generic_setup("backpack", <%= file = File.open( Game::Mechanics::BackpackMechanics::DATAFILE ).read.to_json %>);
   generic_setup("leveling", <%= file = File.open( Game::Mechanics::LevelingMechanics::DATAFILE ).read.to_json %>);
+  generic_setup("crafting", <%= file = File.open( Game::Mechanics::CraftingMechanics::DATAFILE ).read.to_json %>);
+  generic_setup("beacon", <%= file = File.open( Game::Mechanics::BeaconMechanics::DATAFILE ).read.to_json %>);
 </script>
