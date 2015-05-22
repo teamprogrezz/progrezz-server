@@ -95,7 +95,7 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">rb/game/api/rest/rest.rb<span class="defines">,<br />
-  rb/game/api/rest/user_uris.rb,<br /> rb/game/api/rest/echo_uris.rb,<br /> rb/game/api/rest/items_uris.rb,<br /> rb/game/api/rest/messages_uris.rb,<br /> rb/game/api/rest/user_items_uris.rb,<br /> rb/game/api/rest/user_messages_uris.rb</span>
+  rb/game/api/rest/user_uris.rb,<br /> rb/game/api/rest/echo_uris.rb,<br /> rb/game/api/rest/items_uris.rb,<br /> rb/game/api/rest/messages_uris.rb,<br /> rb/game/api/rest/user_items_uris.rb,<br /> rb/game/api/rest/user_beacons_uris.rb,<br /> rb/game/api/rest/user_messages_uris.rb</span>
 </dd>
   
 </dl>
@@ -523,6 +523,30 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#rest__user_deploy_beacon-class_method" title="rest__user_deploy_beacon (class method)">+ (Object) <strong>rest__user_deploy_beacon</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Colocar una baliza en la posición actual del usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#rest__user_exchange_backpack_stack-class_method" title="rest__user_exchange_backpack_stack (class method)">+ (Object) <strong>rest__user_exchange_backpack_stack</strong>(app, response, session) </a>
     
 
@@ -619,6 +643,30 @@ petición realizada).</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#rest__user_get_deployed_beacons-class_method" title="rest__user_get_deployed_beacons (class method)">+ (Object) <strong>rest__user_get_deployed_beacons</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener lista de balizas colocadas por un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#rest__user_get_messages-class_method" title="rest__user_get_messages (class method)">+ (Object) <strong>rest__user_get_messages</strong>(app, response, session) </a>
     
 
@@ -635,6 +683,30 @@ petición realizada).</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Listar mensajes de un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_get_nearby_beacons-class_method" title="rest__user_get_nearby_beacons (class method)">+ (Object) <strong>rest__user_get_nearby_beacons</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener lista de balizas cercanas a un usuario.</p>
 </div></span>
   
 </li>
@@ -827,6 +899,30 @@ petición realizada).</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Escribir mensaje de un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest__user_yield_energy-class_method" title="rest__user_yield_energy (class method)">+ (Object) <strong>rest__user_yield_energy</strong>(app, response, session) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Ceder energía a una baliza cercana.</p>
 </div></span>
   
 </li>
@@ -1679,10 +1775,7 @@ petición realizada).</p>
 74
 75
 76
-77
-78
-79
-80</pre>
+77</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 54</span>
@@ -1690,10 +1783,7 @@ petición realizada).</p>
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_collect_message_fragment'>rest__user_collect_message_fragment</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_fragment'>fragment</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MessageFragment</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span> <span class='label'>uuid:</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:frag_uuid</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-  
-  <span class='comment'># TODO: Comprobar que el mensaje esté lo suficientemente cerca.
-</span>  <span class='comment'># ...
-</span>  
+
   <span class='id identifier rubyid_extra'>extra</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   
   <span class='id identifier rubyid_relation'>relation</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -1772,6 +1862,75 @@ petición realizada).</p>
     <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
     <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Item crafted successfully.</span><span class='tstring_end'>&quot;</span></span>
    <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__user_deploy_beacon-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_deploy_beacon</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Colocar una baliza en la posición actual del usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_beacons_uris.rb', line 10</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_deploy_beacon'>rest__user_deploy_beacon</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_deploy_beacon'>deploy_beacon</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Could not deploy beacon: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Beacon deployed.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1920,6 +2079,9 @@ petición realizada).</p>
       <pre class="lines">
 
 
+131
+132
+133
 134
 135
 136
@@ -1929,13 +2091,10 @@ petición realizada).</p>
 140
 141
 142
-143
-144
-145
-146</pre>
+143</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_collected_message_fragments'>rest__user_get_collected_message_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
@@ -2011,6 +2170,65 @@ petición realizada).</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="rest__user_get_deployed_beacons-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_get_deployed_beacons</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Obtener lista de balizas colocadas por un usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_beacons_uris.rb', line 29</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_deployed_beacons'>rest__user_get_deployed_beacons</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_beacons'>beacons</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_get_beacons'>get_beacons</span><span class='lparen'>(</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_b'>b</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rbracket'>]</span>
+  <span class='comment'>#beacons = user.get_beacons().map { |b| b.to_hash }
+</span>
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>beacons:</span> <span class='id identifier rubyid_beacons'>beacons</span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="rest__user_get_messages-class_method">
   
     + (<tt>Object</tt>) <strong>rest__user_get_messages</strong>(app, response, session) 
@@ -2037,18 +2255,18 @@ mensajes completados y sin completar del usuario.</p>
       <pre class="lines">
 
 
+120
+121
+122
 123
 124
 125
 126
 127
-128
-129
-130
-131</pre>
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_messages'>rest__user_get_messages</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
@@ -2058,6 +2276,63 @@ mensajes completados y sin completar del usuario.</p>
     <span class='label'>completed_messages:</span>  <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_get_completed_messages'>get_completed_messages</span><span class='lparen'>(</span><span class='rparen'>)</span><span class='comma'>,</span>  <span class='comment'># Añadir mensajescompletados.
 </span>    <span class='label'>fragmented_messages:</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_get_fragmented_messages'>get_fragmented_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>  <span class='comment'># Y mensajes fragmentados.
 </span>  <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__user_get_nearby_beacons-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_get_nearby_beacons</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Obtener lista de balizas cercanas a un usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_beacons_uris.rb', line 43</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_nearby_beacons'>rest__user_get_nearby_beacons</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_beacons'>beacons</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_search_nearby_beacons'>search_nearby_beacons</span><span class='lparen'>(</span><span class='rparen'>)</span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>beacons:</span> <span class='id identifier rubyid_beacons'>beacons</span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2183,6 +2458,9 @@ mensajes completados y sin completar del usuario.</p>
       <pre class="lines">
 
 
+95
+96
+97
 98
 99
 100
@@ -2200,13 +2478,10 @@ mensajes completados y sin completar del usuario.</p>
 112
 113
 114
-115
-116
-117
-118</pre>
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_get_nearby_message_fragments'>rest__user_get_nearby_message_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_default_ignore'>default_ignore</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
@@ -2543,6 +2818,9 @@ mensajes completados y sin completar del usuario.</p>
       <pre class="lines">
 
 
+80
+81
+82
 83
 84
 85
@@ -2552,13 +2830,10 @@ mensajes completados y sin completar del usuario.</p>
 89
 90
 91
-92
-93
-94
-95</pre>
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_messages_uris.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_write_message'>rest__user_write_message</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
@@ -2572,6 +2847,71 @@ mensajes completados y sin completar del usuario.</p>
     <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
     <span class='label'>written_message:</span> <span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_get_user_message'>get_user_message</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rest__user_yield_energy-class_method">
+  
+    + (<tt>Object</tt>) <strong>rest__user_yield_energy</strong>(app, response, session) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Ceder energía a una baliza cercana.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/user_beacons_uris.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rest__user_yield_energy'>rest__user_yield_energy</span><span class='lparen'>(</span> <span class='id identifier rubyid_app'>app</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_user_id'>user_id</span>     <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_beacon_uuid'>beacon_uuid</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:beacon_uuid</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_energy'>energy</span>      <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:request</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:energy</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+
+  <span class='id identifier rubyid_user'>user</span>     <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>AuthManager</span><span class='period'>.</span><span class='id identifier rubyid_search_auth_user'>search_auth_user</span><span class='lparen'>(</span> <span class='id identifier rubyid_user_id'>user_id</span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_beacon'>beacon</span>   <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='period'>.</span><span class='id identifier rubyid_get_beacon'>get_beacon</span><span class='lparen'>(</span> <span class='id identifier rubyid_beacon_uuid'>beacon_uuid</span> <span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_yield_energy'>yield_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_beacon'>beacon</span><span class='comma'>,</span> <span class='id identifier rubyid_energy'>energy</span><span class='rparen'>)</span>
+
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>API</span><span class='op'>::</span><span class='const'>JSONResponse</span><span class='period'>.</span><span class='id identifier rubyid_ok_response!'>ok_response!</span><span class='lparen'>(</span> <span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='lbrace'>{</span>
+    <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>plain</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Energy added correctly.</span><span class='tstring_end'>&quot;</span></span>
+   <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2624,7 +2964,7 @@ mensajes completados y sin completar del usuario.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:37 2015 by
+  Generated on Fri May 22 14:15:09 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

@@ -348,7 +348,13 @@
 166
 167
 168
-169</pre>
+169
+170
+171
+172
+173
+174
+175</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 38</span>
@@ -399,6 +405,12 @@
         <span class='comment'># Crear copia de un mensaje replicable
 </span>        <span class='comment'># messages[3].replicate( {latitude: 0.0, longitude: 0.0}, {latitude: 0.5, longitude: 0.6} )
 </span>        
+       <span class='kw'>end</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+
+      <span class='comment'># Buscar mensajes de Wikiti
+</span>      <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Tiempo de añadir balizas: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_timer'>timer</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_user_Wikiti'>user_Wikiti</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_add_item'>add_item</span><span class='lparen'>(</span><span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>item_id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>geo_beacon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='int'>20</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_user_Shylpx'>user_Shylpx</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_add_item'>add_item</span><span class='lparen'>(</span><span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>item_id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>geo_beacon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='int'>19</span><span class='rparen'>)</span>
       <span class='kw'>end</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
       
       <span class='comment'># Buscar mensajes de Wikiti
@@ -569,13 +581,13 @@
       <pre class="lines">
 
 
-172
-173
-174
-175</pre>
+178
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 172</span>
+      <pre class="code"><span class="info file"># File 'rb/game/api/rest/trash_test.rb', line 178</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db_reset'>db_reset</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db_drop'>db_drop</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -591,7 +603,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:34 2015 by
+  Generated on Fri May 22 14:15:06 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

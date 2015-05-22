@@ -185,7 +185,7 @@ base de datos neo4j, reiniciar su estado, etc.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Destruye todo el contenido de la base de datos.</p>
+<p>Destruye el contenido de la base de datos.</p>
 </div></span>
   
 </li>
@@ -412,7 +412,7 @@ base de datos neo4j, reiniciar su estado, etc.</p>
   </div>
 
 
-<p>Destruye todo el contenido de la base de datos.</p>
+<p>Destruye el contenido de la base de datos.</p>
 
 
   </div>
@@ -455,14 +455,6 @@ base de datos neo4j, reiniciar su estado, etc.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-  <div class="note todo">
-    <strong>TODO:</strong>
-    <div class='inline'>
-<p>Implementar</p>
-</div>
-  </div>
-
-
 <p>Exportar nodo neo4j y sus relaciones.</p>
 
 <p>Se accede a los atributos del nodo con node.attributes</p>
@@ -548,6 +540,7 @@ base de datos neo4j, reiniciar su estado, etc.</p>
       <pre class="lines">
 
 
+82
 83
 84
 85
@@ -592,11 +585,10 @@ base de datos neo4j, reiniciar su estado, etc.</p>
 124
 125
 126
-127
-128</pre>
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 82</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_export_neo4jnode'>export_neo4jnode</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='id identifier rubyid_node_relations'>node_relations</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_params'>extra_params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='const'>GenericUtils</span><span class='period'>.</span><span class='id identifier rubyid_default_params'>default_params</span><span class='lparen'>(</span> <span class='lbrace'>{</span>
@@ -752,12 +744,12 @@ base de datos neo4j, reiniciar su estado, etc.</p>
       <pre class="lines">
 
 
+178
 179
-180
-181</pre>
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 179</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 178</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rollback_transaction'>rollback_transaction</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tx'>tx</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -837,6 +829,7 @@ transacciones anidadas.</p>
       <pre class="lines">
 
 
+142
 143
 144
 145
@@ -850,11 +843,10 @@ transacciones anidadas.</p>
 153
 154
 155
-156
-157</pre>
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='comment'># Si no hay bloque, devolver error.
@@ -997,14 +989,14 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
       <pre class="lines">
 
 
+161
 162
 163
 164
-165
-166</pre>
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 162</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 161</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_start_transaction'>start_transaction</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tx'>tx</span> <span class='op'>=</span> <span class='const'>Neo4j</span><span class='op'>::</span><span class='const'>Transaction</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1042,17 +1034,17 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
       <pre class="lines">
 
 
+183
 184
 185
 186
 187
 188
 189
-190
-191</pre>
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 184</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 183</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stop_all_transactions'>stop_all_transactions</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='cvar'>@@transactions</span><span class='period'>.</span><span class='id identifier rubyid_reverse_each'>reverse_each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tx'>tx</span><span class='op'>|</span>
@@ -1113,13 +1105,13 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
       <pre class="lines">
 
 
+170
 171
 172
-173
-174</pre>
+173</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'rb/managers/_db.rb', line 170</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stop_transaction'>stop_transaction</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
   <span class='cvar'>@@transactions</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_tx'>tx</span><span class='rparen'>)</span>
@@ -1135,7 +1127,7 @@ se usará dicha dirección como servidor neo4j. En caso contrario, se usará
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:34 2015 by
+  Generated on Fri May 22 14:15:06 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

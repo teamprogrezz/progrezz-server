@@ -148,7 +148,7 @@
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='int'>2</span></pre></dd>
+        <dd><pre class="code"><span class='int'>3</span></pre></dd>
       
         <dt id="DATAFILE-constant" class="">DATAFILE =
           <div class="docstring">
@@ -533,7 +533,10 @@
 154
 155
 156
-157</pre>
+157
+158
+159
+160</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/game/mechanics/items.rb', line 112</span>
@@ -552,15 +555,18 @@
   
   <span class='comment'># Cantidad máxima de depósitos a generar
 </span>  <span class='id identifier rubyid_max_deposits'>max_deposits</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span> <span class='op'>*</span> <span class='const'>DEPOSIT_REPLICATION_PER_RADIUS_KM</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span>
+
+  <span class='comment'># Posición geolocalizada del usuario.
+</span>  <span class='id identifier rubyid_user_geo'>user_geo</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span>
   
   <span class='comment'># Preparar selector de objetos según su peso.
 </span>  <span class='id identifier rubyid_ponderation'>ponderation</span> <span class='op'>=</span> <span class='ivar'>@deposit_list</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_weight'>weight</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_deposit_picker'>deposit_picker</span> <span class='op'>=</span> <span class='const'>Pickup</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_ponderation'>ponderation</span><span class='rparen'>)</span>
-  
-  <span class='comment'># TODO: Aumentar probabilidad de generación si hay balizas cercanas
-</span>  <span class='comment'># ...
-</span>  
-  <span class='id identifier rubyid_user_geo'>user_geo</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span>
+
+  <span class='comment'># Aumentar probabilidad de generación si hay balizas cercanas.
+</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>BeaconMechanics</span><span class='period'>.</span><span class='id identifier rubyid_add_ponderation'>add_ponderation</span><span class='lparen'>(</span><span class='id identifier rubyid_ponderation'>ponderation</span><span class='comma'>,</span> <span class='id identifier rubyid_user_geo'>user_geo</span><span class='rparen'>)</span>
+
+  <span class='comment'># Crear selector.
+</span>  <span class='id identifier rubyid_deposit_picker'>deposit_picker</span> <span class='op'>=</span> <span class='const'>Pickup</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_ponderation'>ponderation</span><span class='rparen'>)</span>
 
   <span class='comment'># Empezar a generar
 </span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>DatabaseManager</span><span class='period'>.</span><span class='id identifier rubyid_run_nested_transaction'>run_nested_transaction</span> <span class='kw'>do</span>
@@ -811,7 +817,7 @@
       <span class='comment'># Si no existe, añadir a la base de datos.
 </span>      <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Item</span><span class='period'>.</span><span class='id identifier rubyid_create_item'>create_item</span><span class='lparen'>(</span> <span class='id identifier rubyid_i'>i</span> <span class='rparen'>)</span>
     <span class='kw'>else</span>
-      <span class='comment'># Si ya existe, actualizar todo
+      <span class='comment'># Si ya existe, actualizarlo
 </span>      <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_update_item'>update_item</span><span class='lparen'>(</span> <span class='id identifier rubyid_i'>i</span> <span class='rparen'>)</span>
     <span class='kw'>end</span>
     
@@ -926,7 +932,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:37 2015 by
+  Generated on Fri May 22 14:15:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

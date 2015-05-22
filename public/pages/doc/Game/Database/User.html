@@ -780,7 +780,7 @@ tener una serie de propiedades o atributos.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#deploy_beacon-instance_method" title="#deploy_beacon (instance method)">- (Object) <strong>deploy_beacon</strong> </a>
+      <a href="#deploy_beacon-instance_method" title="#deploy_beacon (instance method)">- (Game::Database::Beacon) <strong>deploy_beacon</strong>(message, out = {}) </a>
     
 
     
@@ -844,6 +844,30 @@ tener una serie de propiedades o atributos.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Energía del usuario (moneda del juego).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_beacons-instance_method" title="#get_beacons (instance method)">- (Object) <strong>get_beacons</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Getter de las balizas colocadas por un usuario.</p>
 </div></span>
   
 </li>
@@ -1141,6 +1165,54 @@ REST).</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#remove_energy-instance_method" title="#remove_energy (instance method)">- (Object) <strong>remove_energy</strong>(energy_amount) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Comprobar si el usuario tiene una cantidad válida de energía, y quitársela.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search_nearby_beacons-instance_method" title="#search_nearby_beacons (instance method)">- (Hash) <strong>search_nearby_beacons</strong>(out = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Buscar balizas cercanas a un usuario.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#search_nearby_deposits-instance_method" title="#search_nearby_deposits (instance method)">- (Hash) <strong>search_nearby_deposits</strong> </a>
     
 
@@ -1354,6 +1426,30 @@ REST).</p>
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#yield_energy-instance_method" title="#yield_energy (instance method)">- (Object) <strong>yield_energy</strong>(beacon, energy_amount, out = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Ceder energía a una baliza.</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -1431,12 +1527,12 @@ REST).</p>
       <pre class="lines">
 
 
-182
-183
-184</pre>
+184
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 184</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_online_users'>online_users</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span> <span class='label'>is_online:</span> <span class='kw'>true</span> <span class='rparen'>)</span>
@@ -1511,8 +1607,6 @@ excepción.</p>
       <pre class="lines">
 
 
-191
-192
 193
 194
 195
@@ -1521,10 +1615,12 @@ excepción.</p>
 198
 199
 200
-201</pre>
+201
+202
+203</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 191</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 193</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_search_user'>search_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user_id'>user_id</span><span class='rparen'>)</span>
   <span class='comment'># Identificar que el usuario exista, etc.
@@ -1623,7 +1719,9 @@ excepción.</p>
 175
 176
 177
-178</pre>
+178
+179
+180</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 161</span>
@@ -1643,6 +1741,8 @@ excepción.</p>
   <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DB ERROR: Cannot create user &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_al'>al</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> with unique id &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_uid'>uid</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39;: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='symbol'>:OnCreate</span><span class='rparen'>)</span>
 
   <span class='kw'>return</span> <span class='id identifier rubyid_user'>user</span>
 <span class='kw'>end</span></pre>
@@ -1716,16 +1816,18 @@ excepción.</p>
       <pre class="lines">
 
 
-385
-386
-387
-388
-389</pre>
+389
+390
+391
+392
+393
+394</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 385</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 389</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_energy'>add_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_quantity'>quantity</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid energy amount.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>==</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid energy quantity (negative).</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
 
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>energy:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_energy'>energy</span> <span class='op'>+</span> <span class='id identifier rubyid_quantity'>quantity</span> <span class='rparen'>)</span>
@@ -1781,14 +1883,14 @@ excepción.</p>
       <pre class="lines">
 
 
-231
-232
 233
 234
-235</pre>
+235
+236
+237</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 231</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 233</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_msg'>add_msg</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_written_messages'>written_messages</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_message'>message</span>
@@ -2101,18 +2203,18 @@ retornará nil.</p>
       <pre class="lines">
 
 
-278
-279
 280
 281
 282
 283
 284
 285
-286</pre>
+286
+287
+288</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 278</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 280</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_message_status'>change_message_status</span><span class='lparen'>(</span><span class='id identifier rubyid_msg_uuid'>msg_uuid</span><span class='comma'>,</span> <span class='id identifier rubyid_new_status'>new_status</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -2280,7 +2382,10 @@ de dicho mensaje. En cualquier otro caso, generará excepciones.</p>
 145
 146
 147
-148</pre>
+148
+149
+150
+151</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 84</span>
@@ -2290,7 +2395,10 @@ de dicho mensaje. En cualquier otro caso, generará excepciones.</p>
 </span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_action_allowed?'>action_allowed?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid___callee__'>__callee__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
   
   <span class='kw'>if</span> <span class='id identifier rubyid_fragment_message'>fragment_message</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    
+
+    <span class='comment'># TODO: Comprobar que el mensaje esté lo suficientemente cerca.
+</span>    <span class='comment'># ...
+</span>    
     <span class='comment'># Si el fragmento es suyo, no recogerlo
 </span>    <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_fragment_message'>fragment_message</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_fragment_message'>fragment_message</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_author'>author</span> <span class='op'>==</span> <span class='kw'>self</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User fragment.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
@@ -2453,9 +2561,6 @@ recolectados por el usuario. En cualquier otro caso, generará excepciones.</p>
       <pre class="lines">
 
 
-265
-266
-267
 268
 269
 270
@@ -2493,10 +2598,13 @@ recolectados por el usuario. En cualquier otro caso, generará excepciones.</p>
 302
 303
 304
-305</pre>
+305
+306
+307
+308</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 265</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 268</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_collect_item_from_deposit'>collect_item_from_deposit</span><span class='lparen'>(</span><span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='comma'>,</span> <span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Null deposit.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span> <span class='op'>==</span> <span class='kw'>nil</span>
@@ -2526,7 +2634,7 @@ recolectados por el usuario. En cualquier otro caso, generará excepciones.</p>
     <span class='comment'># Añadir al contador
 </span>    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>count_collected_item_deposits:</span> <span class='id identifier rubyid_count_collected_item_deposits'>count_collected_item_deposits</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
     
-    <span class='comment'># TODO: Cooldown en función de su nivel
+    <span class='comment'># TODO: Cooldown en función del nivel del usuario
 </span>    <span class='id identifier rubyid_cooldown'>cooldown</span> <span class='op'>=</span> <span class='id identifier rubyid_deposit_instance'>deposit_instance</span><span class='period'>.</span><span class='id identifier rubyid_deposit'>deposit</span><span class='period'>.</span><span class='id identifier rubyid_user_cooldown'>user_cooldown</span>
     
     <span class='comment'># Marcar depósito como recolectado.
@@ -3100,7 +3208,45 @@ atributo <code>collected_item_deposit_instances</code>.</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>craft_recipe_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Identificador de la receta.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>out</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Salida personalizada (exp, etc).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Raises:</p>
 <ul class="raise">
   
@@ -3121,11 +3267,6 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <pre class="lines">
 
 
-308
-309
-310
-311
-312
 313
 314
 315
@@ -3159,10 +3300,15 @@ atributo <code>collected_item_deposit_instances</code>.</p>
 343
 344
 345
-346</pre>
+346
+347
+348
+349
+350
+351</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 308</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 313</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_craft_item'>craft_item</span><span class='lparen'>(</span><span class='id identifier rubyid_craft_recipe_id'>craft_recipe_id</span><span class='comma'>,</span> <span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
 
@@ -3266,7 +3412,7 @@ atributo <code>collected_item_deposit_instances</code>.</p>
       <div class="method_details ">
   <h3 class="signature " id="deploy_beacon-instance_method">
   
-    - (<tt>Object</tt>) <strong>deploy_beacon</strong> 
+    - (<tt><span class='object_link'><a href="Beacon.html" title="Game::Database::Beacon (class)">Game::Database::Beacon</a></span></tt>) <strong>deploy_beacon</strong>(message, out = {}) 
   
 
   
@@ -3282,16 +3428,59 @@ la correspondiente excepción.</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
-<p class="tag_title">Raises:</p>
-<ul class="raise">
+    <li>
+      
+        <span class='name'>message</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Mensaje de la baliza.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>out</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Salida personalizada (exp, etc).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
   
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Beacon.html" title="Game::Database::Beacon (class)">Game::Database::Beacon</a></span></tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Retorna una referencia a la baliza generada.</p>
+</div>
       
     </li>
   
@@ -3303,37 +3492,47 @@ la correspondiente excepción.</p>
       <pre class="lines">
 
 
-350
-351
-352
-353
-354
-355
-356
-357
 358
 359
 360
 361
 362
-363</pre>
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 350</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 358</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_deploy_beacon'>deploy_beacon</span><span class='lparen'>(</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_deploy_beacon'>deploy_beacon</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
   <span class='comment'># Lanzará una excepción si no se permite al usuario realizar la acción.
 </span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_action_allowed?'>action_allowed?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid___callee__'>__callee__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
 
-  <span class='comment'># Comprobar que el usuario tenga al menos una baliza
+  <span class='comment'># Comprobar que el usuario tenga al menos una baliza, y quitarsela
 </span>  <span class='id identifier rubyid_beacon_item'>beacon_item</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='period'>.</span><span class='id identifier rubyid_get_item'>get_item</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User does not own 1x</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_beacon_item'>beacon_item</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_has?'>has?</span><span class='lparen'>(</span> <span class='id identifier rubyid_beacon_item'>beacon_item</span> <span class='rparen'>)</span>
-
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_backpack'>backpack</span><span class='period'>.</span><span class='id identifier rubyid_remove_item_amount'>remove_item_amount</span><span class='lparen'>(</span><span class='id identifier rubyid_beacon_item'>beacon_item</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span>
+  <span class='comment'># raise ::GenericException.new(&quot;User does not own 1x &quot; + beacon_item.name.to_s + &quot;.&quot;) unless self.backpack.has?( beacon_item, 1 )
+</span>
   <span class='comment'># Crear y desplegar la baliza
-</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='period'>.</span><span class='id identifier rubyid_create_item'>create_item</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+</span>  <span class='id identifier rubyid_beacon'>beacon</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='period'>.</span><span class='id identifier rubyid_create_item'>create_item</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>message:</span> <span class='id identifier rubyid_message'>message</span><span class='rbrace'>}</span><span class='rparen'>)</span>
 
   <span class='comment'># Añadir al contador
-</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>count_crafted_items:</span> <span class='id identifier rubyid_count_deployed_beacons'>count_deployed_beacons</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span> <span class='label'>count_deployed_beacons:</span> <span class='id identifier rubyid_count_deployed_beacons'>count_deployed_beacons</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+
+  <span class='comment'># Retornar referencia
+</span>  <span class='kw'>return</span> <span class='id identifier rubyid_beacon'>beacon</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -3356,7 +3555,9 @@ la correspondiente excepción.</p>
 
 <p>Lista de eventos registrados:</p>
 <ul><li>
-<p><tt>:onLevelUp (user, new_level)</tt>: Al subir de nivel.</p>
+<p><tt>:OnCreate (user)</tt>: Al crear el usuario.</p>
+</li><li>
+<p><tt>:OnLevelUp (user, new_level)</tt>: Al subir de nivel.</p>
 </li></ul>
 
 
@@ -3407,12 +3608,12 @@ la correspondiente excepción.</p>
       <pre class="lines">
 
 
-36
-37
-38</pre>
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_events.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_events.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='id identifier rubyid_event_name'>event_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_dispatch_event'>dispatch_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event_name'>event_name</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
@@ -3473,6 +3674,71 @@ acciones (balizas, principalmente).</p>
       <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 71</span>
 
 <span class='id identifier rubyid_property'>property</span> <span class='symbol'>:energy</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>default:</span> <span class='int'>0</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_beacons-instance_method">
+  
+    - (<tt>Object</tt>) <strong>get_beacons</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Getter de las balizas colocadas por un usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 408</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_beacons'>get_beacons</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_beacons'>beacons</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_placed_items_geo'>placed_items_geo</span><span class='lparen'>(</span><span class='symbol'>:b</span><span class='comma'>,</span> <span class='symbol'>:r</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>r.item_type={it}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='label'>it:</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='op'>::</span><span class='const'>RELATED_ITEM</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:b</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span>
+
+  <span class='comment'># Aprovechar y borrar las balizas caducadas
+</span>  <span class='id identifier rubyid_beacons'>beacons</span><span class='period'>.</span><span class='id identifier rubyid_delete_if'>delete_if</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_b'>b</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_caducated?'>caducated?</span>
+      <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='rparen'>)</span>
+      <span class='kw'>true</span>
+    <span class='kw'>else</span>
+      <span class='kw'>false</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_beacons'>beacons</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -3542,8 +3808,6 @@ acciones (balizas, principalmente).</p>
       <pre class="lines">
 
 
-253
-254
 255
 256
 257
@@ -3557,10 +3821,12 @@ acciones (balizas, principalmente).</p>
 265
 266
 267
-268</pre>
+268
+269
+270</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 253</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 255</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_collected_message_fragments'>get_collected_message_fragments</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -3629,18 +3895,18 @@ por el usuario.</p>
       <pre class="lines">
 
 
-240
-241
 242
 243
 244
 245
 246
 247
-248</pre>
+248
+249
+250</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 240</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 242</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_completed_messages'>get_completed_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -3700,17 +3966,17 @@ por el usuario.</p>
       <pre class="lines">
 
 
-290
-291
 292
 293
 294
 295
 296
-297</pre>
+297
+298
+299</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 290</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 292</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_craft_recipes'>get_craft_recipes</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_recipes'>recipes</span>         <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>CraftingMechanics</span><span class='period'>.</span><span class='id identifier rubyid_recipes'>recipes</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -3804,8 +4070,6 @@ por el usuario.</p>
       <pre class="lines">
 
 
-302
-303
 304
 305
 306
@@ -3813,16 +4077,22 @@ por el usuario.</p>
 308
 309
 310
-311</pre>
+311
+312
+313
+314
+315</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 302</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 304</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_current_search_radius'>get_current_search_radius</span><span class='lparen'>(</span> <span class='id identifier rubyid_element'>element</span> <span class='op'>=</span> <span class='symbol'>:fragments</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_element'>element</span> <span class='op'>==</span> <span class='symbol'>:fragments</span>
     <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>search_nearby_fragments</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>radius</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_element'>element</span> <span class='op'>==</span> <span class='symbol'>:deposits</span>
     <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>search_nearby_deposits</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>radius</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_element'>element</span> <span class='op'>==</span> <span class='symbol'>:beacons</span>
+    <span class='kw'>return</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_get_allowed_actions'>get_allowed_actions</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>search_nearby_beacons</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>radius</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
   
   <span class='comment'># ...
@@ -3884,10 +4154,6 @@ de un usuario.</p>
       <pre class="lines">
 
 
-343
-344
-345
-346
 347
 348
 349
@@ -3901,10 +4167,14 @@ de un usuario.</p>
 357
 358
 359
-360</pre>
+360
+361
+362
+363
+364</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 343</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 347</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_fragmented_messages'>get_fragmented_messages</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -3993,10 +4263,6 @@ de un usuario.</p>
       <pre class="lines">
 
 
-365
-366
-367
-368
 369
 370
 371
@@ -4009,10 +4275,14 @@ de un usuario.</p>
 378
 379
 380
-381</pre>
+381
+382
+383
+384
+385</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 365</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 369</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_online_nearby_users'>get_online_nearby_users</span><span class='lparen'>(</span><span class='id identifier rubyid_radius'>radius</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user_geo'>user_geo</span> <span class='op'>=</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span>
@@ -4080,44 +4350,44 @@ de un usuario.</p>
       <pre class="lines">
 
 
-393
-394
-395
-396
-397
-398
-399
-400
-401
-402
-403
-404
-405
-406
-407
-408
-409
-410
-411
-412
-413
-414
-415
-416
-417
-418
-419
-420
-421
-422
-423
-424
-425
 426
-427</pre>
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 393</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 426</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_stats'>get_stats</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbrace'>{</span>
@@ -4262,12 +4532,12 @@ de un usuario.</p>
       <pre class="lines">
 
 
-224
-225
-226</pre>
+226
+227
+228</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 224</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 226</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_online'>online</span><span class='lparen'>(</span><span class='id identifier rubyid_new_status'>new_status</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span> 
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='label'>is_online:</span> <span class='id identifier rubyid_new_status'>new_status</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
@@ -4430,10 +4700,6 @@ acceder con el atributo <code>placed_items_geo</code>.</p>
       <pre class="lines">
 
 
-316
-317
-318
-319
 320
 321
 322
@@ -4446,10 +4712,14 @@ acceder con el atributo <code>placed_items_geo</code>.</p>
 329
 330
 331
-332</pre>
+332
+333
+334
+335
+336</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 316</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 320</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_message'>read_message</span><span class='lparen'>(</span><span class='id identifier rubyid_msg_uuid'>msg_uuid</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -4466,6 +4736,202 @@ acceder con el atributo <code>placed_items_geo</code>.</p>
     <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User does not own message &#39;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg_uuid'>msg_uuid</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&#39; to read.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
   
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="remove_energy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>remove_energy</strong>(energy_amount) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Comprobar si el usuario tiene una cantidad válida de energía, y quitársela.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>energy_amount</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cantidad a eliminar.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">GenericException</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Si no tiene suficiente, se generará una excepción.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+399
+400
+401
+402
+403
+404
+405</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 399</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_remove_energy'>remove_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_energy_amount'>energy_amount</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid energy amount.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='op'>||</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>User does not own </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> of energy.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span> <span class='op'>&gt;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_energy'>energy</span>
+
+  <span class='comment'># Actualizar datos en neo4j
+</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>energy:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_energy'>energy</span> <span class='op'>-</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span> <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="search_nearby_beacons-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>search_nearby_beacons</strong>(out = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Buscar balizas cercanas a un usuario.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>out</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Salida personalizada (exp, etc).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Resultado de la búsqueda (balizas cercanos).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 382</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_search_nearby_beacons'>search_nearby_beacons</span><span class='lparen'>(</span><span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='comment'># Lanzará una excepción si no se permite al usuario realizar la acción.
+</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_action_allowed?'>action_allowed?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid___callee__'>__callee__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+
+  <span class='comment'># El radio dependerá del nivel del usuario.
+</span>  <span class='id identifier rubyid_radius'>radius</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_current_search_radius'>get_current_search_radius</span><span class='lparen'>(</span><span class='symbol'>:beacons</span><span class='rparen'>)</span>
+
+  <span class='comment'># Resultado
+</span>  <span class='id identifier rubyid_beacons'>beacons</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='period'>.</span><span class='id identifier rubyid_search_by_radius'>search_by_radius</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='id identifier rubyid_radius'>radius</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_beacons'>beacons</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_b'>b</span><span class='op'>|</span>
+    <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span>
+  <span class='kw'>end</span>
+
   <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -4504,7 +4970,7 @@ acceder con el atributo <code>placed_items_geo</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Resultado de la búsqueda (fragmentos cercanos).</p>
+<p>Resultado de la búsqueda (depósitos cercanos).</p>
 </div>
       
     </li>
@@ -4517,9 +4983,6 @@ acceder con el atributo <code>placed_items_geo</code>.</p>
       <pre class="lines">
 
 
-230
-231
-232
 233
 234
 235
@@ -4541,10 +5004,13 @@ acceder con el atributo <code>placed_items_geo</code>.</p>
 251
 252
 253
-254</pre>
+254
+255
+256
+257</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 230</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 233</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_search_nearby_deposits'>search_nearby_deposits</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='comment'># Lanzará una excepción si no se permite al usuario realizar la acción.
@@ -4643,9 +5109,6 @@ el usuario.</p>
       <pre class="lines">
 
 
-189
-190
-191
 192
 193
 194
@@ -4680,10 +5143,13 @@ el usuario.</p>
 223
 224
 225
-226</pre>
+226
+227
+228
+229</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 192</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_search_nearby_fragments'>search_nearby_fragments</span><span class='lparen'>(</span> <span class='id identifier rubyid_ignore_user_written_messages'>ignore_user_written_messages</span> <span class='op'>=</span> <span class='kw'>true</span> <span class='rparen'>)</span>
   <span class='comment'># Lanzará una excepción si no se permite al usuario realizar la acción.
@@ -4794,19 +5260,19 @@ el usuario.</p>
       <pre class="lines">
 
 
-439
-440
-441
-442
-443
-444
-445
-446
-447
-448</pre>
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 439</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 472</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -4868,12 +5334,12 @@ el usuario.</p>
       <pre class="lines">
 
 
-432
-433
-434</pre>
+465
+466
+467</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 432</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 465</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;User: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_id'>user_id</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_alias'>alias</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_is_online'>is_online</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span> 
@@ -4968,9 +5434,6 @@ retornará nil o se generará una excepción.</p>
       <pre class="lines">
 
 
-157
-158
-159
 160
 161
 162
@@ -4994,10 +5457,13 @@ retornará nil o se generará una excepción.</p>
 180
 181
 182
-183</pre>
+183
+184
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 157</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unlock_message'>unlock_message</span><span class='lparen'>(</span><span class='id identifier rubyid_msg_uuid'>msg_uuid</span><span class='comma'>,</span> <span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='comment'># Lanzará una excepción si no se permite al usuario realizar la acción.
@@ -5083,15 +5549,15 @@ la base de datos siempre y cuando se haya cambiado  al menos un atributo.</p>
       <pre class="lines">
 
 
-215
-216
 217
 218
 219
-220</pre>
+220
+221
+222</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 215</span>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user.rb', line 217</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update_profile'>update_profile</span><span class='lparen'>(</span> <span class='id identifier rubyid_attributes'>attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_changed'>changed</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -5376,12 +5842,140 @@ con el atributo #written_messages. Tiene como tipo
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="yield_energy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>yield_energy</strong>(beacon, energy_amount, out = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Ceder energía a una baliza.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>beacon</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Beacon.html" title="Game::Database::Beacon (class)">Game::Database::Beacon</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Referencia a la baliza.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>energy_amount</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cantidad de energía a ceder.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>out</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Salida personalizada (exp, etc).</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../GenericException.html" title="GenericException (class)">::GenericException</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/db/objects/user_actions.rb', line 404</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_yield_energy'>yield_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_beacon'>beacon</span><span class='comma'>,</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span><span class='comma'>,</span> <span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>AllowedActionsMechanics</span><span class='period'>.</span><span class='id identifier rubyid_action_allowed?'>action_allowed?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid___callee__'>__callee__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+
+  <span class='comment'># Comprobar entrada
+</span>  <span class='id identifier rubyid_raise'>raise</span> <span class='op'>::</span><span class='const'>GenericException</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid beacon.</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_beacon'>beacon</span> <span class='op'>==</span> <span class='kw'>nil</span>
+
+  <span class='comment'># Comprobar que el usuario tiene suficiente energía, y quitársela
+</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_remove_energy'>remove_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_energy_amount'>energy_amount</span><span class='rparen'>)</span>
+
+  <span class='comment'># Y cederla al objeto
+</span>  <span class='const'>Game</span><span class='op'>::</span><span class='const'>Mechanics</span><span class='op'>::</span><span class='const'>BeaconMechanics</span><span class='period'>.</span><span class='id identifier rubyid_gain_energy'>gain_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_beacon'>beacon</span><span class='comma'>,</span> <span class='id identifier rubyid_energy_amount'>energy_amount</span><span class='rparen'>)</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:36 2015 by
+  Generated on Fri May 22 14:15:08 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

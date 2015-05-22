@@ -1365,17 +1365,15 @@ con el atributo <code>deposit</code>.</p>
 173
 174
 175
-176
-177</pre>
+176</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'rb/db/objects/item_deposit_instance.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_hash'>to_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_exclusion_list'>exclusion_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_user_rel'>user_rel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-  
-  <span class='comment'># TODO: Acomodar para el cliente.
-</span>  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_id_shortcut'>item_id_shortcut</span> <span class='kw'>unless</span> <span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:item_id</span>
+
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:item_id</span><span class='rbracket'>]</span>     <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_item_id_shortcut'>item_id_shortcut</span> <span class='kw'>unless</span> <span class='id identifier rubyid_exclusion_list'>exclusion_list</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='symbol'>:item_id</span>
 
   <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:instance</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='label'>uuid:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span><span class='comma'>,</span>
@@ -1459,7 +1457,7 @@ con el atributo <code>deposit</code>.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:36 2015 by
+  Generated on Fri May 22 14:15:08 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

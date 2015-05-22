@@ -159,6 +159,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#add_ponderation-class_method" title="add_ponderation (class method)">+ (Object) <strong>add_ponderation</strong>(ponderation_hash, geolocation) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Aumentar el peso o ponderación según las balizas cercanas a ese punto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#data-class_method" title="data (class method)">+ (Hash) <strong>data</strong> </a>
     
 
@@ -223,6 +247,30 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Dar energía a la baliza.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#max_connections-class_method" title="max_connections (class method)">+ (Integer) <strong>max_connections</strong>(beacon) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calcular el máximo número de conexiones de una baliza.</p>
 </div></span>
   
 </li>
@@ -321,7 +369,114 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="data-class_method">
+  <h3 class="signature first" id="add_ponderation-class_method">
+  
+    + (<tt>Object</tt>) <strong>add_ponderation</strong>(ponderation_hash, geolocation) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Aumentar el peso o ponderación según las balizas cercanas a ese punto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ponderation_hash</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash de ponderaciones <tt>Tipo=&gt;Peso</tt>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>geolocation</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Geolocalización del punto, de tipo lat, longitude: lon</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 126</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_add_ponderation'>add_ponderation</span><span class='lparen'>(</span><span class='id identifier rubyid_ponderation_hash'>ponderation_hash</span><span class='comma'>,</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_max_radius'>max_radius</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__radius_per_level'>_radius_per_level</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span> <span class='rparen'>)</span>
+
+  <span class='comment'># Buscar balizas cercanas
+</span>  <span class='id identifier rubyid_beacons'>beacons</span> <span class='op'>=</span> <span class='const'>Game</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>Beacon</span><span class='period'>.</span><span class='id identifier rubyid_search_by_radius'>search_by_radius</span><span class='lparen'>(</span><span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='id identifier rubyid_max_radius'>max_radius</span><span class='rparen'>)</span>
+
+  <span class='comment'># Para cada baliza, incrementar la ponderación según sea conveniente.
+</span>  <span class='id identifier rubyid_ponderation_increment'>ponderation_increment</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_beacons'>beacons</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_b'>b</span><span class='op'>|</span>
+    <span class='comment'># Si está lo suficientemente cerca, aumentar la ponderación
+</span>    <span class='id identifier rubyid_ponderation_increment'>ponderation_increment</span> <span class='op'>+=</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_weight_per_deposit'>weight_per_deposit</span> <span class='kw'>if</span> <span class='const'>Progrezz</span><span class='op'>::</span><span class='const'>Geolocation</span><span class='period'>.</span><span class='id identifier rubyid_distance'>distance</span><span class='lparen'>(</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='id identifier rubyid_geolocation'>geolocation</span><span class='comma'>,</span> <span class='symbol'>:km</span> <span class='rparen'>)</span> <span class='op'>&lt;=</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_action_radius'>action_radius</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Aumentar la ponderación en el hash
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_ponderation_increment'>ponderation_increment</span> <span class='op'>!=</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_ponderation_hash'>ponderation_hash</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_ponderation_hash'>ponderation_hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_ponderation_increment'>ponderation_increment</span> <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="data-class_method">
   
     + (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>data</strong> 
   
@@ -364,12 +519,12 @@
       <pre class="lines">
 
 
-57
-58
-59</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span>
   <span class='kw'>return</span> <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_deep_clone'>deep_clone</span>
@@ -445,12 +600,12 @@ necesaria para subir del nivel <code>next_level-1</code> a
       <pre class="lines">
 
 
-39
-40
-41</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_exp_to_next_level'>exp_to_next_level</span><span class='lparen'>(</span><span class='id identifier rubyid_next_level'>next_level</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid__next_level_required_exp'>_next_level_required_exp</span><span class='lparen'>(</span> <span class='id identifier rubyid_next_level'>next_level</span> <span class='rparen'>)</span>
@@ -535,8 +690,6 @@ necesaria para subir del nivel <code>next_level-1</code> a
       <pre class="lines">
 
 
-64
-65
 66
 67
 68
@@ -587,10 +740,15 @@ necesaria para subir del nivel <code>next_level-1</code> a
 113
 114
 115
-116</pre>
+116
+117
+118
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_gain_energy'>gain_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_beacon'>beacon</span><span class='comma'>,</span> <span class='id identifier rubyid_energy'>energy</span><span class='rparen'>)</span>
   <span class='comment'># Gestión de errores
@@ -642,8 +800,90 @@ necesaria para subir del nivel <code>next_level-1</code> a
     <span class='comment'># -- Añadir tiempo de vida según su nivel actual --
 </span>  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='symbol'>:duration_added</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_beacon'>beacon</span><span class='period'>.</span><span class='id identifier rubyid_add_life_time'>add_life_time</span><span class='lparen'>(</span> <span class='id identifier rubyid_energy'>energy</span> <span class='op'>*</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__duration_per_energy'>_duration_per_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_level_profile'>level_profile</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span> <span class='rparen'>)</span>
 
+  <span class='comment'># Añadir la energía a la baliza
+</span>  <span class='id identifier rubyid_beacon'>beacon</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span> <span class='label'>energy_gained:</span> <span class='id identifier rubyid_beacon'>beacon</span><span class='period'>.</span><span class='id identifier rubyid_energy_gained'>energy_gained</span> <span class='op'>+</span> <span class='id identifier rubyid_energy'>energy</span> <span class='rparen'>)</span>
+
   <span class='comment'># Y retornar estructura
 </span>  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="max_connections-class_method">
+  
+    + (<tt>Integer</tt>) <strong>max_connections</strong>(beacon) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calcular el máximo número de conexiones de una baliza.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>beacon</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Database/Beacon.html" title="Game::Database::Beacon (class)">Game::Database::Beacon</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Baliza a comprobar.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Máximo número de conexiones de la baliza</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+148
+149
+150</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 148</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_connections'>max_connections</span><span class='lparen'>(</span><span class='id identifier rubyid_beacon'>beacon</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='symbol'>:base</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:max_connections</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -694,12 +934,12 @@ necesaria para subir del nivel <code>next_level-1</code> a
       <pre class="lines">
 
 
-51
-52
-53</pre>
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max_level'>max_level</span>
   <span class='kw'>return</span> <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='symbol'>:levels</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:end</span><span class='rbracket'>]</span>
@@ -753,12 +993,12 @@ necesaria para subir del nivel <code>next_level-1</code> a
       <pre class="lines">
 
 
-45
-46
-47</pre>
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_min_level'>min_level</span>
   <span class='kw'>return</span> <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='symbol'>:levels</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:start</span><span class='rbracket'>]</span>
@@ -816,8 +1056,6 @@ necesaria para subir del nivel <code>next_level-1</code> a
       <pre class="lines">
 
 
-19
-20
 21
 22
 23
@@ -830,10 +1068,12 @@ necesaria para subir del nivel <code>next_level-1</code> a
 30
 31
 32
-33</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/item_mechanics/beacon_mechanics.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_str_data'>str_data</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_JSON'>parse_JSON</span><span class='lparen'>(</span> <span class='id identifier rubyid_str_data'>str_data</span> <span class='op'>||</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='const'>DATAFILE</span><span class='rparen'>)</span> <span class='rparen'>)</span>
@@ -860,7 +1100,7 @@ necesaria para subir del nivel <code>next_level-1</code> a
 </div>
 
     <div id="footer">
-  Generated on Tue May 19 13:03:38 2015 by
+  Generated on Fri May 22 14:15:11 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
