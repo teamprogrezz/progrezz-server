@@ -240,6 +240,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#get_item_energy-class_method" title="get_item_energy (class method)">+ (Integer) <strong>get_item_energy</strong>(item_id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Obtener el valor energético de un objeto.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#init_items-class_method" title="init_items (class method)">+ (Object) <strong>init_items</strong>(content = nil) </a>
     
 
@@ -464,13 +488,6 @@
       <pre class="lines">
 
 
-105
-106
-107
-108
-109
-110
-111
 112
 113
 114
@@ -509,10 +526,17 @@
 147
 148
 149
-150</pre>
+150
+151
+152
+153
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'rb/game/mechanics/items.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/items.rb', line 112</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_nearby_deposits'>generate_nearby_deposits</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_deposits_output'>deposits_output</span><span class='rparen'>)</span>
   <span class='comment'># El radio se obtiene directamente del usuario
@@ -559,6 +583,85 @@
   <span class='kw'>end</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_deposits_count'>deposits_count</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_item_energy-class_method">
+  
+    + (<tt>Integer</tt>) <strong>get_item_energy</strong>(item_id) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Obtener el valor energético de un objeto.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>item_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Id del objeto.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Valor energético del objeto.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+104
+105
+106</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rb/game/mechanics/items.rb', line 104</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_item_energy'>get_item_energy</span><span class='lparen'>(</span><span class='id identifier rubyid_item_id'>item_id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='id identifier rubyid_item_id'>item_id</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:energy</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='id identifier rubyid_item_id'>item_id</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -823,7 +926,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Apr 28 13:37:13 2015 by
+  Generated on Tue May 19 13:03:37 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

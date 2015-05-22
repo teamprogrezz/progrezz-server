@@ -389,8 +389,11 @@ class RESTTest < Test::Unit::TestCase
     @request[:request][:data] = { user_id: @users[0].user_id, stack_id: (@users[0].backpack.last_stack_id - 1), amount: 10  }
     rest_request()
 
+    @users[0].reload
+
     assert_equal @response[:response][:status], "ok"
     assert_equal @response[:response][:data][:removed], 10
+    assert_equal @users[0].energy, Game::Mechanics::ItemsMechanics.get_item_energy( @deposit_instances[0].deposit.item.item_id ) * 10
 
     ok
   end
@@ -473,6 +476,125 @@ class RESTTest < Test::Unit::TestCase
     assert_equal @response[:response][:data][:old_stack][:amount], 0
     assert_equal @response[:response][:data][:new_stack][:amount], 20
     assert_equal @users[0].backpack.to_hash.length, 1
+
+    ok
+  end
+
+  # ---------------------------
+  #       User beacons
+  # ---------------------------
+
+  # Probar "user_deploy_beacon"
+  def test_user_deploy_beacon
+    authenticate()
+
+    # Añadir baliza
+    @users[0].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+
+    # Desplegar baliza
+    @request[:request][:type] = "user_deploy_beacon"
+    @request[:request][:data] = { user_id: @users[0].user_id, message: "This will deploy correctly." }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+
+    # Intentar desplegarla de nuevo
+    @request[:request][:type] = "user_deploy_beacon"
+    @request[:request][:data] = { user_id: @users[0].user_id, message: "This will not." }
+    rest_request()
+
+    assert_equal @response[:response][:status], "error"
+    assert_equal @response[:response][:message], "Could not deploy beacon: User does not own 1 of Energy beacon"
+
+    ok
+  end
+
+  # Probar "user_get_deployed_beacons"
+  def test_user_get_deployed_beacons
+    authenticate()
+
+    # Comprobar balizas del usuario
+    @request[:request][:type] = "user_get_deployed_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 0
+
+    # Añadir y desplegar baliza
+    @users[0].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+    @users[0].deploy_beacon("weeeeeeeee")
+
+    # Comprobar de nuevo
+    @request[:request][:type] = "user_get_deployed_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 1
+    assert_equal @response[:response][:data][:beacons].values.first[:info][:message], "weeeeeeeee"
+
+    ok
+  end
+
+  # Probar "user_get_nearby_beacons"
+  def test_user_get_nearby_beacons
+    authenticate()
+
+    # Comprobar balizas cercanas al usuario
+    @request[:request][:type] = "user_get_nearby_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 0
+
+    # Añadir y desplegar baliza
+    @users[1].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 2)
+    b1 = @users[1].deploy_beacon("waaaaaa")
+    b2 = @users[1].deploy_beacon("weeeeeee")
+
+    # Comprobar de nuevo
+    @request[:request][:type] = "user_get_nearby_beacons"
+    @request[:request][:data] = { user_id: @users[0].user_id }
+    rest_request()
+
+    b1.reload
+    b2.reload
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:beacons].count, 2
+    assert_equal @response[:response][:data][:beacons][b1.uuid.to_sym][:info][:message], "waaaaaa"
+    assert_equal @response[:response][:data][:beacons][b2.uuid.to_sym][:info][:message], "weeeeeee"
+
+    assert_equal b1.neighbours.count, 1
+    assert_equal b2.neighbours.count, 1
+
+    ok
+  end
+
+  # Probar "user_yield_energy"
+  def test_user_yield_energy
+    authenticate()
+
+    # Añadir y desplegar baliza
+    @users[0].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+    @users[0].update(energy: 1000)
+    beacon = @users[0].deploy_beacon("waaaaaa")
+
+    # Ceder energía
+    @request[:request][:type] = "user_yield_energy"
+    @request[:request][:data] = { user_id: @users[0].user_id, beacon_uuid: beacon.uuid, energy: 900 }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Energy added correctly."
+
+    beacon.reload
+    @users[0].reload
+
+    assert_equal beacon.energy_gained, 900
+    assert_equal @users[0].energy, 1000 - 900
 
     ok
   end

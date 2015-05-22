@@ -13,6 +13,13 @@ module Game
       #-- --------------------------------------------------
       #                    Callbacks (juego)
       #   -------------------------------------------------- #++
+
+      # Callback de creación.
+      add_event_listener :OnCreate, lambda { |user|
+          raise ::GenericException.new("Invalid user.") if (user == nil)
+
+          # ...
+        }
             
       # Callback de subida de nivel.
       add_event_listener :OnLevelUp, lambda { |user, new_level|
@@ -29,7 +36,8 @@ module Game
       # Lanzar un evento desde el usuario actual.
       #
       # Lista de eventos registrados:
-      # - +:onLevelUp (user, new_level)+: Al subir de nivel. 
+      # - +:OnCreate (user)+: Al crear el usuario.
+      # - +:OnLevelUp (user, new_level)+: Al subir de nivel.
       #
       # @param event_name [Object] Nombre del evento a lanzar.
       # @param args [Object] Argumentos a pasar a los callbacks (además de +self+).

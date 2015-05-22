@@ -30,7 +30,20 @@
   },
   "rank_b": {
     "name": "Rango B",
-    "recipes": { }
+    "recipes": {
+      "craft_beacon": {
+        "input": [
+          {
+            "item_id": "metal_steel",
+            "quantity": 50
+          }
+        ],
+        "output": {
+          "item_id": "geo_beacon",
+          "quantity": 1
+        }
+      }
+    }
   },
   "rank_a": {
     "name": "Rango A",

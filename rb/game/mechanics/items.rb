@@ -14,7 +14,7 @@ module Game
       DEPOSIT_REPLICATION_PER_RADIUS_KM = 4
 
       # Número mínimo de depósitos en la zona para empezar a generar más.
-      DEPOSIT_MIN_COUNT = 2
+      DEPOSIT_MIN_COUNT = 3
       
       # Datos referentes a este gestor.
       DATAFILE = "data/items.json"
@@ -52,7 +52,7 @@ module Game
             # Si no existe, añadir a la base de datos.
             item = Game::Database::Item.create_item( i )
           else
-            # Si ya existe, actualizar todo
+            # Si ya existe, actualizarlo
             item.update_item( i )
           end
           
@@ -97,6 +97,13 @@ module Game
       def self.find_item(item_id)
         return @data[item_id].deep_clone
       end
+
+      # Obtener el valor energético de un objeto.
+      # @param item_id [String] Id del objeto.
+      # @return [Integer] Valor energético del objeto.
+      def self.get_item_energy(item_id)
+        return @data[item_id][:energy] if @data[item_id] != nil
+      end
       
       # Generar depósitos cercanos al usuario.
       # @param user [Game::Database::User] Referencia a un usuario.
@@ -116,15 +123,18 @@ module Game
         
         # Cantidad máxima de depósitos a generar
         max_deposits = (radius * DEPOSIT_REPLICATION_PER_RADIUS_KM).round
+
+        # Posición geolocalizada del usuario.
+        user_geo = user.geolocation
         
         # Preparar selector de objetos según su peso.
         ponderation = @deposit_list.map { |key, value| [key, value.weight] }
+
+        # Aumentar probabilidad de generación si hay balizas cercanas.
+        Game::Mechanics::BeaconMechanics.add_ponderation(ponderation, user_geo)
+
+        # Crear selector.
         deposit_picker = Pickup.new(ponderation)
-        
-        # TODO: Aumentar probabilidad de generación si hay balizas cercanas
-        # ...
-        
-        user_geo = user.geolocation
 
         # Empezar a generar
         Game::Database::DatabaseManager.run_nested_transaction do

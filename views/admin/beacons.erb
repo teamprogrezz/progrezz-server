@@ -1,0 +1,109 @@
+<script src="/lib/codemirror/js/codemirror.js"></script>
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+
+<h1>Beacons</h1>
+
+<h2>Related beacons</h2>
+<form>
+  <label for="beacon_uuid">Beacon uuid: </label>
+  <input type="text" id="beacon_uuid">
+  <input type="button" onclick="query();" value="Submit">
+</form>
+
+<div id="osm_map"></div>
+<br><br>
+
+<script src="/lib/client-api-rest/js/progrezz-api-rest.js"></script>
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+<script>
+
+  function query() {
+    window.location.href = "/admin/beacons?uuid=" + document.getElementById("beacon_uuid").value;
+  }
+
+  <%
+  if params["uuid"] != nil
+    beacon = Game::Database::Beacon.find_by(uuid: params["uuid"])
+  %>
+      // Crear mapa
+      map = new OpenLayers.Map("osm_map");
+      map.addLayer(new OpenLayers.Layer.OSM());
+      var lonLat  = new OpenLayers.LonLat( <%= beacon == nil ? -4.3043423 : beacon.longitude %> , <%= beacon == nil ? 39.984898 : beacon.latitude %>  ).transform(
+              new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+              new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+      );
+
+      var zoom = <%= beacon == nil ? 5 : 16 %>;
+      map.setCenter (lonLat, zoom);
+
+      // Crear marcadores
+      var marker_url      = "/img/api/markers/";
+      var marker_colors   = ["blue", "brown", "darkgreen", "green", "orange", "paleblue", "pink", "purple", "red", "yellow" ]
+      var marker_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      var marker_url_repo = [];
+      var marker_url_repo_count = 0;
+      var marker_per_msg  = {};
+
+      // Contruir repositorio
+      for (i in marker_alphabet)
+          for (j in marker_colors)
+              marker_url_repo.push(marker_url + marker_colors[j] + "_Marker" + marker_alphabet[i] + ".png");
+
+      // Capa de dibujado
+      var vector = new OpenLayers.Layer.Vector();
+      map.addLayer(vector);
+      var vector_features = [];
+
+      // Capa
+      var markers = new OpenLayers.Layer.Markers( "Markers" );
+      map.addLayer(markers);
+
+      // Propiedades de marcadores
+      var size = new OpenLayers.Size(20, 34);
+      var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+      var icon = null;
+
+    <%
+    if beacon != nil
+      marked_nodes = []
+      nodes = [beacon]
+      while !nodes.empty?
+        beacon = nodes.shift
+
+        if !marked_nodes.include? beacon.uuid
+          marked_nodes << beacon.uuid
+
+          # Añadir hijos a la cola
+          beacon.neighbours.each { |b| nodes << b }
+    %>
+                  var beacon_uuid = "<%= beacon.uuid %>"
+                  if(marker_per_msg[beacon_uuid] == null)
+                      marker_per_msg[beacon_uuid] = marker_url_repo[marker_url_repo_count++];
+
+                  lonLat = new OpenLayers.LonLat( <%= beacon.longitude %>, <%= beacon.latitude %> ).transform(
+                          new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+                          new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+                  );
+
+                  icon   = new OpenLayers.Icon(marker_per_msg[beacon_uuid], size, offset);
+                  markers.addMarker(new OpenLayers.Marker(lonLat, icon));
+
+          <%  beacon.neighbours.each do |b| %>
+                  start_point = new OpenLayers.Geometry.Point(lonLat.lon, lonLat.lat);
+                  inlonLat = new OpenLayers.LonLat( <%= b.longitude %>, <%= b.latitude %> ).transform(
+                          new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+                          new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+                  );
+                  end_point = new OpenLayers.Geometry.Point(inlonLat.lon, inlonLat.lat);
+
+                  vector_features.push( new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString([start_point, end_point])) );
+          <% end %>
+    <%
+        end
+      end
+    end
+    %>
+  <% end %>
+
+  vector.addFeatures(vector_features)
+</script>

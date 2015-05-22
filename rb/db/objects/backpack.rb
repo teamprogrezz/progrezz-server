@@ -48,7 +48,7 @@ module Game
       # @param level [Integer] Nivel del usuario para crear los slots del inventario.
       # @return [Game::Mechanics::Backpack] Objeto creado (no enlazado a un usuario).
       def self.create_backpack( level )
-        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) ) # TODO: Rellenar. (?)
+        return self.create( slots: Game::Mechanics::BackpackMechanics.slots(level) )
       end
       
       #-- --------------------------------------------------
@@ -173,12 +173,15 @@ module Game
 
         count = nil
         Game::Database::DatabaseManager.run_nested_transaction do |tx|
+          stack = get_stack(stack_id)
+          item = stack.item
+
           # item = stack.to_node
-          count = get_stack(stack_id).remove_amount( amount.to_i )
+          count = stack.remove_amount( amount.to_i )
+
+          # Cambiar el contenido borrado por energía.
+          self.user.add_energy(item.energy_value() * count )
         end
-        
-        # TODO: Cambiar el contenido borrado por energía, o algo así.
-        # ...
         
         return {
           removed: count
