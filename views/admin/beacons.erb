@@ -13,3 +13,77 @@
 <div id="osm_map"></div>
 <br><br>
 
+<script src="/lib/client-api-rest/js/progrezz-api-rest.js"></script>
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+<script>
+    // Crear mapa
+    map = new OpenLayers.Map("osm_map");
+    map.addLayer(new OpenLayers.Layer.OSM());
+    var lonLat         = new OpenLayers.LonLat( -4.3043423, 39.984898 ).transform(
+            new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+            new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+    );
+
+    var zoom = 4;
+    map.setCenter (lonLat, zoom);
+
+    // Crear marcadores
+    var marker_url      = "/img/api/markers/";
+    var marker_colors   = ["blue", "brown", "darkgreen", "green", "orange", "paleblue", "pink", "purple", "red", "yellow" ]
+    var marker_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    var marker_url_repo = [];
+    var marker_url_repo_count = 0;
+    var marker_per_msg  = {};
+
+    // Contruir repositorio
+    for (i in marker_alphabet)
+        for (j in marker_colors)
+            marker_url_repo.push(marker_url + marker_colors[j] + "_Marker" + marker_alphabet[i] + ".png");
+
+    // Capa
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+    // Propiedades de marcadores
+    var size = new OpenLayers.Size(20, 34);
+    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+    var icon = null;
+
+    // Petición REST
+    request = new RESTRequest();
+    request.onComplete = render_map;
+
+    json_request = RESTRequest.getTemplateRequest();
+    json_request.request.type = "message_get"
+    json_request.request.data = { type: "json", msg_uuid: "" }
+
+    function query() {
+        json_request.request.data.msg_uuid = document.getElementById("msg_uuid").value;
+        request.request( json_request );
+    }
+
+    function render_map(json) {
+        console.log(json);
+
+        if(json.response.status == "error") {
+            alert("Error: " + json.response.message);
+        }
+
+        var msg_uuid = json.response.data.info.message.uuid;
+
+        if(marker_per_msg[msg_uuid] == null)
+            marker_per_msg[msg_uuid] = marker_url_repo[marker_url_repo_count++];
+
+
+        $.each( json.response.data.info.fragments, function (i, v) {
+            lonLat = new OpenLayers.LonLat( v.geolocation.longitude, v.geolocation.latitude ).transform(
+                    new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+                    new OpenLayers.Projection("EPSG:900913")  // to Spherical Mercator Projection
+            );
+
+            icon   = new OpenLayers.Icon(marker_per_msg[msg_uuid], size, offset);
+            markers.addMarker(new OpenLayers.Marker(lonLat, icon));
+        });
+    }
+
+</script>

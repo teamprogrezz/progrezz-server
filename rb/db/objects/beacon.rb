@@ -43,6 +43,10 @@ module Game
       # @return [Integer] Cantidad de energía.
       property :energy_gained, type: Integer, default: 0
 
+      # Variable auxiliar para evitar bucles infinitos.
+      # @return [Boolean] false si no está marcada para borrar. true en caso contrario.
+      property :mark_as_removed, type: Boolean, default: false
+
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -51,6 +55,15 @@ module Game
       # Relación con el nivel de la baliza (#Game::Database::LevelProfile). Se puede acceder con el atributo +level_profile+.
       # @return [Game::Database::LevelProfile] Nivel de la baliza.
       has_one :out, :level_profile, model_class: Game::Database::LevelProfile, type: "profiles_in", dependent: :destroy
+
+
+      # @!method :connected_beacons
+      # Relación con otras balizas (triangulizables). Se puede acceder con el atributo +connected_beacons+.
+      # @return [Game::Database::Beacon] Balizas relacionadas.
+      has_many :both, :connected_beacons, model_class: Game::Database::Beacon, type: "connected_to"
+
+      # Alias de vecinos
+      alias_method :neighbours, :connected_beacons
 
       #-- --------------------------------------------------
       #                    Métodos de clase
@@ -168,6 +181,9 @@ module Game
 
       # Borrar baliza.
       def remove()
+        return if self.mark_as_removed == true
+        self.update(mark_as_removed: true)
+
         # Lanzar evento
         self.dispatch(:OnRemove)
 
@@ -185,11 +201,98 @@ module Game
         Game::Mechanics::BeaconMechanics._weight_per_level( self.level_profile.level )
       end
 
-      # Radio de acción de la baliza.
+      # Radio de acción de la baliza, en km.
       # Depende principalmente de su nivel.
-      # @return [Float] Radio de acción de la baliza.
+      # @return [Float] Radio de acción de la baliza, en km.
       def action_radius
         Game::Mechanics::BeaconMechanics._radius_per_level( self.level_profile.level )
+      end
+
+      # Máximo número de conexiones de esta baliza.
+      # @return [Integer] Máximo número de conexiones de esta baliza.
+      def max_connections
+        return Game::Mechanics::BeaconMechanics.max_connections(self)
+      end
+
+      # Actualizar conexiones con balizas cercanas.
+      #
+      # 1. Primero, se buscará las balizas en el máximo radio de conexión.
+      # 2. Se ordenarán por distancia a la baliza actual.
+      # 3. Para cada baliza, se comprobará si está lo suficientemente cerca.
+      # 4. De ser así, se connectará con la nueva baliza.
+      # 5. Se repetirán los pasos 3 y 4 hasta que se agoten las balizas o se llegue al máximo número de conexiones.
+      def update_neighbours()
+        # Comprobar si la baliza está muerta
+        if self.caducated?
+          self.remove()
+          return
+        end
+
+        max_radius      = Game::Mechanics::BeaconMechanics._radius_per_level( Game::Mechanics::BeaconMechanics.max_level )
+        radius          = self.action_radius
+
+        # Comprobar si ha muerto alguna baliza vecina
+
+        self.check_neighbours
+
+        # Comprobar si ya ha suficientes balizas
+        neighbours_count = self.neighbours.count
+        return if neighbours_count >= self.max_connections
+
+        geo = self.geolocation
+
+        # Si no, buscar balizas cercanas
+        beacons = Game::Database::Beacon.search_by_radius( geo, max_radius )
+
+        # Eliminarse a sí mismo
+        beacons.delete(self)
+
+        # Ordenarlas por cercanía a la posición
+        beacons.sort! { |a, b| Progrezz::Geolocation.distance(geo, a) <=> Progrezz::Geolocation.distance(geo, b) }
+
+        # Para cada una, intentar asociarla si está lo suficientemente cerca
+        beacons.each do |b|
+          # Seleccionar el radio más grande
+          current_radius = (radius > b.action_radius)? radius : b.action_radius
+
+          # Si está cerca, conectar e intentar salir
+          if Progrezz::Geolocation.distance( geo, b.geolocation, :km ) <= current_radius
+            neighbours_count += 1 if connect_to(b)
+
+            # Salir si ya hay suficientes conexiones
+            break if neighbours_count >= self.max_connections
+          end
+        end
+      end
+
+      # Comprobar estado de vecinos.
+      # Comprueba si los vecinos están muertos, y los borra en tal caso.
+      def check_neighbours
+        self.neighbours.each { |b| b.remove() if b.caducated? }
+      end
+
+      # Conectar a una baliza.
+      # @param beacon [Game::Database::Beacon] Baliza a conectar.
+      # @return [Boolean] true si se ha añadido correctamente. false en caso contrario.
+      private def connect_to(beacon)
+        raise ::GenericException.new("Invalid beacon.") if beacon == nil
+
+        # Comprobar estado de los vecinos de la baliza a conectar
+        beacon.check_neighbours()
+
+        # Si hay demasiados vecinos, retornar false
+        return false if beacon.neighbours.count >= beacon.max_connections
+
+        # Connectar la baliza
+        self.neighbours << beacon
+        return true
+      end
+
+      # Desconectarse de una baliza.
+      # @param beacon [Game::Database::Beacon] Baliza a desconectar.
+      def disconnect(beacon)
+        raise ::GenericException.new("Invalid beacon.") if beacon == nil
+        self.neighbours(:b, :rel).match_to(beacon).delete_all(:rel)
       end
 
       # Transformar objeto a un hash
@@ -220,8 +323,8 @@ module Game
         end
 
         if !exclusion_list.include?(:neighbours)
-          # TODO: Completar vecionas hash de una baliza
-          output[:neighbours] = {}
+          output[:neighbours] = []
+          self.neighbours.each { |b| output[:neighbours] << b.uuid }
         end
 
         if !exclusion_list.include?(:owner)
@@ -238,8 +341,10 @@ module Game
       add_event_listener :OnCreate, lambda { |beacon|
          raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
 
-         # TODO: ...
-         #puts "Beacon " + beacon.uuid.to_s + " created."
+         # Actualizar conexiones
+         beacon.update_neighbours
+
+         puts "Beacon " + beacon.uuid.to_s + " created."
        }
 
       # Callback de subida de nivel.
@@ -248,15 +353,29 @@ module Game
 
          new_level ||= beacon.level_profile.level
 
-         # TODO: Ajustar parámetros de la baliza con el nuevo nivel.
-         #puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
+         # Actualizar conexiones
+         beacon.update_neighbours
+
+         puts "Beacon " + beacon.uuid.to_s + " leveled to " + new_level.to_s + "!!"
        }
 
       add_event_listener :OnRemove, lambda { |beacon|
          raise ::GenericException.new("Invalid beacon.") if (beacon == nil)
 
-         # TODO: ...
-         #puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
+         # Actualizar conexiones de las balizas vecinas.
+         beacon.neighbours.each do |b|
+           beacon.disconnect( b )
+           b.update_neighbours
+         end
+
+         max_radius = Game::Mechanics::BeaconMechanics._radius_per_level( Game::Mechanics::BeaconMechanics.max_level )
+
+         # Y actualizar conexiones de las balizas cercanas
+         nearby_beacons = Game::Database::Beacon.search_by_radius( beacon.geolocation, max_radius )
+         nearby_beacons.delete(beacon)
+         nearby_beacons.each { |b| b.update_neighbours }
+
+         puts "Beacon " + beacon.uuid.to_s + " destroyed :(."
        }
 
       # Lanzar un evento desde la baliza actual.

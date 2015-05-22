@@ -142,6 +142,13 @@ module Game
         end
       end
 
+      # Calcular el máximo número de conexiones de una baliza.
+      # @param beacon [Game::Database::Beacon] Baliza a comprobar.
+      # @return [Integer] Máximo número de conexiones de la baliza
+      def self.max_connections(beacon)
+        return @data[:base][:max_connections]
+      end
+
     end
   end
 end
