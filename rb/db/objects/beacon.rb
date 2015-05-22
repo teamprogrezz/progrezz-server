@@ -39,6 +39,10 @@ module Game
       # @return [String] Contenido del mensaje.
       property :message, type: String, default: DEFAULT_MESSAGE
 
+      # Cantidad de energía que ha recibido la baliza.
+      # @return [Integer] Cantidad de energía.
+      property :energy_gained, type: Integer, default: 0
+
       #-- --------------------------------------------------
       #                     Relaciones (DB)
       #   -------------------------------------------------- #++
@@ -97,21 +101,18 @@ module Game
         return item
       end
 
-      # Limpiar balizas caducadas de la base de datos.
-      # @return [Integer] Retorna el número de balizas que han sido borrados.
-      def self.clear_caducated()
-        count = 0
+      # Retornar baliza dada una uuid.
+      # @param uuid [String] Identificador de la base de datos.
+      # @return [Game::Database::Beacon, nil] Retorna la baliza si la encuentra. Si no, retornará nil.
+      def self.get_beacon(uuid)
+        beacon = self.find_by(uuid: uuid)
 
-        Game::Database::DatabaseManager.run_nested_transaction do |t|
-          Game::Database::Beacon.as(:b).where("b.duration <> 0").each do |beacon|
-            if beacon.caducated?
-              beacon.remove()
-              count += 1
-            end
-          end
+        if beacon.caducated?
+          beacon.remove()
+          beacon = nil
         end
 
-        return count
+        return beacon
       end
 
       # Buscar balizas cercanas en un determinado radio de busqueda (circula), especificado en +km+.
@@ -177,21 +178,6 @@ module Game
         self.destroy()
       end
 
-
-      # Comprobar si una baliza ha caducado (ya no debería existir).
-      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
-      def caducated?
-        if duration == 0
-          return false
-        end
-
-        if self.created_at + (duration / (24 * 60.0) ) <= Time.now
-          return true
-        end
-
-        return false
-      end
-
       # Peso (o probabilidad) Añadida a balizas cercanas.
       # Depende principalmente de su nivel.
       # @return [Float] Valor del peso a añadir.
@@ -226,7 +212,8 @@ module Game
           output[:stats] = {
             level:              lp.level,
             level_exp:          lp.level_exp,
-            exp_to_next_level:  Game::Mechanics::BeaconMechanics.exp_to_next_level(lp.level),
+            exp_to_next_level:  Game::Mechanics::BeaconMechanics.exp_to_next_level(lp.level + 1),
+            energy_gained:      self.energy_gained,
             action_radius:      self.action_radius,
             weight_per_deposit: self.weight_per_deposit
           }

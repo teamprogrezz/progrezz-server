@@ -39,6 +39,10 @@
       "radius": "Radius to search nearby deposits."
     },
 
+    "yield_energy": {
+      "_desc": "Yield energy to certain geolocated items (beacons)."
+    },
+
     "deploy_beacon": {
       "_desc": "Deploy an energy beacon in the user's position."
     },
@@ -67,7 +71,8 @@
       "radius": 5.0
     },
     "collect_item_from_deposit_Common": {},
-    "unlock_message": true
+    "unlock_message": true,
+    "yield_energy": {}
   },
   "1": {
     "craft_item_rank_d": {}

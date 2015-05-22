@@ -107,7 +107,7 @@
       },
       {
         "name": "Yield energy to a beacon",
-        "example": {"_comment":"User <user_id> will yield a given amount of energy to a beacon.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_yield_energy","data":{"user_id":"yourmail@example.com","beacon_uuid":"Beacon uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)","energy_amount":"Numeric value. Energy amount (>= 0)."}}}
+        "example": {"_comment":"User <user_id> will yield a given amount of energy to a beacon.","metadata":{"request_url":"/dev/api/rest","timestamp":0,"timeout":0,"type":"json","request_type":"GET"},"request":{"type":"user_yield_energy","data":{"user_id":"yourmail@example.com","beacon_uuid":"Beacon uuid (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)","energy":"Numeric value. Energy amount (>= 0)."}}}
       },
       {
         "name": "Get user deployed beacons",

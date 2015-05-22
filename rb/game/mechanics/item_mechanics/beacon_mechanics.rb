@@ -113,6 +113,9 @@ module Game
           # -- Añadir tiempo de vida según su nivel actual --
         output[:duration_added] = beacon.add_life_time( energy * self._duration_per_energy(level_profile.level) )
 
+        # Añadir la energía a la baliza
+        beacon.update( energy_gained: beacon.energy_gained + energy )
+
         # Y retornar estructura
         return output
       end

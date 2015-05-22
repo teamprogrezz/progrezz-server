@@ -20,7 +20,7 @@ module Sinatra; module API ;module REST
       end
       
       Game::API::JSONResponse.ok_response!( response, {
-        type: "json",
+        type: "plain",
         message: "Beacon deployed."
       })
     end
@@ -51,7 +51,25 @@ module Sinatra; module API ;module REST
         beacons: beacons
        })
     end
-    
+
+    # Ceder energía a una baliza cercana.
+    def self.rest__user_yield_energy( app, response, session )
+      user_id     = response[:request][:request][:data][:user_id]
+      beacon_uuid = response[:request][:request][:data][:beacon_uuid]
+      energy      = response[:request][:request][:data][:energy].to_i
+
+      user     = Game::AuthManager.search_auth_user( user_id, session )
+      beacon   = Game::Database::Beacon.get_beacon( beacon_uuid )
+
+      user.yield_energy(beacon, energy)
+
+      Game::API::JSONResponse.ok_response!( response, {
+        type: "plain",
+        message: "Energy added correctly."
+       })
+    end
+
+
   end
   
 end; end; end

@@ -37,6 +37,23 @@ module Game
         raise ::GenericException.new("Method 'create_item' is not defined.")
       end
 
+      # Limpiar objetos caducados de la base de datos.
+      # @return [Integer] Retorna el número de objetos que han sido borrados.
+      def self.clear_caducated()
+        count = 0
+
+        Game::Database::DatabaseManager.run_nested_transaction do |t|
+          self.as(:it).where("it.duration <> 0").each do |it|
+            if it.caducated?
+              it.remove()
+              count += 1
+            end
+          end
+        end
+
+        return count
+      end
+
       # Lista de descendientes.
       # @return [Array<Class>] Lista de descendientes.
       def self.descendants
@@ -53,6 +70,20 @@ module Game
         puts "WARNING! Item type is " + type.to_s + "!" if type == "UNK"
 
         Game::Database::RelationShips::UserPlaced_ItemsGeo.create( from_node: user, to_node: self, item_type: type )
+      end
+
+      # Comprobar si un objeto ha caducado (ya no debería existir).
+      # @return [Boolean] Si ha caducado, retorna True. En caso contrario, False.
+      def caducated?
+        if duration == 0
+          return false
+        end
+
+        if self.created_at + (duration / (24 * 60.0) ) <= Time.now
+          return true
+        end
+
+        return false
       end
 
       # ...

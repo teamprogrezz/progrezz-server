@@ -305,6 +305,8 @@ module Game
       end
 
       # Craftear un objeto.
+      # @param craft_recipe_id [String] Identificador de la receta.
+      # @param out [Hash] Salida personalizada (exp, etc).
       def craft_item(craft_recipe_id, out = {})
 
         craft_recipe = Game::Mechanics::CraftingMechanics.get_recipe(craft_recipe_id)
@@ -348,8 +350,9 @@ module Game
       # Desplegar una baliza en la posición actual.
       # En caso de error, se generará la correspondiente excepción.
       # @param message [String] Mensaje de la baliza.
+      # @param out [Hash] Salida personalizada (exp, etc).
       # @return [Game::Database::Beacon] Retorna una referencia a la baliza generada.
-      def deploy_beacon(message)
+      def deploy_beacon(message, out = {})
 
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
@@ -371,8 +374,9 @@ module Game
 
 
       # Buscar balizas cercanas a un usuario.
+      # @param out [Hash] Salida personalizada (exp, etc).
       # @return [Hash] Resultado de la búsqueda (balizas cercanos).
-      def search_nearby_beacons()
+      def search_nearby_beacons(out = {})
         # Lanzará una excepción si no se permite al usuario realizar la acción.
         Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
 
@@ -388,6 +392,24 @@ module Game
         end
 
         return output
+      end
+
+      # Ceder energía a una baliza.
+      # @param beacon [Game::Database::Beacon] Referencia a la baliza.
+      # @param energy_amount [Integer] Cantidad de energía a ceder.
+      # @param out [Hash] Salida personalizada (exp, etc).
+      def yield_energy(beacon, energy_amount, out = {})
+        Game::Mechanics::AllowedActionsMechanics.action_allowed?(self.level_profile.level, __callee__.to_s)
+
+        # Comprobar entrada
+        raise ::GenericException.new( "Invalid beacon." ) if beacon == nil
+
+        # Comprobar que el usuario tiene suficiente energía, y quitársela
+        self.remove_energy(energy_amount)
+
+        # Y cederla al objeto
+        Game::Mechanics::BeaconMechanics.gain_energy(beacon, energy_amount)
+
       end
 
     end

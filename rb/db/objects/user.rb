@@ -385,9 +385,21 @@ module Game
       # Añadir energia.
       # @param quantity [Integer] Cantidad de energia a añadir.
       def add_energy(quantity)
+        raise ::GenericException.new( "Invalid energy amount." ) if quantity == nil
         raise ::GenericException.new( "Invalid energy quantity (negative)." ) if quantity <= 0
 
         self.update( energy: self.energy + quantity )
+      end
+
+      # Comprobar si el usuario tiene una cantidad válida de energía, y quitársela.
+      # @param energy_amount [Integer] Cantidad a eliminar.
+      # @raise [GenericException] Si no tiene suficiente, se generará una excepción.
+      def remove_energy(energy_amount)
+        raise ::GenericException.new( "Invalid energy amount." ) if energy_amount == nil || energy_amount <= 0
+        raise ::GenericException.new( "User does not own " + energy_amount.to_s + " of energy." ) if energy_amount > self.energy
+
+        # Actualizar datos en neo4j
+        self.update( energy: self.energy - energy_amount )
       end
 
       # Getter de las balizas colocadas por un usuario.

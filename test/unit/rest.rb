@@ -564,6 +564,32 @@ class RESTTest < Test::Unit::TestCase
 
     ok
   end
+
+  # Probar "user_yield_energy"
+  def test_user_yield_energy
+    authenticate()
+
+    # Añadir y desplegar baliza
+    @users[0].backpack.add_item( Game::Database::Item.find_by(item_id: Game::Database::Beacon::RELATED_ITEM), 1)
+    @users[0].update(energy: 1000)
+    beacon = @users[0].deploy_beacon("waaaaaa")
+
+    # Ceder energía
+    @request[:request][:type] = "user_yield_energy"
+    @request[:request][:data] = { user_id: @users[0].user_id, beacon_uuid: beacon.uuid, energy: 900 }
+    rest_request()
+
+    assert_equal @response[:response][:status], "ok"
+    assert_equal @response[:response][:data][:message], "Energy added correctly."
+
+    beacon.reload
+    @users[0].reload
+
+    assert_equal beacon.energy_gained, 900
+    assert_equal @users[0].energy, 1000 - 900
+
+    ok
+  end
   
   # ---------------------------
   #         Messages
