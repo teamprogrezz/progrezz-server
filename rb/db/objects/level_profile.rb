@@ -29,7 +29,11 @@ module Game
       # Relación con usuario padre (#Game::Database::User). Se puede acceder con el atributo +user+.
       # @return [Game::Database::User] Usuario que posee este nivel.
       has_one :in, :user, model_class: false, origin: :level_profile
-      
+
+      # Aliases (adición para que el perfil de las balizas tenga sentido).
+      alias_method :owner, :user      
+      alias_method :owner=, :user=
+
       # Crear un perfil de leveo para un usuario.
       # @return [Game::Mechanics::LevelingMechanics] Inventario creado.
       def self.create_level_profile()

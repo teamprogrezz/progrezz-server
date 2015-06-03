@@ -5,7 +5,7 @@ module Sinatra
     class Methods
 
       # Actualizar la posición geolocalizada del servidor.
-      def self.user_update_geolocation(app, response, session)
+      def self.ws__user_update_geolocation(app, response, session)
         user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )
         
         # Actualizar en la BD.
@@ -18,7 +18,7 @@ module Sinatra
       end
       
       # Buscar jugadores cercanos.
-      def self.user_get_nearby_users(app, response, session)
+      def self.ws__user_get_nearby_users(app, response, session)
         default_radius = 2 # km
         
         user = Game::AuthManager.search_auth_user( response[:request][:request][:data][:user_id], session )

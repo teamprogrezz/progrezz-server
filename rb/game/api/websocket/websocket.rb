@@ -87,7 +87,7 @@ module Sinatra
                   if method == ""
                     raise ::GenericException.new( "Invalid ws request type '" + method + "'" )
                   else
-                    Methods.send( method, app, response, session )
+                    Methods.send( "ws__" + method, app, response, session )
                   end
                   
                   # TODO: Implementar (como en REST). Cabe la posibilidad de compatibilizar los métodos REST en este apartado.

@@ -16,7 +16,7 @@ class WebSocketTest < Test::Unit::TestCase
 
   # WebSocket request method
   def ws_request()
-    Sinatra::API::WebSocket::Methods.send( @request[:request][:type].to_s, app, @response, @session )
+    Sinatra::API::WebSocket::Methods.send( "ws__" + @request[:request][:type].to_s, app, @response, @session )
     GenericUtils.symbolize_keys_deep!(@response)
   end
   

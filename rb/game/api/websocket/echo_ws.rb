@@ -7,7 +7,7 @@ module Sinatra
     class Methods
 
       # Método de prueba (saludar al nombre "request.data.name" de la petición realizada).
-      def self.echo(app, response, session)
+      def self.ws__echo(app, response, session)
         begin
           if response[:request][:request][:data] == nil || response[:request][:request][:data][:name] == nil
             name = 'world'
